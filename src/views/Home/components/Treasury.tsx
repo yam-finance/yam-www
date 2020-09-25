@@ -20,15 +20,15 @@ const Treasury: React.FC = () => {
   const { totalYUsdValue, yamBalance, yUsdBalance } = useTreasury()
   
   const treasuryValue = totalYUsdValue
-    ? '$'+numeral(totalYUsdValue * 1.15).format('0.00a')
+    !=null? '$'+numeral(totalYUsdValue * 1.15).format('0.00a')
     : '--'
 
   const yamValue = yamBalance
-    ? numeral(yamBalance).format('0.00a')
+    !=null? numeral(yamBalance).format('0.00a')
     : '--'
 
   const yUsdValue = yUsdBalance
-    ? numeral(yUsdBalance).format('0.00a')
+    !=null? numeral(yUsdBalance).format('0.00a')
     : '--'
 
   return (

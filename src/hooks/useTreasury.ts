@@ -16,11 +16,11 @@ const useTreasury = () => {
   const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress)
 
   const totalYUsdValue = useMemo(() => {
-    if (!yamTwap || !yamBalance || !yUsdBalance) {
-      return undefined
-    }
-    const yamYUsdValue = yamTwap * yamBalance
-    return yUsdBalance + yamYUsdValue
+      if (yamTwap==null || yamBalance==null || yUsdBalance==null) {
+        return undefined
+      }
+      const yamYUsdValue = yamBalance>0? (yamTwap * yamBalance):0
+      return yUsdBalance + yamYUsdValue
   }, [
     yamBalance,
     yamTwap,
@@ -34,4 +34,4 @@ const useTreasury = () => {
   }
 }
 
-export default useTreasury
+export default useTreasury;
