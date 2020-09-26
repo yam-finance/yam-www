@@ -35,7 +35,7 @@ const StyledIcon = styled.span.attrs({
   role: 'img'
 })`
   font-size: 96px;
-  height: 96px;
+  min-height: 96px;
   line-height: 96px;
   text-align: center;
   min-width: 96px;
