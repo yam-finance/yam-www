@@ -111,7 +111,7 @@ const Home: React.FC = () => {
         <Box>
           <StyledSectionTitle>As seen in</StyledSectionTitle>
           <Spacer size="lg" />
-          <Split>
+          <Split gapSize="lg">
             <StyledLogo>
               <GizmodoIcon />
             </StyledLogo>

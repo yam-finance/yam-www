@@ -39,6 +39,9 @@ const StyledIcon = styled.span.attrs({
   line-height: 96px;
   text-align: center;
   min-width: 96px;
+  @media (max-width: 768px) {
+    font-size: 64px;
+  }
 `
 
 const StyledTitle = styled.h1`

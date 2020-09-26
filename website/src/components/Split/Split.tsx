@@ -2,7 +2,11 @@ import React from 'react'
 import { Spacer } from 'react-neu'
 import styled from 'styled-components'
 
-const Split: React.FC = ({ children }) => {
+interface SplitProps {
+  gapSize?: 'sm' | 'md' | 'lg'
+}
+
+const Split: React.FC<SplitProps> = ({ children, gapSize = 'md' }) => {
   const l = React.Children.toArray(children).length
   return (
     <StyledSplit>
@@ -11,7 +15,7 @@ const Split: React.FC = ({ children }) => {
           <StyledSplitColumn>
             {child}
           </StyledSplitColumn>
-          {i < l - 1 && <Spacer />}
+          {i < l - 1 && <Spacer size={gapSize} />}
         </>
       ))}
     </StyledSplit>
