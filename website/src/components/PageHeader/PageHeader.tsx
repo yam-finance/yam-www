@@ -16,6 +16,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ icon, subtitle, title }) => {
       <StyledIcon>{icon}</StyledIcon>
       <Spacer />
       <StyledTitle>{title}</StyledTitle>
+      <Spacer size="sm" />
       <StyledSubtitle>{subtitle}</StyledSubtitle>
     </StyledPageHeader>
     </Container>
@@ -41,6 +42,7 @@ const StyledIcon = styled.span.attrs({
   min-width: 96px;
   @media (max-width: 768px) {
     font-size: 64px;
+    text-align: left;
   }
 `
 
@@ -51,6 +53,9 @@ const StyledTitle = styled.h1`
   margin: 0;
   padding: 0;
   text-align: center;
+  @media (max-width: 768px) {
+    text-align: left;
+  }
 `
 
 const StyledSubtitle = styled.h3`
@@ -61,6 +66,9 @@ const StyledSubtitle = styled.h3`
   opacity: 0.66;
   padding: 0;
   text-align: center;
+  @media (max-width: 768px) {
+    text-align: left;
+  }
 `
 
 export default PageHeader
