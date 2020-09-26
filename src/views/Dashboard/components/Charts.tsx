@@ -357,7 +357,6 @@ const Charts: React.FC = () => {
     if (reservesOpts.xaxis) {
       reservesOpts.xaxis.type = 'numeric';
     }
-    console.log([reservesOpts, soldOpts, mintedOpts])
     setSeries(asSeries);
     setOpts([reservesOpts, soldOpts, mintedOpts]);
   }, [
