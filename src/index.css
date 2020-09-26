@@ -14,3 +14,55 @@ code {
 button {
   font-family: 'Nunito';
 }
+
+
+
+.apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
+  background: rgb(68, 51, 56) !important;
+  border-bottom: 1px solid #a89e9e !important;
+}
+
+.apexcharts-tooltip.apexcharts-theme-dark {
+  background: rgb(45, 32, 36) !important;
+  color: #FFF !important;
+  box-shadow: 1px 1px 3px 0px #3c37376e !important;
+  border: 1px solid #574747;
+}
+
+.apexcharts-gridline {
+  /* filter: drop-shadow( 0px 1px 0px rgba(240, 240, 240, 0.13)); */
+  /* filter: drop-shadow(0 -1px 0px hsl(338deg 20% 90% / 100%)); */
+  filter: var(--gridline-drop-shadow);
+}
+
+.apexcharts-xaxis > line {
+  filter: drop-shadow( 0px 1px 0px rgba(240, 240, 240, 0.13));
+}
+
+.apexcharts-pan-icon.apexcharts-selected > svg {
+  stroke: #6E8192 !important;
+  fill: hsl(339deg 89% 49% / 100%) !important;
+}
+
+.apexcharts-zoom-icon.apexcharts-selected > svg {
+  fill: hsl(339deg 89% 49% / 100%) !important;
+}
+
+0 -1px 0px hsl(338deg 20% 90% / 100%),0 1px 0px hsl(338deg 20% 96% / 100%)
+
+/* Inline #2 | http://localhost:3000/dashboard */
+
+.apexcharts-xaxistooltip.apexcharts-theme-dark {
+  background: rgb(45, 32, 36) !important;
+}
+.apexcharts-xaxistooltip.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark {
+  background: rgb(45, 32, 36) !important;
+}
+
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark::before {
+  border-bottom-color: rgba(45, 32, 36, .5) !important;
+}
+
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark::after {
+  border-bottom-color: rgba(45, 32, 36, 1) !important;
+}

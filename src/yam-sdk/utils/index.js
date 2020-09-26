@@ -349,6 +349,66 @@ export const claimVested = async (yam, account, onTxHash) => {
   return await yam.contracts.migrator.methods.claimVested().send({from: account, gas: 140000});
 }
 
+export const scalingFactors = async (yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  let BASE24 = new BigNumber(10).pow(24);
+
+  let rebases = await yam.contracts.yamV3.getPastEvents('Rebase', {fromBlock: 10886913, toBlock: 'latest'});
+  let scalingFactors = [];
+  let blockNumbers = [];
+  for (let i = 0; i < rebases.length; i++) {
+      scalingFactors.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["prevYamsScalingFactor"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      blockNumbers.push(rebases[i]["blockNumber"]);
+  }
+  return {factors: scalingFactors, blockNumbers: blockNumbers};
+}
+
+export const treasuryEvents = async (yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  let BASE24 = new BigNumber(10).pow(24);
+
+  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 'latest'});
+  let reservesAdded = [];
+  let yamsSold = [];
+  let yamsFromReserves = [];
+  let yamsToReserves = [];
+  let blockNumbers = [];
+  for (let i = 0; i < rebases.length; i++) {
+      reservesAdded.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["reservesAdded"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsSold.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsSold"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsFromReserves.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsFromReserves"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsToReserves.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsToReserves"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      blockNumbers.push(rebases[i]["blockNumber"]);
+  }
+  return {
+    reservesAdded: reservesAdded,
+    yamsSold: yamsSold,
+    yamsFromReserves: yamsFromReserves,
+    yamsToReserves: yamsToReserves,
+    blockNumbers: blockNumbers
+  };
+}
+
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
