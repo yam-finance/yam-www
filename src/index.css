@@ -48,10 +48,6 @@ button {
   fill: hsl(339deg 89% 49% / 100%) !important;
 }
 
-0 -1px 0px hsl(338deg 20% 90% / 100%),0 1px 0px hsl(338deg 20% 96% / 100%)
-
-/* Inline #2 | http://localhost:3000/dashboard */
-
 .apexcharts-xaxistooltip.apexcharts-theme-dark {
   background: rgb(45, 32, 36) !important;
 }
