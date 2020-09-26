@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "import/resolver": {
+      "alias": [
+        ["assets", "./src/assets"],
+        ["components", "./src/components"],
+        ["hooks", "./src/hooks"],
+        ["views", "./src/views"]
+      ]
+    }
+  }
+}
