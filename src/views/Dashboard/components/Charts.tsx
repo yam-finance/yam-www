@@ -148,7 +148,7 @@ export interface tooltipInterface {
 
 export interface axisInterface {
     type?: string,
-    categories?: [],
+    categories?: any[],
     logarithmic?: boolean,
     labels?: {
         show?: boolean,
@@ -246,22 +246,14 @@ const Charts: React.FC = () => {
       reserves.push(tmp);
     }
 
-    let sales: TimeSeries[] = [];
+    let sales: number[] = [];
     for (let i = 0; i < yamsSold.length; i++) {
-      const tmp: TimeSeries = {
-        x: blockNumbers[i],
-        y: yamsSold[i]
-      };
-      sales.push(tmp);
+      sales.push(yamsSold[i]);
     }
 
-    let mints: TimeSeries[] = [];
+    let mints: number[] = [];
     for (let i = 0; i < yamsSold.length; i++) {
-      const tmp: TimeSeries = {
-        x: blockNumbers[i],
-        y:yamsSold[i] - yamsFromReserves[i] + yamsToReserves[i]
-      };
-      mints.push(tmp);
+      mints.push(yamsSold[i] - yamsFromReserves[i] + yamsToReserves[i]);
     }
 
     const asSeries: SeriesInterface[] = [{
@@ -292,9 +284,6 @@ const Charts: React.FC = () => {
           type: 'line',
           height: 350
         },
-        stroke: {
-          curve: 'stepline',
-        },
         dataLabels: {
           enabled: false
         },
@@ -305,7 +294,6 @@ const Charts: React.FC = () => {
         },
         colors: ['#c60c4d'],
         xaxis: {
-          type: 'numeric',
           labels: {
             style: {
               colors: labelColor
@@ -350,17 +338,26 @@ const Charts: React.FC = () => {
       };
 
     let soldOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (soldOpts && soldOpts.yaxis && soldOpts.yaxis.title && soldOpts.yaxis.labels) {
+    if (soldOpts && soldOpts.chart && soldOpts.xaxis && soldOpts.yaxis && soldOpts.yaxis.title && soldOpts.yaxis.labels) {
       soldOpts.yaxis.title.text = "YAMs Sold";
+      soldOpts.chart.type = "bar";
+      soldOpts.xaxis.categories = blockNumbers;
       soldOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
     }
 
     let mintedOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (mintedOpts && mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
+    if (mintedOpts && mintedOpts.chart && mintedOpts.xaxis &&mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
       mintedOpts.yaxis.title.text = "YAMs Minted";
+      mintedOpts.chart.type = "bar";
+      mintedOpts.xaxis.categories = blockNumbers;
       mintedOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
     }
 
+    reservesOpts.stroke = { curve: 'stepline'}
+    if (reservesOpts.xaxis) {
+      reservesOpts.xaxis.type = 'numeric';
+    }
+    console.log([reservesOpts, soldOpts, mintedOpts])
     setSeries(asSeries);
     setOpts([reservesOpts, soldOpts, mintedOpts]);
   }, [
@@ -517,7 +514,7 @@ const Charts: React.FC = () => {
               <Chart
                 options={opts ? opts[1] : {}}
                 series={series ? [series[1]] : []}
-                type="line"
+                type="bar"
                 height={350}
               />
             </Split>
@@ -532,7 +529,7 @@ const Charts: React.FC = () => {
               <Chart
                 options={opts ? opts[2] : {}}
                 series={series ? [series[2]] : []}
-                type="line"
+                type="bar"
                 height={350}
               />
             </Split>
