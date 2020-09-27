@@ -53,17 +53,21 @@ const Home: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader
-        icon={`${astronaut}❤️🍠`}
-        subtitle="Fair launch, open participation, and inclusive community."
-        title="Fair finance by the people, for the people."
-      />
+      <StyledHero>
+        <PageHeader
+          icon={`${astronaut}❤️🍠`}
+          subtitle="Fair launch, open participation, and inclusive community."
+          title="Fair finance by the people, for the people."
+        />
+        <Container size="lg">
+          <Box row justifyContent="center">
+            <Button text="Open App" />
+            <Spacer />
+            <Button text="Join the Community" variant="secondary" />
+          </Box>
+        </Container>
+      </StyledHero>
       <Container size="lg">
-        <Box row justifyContent="center">
-          <Button text="Open App" />
-          <Spacer />
-          <Button text="Join the Community" variant="secondary" />
-        </Box>
         <Spacer size="lg" />
         <Separator />
         <Spacer size="lg" />
@@ -147,6 +151,16 @@ const Home: React.FC = () => {
     </Page>
   )
 }
+
+const StyledHero = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: calc(80vh - 96px);
+  max-height: 600px;
+  min-height: 400px;
+`
 
 const StyledCardName = styled.div`
   color: ${props => props.theme.textColor};
