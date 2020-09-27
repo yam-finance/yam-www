@@ -69,7 +69,7 @@ const Home: React.FC = () => {
         <Spacer size="lg" />
         <StyledSectionIcon>⚖️</StyledSectionIcon>
         <StyledSectionTitle>Fair finance for everyone.</StyledSectionTitle>
-        <Spacer />
+        <Spacer size="lg" />
         <Split>
           <Card>
             <CardIcon>💸</CardIcon>
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
             <CardContent>
               <StyledCardName>Yield farming</StyledCardName>
               <Spacer size="sm" />
-              <StyledCardDescription>The YAM treasury grows on every positive rebase.</StyledCardDescription>
+              <StyledCardDescription>Earn your YAMs by participating in the protocol.</StyledCardDescription>
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
@@ -102,7 +102,7 @@ const Home: React.FC = () => {
             <CardContent>
               <StyledCardName>Decentralized governance</StyledCardName>
               <Spacer size="sm" />
-              <StyledCardDescription>The YAM treasury grows on every positive rebase.</StyledCardDescription>
+              <StyledCardDescription>The future of YAM is in the hands of YAM holders.</StyledCardDescription>
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
@@ -149,20 +149,21 @@ const Home: React.FC = () => {
 }
 
 const StyledCardName = styled.div`
-  color: ${props => props.theme.colors.primary.main};
+  color: ${props => props.theme.textColor};
   font-size: 24px;
   font-weight: 700;
   text-align: center;
 `
 
 const StyledCardDescription = styled.div`
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.colors.grey[500]};
   font-size: 16px;
+  min-height: 56px;
   text-align: center;
 `
 
 const StyledSectionTitle = styled.div`
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.colors.primary.main};
   font-size: 36px;
   font-weight: 700;
   margin: 0;
