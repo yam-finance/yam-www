@@ -17,8 +17,11 @@ import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
 import Split from 'components/Split'
 
+import CoinDeskIcon from 'components/icons/CoinDeskIcon'
+import CoinTelegraphIcon from 'components/icons/CoinTelegraphIcon'
 import ForbesIcon from 'components/icons/ForbesIcon'
 import GizmodoIcon from 'components/icons/Gizmodo'
+import TheDefiantIcon from 'components/icons/TheDefiantIcon'
 import TheRegisterIcon from 'components/icons/TheRegisterIcon'
 
 const ASTRONAUTS = [
@@ -64,6 +67,9 @@ const Home: React.FC = () => {
         <Spacer size="lg" />
         <Separator />
         <Spacer size="lg" />
+        <StyledSectionIcon>⚖️</StyledSectionIcon>
+        <StyledSectionTitle>Fair finance for everyone.</StyledSectionTitle>
+        <Spacer />
         <Split>
           <Card>
             <CardIcon>💸</CardIcon>
@@ -109,7 +115,20 @@ const Home: React.FC = () => {
         <Separator />
         <Spacer size="lg" />
         <Box>
+          <StyledSectionIcon>👁️</StyledSectionIcon>
           <StyledSectionTitle>As seen in</StyledSectionTitle>
+          <Spacer size="lg" />
+          <Split gapSize="lg">
+            <StyledLogo>
+              <CoinTelegraphIcon />
+            </StyledLogo>
+            <StyledLogo>
+              <TheDefiantIcon />
+            </StyledLogo>
+            <StyledLogo>
+              <CoinDeskIcon />
+            </StyledLogo>
+          </Split>
           <Spacer size="lg" />
           <Split gapSize="lg">
             <StyledLogo>
@@ -143,11 +162,16 @@ const StyledCardDescription = styled.div`
 `
 
 const StyledSectionTitle = styled.div`
-  color: ${props => props.theme.colors.primary.main};
+  color: ${props => props.theme.textColor};
   font-size: 36px;
   font-weight: 700;
   margin: 0;
   padding: 0;
+  text-align: center;
+`
+
+const StyledSectionIcon = styled.div`
+  font-size: 64px;
   text-align: center;
 `
 
