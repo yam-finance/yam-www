@@ -14,6 +14,7 @@ import useVesting from 'hooks/useVesting'
 
 import MigrationNotice from './components/MigrationNotice'
 import Rebase from './components/Rebase'
+import RegisterVoteNotice from './components/RegisterVoteNotice'
 import Stats from './components/Stats'
 import Treasury from './components/Treasury'
 import VestingNotice from './components/VestingNotice'
@@ -30,6 +31,8 @@ const Home: React.FC = () => {
         title="Welcome to YAM Finance."
       />
       <Container>
+        <RegisterVoteNotice />
+        <Spacer />
         {(yamV2Balance && yamV2Balance.toNumber() > 0) && (
           <>
             <MigrationNotice />

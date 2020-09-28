@@ -223,12 +223,25 @@ export const vote = async (yam, account) => {
   return yam.contracts.gov.methods.castVote(0, true).send({ from: account })
 }
 
-export const delegate = async (yam, account) => {
-  return yam.contracts.yam.methods.delegate("0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84").send({from: account, gas: 320000 })
+export const delegate = async (yam, account, onTxHash) => {
+  return yam.contracts.yamV3.methods.delegate(account).send({from: account, gas: 150000 }, async (error, txHash) => {
+    if (error) {
+        onTxHash && onTxHash('')
+        console.log("Delegate error", error)
+        return false
+    }
+    onTxHash && onTxHash(txHash)
+    const status = await waitTransaction(yam.web3.eth, txHash)
+    if (!status) {
+      console.log("Delegate transaction failed.")
+      return false
+    }
+    return true
+  })
 }
 
 export const didDelegate = async (yam, account) => {
-  return await yam.contracts.yam.methods.delegates(account).call() === '0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84'
+  return await yam.contracts.yamV3.methods.delegates(account).call() === account
 }
 
 export const getVotes = async (yam) => {
