@@ -224,7 +224,7 @@ export const vote = async (yam, account) => {
 }
 
 export const delegate = async (yam, account, onTxHash) => {
-  return yam.contracts.yamV3.methods.delegate(account).send({from: account, gas: 320000 }, async (error, txHash) => {
+  return yam.contracts.yamV3.methods.delegate(account).send({from: account, gas: 150000 }, async (error, txHash) => {
     if (error) {
         onTxHash && onTxHash('')
         console.log("Delegate error", error)
