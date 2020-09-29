@@ -397,7 +397,7 @@ export const getProposals = async (yam) => {
       more: more
     });
   }
-  proposals[1].state = "Active"
+  // proposals[1].state = "Active"
   // proposals[0].state = "Active"
   return proposals;
 }

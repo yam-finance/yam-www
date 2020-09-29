@@ -19,6 +19,7 @@ import {
 import styled from 'styled-components'
 
 import useYam from 'hooks/useYam'
+import useGovernance from 'hooks/useGovernance'
 import { useWallet } from 'use-wallet'
 import { delegate, didDelegate } from 'yam-sdk/utils'
 
@@ -43,52 +44,18 @@ const VoteModal: React.FC<VoteModalProps> = ({
   onVote,
 }) => {
 
+  const { isRegistered, isRegistering, isVoting, votingPowers, currentPower, onRegister } = useGovernance();
+
   const handleVoteClickTrue = useCallback(async () => {
-    setIsVoting(true);
-    await onVote(prop.id, true);
-    setIsVoting(false);
+    onVote(prop.id, true);
   }, [onVote])
 
   const handleVoteClickFalse = useCallback(async () => {
-    setIsVoting(true);
-    await onVote(prop.id, false);
-    setIsVoting(false);
+    onVote(prop.id, false);
   }, [onVote])
-
-  const [isRegistered, setIsRegistered] = useState<boolean>()
-  const [isRegistering, setIsRegistering] = useState(false)
-  const [isVoting, setIsVoting] = useState(false)
 
   const { account } = useWallet()
   const yam = useYam()
-
-  const fetchIsRegistered = useCallback(async () => {
-    if (!account || !yam) return
-    const registered = await didDelegate(yam, account)
-    setIsRegistered(registered)
-  }, [
-    account,
-    setIsRegistered,
-    yam
-  ])
-
-  const handleRegisterClick = useCallback(async () => {
-    if (!account || !yam) return
-    await delegate(yam, account, (txHash: string) => setIsRegistering(!!txHash))
-    setIsRegistering(false)
-  }, [
-    account,
-    setIsRegistering,
-    yam
-  ])
-
-  useEffect(() => {
-    fetchIsRegistered()
-  }, [
-    account,
-    fetchIsRegistered,
-    yam
-  ])
 
   let percFor = prop.forVotes / (prop.forVotes + prop.againstVotes) * 100;
   let percAgainst = prop.againstVotes / (prop.forVotes + prop.againstVotes) * 100;
@@ -215,10 +182,10 @@ const VoteModal: React.FC<VoteModalProps> = ({
               onClick={handleVoteClickFalse}
               text="Against"
             />
-          </>) || (!isRegistered) && (
+          </>) || (!isRegistered) && (!voted) && (
             <Button
               disabled={isRegistering}
-              onClick={handleRegisterClick}
+              onClick={onRegister}
               text="Register"
             />
           )
