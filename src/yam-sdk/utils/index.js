@@ -219,10 +219,6 @@ export const getStats = async (yam) => {
   }
 }
 
-export const vote = async (yam, account) => {
-  return yam.contracts.gov.methods.castVote(0, true).send({ from: account })
-}
-
 export const delegate = async (yam, account, onTxHash) => {
   return yam.contracts.yamV3.methods.delegate(account).send({from: account, gas: 150000 }, async (error, txHash) => {
     if (error) {
@@ -242,6 +238,27 @@ export const delegate = async (yam, account, onTxHash) => {
 
 export const didDelegate = async (yam, account) => {
   return await yam.contracts.yamV3.methods.delegates(account).call() === account
+}
+
+export const vote = async (yam, proposal, side, account, onTxHash) => {
+  return yam.contracts.gov2
+    .methods
+    .castVote(proposal, side).send(
+      {from: account, gas: 130000 },
+      async (error, txHash) => {
+        if (error) {
+            onTxHash && onTxHash('')
+            console.log("Vote error", error)
+            return false
+        }
+        onTxHash && onTxHash(txHash)
+        const status = await waitTransaction(yam.web3.eth, txHash)
+        if (!status) {
+          console.log("Vote transaction failed.")
+          return false
+        }
+        return true
+      })
 }
 
 const stateMap = {
@@ -264,8 +281,10 @@ export const getProposals = async (yam) => {
     proposals.push({
       description: v1Proposals[i]["returnValues"]["description"],
       state: stateMap[await yam.contracts.gov.methods.state(id).call()],
+      id: id,
       start: v1Proposals[i]["returnValues"]["startBlock"],
-      end: v1Proposals[i]["returnValues"]["endBlock"]
+      end: v1Proposals[i]["returnValues"]["endBlock"],
+      hash: v1Proposals[i]["transactionHash"]
     });
   }
   const v2Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
@@ -274,10 +293,13 @@ export const getProposals = async (yam) => {
     proposals.push({
       description: v2Proposals[i]["returnValues"]["description"],
       state: stateMap[await yam.contracts.gov2.methods.state(id).call()],
+      id: id,
       start: v2Proposals[i]["returnValues"]["startBlock"],
-      end: v2Proposals[i]["returnValues"]["endBlock"]
+      end: v2Proposals[i]["returnValues"]["endBlock"],
+      hash: v2Proposals[i]["transactionHash"]
     });
   }
+  proposals[1].state = "Active"
   return proposals;
 }
 
