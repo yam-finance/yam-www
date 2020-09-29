@@ -50,14 +50,6 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
     setVoteModalIsOpen(true)
   }, [setVoteModalIsOpen])
 
-  let votingPower;
-  if (votingPowers) {
-    for (let i = 0; i < votingPowers.length; i++) {
-       if (prop.hash == votingPowers[i].hash) {
-         votingPower = votingPowers[i];
-       }
-    }
-  }
   return (
     <Fragment>
          <Box
@@ -89,24 +81,13 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
             </StyledButton>
           </StyledProposalContentInner>
          </Box>
-         { (votingPower) &&
-          (<VoteModal
-           key={prop.id.toString()}
-           votePower={votingPower.power}
-           voted={votingPower.voted}
-           side={votingPower.side}
-           prop={prop}
-           isOpen={voteModalIsOpen}
-           onDismiss={handleDismissVoteModal}
-           onVote={handleOnVote}
-         />) || (<VoteModal
-          key={prop.id.toString()}
-          prop={prop}
-          isOpen={voteModalIsOpen}
-          onDismiss={handleDismissVoteModal}
-          onVote={handleOnVote}
-        />)
-       }
+         <VoteModal
+            key={prop.id.toString()}
+            prop={prop}
+            isOpen={voteModalIsOpen}
+            onDismiss={handleDismissVoteModal}
+            onVote={handleOnVote}
+          />
    </Fragment>
   )
 }

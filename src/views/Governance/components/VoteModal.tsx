@@ -28,17 +28,11 @@ import Split from 'components/Split'
 
 interface VoteModalProps extends ModalProps {
   prop: Proposal,
-  votePower?: number,
-  voted?: boolean,
-  side?: boolean,
   onVote: (proposal: number, side: boolean) => void,
 }
 
 const VoteModal: React.FC<VoteModalProps> = ({
   prop,
-  votePower,
-  voted,
-  side,
   isOpen,
   onDismiss,
   onVote,
@@ -60,7 +54,20 @@ const VoteModal: React.FC<VoteModalProps> = ({
   let percFor = prop.forVotes / (prop.forVotes + prop.againstVotes) * 100;
   let percAgainst = prop.againstVotes / (prop.forVotes + prop.againstVotes) * 100;
 
-  console.log(isRegistering)
+  let votePower;
+  let voted;
+  let side;
+  if (votingPowers) {
+    for (let i = 0; i < votingPowers.length; i++) {
+       if (prop.hash == votingPowers[i].hash) {
+         let votingPower = votingPowers[i];
+         votePower = votingPower.power;
+         voted = votingPower.voted;
+         side = votingPower.side;
+       }
+    }
+  }
+
   return (
     <Modal isOpen={isOpen}>
       <ModalTitle text="Proposal Overview" />
@@ -183,7 +190,7 @@ const VoteModal: React.FC<VoteModalProps> = ({
               text="Against"
             />
           </>) || (prop.state == "Active") && (!voted) && (isRegistered) && (
-            <span>You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
+            <span>Unable To Vote. You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
           ) || (prop.state == "Pending") && (!isRegistered) && (!voted) && (
             <Button
               disabled={isRegistering}

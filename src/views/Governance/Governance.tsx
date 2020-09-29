@@ -94,7 +94,7 @@ const Governance: React.FC = () => {
         </Split>
         <Spacer size="lg"/>
         <Card>
-          <CardTitle text="Proposals" />
+          <CardTitle text="On-chain Proposals" />
           <Spacer size="sm" />
           <CardContent>
             <Box
