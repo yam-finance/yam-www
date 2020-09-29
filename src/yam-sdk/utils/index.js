@@ -410,6 +410,11 @@ export const getVotingPowers = async (yam, proposals, account) => {
       let receipt = await
           yam.contracts.gov.methods.getReceipt(proposals[i].id, account).call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      if (power == 0) {
+        power =  new BigNumber(await
+                  yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call()
+                ).div(BASE24).toNumber();
+      }
       powers.push({
         hash: proposals[i].hash,
         power: power,
@@ -420,6 +425,11 @@ export const getVotingPowers = async (yam, proposals, account) => {
       let receipt = await
           yam.contracts.gov2.methods.getReceipt(proposals[i].id, account).call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      if (power == 0) {
+        power =  new BigNumber(await
+                  yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call()
+                ).div(BASE24).toNumber();
+      }
       powers.push({
         hash: proposals[i].hash,
         power: power,
