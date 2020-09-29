@@ -244,13 +244,50 @@ export const didDelegate = async (yam, account) => {
   return await yam.contracts.yamV3.methods.delegates(account).call() === account
 }
 
+const stateMap = {
+  0: "Pending",
+  1: "Active",
+  2: "Canceled",
+  3: "Defeated",
+  4: "Succeeded",
+  5: "Queued",
+  6: "Expired",
+  7: "Executed"
+}
+
+export const getProposals = async (yam) => {
+  const v1Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10887059, toBlock: 10926022})
+  let proposals = [];
+  let v1Descriptions = [];
+  for (let i = 0; i < v1Proposals.length; i++) {
+    let id = v1Proposals[i]["returnValues"]["id"];
+    proposals.push({
+      description: v1Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov.methods.state(id).call()],
+      start: v1Proposals[i]["returnValues"]["startBlock"],
+      end: v1Proposals[i]["returnValues"]["endBlock"]
+    });
+  }
+  const v2Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
+  for (let i = 0; i < v2Proposals.length; i++) {
+    let id = v2Proposals[i]["returnValues"]["id"];
+    proposals.push({
+      description: v2Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov2.methods.state(id).call()],
+      start: v2Proposals[i]["returnValues"]["startBlock"],
+      end: v2Proposals[i]["returnValues"]["endBlock"]
+    });
+  }
+  return proposals;
+}
+
 export const getVotes = async (yam) => {
   const votesRaw = new BigNumber(await yam.contracts.yam.methods.getCurrentVotes("0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84").call()).dividedBy(10**24)
   return votesRaw
 }
 
-export const getScalingFactor = async (yam) => {
-  return new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call())
+export const getScalingFactor = async (yam) => { return new BigNumber(await
+  yam.contracts.yamV3.methods.yamsScalingFactor().call())
 }
 
 export const getDelegatedBalance = async (yam, account) => {

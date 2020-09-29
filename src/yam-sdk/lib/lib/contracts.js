@@ -89,6 +89,7 @@ export class Contracts {
     this.rebaser = new this.web3.eth.Contract(YAMRebaserJson.abi);
     this.reserves = new this.web3.eth.Contract(YAMReservesJson.abi);
     this.gov = new this.web3.eth.Contract(YAMGovJson.abi);
+    this.gov2 = new this.web3.eth.Contract(YAMGovJson.abi);
     this.timelock = new this.web3.eth.Contract(YAMTimelockJson.abi);
     this.weth = new this.web3.eth.Contract(WETHJson);
     this.setProvider(provider, networkId);
@@ -148,6 +149,7 @@ export class Contracts {
     this.uni_router.options.address = addressMap["UNIRouter"];
     this.yam_ycrv_uni_lp.options.address = addressMap["YAMYCRV"];
     this.yam_yycrv_uni_lp.options.address = addressMap["YAMYYCRV"];
+    this.gov2.options.address = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026";
 
     this.pools = [
       {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},

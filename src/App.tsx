@@ -15,6 +15,7 @@ import { FarmingProvider } from 'contexts/Farming'
 import { MigrationProvider } from 'contexts/Migration'
 import { PricesProvider } from 'contexts/Prices'
 import { VestingProvider } from 'contexts/Vesting'
+import { GovernanceProvider } from 'contexts/Governance'
 import YamProvider from 'contexts/YamProvider'
 
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -23,6 +24,7 @@ import Farm from 'views/Farm'
 import FAQ from 'views/FAQ'
 import Home from 'views/Home'
 import Migrate from 'views/Migrate'
+import Governance from 'views/Governance'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -30,7 +32,6 @@ const App: React.FC = () => {
   const handleDismissMobileMenu = useCallback(() => {
     setMobileMenu(false)
   }, [setMobileMenu])
-  
   const handlePresentMobileMenu = useCallback(() => {
     setMobileMenu(true)
   }, [setMobileMenu])
@@ -52,6 +53,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/migrate">
             <Migrate />
+          </Route>
+          <Route exact path="/governance">
+            <Governance />
           </Route>
         </Switch>
       </Providers>
@@ -86,7 +90,9 @@ const Providers: React.FC = ({ children }) => {
               <FarmingProvider>
                 <MigrationProvider>
                   <VestingProvider>
-                    {children}
+                    <GovernanceProvider>
+                      {children}
+                    </GovernanceProvider>
                   </VestingProvider>
                 </MigrationProvider>
               </FarmingProvider>
