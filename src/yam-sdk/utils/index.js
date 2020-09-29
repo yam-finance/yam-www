@@ -324,6 +324,7 @@ export const getProposals = async (yam) => {
     }
 
     proposals.push({
+      gov: "gov",
       description: v1Proposals[i]["returnValues"]["description"],
       state: stateMap[await yam.contracts.gov.methods.state(id).call()],
       targets: targets,
@@ -381,6 +382,7 @@ export const getProposals = async (yam) => {
     }
 
     proposals.push({
+      gov: "gov2",
       description: v2Proposals[i]["returnValues"]["description"],
       state: stateMap[await yam.contracts.gov2.methods.state(id).call()],
       targets: targets,
@@ -398,6 +400,40 @@ export const getProposals = async (yam) => {
   proposals[1].state = "Active"
   // proposals[0].state = "Active"
   return proposals;
+}
+
+export const getVotingPowers = async (yam, proposals, account) => {
+  let BASE24 = new BigNumber(10).pow(24);
+  let powers = []
+  for (let i = 0; i < proposals.length; i++) {
+    if (proposals[i].gov == "gov") {
+      let receipt = await
+          yam.contracts.gov.methods.getReceipt(proposals[i].id, account).call();
+      let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      powers.push({
+        hash: proposals[i].hash,
+        power: power,
+        voted: receipt[0],
+        side: receipt[1]
+      })
+    } else {
+      let receipt = await
+          yam.contracts.gov2.methods.getReceipt(proposals[i].id, account).call();
+      let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      powers.push({
+        hash: proposals[i].hash,
+        power: power,
+        voted: receipt[0],
+        side: receipt[1]
+      })
+    }
+  }
+  return powers;
+}
+
+export const getCurrentVotingPower = async (yam, account) => {
+  let BASE24 = new BigNumber(10).pow(24);
+  return new BigNumber(await yam.contracts.yamV3.methods.getCurrentVotes(account).call()).dividedBy(BASE24).toNumber()
 }
 
 export const getVotes = async (yam) => {

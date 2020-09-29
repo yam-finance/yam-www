@@ -13,24 +13,24 @@ import {
 import SeparatorGrid from "./SeparatorWithCSS"
 import Box from "./BoxWithDisplay"
 
-import TokenInput from 'components/TokenInput'
-import useBalances from 'hooks/useBalances'
-import { getFullDisplayBalance } from 'utils'
+import useGovernance from 'hooks/useGovernance'
 
 import styled from 'styled-components'
-import { Proposal } from "../../../contexts/Governance/types"
+import { Proposal, ProposalVotingPower } from "../../../contexts/Governance/types"
 import VoteModal from './VoteModal'
 
 interface ProposalProps {
-  key: string,
   prop: Proposal,
   onVote: (proposal: number, side: boolean) => void,
+  onRegister: () => void,
 }
 
 export const ProposalEntry: React.FC<ProposalProps> = ({
   prop,
-  onVote
+  onVote,
+  onRegister
 }) => {
+  const { isRegistered, isRegistering, isVoting, votingPowers, currentPower } = useGovernance();
 
   const [voteModalIsOpen, setVoteModalIsOpen] = useState(false)
 
@@ -38,14 +38,26 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
     setVoteModalIsOpen(false)
   }, [setVoteModalIsOpen])
 
-  const handleOnVote = useCallback((proposal: number, side: boolean) => {
+  const handleOnVote = useCallback((proposal: number, side: boolean, ) => {
     onVote(proposal, side)
   }, [onVote])
+
+  const handleOnRegister = useCallback(() => {
+    onRegister()
+  }, [onRegister])
 
   const handleVoteClick = useCallback(() => {
     setVoteModalIsOpen(true)
   }, [setVoteModalIsOpen])
 
+  let votingPower;
+  if (votingPowers) {
+    for (let i = 0; i < votingPowers.length; i++) {
+       if (prop.hash == votingPowers[i].hash) {
+         votingPower = votingPowers[i];
+       }
+    }
+  }
   return (
     <Fragment>
          <Box
@@ -77,12 +89,24 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
             </StyledButton>
           </StyledProposalContentInner>
          </Box>
-         <VoteModal
+         { (votingPower) &&
+          (<VoteModal
+           key={prop.id.toString()}
+           votePower={votingPower.power}
+           voted={votingPower.voted}
+           side={votingPower.side}
            prop={prop}
            isOpen={voteModalIsOpen}
            onDismiss={handleDismissVoteModal}
            onVote={handleOnVote}
-         />
+         />) || (<VoteModal
+          key={prop.id.toString()}
+          prop={prop}
+          isOpen={voteModalIsOpen}
+          onDismiss={handleDismissVoteModal}
+          onVote={handleOnVote}
+        />)
+       }
    </Fragment>
   )
 }

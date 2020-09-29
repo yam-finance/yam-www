@@ -7,12 +7,15 @@ import useYam from 'hooks/useYam'
 import {
   getProposals,
   vote,
+  didDelegate,
+  getVotingPowers,
+  getCurrentVotingPower,
+  delegate
 } from 'yam-sdk/utils'
-
 
 import Context from './Context'
 
-import { Proposal } from "./types"
+import { Proposal, ProposalVotingPower } from "./types"
 
 const Provider: React.FC = ({ children }) => {
   const { account } = useWallet()
@@ -21,8 +24,11 @@ const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [isVoting, setIsVoting] = useState(false)
   const [proposals, setProposals] = useState<Proposal[]>()
+  const [votingPowers, setVotingPowers] = useState<ProposalVotingPower[]>()
+  const [currentPower, setCurrentPower] = useState<number>()
 
   const fetchProposals = useCallback(async () => {
+    if (!yam) return;
     let props: Proposal[] = await getProposals(yam);
     props = props.sort((a, b) => {
       if (a && b && a.end && b.end) {
@@ -39,9 +45,21 @@ const Provider: React.FC = ({ children }) => {
       }
 
     });
+    let votingPowers: ProposalVotingPower[] = await getVotingPowers(yam, props, account);
     setProposals(props);
+    setVotingPowers(votingPowers);
   }, [
     setProposals,
+    setVotingPowers,
+    yam,
+  ])
+
+  const fetchCurrentPower = useCallback(async () => {
+    if (!yam) return;
+    let votingPower: number = await getCurrentVotingPower(yam, account);
+    setCurrentPower(votingPower);
+  }, [
+    setCurrentPower,
     yam,
   ])
 
@@ -60,14 +78,46 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
+  const [isRegistered, setIsRegistered] = useState<boolean>()
+  const [isRegistering, setIsRegistering] = useState<boolean>()
+  const fetchIsRegistered = useCallback(async () => {
+    if (!account || !yam) return
+    const registered = await didDelegate(yam, account)
+    setIsRegistered(registered)
+  }, [
+    account,
+    setIsRegistered,
+    yam
+  ])
 
+  useEffect(() => {
+    fetchIsRegistered()
+  }, [
+    account,
+    fetchIsRegistered,
+    yam
+  ])
+
+
+
+  const handleRegisterClick = useCallback(async () => {
+    if (!account || !yam) return
+    await delegate(yam, account, (txHash: string) => setIsRegistering(true))
+    setIsRegistering(false)
+  }, [
+    account,
+    setIsRegistering,
+    yam
+  ])
 
   useEffect(() => {
     if (yam) {
       fetchProposals()
+      fetchCurrentPower()
     }
   }, [
     fetchProposals,
+    fetchCurrentPower,
     yam,
   ])
 
@@ -85,6 +135,11 @@ const Provider: React.FC = ({ children }) => {
   return (
     <Context.Provider value={{
       proposals,
+      votingPowers,
+      isRegistered,
+      isRegistering,
+      isVoting,
+      onRegister: handleRegisterClick,
       onVote: handleVote,
     }}>
       {children}

@@ -14,13 +14,21 @@ import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
 import Split from 'components/Split'
 
-
+import RegisterVoteNotice from '../Home/components/RegisterVoteNotice'
 import SeparatorGrid from "./components/SeparatorWithCSS"
 import Box from "./components/BoxWithDisplay"
+import styled from 'styled-components'
 
 import useGovernance from 'hooks/useGovernance'
+import { useWallet } from 'use-wallet'
 
-import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProposalContentInner}  from './components/Proposal'
+import {
+  ProposalEntry,
+  StyledDescription,
+  StyledState,
+  StyledButton,
+  StyledProposalContentInner
+}  from './components/Proposal'
 
 
 const ASTRONAUTS = [
@@ -38,9 +46,10 @@ const ASTRONAUTS = [
 ]
 
 const Governance: React.FC = () => {
-  const { proposals, onVote } = useGovernance();
+  const { proposals, isRegistered, onVote, onRegister } = useGovernance();
 
   const [astronaut, setAstronaut] = useState('👨‍🚀')
+
 
   const updateAstronaut = useCallback(() => {
     const newAstro = ASTRONAUTS[Math.floor(Math.random()*ASTRONAUTS.length)]
@@ -52,6 +61,9 @@ const Governance: React.FC = () => {
     return () => clearInterval(refresh)
   }, [updateAstronaut])
 
+
+
+
   return (
     <Page>
       <PageHeader
@@ -61,6 +73,8 @@ const Governance: React.FC = () => {
       />
 
       <Container>
+        <RegisterVoteNotice />
+        <Spacer size="md" />
         <Split>
           <Spacer />
           <Button
@@ -92,11 +106,11 @@ const Governance: React.FC = () => {
               row
             >
              <StyledProposalContentInner>
-               <StyledDescription>Description</StyledDescription>
+               <StyledDescriptionMain>Description</StyledDescriptionMain>
                <SeparatorGrid orientation={'vertical'} stretch={true} gridArea={'spacer1'}/>
-               <StyledState>State</StyledState>
+               <StyledStateMain>State</StyledStateMain>
                <SeparatorGrid orientation={'vertical'} stretch={true} gridArea={'spacer2'}/>
-               <StyledButton>Action</StyledButton>
+               <StyledButtonMain>Action</StyledButtonMain>
              </StyledProposalContentInner>
             </Box>
             <Spacer size="sm"/>
@@ -105,9 +119,9 @@ const Governance: React.FC = () => {
                 {
                   proposals.map((prop, i) => {
                     if (i == 0) {
-                      return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote}/>
+                      return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister}/>
                     } else {
-                      return [<Separator />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote}/>]
+                      return [<Separator />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister}/>]
                     }
                   })
                 }
@@ -119,5 +133,42 @@ const Governance: React.FC = () => {
     </Page>
   )
 }
+
+
+export const StyledButtonMain = styled.div`
+  font-weight: 600;
+  display: grid;
+  grid-area: vote;
+  margin-left: 10px;
+  justify-content: center;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`
+
+export const StyledDescriptionMain = styled.span`
+  font-weight: 600;
+  display: grid;
+  grid-area: desc;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`
+
+export const StyledStateMain = styled.span`
+  font-weight: 600;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: grid;
+  grid-area: state;
+  justify-content: center;
+  min-width: 67px;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`
 
 export default Governance

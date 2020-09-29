@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 
 import { Line } from 'rc-progress';
 import BigNumber from 'bignumber.js'
@@ -19,36 +19,100 @@ import {
 import styled from 'styled-components'
 
 import useYam from 'hooks/useYam'
+import { useWallet } from 'use-wallet'
+import { delegate, didDelegate } from 'yam-sdk/utils'
+
 import { Proposal } from "../../../contexts/Governance/types"
 import Split from 'components/Split'
 
 interface VoteModalProps extends ModalProps {
   prop: Proposal,
+  votePower?: number,
+  voted?: boolean,
+  side?: boolean,
   onVote: (proposal: number, side: boolean) => void,
 }
 
 const VoteModal: React.FC<VoteModalProps> = ({
   prop,
+  votePower,
+  voted,
+  side,
   isOpen,
   onDismiss,
   onVote,
 }) => {
 
-  const handleVoteClickTrue = useCallback(() => {
-    onVote(prop.id, true)
+  const handleVoteClickTrue = useCallback(async () => {
+    setIsVoting(true);
+    await onVote(prop.id, true);
+    setIsVoting(false);
   }, [onVote])
 
-  const handleVoteClickFalse = useCallback(() => {
-    onVote(prop.id, false)
+  const handleVoteClickFalse = useCallback(async () => {
+    setIsVoting(true);
+    await onVote(prop.id, false);
+    setIsVoting(false);
   }, [onVote])
+
+  const [isRegistered, setIsRegistered] = useState<boolean>()
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [isVoting, setIsVoting] = useState(false)
+
+  const { account } = useWallet()
+  const yam = useYam()
+
+  const fetchIsRegistered = useCallback(async () => {
+    if (!account || !yam) return
+    const registered = await didDelegate(yam, account)
+    setIsRegistered(registered)
+  }, [
+    account,
+    setIsRegistered,
+    yam
+  ])
+
+  const handleRegisterClick = useCallback(async () => {
+    if (!account || !yam) return
+    await delegate(yam, account, (txHash: string) => setIsRegistering(!!txHash))
+    setIsRegistering(false)
+  }, [
+    account,
+    setIsRegistering,
+    yam
+  ])
+
+  useEffect(() => {
+    fetchIsRegistered()
+  }, [
+    account,
+    fetchIsRegistered,
+    yam
+  ])
 
   let percFor = prop.forVotes / (prop.forVotes + prop.againstVotes) * 100;
   let percAgainst = prop.againstVotes / (prop.forVotes + prop.againstVotes) * 100;
 
+  console.log(isRegistering)
   return (
     <Modal isOpen={isOpen}>
       <ModalTitle text="Proposal Overview" />
       <ModalContent>
+        <CardContent>
+        { (voted) && (
+          <StyledTitle>
+            Your vote:
+            <Spacer size="sm" />
+            <StyledSubtitle>{side ? '"For"' : '"Against"'} with {numeral(votePower).format('0a')} votes.</StyledSubtitle>
+          </StyledTitle>
+        ) || (
+          <StyledTitle>
+            Your vote:
+            <Spacer size="sm" />
+            <StyledSubtitle>No vote</StyledSubtitle>
+          </StyledTitle>
+        )}
+        </CardContent>
         <Spacer size="sm"/>
         <Split>
           <CardContent>
@@ -138,25 +202,48 @@ const VoteModal: React.FC<VoteModalProps> = ({
           text="Cancel"
           variant="tertiary"
         />
-        { (prop.state == "Active") && (
+        { (prop.state == "Active") && (!voted) && (isRegistered) && (
           <>
             <Button
-              disabled={false}
+              disabled={isVoting}
               onClick={handleVoteClickTrue}
               text="For"
             />
             <Spacer size="md"/>
             <Button
-              disabled={false}
+              disabled={isVoting}
               onClick={handleVoteClickFalse}
               text="Against"
             />
-          </>)
+          </>) || (!isRegistered) && (
+            <Button
+              disabled={isRegistering}
+              onClick={handleRegisterClick}
+              text="Register"
+            />
+          )
         }
       </ModalActions>
     </Modal>
   )
 }
+
+const StyledTitle = styled.h1`
+  color: ${props => props.theme.textColor};
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+`
+
+const StyledSubtitle = styled.h3`
+  color: ${props => props.theme.textColor};
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.66;
+  padding: 0;
+`
 
 const StyledLineHolder = styled.div`
   width: 80%;
