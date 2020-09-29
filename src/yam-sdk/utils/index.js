@@ -339,7 +339,7 @@ export const getProposals = async (yam) => {
       more: more
     });
   }
-  const v2Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
+  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
   for (let i = 0; i < v2Proposals.length; i++) {
     let id = v2Proposals[i]["returnValues"]["id"];
     let targets = [];
