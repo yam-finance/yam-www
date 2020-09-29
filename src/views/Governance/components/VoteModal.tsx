@@ -169,7 +169,7 @@ const VoteModal: React.FC<VoteModalProps> = ({
           text="Cancel"
           variant="tertiary"
         />
-        { (prop.state == "Active") && (!voted) && (isRegistered) && (
+        { (prop.state == "Active") && (!voted) && (isRegistered) && (votePower && votePower > 0) && (
           <>
             <Button
               disabled={isVoting}
@@ -182,7 +182,9 @@ const VoteModal: React.FC<VoteModalProps> = ({
               onClick={handleVoteClickFalse}
               text="Against"
             />
-          </>) || (!isRegistered) && (!voted) && (
+          </>) || (prop.state == "Active") && (!voted) && (isRegistered) && (
+            <span>You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
+          ) || (prop.state == "Pending") && (!isRegistered) && (!voted) && (
             <Button
               disabled={isRegistering}
               onClick={onRegister}
