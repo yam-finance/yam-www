@@ -9,6 +9,7 @@
     "@types/numeral": "^0.0.28",
     "bignumber.js": "^9.0.0",
     "numeral": "^2.0.6",
+    "rc-progress": "^3.1.0",
     "react": "^16.13.1",
     "react-countdown": "^2.2.1",
     "react-dom": "^16.13.1",

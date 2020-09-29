@@ -161,6 +161,20 @@ export class Contracts {
       {"tokenAddr": this.mkr.options.address, "poolAddr": this.mkr_pool.options.address},
       {"tokenAddr": this.UNIAmpl.options.address, "poolAddr": this.ampl_pool.options.address},
     ]
+
+    this.names = {};
+    this.names[this.yam.options.address] = "YAMv1";
+    this.names[this.rebaser.options.address] = "Rebaser";
+    this.names[this.reserves.options.address] = "Reserves";
+    this.names[this.gov.options.address] = "Previous Governor";
+    this.names[this.timelock.options.address] = "Timelock Governance";
+    this.names[this.ycrv_pool.options.address] = "YCRV Pool";
+    this.names[this.yycrv_pool.options.address] = "yUSD Farming";
+    this.names[this.yamV2.options.address] = "YAMv2";
+    this.names[this.yamV2migration.options.address] = "YAMv1-YAMv2 Migrator";
+    this.names[this.yamV3.options.address] = "YAM (v3)";
+    this.names[this.migrator.options.address] = "Migrator";
+    this.names[this.gov2.options.address] = "Current Governor";
   }
 
   setDefaultAccount(

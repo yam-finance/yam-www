@@ -14,6 +14,11 @@ const GAS_LIMIT = {
   }
 };
 
+
+const knownSnapshots = {
+  "0x110f2263e5adf63ea82514bbec3440762edefed1bdf4f0ee06a9458fc3e7e2e7": "https://snapshot.page/#/yamv2/proposal/QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9"
+}
+
 export const getPoolStartTime = async (poolContract) => {
   return await poolContract.methods.starttime().call()
 }
@@ -273,33 +278,125 @@ const stateMap = {
 }
 
 export const getProposals = async (yam) => {
+  let BASE24 = new BigNumber(10).pow(24);
+
   const v1Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10887059, toBlock: 10926022})
   let proposals = [];
   let v1Descriptions = [];
   for (let i = 0; i < v1Proposals.length; i++) {
+
     let id = v1Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v1Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v1Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v1Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v1Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v1Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types = v1Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+      let result = yam.web3.eth.abi.decodeParameters(abi_types, v1Proposals[i]["returnValues"]["calldatas"][j]);
+      let fr = []
+      for (let k = 0; k < result.__length__; k++) {
+        fr.push(result[k.toString()]);
+      }
+      ins.push(fr);
+    }
+
+    let proposal = await yam.contracts.gov.methods.proposals(id).call();
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+    let more;
+    if (knownSnapshots[v1Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v1Proposals[i]["transactionHash"]]
+    }
+
     proposals.push({
       description: v1Proposals[i]["returnValues"]["description"],
       state: stateMap[await yam.contracts.gov.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
       id: id,
       start: v1Proposals[i]["returnValues"]["startBlock"],
       end: v1Proposals[i]["returnValues"]["endBlock"],
-      hash: v1Proposals[i]["transactionHash"]
+      hash: v1Proposals[i]["transactionHash"],
+      more: more
     });
   }
   const v2Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
   for (let i = 0; i < v2Proposals.length; i++) {
     let id = v2Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v2Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v2Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v2Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v2Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+      let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
+      let fr = []
+      for (let k = 0; k < result.__length__; k++) {
+        fr.push(result[k.toString()]);
+      }
+      ins.push(fr);
+    }
+
+
+    let proposal = await yam.contracts.gov2.methods.proposals(id).call();
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+
+    let more;
+    if (knownSnapshots[v2Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v2Proposals[i]["transactionHash"]]
+    }
+
     proposals.push({
       description: v2Proposals[i]["returnValues"]["description"],
       state: stateMap[await yam.contracts.gov2.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
       id: id,
       start: v2Proposals[i]["returnValues"]["startBlock"],
       end: v2Proposals[i]["returnValues"]["endBlock"],
-      hash: v2Proposals[i]["transactionHash"]
+      hash: v2Proposals[i]["transactionHash"],
+      more: more
     });
   }
   proposals[1].state = "Active"
+  // proposals[0].state = "Active"
   return proposals;
 }
 

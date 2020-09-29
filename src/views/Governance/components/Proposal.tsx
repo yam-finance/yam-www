@@ -31,7 +31,6 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
   prop,
   onVote
 }) => {
-  console.log(prop.state)
 
   const [voteModalIsOpen, setVoteModalIsOpen] = useState(false)
 
@@ -63,7 +62,7 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
             <StyledButton>
               { (  prop.state != "Active" ) && (<Button
                 size="sm"
-                href={"https://etherscan.io/tx/" + prop.hash}
+                onClick={handleVoteClick}
                 text="View"
                 variant="tertiary"
                />)
