@@ -130,6 +130,5 @@ export const StyledProposalContentInner = styled.div`
   grid-template-rows: 100fr;
   @media (max-width: 768px) {
     flex-flow: column nowrap;
-    align-items: flex-start;
   }
 `
