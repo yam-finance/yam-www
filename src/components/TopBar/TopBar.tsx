@@ -24,6 +24,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           </StyledLogoWrapper>
           <StyledNavWrapper>
             <Nav />
+            <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
           </StyledNavWrapper>
           <StyledAccountButtonWrapper>
             <DarkModeSwitch />
@@ -89,6 +90,17 @@ const StyledMenuButton = styled.button`
     height: 44px;
     justify-content: center;
     width: 44px;
+  }
+`
+
+const StyledLink = styled.a`
+  color: ${props => props.theme.colors.grey[500]};
+  padding-left: ${props => props.theme.spacing[3]}px;
+  padding-right: ${props => props.theme.spacing[3]}px;
+  text-decoration: none;
+  font-weight: bold;
+  &:hover {
+    color: ${props => props.theme.colors.grey[600]};
   }
 `
 
