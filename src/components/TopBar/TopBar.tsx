@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Logo from 'components/Logo'
 import MenuIcon from 'components/icons/Menu'
 
-import DarkModeSwitch from './components/DarkModeSwitch'
+import DarkModeSwitch from '../DarkModeSwitch'
 import Nav from './components/Nav'
 import WalletButton from './components/WalletButton'
 
@@ -24,10 +24,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           </StyledLogoWrapper>
           <StyledNavWrapper>
             <Nav />
-            <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
           </StyledNavWrapper>
           <StyledAccountButtonWrapper>
-            <DarkModeSwitch />
+            <StyledTopBarDarkModeSwitch>
+              <DarkModeSwitch />
+            </StyledTopBarDarkModeSwitch>
             <Spacer />
             <WalletButton />
           </StyledAccountButtonWrapper>
@@ -57,6 +58,7 @@ const StyledTopBarInner = styled.div`
   max-width: ${props => props.theme.siteWidth}px;
   width: 100%;
 `
+
 const StyledNavWrapper = styled.div`
   display: flex;
   flex: 1;
@@ -93,14 +95,9 @@ const StyledMenuButton = styled.button`
   }
 `
 
-const StyledLink = styled.a`
-  color: ${props => props.theme.colors.grey[500]};
-  padding-left: ${props => props.theme.spacing[3]}px;
-  padding-right: ${props => props.theme.spacing[3]}px;
-  text-decoration: none;
-  font-weight: bold;
-  &:hover {
-    color: ${props => props.theme.colors.grey[600]};
+const StyledTopBarDarkModeSwitch = styled.div`
+  @media (max-width: 980px) {
+    display: none;
   }
 `
 
