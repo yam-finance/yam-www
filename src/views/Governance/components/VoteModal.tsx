@@ -131,7 +131,7 @@ const VoteModal: React.FC<VoteModalProps> = ({
             </StyledDescription>
             <Spacer size="sm"/>
             <StyledInfo>
-              <span>  {prop.description}</span>
+              <span>  {prop.description ? prop.description.replace("Kill", "Pause"): ""}</span>
             </StyledInfo>
             <Spacer size="sm"/>
             <Separator />
