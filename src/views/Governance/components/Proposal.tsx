@@ -59,7 +59,7 @@ export const ProposalEntry: React.FC<ProposalProps> = ({
            row
          >
           <StyledProposalContentInner>
-            <StyledDescription>{prop.description}</StyledDescription>
+            <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause") : ""}</StyledDescription>
             <SeparatorGrid orientation={'vertical'} stretch={true} gridArea={'spacer1'}/>
             <StyledState>{prop.state}</StyledState>
             <SeparatorGrid orientation={'vertical'} stretch={true} gridArea={'spacer2'}/>
