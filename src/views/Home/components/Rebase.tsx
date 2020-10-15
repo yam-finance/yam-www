@@ -14,11 +14,11 @@ import {
   Spacer,
 } from 'react-neu'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 
 import Dial from 'components/Dial'
 import Label from 'components/Label'
 
+import useWallet from 'hooks/useWallet'
 import useYam from 'hooks/useYam'
 
 import { getNextRebaseTimestamp } from 'yam-sdk/utils'

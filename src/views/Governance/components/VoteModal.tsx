@@ -20,11 +20,10 @@ import styled from 'styled-components'
 
 import useYam from 'hooks/useYam'
 import useGovernance from 'hooks/useGovernance'
-import { useWallet } from 'use-wallet'
-import { delegate, didDelegate } from 'yam-sdk/utils'
 
 import { Proposal } from "../../../contexts/Governance/types"
 import Split from 'components/Split'
+import useWallet from 'hooks/useWallet'
 
 interface VoteModalProps extends ModalProps {
   prop: Proposal,

@@ -7,7 +7,11 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/numeral": "^0.0.28",
+    "@web3-react/core": "^6.1.1",
+    "@web3-react/injected-connector": "^6.0.7",
+    "@web3-react/walletconnect-connector": "^6.1.6",
     "bignumber.js": "^9.0.0",
+    "ethers": "4.0.48",
     "numeral": "^2.0.6",
     "rc-progress": "^3.1.0",
     "react": "^16.13.1",
@@ -17,7 +21,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "styled-components": "^5.2.0",
-    "use-wallet": "^0.8.0",
     "web3": "1.2.11"
   },
   "scripts": {

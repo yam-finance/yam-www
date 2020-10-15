@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
-
+import useWallet from 'hooks/useWallet'
 import useYam from 'hooks/useYam'
 import {
   getProposals,
@@ -29,7 +27,13 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchProposals = useCallback(async () => {
     if (!yam) return;
-    let props: Proposal[] = await getProposals(yam);
+    let props: Proposal[];
+    try {
+      props = await getProposals(yam);
+    } catch (e) {
+      console.log(e);
+      return
+    }
     props = props.sort((a, b) => {
       if (a && b && a.end && b.end) {
         if (a.end == b.end) {

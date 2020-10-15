@@ -49,7 +49,7 @@ export const approve = async (
         return true
       })
   } catch (e) {
-    console.log('here')
+    console.log("Error occured with approval transaction: ", e)
     return false
   }
 }

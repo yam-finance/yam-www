@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react'
 
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 
 import numeral from 'numeral'
 import {
@@ -22,6 +20,7 @@ import Split from 'components/Split'
 
 import useBalances from 'hooks/useBalances'
 import useVesting from 'hooks/useVesting'
+import useWallet from 'hooks/useWallet'
 
 const WalletModal: React.FC<ModalProps> = ({
   isOpen,
@@ -49,7 +48,8 @@ const WalletModal: React.FC<ModalProps> = ({
 
   const handleSignOut = useCallback(() => {
     reset()
-  }, [reset])
+    if (onDismiss) onDismiss()
+  }, [reset, onDismiss])
 
   return (
     <Modal isOpen={isOpen}>

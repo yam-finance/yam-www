@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react'
 
-import { useWallet } from 'use-wallet'
+import useWallet from 'hooks/useWallet'
 
 import { Yam } from 'yam-sdk/lib'
 

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
 import { yycrvUniLp as yycrvUniLpAddress } from 'constants/tokenAddresses'
 import useApproval from 'hooks/useApproval'
+import useWallet from 'hooks/useWallet'
 import useYam from 'hooks/useYam'
 
 import {
@@ -81,11 +81,14 @@ const Provider: React.FC = ({ children }) => {
   const handleHarvest = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await harvest(yam, account, () => {
-      setConfirmTxModalIsOpen(false)
-      setIsHarvesting(true)
-    })
-    setIsHarvesting(false)
+    try {
+      await harvest(yam, account, () => {
+        setConfirmTxModalIsOpen(false)
+        setIsHarvesting(true)
+      })
+    } finally {
+      setIsHarvesting(false)
+    }
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -96,11 +99,14 @@ const Provider: React.FC = ({ children }) => {
   const handleRedeem = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await redeem(yam, account, () => {
-      setConfirmTxModalIsOpen(false)
-      setIsRedeeming(true)
-    })
-    setIsRedeeming(false)
+    try {
+      await redeem(yam, account, () => {
+        setConfirmTxModalIsOpen(false)
+        setIsRedeeming(true)
+      })
+    } finally {
+      setIsRedeeming(false)
+    }
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -111,11 +117,14 @@ const Provider: React.FC = ({ children }) => {
   const handleStake = useCallback(async (amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await stake(yam, amount, account, () => {
-      setConfirmTxModalIsOpen(false)
-      setIsStaking(true)
-    })
-    setIsStaking(false)
+    try {
+      await stake(yam, amount, account, () => {
+        setConfirmTxModalIsOpen(false)
+        setIsStaking(true)
+      })
+    } finally {
+      setIsStaking(false)
+    }
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -126,11 +135,14 @@ const Provider: React.FC = ({ children }) => {
   const handleUnstake = useCallback(async (amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await unstake(yam, amount, account, () => {
-      setConfirmTxModalIsOpen(false)
-      setIsUnstaking(true)
-    })
-    setIsUnstaking(false)
+    try {
+      await unstake(yam, amount, account, () => {
+        setConfirmTxModalIsOpen(false)
+        setIsUnstaking(true)
+      })
+    } finally {
+      setIsUnstaking(false)
+    }
   }, [
     account,
     setConfirmTxModalIsOpen,

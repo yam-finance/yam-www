@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
-import { useWallet } from 'use-wallet'
 
 import { yamv2 as yamV2Address } from 'constants/tokenAddresses'
 import useApproval from 'hooks/useApproval'
+import useWallet from 'hooks/useWallet'
 import useYam from 'hooks/useYam'
 import { migrateV3 } from 'yam-sdk/utils'
 

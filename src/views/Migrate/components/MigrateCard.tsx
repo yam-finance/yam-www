@@ -9,13 +9,13 @@ import {
   CardContent,
   CardIcon,
 } from 'react-neu'
-import { useWallet } from 'use-wallet'
 
 import Label from 'components/Label'
 import Value from 'components/Value'
 
 import useBalances from 'hooks/useBalances'
 import useMigration from 'hooks/useMigration'
+import useWallet from 'hooks/useWallet'
 
 const MigrateCard: React.FC = () => {
   const { status } = useWallet()

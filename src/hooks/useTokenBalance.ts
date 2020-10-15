@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 
+import useWallet from 'hooks/useWallet'
 import { bnToDec, getBalance } from 'utils'
 
 const useTokenBalance = (accountAddress?: string, tokenAddress?: string, decimals = 18) => {

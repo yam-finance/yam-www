@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 
 import {
@@ -8,6 +7,7 @@ import {
   yamv3 as yamV3Address,
   yycrvUniLp as yyrcvUniLpAddress,
 } from 'constants/tokenAddresses'
+import useWallet from 'hooks/useWallet'
 import { getBalance } from 'utils'
 
 import Context from './Context'
@@ -17,7 +17,7 @@ const Provider: React.FC = ({ children }) => {
   const [yamV3Balance, setYamV3Balance] = useState<BigNumber>()
   const [yycrvUniLpBalance, setYycrvUniLpBalance] = useState<BigNumber>()
 
-  const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
+  const { account, ethereum }: { account: string | null | undefined, ethereum: provider } = useWallet()
 
   const fetchBalances = useCallback(async (userAddress: string, provider: provider) => {
     const balances = await Promise.all([

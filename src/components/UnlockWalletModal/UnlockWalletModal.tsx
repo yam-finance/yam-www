@@ -10,10 +10,10 @@ import {
   Spacer,
 } from 'react-neu'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 
 import metamaskLogo from 'assets/metamask-fox.svg'
 import walletConnectLogo from 'assets/wallet-connect.svg'
+import useWallet from 'hooks/useWallet'
 
 import WalletProviderCard from './components/WalletProviderCard'
 

@@ -5,7 +5,6 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
-import { UseWalletProvider } from 'use-wallet'
 
 import MobileMenu from 'components/MobileMenu'
 import TopBar from 'components/TopBar'
@@ -16,6 +15,7 @@ import { MigrationProvider } from 'contexts/Migration'
 import { PricesProvider } from 'contexts/Prices'
 import { VestingProvider } from 'contexts/Vesting'
 import { GovernanceProvider } from 'contexts/Governance'
+import { WalletProvider } from 'contexts/Wallet'
 import YamProvider from 'contexts/YamProvider'
 
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -81,12 +81,7 @@ const Providers: React.FC = ({ children }) => {
       darkTheme={darkTheme}
       lightTheme={lightTheme}
     >
-      <UseWalletProvider
-        chainId={1}
-        connectors={{
-          walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
-        }}
-      >
+      <WalletProvider>
         <YamProvider>
           <PricesProvider>
             <BalancesProvider>
@@ -102,7 +97,7 @@ const Providers: React.FC = ({ children }) => {
             </BalancesProvider>
           </PricesProvider>
         </YamProvider>
-      </UseWalletProvider>
+      </WalletProvider>
     </ThemeProvider>
   )
 }

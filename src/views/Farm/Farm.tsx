@@ -8,13 +8,12 @@ import {
   Spacer,
 } from 'react-neu'
 
-import { useWallet } from 'use-wallet'
-
 import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
 import Split from 'components/Split'
 
 import useFarming from 'hooks/useFarming'
+import useWallet from 'hooks/useWallet'
 
 import HarvestCard from './components/Harvest'
 import StakeCard from './components/Stake'

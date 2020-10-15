@@ -10,12 +10,12 @@ import {
   CardContent,
   CardIcon,
 } from 'react-neu'
-import { useWallet } from 'use-wallet'
 
 import Label from 'components/Label'
 import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
+import useWallet from 'hooks/useWallet'
 
 import { bnToDec } from 'utils'
 

@@ -20,7 +20,6 @@ import Box from "./components/BoxWithDisplay"
 import styled from 'styled-components'
 
 import useGovernance from 'hooks/useGovernance'
-import { useWallet } from 'use-wallet'
 
 import {
   ProposalEntry,

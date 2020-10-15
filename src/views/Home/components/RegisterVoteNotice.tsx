@@ -9,8 +9,8 @@ import {
   Spacer,
 } from 'react-neu'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 
+import useWallet from 'hooks/useWallet'
 import useYam from 'hooks/useYam'
 import { delegate, didDelegate } from 'yam-sdk/utils'
 

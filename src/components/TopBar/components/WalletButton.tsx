@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
 import { Button } from 'react-neu'
-import { useWallet } from 'use-wallet'
 
 import UnlockWalletModal from 'components/UnlockWalletModal'
 import WalletModal from 'components/WalletModal'
+import useWallet from 'hooks/useWallet'
 
 interface WalletButtonProps {}
 

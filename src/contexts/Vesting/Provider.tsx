@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
 
+import useWallet from 'hooks/useWallet'
 import useYam from 'hooks/useYam'
 import { 
   claimVested,
