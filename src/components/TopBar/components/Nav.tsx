@@ -6,12 +6,11 @@ const Nav: React.FC = () => {
   return (
     <StyledNav>
       <StyledRouterLink exact activeClassName="active" to="/">Home</StyledRouterLink>
+      <StyledRouterLink exact activeClassName="active" to="/dashboard">Dashboard</StyledRouterLink>
+      <StyledRouterLink exact activeClassName="active" to="/governance">Govern</StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/farm">Farm</StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/migrate">Migrate</StyledRouterLink>
-      <StyledRouterLink exact activeClassName="active" to="/governance">Govern</StyledRouterLink>
-      <StyledRouterLink activeClassName="active" to="/dashboard">Dashboard</StyledRouterLink>
-      <StyledRouterLink activeClassName="active" to="/faq">FAQ</StyledRouterLink>
-      <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
+      <StyledRouterLink exact activeClassName="active" to="/faq">FAQ</StyledRouterLink>
     </StyledNav>
   )
 }

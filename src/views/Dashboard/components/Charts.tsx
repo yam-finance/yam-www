@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 
 import numeral from 'numeral'
 import Chart from "react-apexcharts";
+import { useWallet } from 'use-wallet'
 
 import {
   Box,
@@ -24,6 +25,7 @@ import {
   treasuryEvents,
   scalingFactors
 } from 'yam-sdk/utils'
+import UnlockWalletModal from 'components/UnlockWalletModal'
 
 export interface ChartOptions {
   type: string,
@@ -229,6 +231,7 @@ const Charts: React.FC = () => {
   const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>()
   const [scalingOpts, setScalingOpts] = useState<OptionInterface>()
 
+  const { status } = useWallet()
 
   const fetchReserves = useCallback(async () => {
     if (!yam) {
@@ -346,7 +349,7 @@ const Charts: React.FC = () => {
     }
 
     let mintedOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (mintedOpts && mintedOpts.chart && mintedOpts.xaxis &&mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
+    if (mintedOpts && mintedOpts.chart && mintedOpts.xaxis && mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
       mintedOpts.yaxis.title.text = "YAMs Minted";
       mintedOpts.chart.type = "bar";
       mintedOpts.xaxis.categories = blockNumbers;
@@ -362,6 +365,7 @@ const Charts: React.FC = () => {
   }, [
     setSeries,
     setOpts,
+    status,
     yam
   ])
 
@@ -454,9 +458,19 @@ const Charts: React.FC = () => {
   }, [
     setScalingSeries,
     setScalingOpts,
+    status,
     yam
   ])
 
+  const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false)
+
+  const handleDismissUnlockModal = useCallback(() => {
+    setUnlockModalIsOpen(false)
+  }, [setUnlockModalIsOpen])
+
+  const handleUnlockWalletClick = useCallback(() => {
+    setUnlockModalIsOpen(true)
+  }, [setUnlockModalIsOpen])
 
   useEffect(() => {
     fetchScalingFactors()
@@ -472,72 +486,91 @@ const Charts: React.FC = () => {
 
   return (
     <Container>
-      <Card>
-        <CardTitle text="🚀 Scaling Factor History" />
-        <Spacer size="sm" />
-        <CardContent>
-          <Split>
-            <Chart
-              options={scalingOpts ? scalingOpts : {}}
-              series={scalingSeries ? scalingSeries : []}
-              type="line"
-              height={350}
-            />
-          </Split>
-          <Spacer />
-        </CardContent>
-      </Card>
-      <Spacer />
-      <Card>
-        <CardTitle text="💰 Reserves History" />
-        <Spacer size="sm" />
-        <CardContent>
-          <Split>
-            <Chart
-              options={opts ? opts[0] : {}}
-              series={series ? [series[0]] : []}
-              type="line"
-              height={350}
-            />
-          </Split>
-          <Spacer />
-        </CardContent>
-      </Card>
-      <Spacer />
-      <Split>
-        <Card>
-          <CardTitle text="⬇️ Yams Sold Per Rebase" />
-          <Spacer size="sm" />
-          <CardContent>
-            <Split>
-              <Chart
-                options={opts ? opts[1] : {}}
-                series={series ? [series[1]] : []}
-                type="bar"
-                height={350}
-              />
-            </Split>
-            <Spacer />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardTitle text="⬆️ Yams Minted Per Rebase" />
-          <Spacer size="sm" />
-          <CardContent>
-            <Split>
-              <Chart
-                options={opts ? opts[2] : {}}
-                series={series ? [series[2]] : []}
-                type="bar"
-                height={350}
-              />
-            </Split>
-            <Spacer />
-          </CardContent>
-        </Card>
-      </Split>
+      <div>
+        {(() => {
+          if (status === "connected") {
+            return (
+              <div>
+                <Card>
+                  <CardTitle text="🚀 Scaling Factor History" />
+                  <Spacer size="sm" />
+                  <CardContent>
+                    <Split>
+                      <Chart
+                        options={scalingOpts ? scalingOpts : {}}
+                        series={scalingSeries ? scalingSeries : []}
+                        type="line"
+                        height={350}
+                      />
+                    </Split>
+                  </CardContent>
+                </Card>
+                <Spacer />
+                <Card>
+                  <CardTitle text="💰 Reserves History" />
+                  <Spacer size="sm" />
+                  <CardContent>
+                    <Split>
+                      <Chart
+                        options={opts ? opts[0] : {}}
+                        series={series ? [series[0]] : []}
+                        type="line"
+                        height={350}
+                      />
+                    </Split>
+                  </CardContent>
+                </Card>
+                <Spacer />
+                <Split>
+                  <Card>
+                    <CardTitle text="⬇️ Yams Sold Per Rebase" />
+                    <Spacer size="sm" />
+                    <CardContent>
+                      <Split>
+                        <Chart
+                          options={opts ? opts[1] : {}}
+                          series={series ? [series[1]] : []}
+                          type="bar"
+                          height={350}
+                        />
+                      </Split>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardTitle text="⬆️ Yams Minted Per Rebase" />
+                    <Spacer size="sm" />
+                    <CardContent>
+                      <Split>
+                        <Chart
+                          options={opts ? opts[2] : {}}
+                          series={series ? [series[2]] : []}
+                          type="bar"
+                          height={350}
+                        />
+                      </Split>
+                    </CardContent>
+                  </Card>
+                </Split>
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <Box row justifyContent="center">
+                  <Button
+                    onClick={handleUnlockWalletClick}
+                    text="Unlock wallet to display charts"
+                    variant="secondary"
+                  />
+                </Box>
+                <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
+              </div>
+            );
+          }
+        })()}
+      </div>
     </Container>
-  )
+  );
 }
 
 export default Charts
