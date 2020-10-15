@@ -14,6 +14,12 @@ const GAS_LIMIT = {
   }
 };
 
+
+const knownSnapshots = {
+  "0x110f2263e5adf63ea82514bbec3440762edefed1bdf4f0ee06a9458fc3e7e2e7": "https://snapshot.page/#/yamv2/proposal/QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9",
+  "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7" : "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf"
+}
+
 export const getPoolStartTime = async (poolContract) => {
   return await poolContract.methods.starttime().call()
 }
@@ -219,16 +225,226 @@ export const getStats = async (yam) => {
   }
 }
 
-export const vote = async (yam, account) => {
-  return yam.contracts.gov.methods.castVote(0, true).send({ from: account })
-}
-
-export const delegate = async (yam, account) => {
-  return yam.contracts.yam.methods.delegate("0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84").send({from: account, gas: 320000 })
+export const delegate = async (yam, account, onTxHash) => {
+  return yam.contracts.yamV3.methods.delegate(account).send({from: account, gas: 150000 }, async (error, txHash) => {
+    if (error) {
+        onTxHash && onTxHash('')
+        console.log("Delegate error", error)
+        return false
+    }
+    onTxHash && onTxHash(txHash)
+    const status = await waitTransaction(yam.web3.eth, txHash)
+    if (!status) {
+      console.log("Delegate transaction failed.")
+      return false
+    }
+    return true
+  })
 }
 
 export const didDelegate = async (yam, account) => {
-  return await yam.contracts.yam.methods.delegates(account).call() === '0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84'
+  return await yam.contracts.yamV3.methods.delegates(account).call() === account
+}
+
+export const vote = async (yam, proposal, side, account, onTxHash) => {
+  return yam.contracts.gov2
+    .methods
+    .castVote(proposal, side).send(
+      {from: account, gas: 130000 },
+      async (error, txHash) => {
+        if (error) {
+            onTxHash && onTxHash('')
+            console.log("Vote error", error)
+            return false
+        }
+        onTxHash && onTxHash(txHash)
+        const status = await waitTransaction(yam.web3.eth, txHash)
+        if (!status) {
+          console.log("Vote transaction failed.")
+          return false
+        }
+        return true
+      })
+}
+
+const stateMap = {
+  0: "Pending",
+  1: "Active",
+  2: "Canceled",
+  3: "Defeated",
+  4: "Succeeded",
+  5: "Queued",
+  6: "Expired",
+  7: "Executed"
+}
+
+export const getProposals = async (yam) => {
+  let BASE24 = new BigNumber(10).pow(24);
+
+  const v1Proposals = await yam.contracts.gov.getPastEvents("ProposalCreated", {fromBlock: 10887059, toBlock: 10926022})
+  let proposals = [];
+  let v1Descriptions = [];
+  for (let i = 0; i < v1Proposals.length; i++) {
+
+    let id = v1Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v1Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v1Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v1Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v1Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v1Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types = v1Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+      let result = yam.web3.eth.abi.decodeParameters(abi_types, v1Proposals[i]["returnValues"]["calldatas"][j]);
+      let fr = []
+      for (let k = 0; k < result.__length__; k++) {
+        fr.push(result[k.toString()]);
+      }
+      ins.push(fr);
+    }
+
+    let proposal = await yam.contracts.gov.methods.proposals(id).call();
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+    let more;
+    if (knownSnapshots[v1Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v1Proposals[i]["transactionHash"]]
+    }
+
+    proposals.push({
+      gov: "gov",
+      description: v1Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
+      id: id,
+      start: v1Proposals[i]["returnValues"]["startBlock"],
+      end: v1Proposals[i]["returnValues"]["endBlock"],
+      hash: v1Proposals[i]["transactionHash"],
+      more: more
+    });
+  }
+  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
+  for (let i = 0; i < v2Proposals.length; i++) {
+    let id = v2Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v2Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v2Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v2Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v2Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+      let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
+      let fr = []
+      for (let k = 0; k < result.__length__; k++) {
+        fr.push(result[k.toString()]);
+      }
+      ins.push(fr);
+    }
+
+
+    let proposal = await yam.contracts.gov2.methods.proposals(id).call();
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+
+    let more;
+    if (knownSnapshots[v2Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v2Proposals[i]["transactionHash"]]
+    }
+
+    proposals.push({
+      gov: "gov2",
+      description: v2Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov2.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
+      id: id,
+      start: v2Proposals[i]["returnValues"]["startBlock"],
+      end: v2Proposals[i]["returnValues"]["endBlock"],
+      hash: v2Proposals[i]["transactionHash"],
+      more: more
+    });
+  }
+  // proposals[1].state = "Active"
+  // proposals[0].state = "Active"
+  return proposals;
+}
+
+export const getVotingPowers = async (yam, proposals, account) => {
+  let BASE24 = new BigNumber(10).pow(24);
+  let powers = []
+  for (let i = 0; i < proposals.length; i++) {
+    if (proposals[i].gov == "gov") {
+      let receipt = await
+          yam.contracts.gov.methods.getReceipt(proposals[i].id, account).call();
+      let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      if (power == 0) {
+        power =  new BigNumber(await
+                  yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call()
+                ).div(BASE24).toNumber();
+      }
+      powers.push({
+        hash: proposals[i].hash,
+        power: power,
+        voted: receipt[0],
+        side: receipt[1]
+      })
+    } else {
+      let receipt = await
+          yam.contracts.gov2.methods.getReceipt(proposals[i].id, account).call();
+      let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      if (power == 0) {
+        power =  new BigNumber(await
+                  yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call()
+                ).div(BASE24).toNumber();
+      }
+      powers.push({
+        hash: proposals[i].hash,
+        power: power,
+        voted: receipt[0],
+        side: receipt[1]
+      })
+    }
+  }
+  return powers;
+}
+
+export const getCurrentVotingPower = async (yam, account) => {
+  let BASE24 = new BigNumber(10).pow(24);
+  return new BigNumber(await yam.contracts.yamV3.methods.getCurrentVotes(account).call()).dividedBy(BASE24).toNumber()
 }
 
 export const getVotes = async (yam) => {
@@ -236,8 +452,8 @@ export const getVotes = async (yam) => {
   return votesRaw
 }
 
-export const getScalingFactor = async (yam) => {
-  return new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call())
+export const getScalingFactor = async (yam) => { return new BigNumber(await
+  yam.contracts.yamV3.methods.yamsScalingFactor().call())
 }
 
 export const getDelegatedBalance = async (yam, account) => {

@@ -15,6 +15,7 @@ import { FarmingProvider } from 'contexts/Farming'
 import { MigrationProvider } from 'contexts/Migration'
 import { PricesProvider } from 'contexts/Prices'
 import { VestingProvider } from 'contexts/Vesting'
+import { GovernanceProvider } from 'contexts/Governance'
 import YamProvider from 'contexts/YamProvider'
 
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -24,6 +25,9 @@ import FAQ from 'views/FAQ'
 import Home from 'views/Home'
 import Migrate from 'views/Migrate'
 import Dashboard from 'views/Dashboard'
+import Governance from 'views/Governance'
+
+import styled from 'styled-components'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -57,6 +61,10 @@ const App: React.FC = () => {
           <Route exact path="/dashboard">
             <Dashboard />
           </Route>
+          <Route exact path="/governance">
+            <Governance />
+          </Route>
+          <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
         </Switch>
       </Providers>
     </Router>
@@ -90,7 +98,9 @@ const Providers: React.FC = ({ children }) => {
               <FarmingProvider>
                 <MigrationProvider>
                   <VestingProvider>
-                    {children}
+                    <GovernanceProvider>
+                      {children}
+                    </GovernanceProvider>
                   </VestingProvider>
                 </MigrationProvider>
               </FarmingProvider>
@@ -101,5 +111,15 @@ const Providers: React.FC = ({ children }) => {
     </ThemeProvider>
   )
 }
+
+const StyledLink = styled.a`
+  color: ${props => props.theme.colors.grey[500]};
+  padding-left: ${props => props.theme.spacing[3]}px;
+  padding-right: ${props => props.theme.spacing[3]}px;
+  text-decoration: none;
+  &:hover {
+    color: ${props => props.theme.colors.grey[600]};
+  }
+`
 
 export default App
