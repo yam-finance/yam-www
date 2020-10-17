@@ -223,14 +223,13 @@ export interface TimeSeries {
 
 const Charts: React.FC = () => {
   const yam = useYam()
-  const { darkMode } = useTheme()
-
+  const { darkMode, colors } = useTheme()
   const [series, setSeries] = useState<SeriesInterface[]>()
   const [opts, setOpts] = useState<OptionInterface[]>()
 
   const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>()
   const [scalingOpts, setScalingOpts] = useState<OptionInterface>()
-
+  
   const { status } = useWallet()
 
   const fetchReserves = useCallback(async () => {
@@ -275,12 +274,12 @@ const Charts: React.FC = () => {
     let borderColor;
     if (darkMode) {
       theme = 'dark'
-      labelColor = '#ffffff'
-      borderColor = '#000000'
+      labelColor = colors.grey[600]
+      borderColor = colors.grey[900]
     } else {
       theme = 'light'
-      labelColor = '#000000'
-      borderColor = '#FFFFFF';
+      labelColor = colors.grey[600]
+      borderColor = colors.grey[600]
     }
     let reservesOpts: OptionInterface = {
         chart: {
@@ -314,7 +313,10 @@ const Charts: React.FC = () => {
         },
         yaxis: {
           title: {
-            text:"yUSD In Reserves"
+            text:"yUSD In Reserves",
+            style: {
+              color: labelColor
+            }
           },
           labels: {
             style: {
@@ -343,6 +345,7 @@ const Charts: React.FC = () => {
     let soldOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
     if (soldOpts && soldOpts.chart && soldOpts.xaxis && soldOpts.yaxis && soldOpts.yaxis.title && soldOpts.yaxis.labels) {
       soldOpts.yaxis.title.text = "YAMs Sold";
+      soldOpts.yaxis.title.style = {color: labelColor}
       soldOpts.chart.type = "bar";
       soldOpts.xaxis.categories = blockNumbers;
       soldOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
@@ -351,12 +354,14 @@ const Charts: React.FC = () => {
     let mintedOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
     if (mintedOpts && mintedOpts.chart && mintedOpts.xaxis && mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
       mintedOpts.yaxis.title.text = "YAMs Minted";
+      mintedOpts.yaxis.title.style = {color: labelColor}
       mintedOpts.chart.type = "bar";
       mintedOpts.xaxis.categories = blockNumbers;
       mintedOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
     }
 
     reservesOpts.stroke = { curve: 'stepline'}
+
     if (reservesOpts.xaxis) {
       reservesOpts.xaxis.type = 'numeric';
     }
@@ -365,6 +370,7 @@ const Charts: React.FC = () => {
   }, [
     setSeries,
     setOpts,
+    darkMode,
     status,
     yam
   ])
@@ -391,13 +397,14 @@ const Charts: React.FC = () => {
     let borderColor;
     if (darkMode) {
       theme = 'dark'
-      labelColor = '#ffffff'
-      borderColor = '#000000'
+      labelColor = colors.grey[600]
+      borderColor = colors.grey[900]
     } else {
       theme = 'light'
-      labelColor = '#000000'
-      borderColor = '#FFFFFF';
+      labelColor = colors.grey[600]
+      borderColor = colors.grey[600]
     }
+
     const options: OptionInterface = {
         chart: {
           type: 'line',
@@ -440,6 +447,11 @@ const Charts: React.FC = () => {
           },
           axisBorder: {
             show: false
+          },
+          title: {
+            style: {
+              color: labelColor
+            }
           }
         },
         grid: {
@@ -458,6 +470,7 @@ const Charts: React.FC = () => {
   }, [
     setScalingSeries,
     setScalingOpts,
+    darkMode,
     status,
     yam
   ])
@@ -484,92 +497,89 @@ const Charts: React.FC = () => {
     return () => clearInterval(refreshInterval)
   }, [fetchReserves])
 
-  return (
-    <Container>
-      <div>
-        {(() => {
-          if (status === "connected") {
-            return (
-              <div>
-                <Card>
-                  <CardTitle text="🚀 Scaling Factor History" />
-                  <Spacer size="sm" />
-                  <CardContent>
-                    <Split>
-                      <Chart
-                        options={scalingOpts ? scalingOpts : {}}
-                        series={scalingSeries ? scalingSeries : []}
-                        type="line"
-                        height={350}
-                      />
-                    </Split>
-                  </CardContent>
-                </Card>
-                <Spacer />
-                <Card>
-                  <CardTitle text="💰 Reserves History" />
-                  <Spacer size="sm" />
-                  <CardContent>
-                    <Split>
-                      <Chart
-                        options={opts ? opts[0] : {}}
-                        series={series ? [series[0]] : []}
-                        type="line"
-                        height={350}
-                      />
-                    </Split>
-                  </CardContent>
-                </Card>
-                <Spacer />
+  const DisplayCharts = useMemo(() => {
+    if (status === 'connected') {
+      return (
+        <>
+          <Split>
+            <Card>
+              <CardTitle text="🚀 Scaling Factor History" />
+              <Spacer size="sm" />
+              <CardContent>
+                <Chart
+                  options={scalingOpts ? scalingOpts : {}}
+                  series={scalingSeries ? scalingSeries : []}
+                  type="line"
+                  height={350}
+                />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardTitle text="💰 Reserves History" />
+              <Spacer size="sm" />
+              <CardContent>
                 <Split>
-                  <Card>
-                    <CardTitle text="⬇️ Yams Sold Per Rebase" />
-                    <Spacer size="sm" />
-                    <CardContent>
-                      <Split>
-                        <Chart
-                          options={opts ? opts[1] : {}}
-                          series={series ? [series[1]] : []}
-                          type="bar"
-                          height={350}
-                        />
-                      </Split>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardTitle text="⬆️ Yams Minted Per Rebase" />
-                    <Spacer size="sm" />
-                    <CardContent>
-                      <Split>
-                        <Chart
-                          options={opts ? opts[2] : {}}
-                          series={series ? [series[2]] : []}
-                          type="bar"
-                          height={350}
-                        />
-                      </Split>
-                    </CardContent>
-                  </Card>
+                  <Chart options={opts ? opts[0] : {}} series={series ? [series[0]] : []} type="line" height={350} />
                 </Split>
-              </div>
-            );
-          } else {
-            return (
-              <div>
-                <Box row justifyContent="center">
-                  <Button
-                    onClick={handleUnlockWalletClick}
-                    text="Unlock wallet to display charts"
-                    variant="secondary"
-                  />
-                </Box>
-                <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
-              </div>
-            );
-          }
-        })()}
+              </CardContent>
+            </Card>
+          </Split>
+          <Spacer />
+          <Split>
+            <Card>
+              <CardTitle text="⬇️ Yams Sold Per Rebase" />
+              <Spacer size="sm" />
+              <CardContent>
+                <Split>
+                  <Chart options={opts ? opts[1] : {}} series={series ? [series[1]] : []} type="bar" height={200} />
+                </Split>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardTitle text="⬆️ Yams Minted Per Rebase" />
+              <Spacer size="sm" />
+              <CardContent>
+                <Split>
+                  <Chart options={opts ? opts[2] : {}} series={series ? [series[2]] : []} type="bar" height={200} />
+                </Split>
+              </CardContent>
+            </Card>
+          </Split>
+        </>
+      );
+    }
+    return (
+      <div>
+        <Box row justifyContent="center">
+          <Button
+            onClick={handleUnlockWalletClick}
+            text="Unlock wallet to display charts"
+            variant="secondary"
+          />
+        </Box>
+        <UnlockWalletModal
+          isOpen={unlockModalIsOpen}
+          onDismiss={handleDismissUnlockModal}
+        />
       </div>
-    </Container>
+    )
+  }, [
+    darkMode,
+    status,
+    handleDismissUnlockModal,
+    handleUnlockWalletClick,
+    unlockModalIsOpen,
+    scalingSeries,
+    scalingOpts,
+    series,
+    opts,
+  ])
+  
+  
+  return (
+    <>
+        {DisplayCharts}
+    </>
   );
 }
 

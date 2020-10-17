@@ -1,6 +1,7 @@
 import {ethers} from 'ethers'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
+import request from "request";
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -639,3 +640,30 @@ export const waitTransaction = async (provider, txHash) => {
   }
   return (txReceipt.status)
 }
+
+const requestYam = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/yam-2",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getMarketCap = async () => {
+  const data = await requestYam();
+  return data.market_data.market_cap.usd;
+};
+
+export const getMaxSupply = async () => {
+  const data = await requestYam();
+  return data.market_data.max_supply;
+};
+

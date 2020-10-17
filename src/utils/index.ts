@@ -49,7 +49,7 @@ export const approve = async (
         return true
       })
   } catch (e) {
-    console.log('here')
+    console.log("error", e)
     return false
   }
 }
