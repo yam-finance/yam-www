@@ -50,7 +50,7 @@ const App: React.FC = () => {
           <Route exact path="/farm">
             <Farm />
           </Route>
-          <Route path="/faq">
+          {/*<Route path="/faq">
             <FAQ />
           </Route>
           <Route exact path="/migrate">
@@ -60,6 +60,7 @@ const App: React.FC = () => {
             <Governance />
           </Route>
           <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
+        */}
         </Switch>
       </Providers>
     </Router>
