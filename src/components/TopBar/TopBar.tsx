@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Logo from 'components/Logo'
 import MenuIcon from 'components/icons/Menu'
 
-import DarkModeSwitch from '../DarkModeSwitch'
+// import DarkModeSwitch from '../DarkModeSwitch'
 import Nav from './components/Nav'
 import WalletButton from './components/WalletButton'
 
@@ -26,10 +26,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             <Nav />
           </StyledNavWrapper>
           <StyledAccountButtonWrapper>
-            <StyledTopBarDarkModeSwitch>
-              <DarkModeSwitch />
-            </StyledTopBarDarkModeSwitch>
-            <Spacer />
+            {/*<StyledTopBarDarkModeSwitch>*/}
+            {/*  <DarkModeSwitch />*/}
+            {/*</StyledTopBarDarkModeSwitch>*/}
+            {/*<Spacer />*/}
             <WalletButton />
           </StyledAccountButtonWrapper>
           <StyledMenuButton onClick={onPresentMobileMenu}>
@@ -95,10 +95,10 @@ const StyledMenuButton = styled.button`
   }
 `
 
-const StyledTopBarDarkModeSwitch = styled.div`
-  @media (max-width: 980px) {
-    display: none;
-  }
-`
+// const StyledTopBarDarkModeSwitch = styled.div`
+//   @media (max-width: 980px) {
+//     display: none;
+//   }
+// `
 
 export default TopBar
