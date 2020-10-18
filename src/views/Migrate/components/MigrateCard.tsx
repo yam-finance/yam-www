@@ -19,7 +19,7 @@ import useMigration from 'hooks/useMigration'
 
 const MigrateCard: React.FC = () => {
   const { status } = useWallet()
-  const { yamV2Balance } = useBalances()
+  const { strnEthLpBalance } = useBalances()
   const {
     isApproved,
     isApproving,
@@ -29,15 +29,15 @@ const MigrateCard: React.FC = () => {
   } = useMigration()
 
   const yamV2DisplayBalance = useMemo(() => {
-    if (yamV2Balance) {
-      return numeral(yamV2Balance).format('0.00a')
+    if (strnEthLpBalance) {
+      return numeral(strnEthLpBalance).format('0.00a')
     } else {
       return '--'
     }
-  }, [yamV2Balance])
+  }, [strnEthLpBalance])
 
   const ActionButton = useMemo(() => {
-    const hasYams = yamV2Balance && yamV2Balance.toNumber() > 0
+    const hasYams = strnEthLpBalance && strnEthLpBalance.toNumber() > 0
     if (isMigrating) {
       return (
         <Button
@@ -75,7 +75,7 @@ const MigrateCard: React.FC = () => {
     isMigrating,
     onApprove,
     onMigrate,
-    yamV2Balance
+    strnEthLpBalance
   ])
 
   return (
