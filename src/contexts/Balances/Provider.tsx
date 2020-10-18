@@ -6,7 +6,6 @@ import { provider } from 'web3-core'
 import {
   strn as strnTokenAddress,
   strnEthLP as strnLPTokenAddress,
-  yycrvUniLp as yyrcvUniLpAddress,
 } from 'constants/tokenAddresses'
 import { getBalance } from 'utils'
 
@@ -22,7 +21,6 @@ const Provider: React.FC = ({ children }) => {
     const balances = await Promise.all([
       await getBalance(provider, strnLPTokenAddress, userAddress),
       await getBalance(provider, strnTokenAddress, userAddress),
-      await getBalance(provider, yyrcvUniLpAddress, userAddress)
     ])
     setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
     setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))

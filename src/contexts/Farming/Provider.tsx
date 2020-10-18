@@ -35,7 +35,7 @@ const Provider: React.FC = ({ children }) => {
   const yam = useYam()
   const { account } = useWallet()
   
-  const yycrvPoolAddress = yam ? yam.contracts.yycrv_pool.options.address : ''
+  const yycrvPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
   const { isApproved, isApproving, onApprove } = useApproval(
     strnEthLPAddress,
     yycrvPoolAddress,
@@ -44,7 +44,7 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
-    const balance = await getEarned(yam, yam.contracts.yycrv_pool, account)
+    const balance = await getEarned(yam, yam.contracts.strneth_pool, account)
     setEarnedBalance(balance)
   }, [
     account,
@@ -54,7 +54,7 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchStakedBalance = useCallback(async () => {
     if (!account || !yam) return
-    const balance = await getStaked(yam, yam.contracts.yycrv_pool, account)
+    const balance = await getStaked(yam, yam.contracts.strneth_pool, account)
     setStakedBalance(balance)
   }, [
     account,

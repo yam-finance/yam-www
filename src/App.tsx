@@ -96,9 +96,9 @@ const Providers: React.FC = ({ children }) => {
               <FarmingProvider>
                 <MigrationProvider>
                   <VestingProvider>
-                    <GovernanceProvider>
+                    {/*<GovernanceProvider>*/}
                       {children}
-                    </GovernanceProvider>
+                    {/*</GovernanceProvider>*/}
                   </VestingProvider>
                 </MigrationProvider>
               </FarmingProvider>

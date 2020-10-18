@@ -7,3 +7,5 @@ export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 export const strn = '0x40fDD7f354aCB16a8A0Ba39d15EAc982bCa7b2eb'
 export const strnEthLP = '0x96e61f99c7d377f69d8f3766cb430565bd6fcf75'
 export const strnIncentivizer = '0x9B7ECc63Fd861a026a391EF66452671f47D49134'
+// src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
+// make sure chainId is "1" and not "4"

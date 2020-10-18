@@ -26,13 +26,13 @@ export const getPoolStartTime = async (poolContract) => {
 }
 
 export const stake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+  const poolContract = yam.contracts.strneth_pool
   let now = new Date().getTime() / 1000;
   // const gas = GAS_LIMIT.STAKING[tokenName.toUpperCase()] || GAS_LIMIT.STAKING.DEFAULT;
   const gas = GAS_LIMIT.STAKING.DEFAULT
   if (now >= 1597172400) {
     return poolContract.methods
-      .stake((new BigNumber(amount).times(new BigNumber(10).pow(18))).toString())
+      .stake(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(0)))
       .send({ from: account, gas }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -53,11 +53,11 @@ export const stake = async (yam, amount, account, onTxHash) => {
 }
 
 export const unstake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+  const poolContract = yam.contracts.strneth_pool
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
-      .withdraw((new BigNumber(amount).times(new BigNumber(10).pow(18))).toString())
+      .withdraw(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(0)))
       .send({ from: account, gas: 200000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -78,7 +78,7 @@ export const unstake = async (yam, amount, account, onTxHash) => {
 }
 
 export const harvest = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+  const poolContract = yam.contracts.strneth_pool
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
@@ -103,7 +103,7 @@ export const harvest = async (yam, account, onTxHash) => {
 }
 
 export const redeem = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+  const poolContract = yam.contracts.strneth_pool
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
