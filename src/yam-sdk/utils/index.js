@@ -181,7 +181,7 @@ export const getProjectedRebase = async (yam) => {
 export const getProjectedMint = async (yam) => {
 
   let rebase = await getProjectedRebase(yam);
-  return rebase==0? 0:(rebase*0.1);
+  return rebase<=0? 0:(rebase*0.1);
 
 }
 
