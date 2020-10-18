@@ -166,14 +166,14 @@ export const getTargetPrice = async (yam) => {
 
 export const getProjectedRebase = async (yam) => {
 
-  let twap = await getCurrentPrice(yam);
+  let twap = bnToDec(await getCurrentPrice(yam));
   let target_price = await getTargetPrice(yam);
   let total_supply = await getMaxSupply();
 
   if(twap>=0.95 && twap<=1.05)
     return 0;
 
-  let deviation = (bnToDec(twap) - target_price) / target_price;
+  let deviation = (twap - target_price) / target_price;
   return total_supply* (deviation/20);
 
 }
