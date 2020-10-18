@@ -15,7 +15,6 @@ import Context from './Context'
 const Provider: React.FC = ({ children }) => {
   const [strnEthLpBalance, setStrnEthLpBalance] = useState<BigNumber>()
   const [strnTokenBalance, setStrnTokenBalance] = useState<BigNumber>()
-  const [yycrvUniLpBalance, setYycrvUniLpBalance] = useState<BigNumber>()
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -27,11 +26,9 @@ const Provider: React.FC = ({ children }) => {
     ])
     setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
     setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))
-    setYycrvUniLpBalance(new BigNumber(balances[2]).dividedBy(new BigNumber(10).pow(18)))
   }, [
     setStrnEthLpBalance,
-    setStrnTokenBalance,
-    setYycrvUniLpBalance
+    setStrnTokenBalance
   ])
 
   useEffect(() => {
@@ -60,7 +57,6 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       strnEthLpBalance,
       strnTokenBalance,
-      yycrvUniLpBalance,
     }}>
       {children}
     </Context.Provider>

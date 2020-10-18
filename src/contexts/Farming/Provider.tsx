@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
-import { yycrvUniLp as yycrvUniLpAddress } from 'constants/tokenAddresses'
+import { strnEthLP as strnEthLPAddress } from 'constants/tokenAddresses'
 import useApproval from 'hooks/useApproval'
 import useYam from 'hooks/useYam'
 
@@ -37,7 +37,7 @@ const Provider: React.FC = ({ children }) => {
   
   const yycrvPoolAddress = yam ? yam.contracts.yycrv_pool.options.address : ''
   const { isApproved, isApproving, onApprove } = useApproval(
-    yycrvUniLpAddress,
+    strnEthLPAddress,
     yycrvPoolAddress,
     () => setConfirmTxModalIsOpen(false)
   )
