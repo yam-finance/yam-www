@@ -6,7 +6,7 @@ import { Box, Card, CardContent, Spacer } from "react-neu";
 import FancyValue from "components/FancyValue";
 import useYam from "hooks/useYam";
 import { bnToDec } from "utils";
-import { getCurrentPrice, getScalingFactor, getMaxSupply, getMarketCap, getProjectedRebase, getProjectedMint } from "yam-sdk/utils";
+import { getCurrentPrice, getScalingFactor, getMaxSupply, getMarketCap, getProjectedRebase, getProjectedMint, getProjectedRebasePercent, getMintPercent } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
 import Rebase from "views/Home/components/Rebase";
@@ -20,6 +20,8 @@ const TopCards: React.FC = () => {
   const [marketCap, setMarketCap] = useState<string>();
   const [projectedRebase, setProjectedRebase] = useState<string>();
   const [projectedMint, setProjectedMint] = useState<string>();
+  const [projectedRebasePercent, setProjectedRebasePercent] = useState<string>();
+  const [mintPercent, setMintPercent] = useState<string>();
   const { status } = useWallet();
   const toAdd = true; // update
 
@@ -42,11 +44,15 @@ const TopCards: React.FC = () => {
     const factor = await getScalingFactor(yam);
     const projectedRebase = await getProjectedRebase(yam);
     const projectedMint = await getProjectedMint(yam);
+    const projectedRebasePercent = await getProjectedRebasePercent(yam);
+    const mintPercent = await getMintPercent(yam);
     setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
     setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
     setProjectedRebase(numeral((projectedRebase)).format("0.0a"));
     setProjectedMint(numeral((projectedMint)).format("0.0a"));
-  }, [setCurrentPrice, setScalingFactor ,setProjectedRebase, ,setProjectedMint,yam]);
+    setMintPercent(numeral((mintPercent)).format("0.00a"));
+    setProjectedRebasePercent(numeral((projectedRebasePercent)).format("0.00a"));
+  }, [setCurrentPrice, setScalingFactor ,setProjectedRebase,setProjectedMint,setMintPercent,setProjectedRebasePercent,yam]);
 
   useEffect(() => {
     fetchStats();
