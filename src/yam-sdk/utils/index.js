@@ -165,24 +165,37 @@ export const getTargetPrice = async (yam) => {
 }
 
 export const getProjectedRebase = async (yam) => {
-
-  let twap = bnToDec(await getCurrentPrice(yam));
-  let target_price = await getTargetPrice(yam);
-  let total_supply = await getMaxSupply();
-
-  if(twap>=0.95 && twap<=1.05)
+  let projected_rebase_perc = await getProjectedRebasePercent(yam);
+  if(projected_rebase_perc==0)
     return 0;
+  let total_supply = new BigNumber(await getMaxSupply());
+  return total_supply.dividedBy(100).times(projected_rebase_perc).toNumber();
+}
 
-  let deviation = (twap - target_price) / target_price;
-  return total_supply* (deviation/20);
-
+export const getProjectedRebasePercent = async (yam) =>{
+  let BASE = new BigNumber(10).pow(18);
+  let twap = (await getCurrentPrice(yam)).dividedBy(BASE);
+  if(twap.isGreaterThanOrEqualTo(0.95) && twap.isLessThanOrEqualTo(1.05))
+    return 0;
+  let target_price = await getTargetPrice(yam);
+  let rebase_lag = await getRebaseLag(yam);
+  let deviation = twap.minus(target_price).dividedBy(target_price);
+  return deviation.dividedBy(rebase_lag).times(100).toNumber();
 }
 
 export const getProjectedMint = async (yam) => {
-
   let rebase = await getProjectedRebase(yam);
-  return rebase<=0? 0:(rebase*0.1);
+  let mint_percent = await getMintPercent(yam);
+  return rebase<=0? 0:(rebase * mint_percent/100);
+}
 
+export const getMintPercent = async(yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
+}
+
+export const getRebaseLag = async(yam) =>{
+  return await yam.contracts.rebaser.methods.rebaseLag().call();
 }
 
 export const getCirculatingSupply = async (yam) => {
@@ -688,4 +701,3 @@ export const getMaxSupply = async () => {
   const data = await requestYam();
   return data.market_data.max_supply;
 };
-
