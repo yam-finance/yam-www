@@ -6,7 +6,14 @@ import { Box, Card, CardContent, Spacer } from "react-neu";
 import FancyValue from "components/FancyValue";
 import useYam from "hooks/useYam";
 import { bnToDec } from "utils";
-import { getCurrentPrice, getScalingFactor, getMaxSupply, getMarketCap, getProjectedRebase, getProjectedMint } from "yam-sdk/utils";
+import {
+  getCurrentPrice,
+  getScalingFactor,
+  getMaxSupply,
+  getMarketCap,
+  getProjectedRebase,
+  getProjectedMint,
+} from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
 import Rebase from "views/Home/components/Rebase";
@@ -21,7 +28,6 @@ const TopCards: React.FC = () => {
   const [projectedRebase, setProjectedRebase] = useState<string>();
   const [projectedMint, setProjectedMint] = useState<string>();
   const { status } = useWallet();
-  const toAdd = true; // update
 
   const fetchOnce = useCallback(async () => {
     const maxSupply = await getMaxSupply();
@@ -42,11 +48,11 @@ const TopCards: React.FC = () => {
     const factor = await getScalingFactor(yam);
     const projectedRebase = await getProjectedRebase(yam);
     const projectedMint = await getProjectedMint(yam);
-    setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
-    setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
-    setProjectedRebase(numeral((projectedRebase)).format("0.0a"));
-    setProjectedMint(numeral((projectedMint)).format("0.0a"));
-  }, [setCurrentPrice, setScalingFactor ,setProjectedRebase, ,setProjectedMint,yam]);
+    setCurrentPrice(numeral(bnToDec(price)).format("0.0a"));
+    setScalingFactor(numeral(bnToDec(factor)).format("0.0a"));
+    setProjectedRebase((Math.sign(projectedRebase) === 1 ? "+" : "") + numeral(projectedRebase).format("0.0a"));
+    // setProjectedMint(numeral(projectedMint).format("0.0a"));
+  }, [setCurrentPrice, setScalingFactor, setProjectedRebase, , setProjectedMint, yam]);
 
   useEffect(() => {
     fetchStats();
@@ -55,16 +61,15 @@ const TopCards: React.FC = () => {
   }, [fetchStats, yam]);
 
   const { totalYUsdValue } = useTreasury();
-
   const treasuryValue =
     typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0
-      ? "$" + numeral(totalYUsdValue * 1.15).format("0.00a")
+      ? "$" + numeral(totalYUsdValue * 1.15).format("0.0a")
       : "--";
 
   const col = [
     [
       {
-        icon: "🍠",
+        icon: "💲",
         label: "Current price TWAP",
         value: currentPrice ? `${currentPrice} yUSD` : "--",
       },
@@ -77,27 +82,27 @@ const TopCards: React.FC = () => {
     [
       {
         icon: "🧱",
-        label: "YAM Supply",
-        value: maxSupply ? `${maxSupply} ` : "--",
+        label: "YAM total supply",
+        value: maxSupply ? maxSupply : "--",
       },
       {
-        icon: "🍃",
+        icon: "🍠",
         label: "YAM to be rebased",
-        value: projectedRebase ? `${projectedRebase} ` : "--", // -2.0%
+        value: projectedRebase ? projectedRebase : "--", // -2.0%
       },
     ],
     [
       {
         icon: "🌎",
-        label: "Marketcap value",
-        value: marketCap ? `$${marketCap} ` : "--",
+        label: "Marketcap",
+        value: marketCap ? `$${marketCap}` : "--",
       },
       {
         icon: "💰",
         label: "Treasury value",
-        value: treasuryValue ? `${treasuryValue} ` : "--",
+        value: treasuryValue ? treasuryValue : "--",
       },
-    ]
+    ],
   ];
 
   return (
@@ -106,39 +111,39 @@ const TopCards: React.FC = () => {
       <Box column>
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[0][0].icon} label={col[0][0].label} value={col[0][0].value}/>
+            <FancyValue wrap icon={col[0][0].icon} label={col[0][0].label} value={col[0][0].value} />
           </CardContent>
         </Card>
         <Spacer />
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[0][1].icon} label={col[0][1].label} value={col[0][1].value}/>
+            <FancyValue wrap icon={col[0][1].icon} label={col[0][1].label} value={col[0][1].value} />
           </CardContent>
         </Card>
       </Box>
       <Box column>
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[1][0].icon} label={col[1][0].label} value={col[1][0].value}/>
+            <FancyValue wrap icon={col[1][0].icon} label={col[1][0].label} value={col[1][0].value} />
           </CardContent>
         </Card>
         <Spacer />
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[1][1].icon} label={col[1][1].label} value={col[1][1].value}/>
+            <FancyValue wrap icon={col[1][1].icon} label={col[1][1].label} value={col[1][1].value} />
           </CardContent>
         </Card>
       </Box>
       <Box column>
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[2][0].icon} label={col[2][0].label} value={col[2][0].value}/>
+            <FancyValue wrap icon={col[2][0].icon} label={col[2][0].label} value={col[2][0].value} />
           </CardContent>
         </Card>
         <Spacer />
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[2][1].icon} label={col[2][1].label} value={col[2][1].value}/>
+            <FancyValue wrap icon={col[2][1].icon} label={col[2][1].label} value={col[2][1].value} />
           </CardContent>
         </Card>
       </Box>
