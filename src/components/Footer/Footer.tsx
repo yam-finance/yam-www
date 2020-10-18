@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Nav from './components/Nav'
-import DarkModeSwitch from '../DarkModeSwitch'
+// import DarkModeSwitch from '../DarkModeSwitch'
 
 const Footer: React.FC = () => (
   <StyledFooter>
@@ -9,10 +9,10 @@ const Footer: React.FC = () => (
       <Nav />
     </StyledFooterInner>
     <br />
-    <StyledFooterDarkModeSwitch>
-      <DarkModeSwitch />
-      <br />
-    </StyledFooterDarkModeSwitch>
+    {/*<StyledFooterDarkModeSwitch>*/}
+    {/*  <DarkModeSwitch />*/}
+    {/*  <br />*/}
+    {/*</StyledFooterDarkModeSwitch>*/}
   </StyledFooter>
 )
 
@@ -36,11 +36,11 @@ const StyledFooterInner = styled.div`
   }
 `
 
-const StyledFooterDarkModeSwitch = styled.div`
-  display: none;
-  @media (max-width: 980px) {
-    display: block;
-  }
-`
+// const StyledFooterDarkModeSwitch = styled.div`
+//   display: none;
+//   @media (max-width: 980px) {
+//     display: block;
+//   }
+// `
 
 export default Footer
