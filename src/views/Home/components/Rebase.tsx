@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 
 import Countdown, { CountdownRenderProps} from 'react-countdown'
 import {
@@ -22,8 +22,14 @@ import Label from 'components/Label'
 import useYam from 'hooks/useYam'
 
 import { getNextRebaseTimestamp } from 'yam-sdk/utils'
+import Bar from 'components/Bar'
 
-const Rebase: React.FC = () => {
+
+interface RebaseProps {
+    type?: 'bar' | 'circle',
+}
+
+const Rebase: React.FC<RebaseProps> = ({ type }) => {
   const yam = useYam()
 
   const [nextRebase, setNextRebase] = useState(0)
@@ -66,26 +72,41 @@ const Rebase: React.FC = () => {
 
   const dialValue = (nextRebase - Date.now()) / (1000 * 60 * 60 * 12) * 100
 
+  const DisplayRebaseProgress = useMemo(() => {
+    if (type === "bar") {
+      return (
+        <Box alignItems="center" justifyContent="center">
+          <Bar value={dialValue}></Bar>
+          <StyledCountdown>
+            <StyledCountdownTextBar>
+              {!nextRebase ? "--" : <Countdown date={new Date(nextRebase)} renderer={renderer} />}
+            </StyledCountdownTextBar>
+            <Label text="Next rebase" />
+          </StyledCountdown>
+        </Box>
+      );
+    } else {
+      return (
+        <Box alignItems="center" justifyContent="center" row>
+          <Dial size={196} value={dialValue}>
+            <StyledCountdown>
+              <StyledCountdownText>
+                {!nextRebase ? "--" : <Countdown date={new Date(nextRebase)} renderer={renderer} />}
+              </StyledCountdownText>
+              <Label text="Next rebase" />
+            </StyledCountdown>
+          </Dial>
+        </Box>
+      );
+    }
+  }, [dialValue]);
+
+
   return (
     <>
       <Card>
         <CardContent>
-          <Box
-            alignItems="center"
-            justifyContent="center"
-            row
-          >
-            <Dial size={196} value={dialValue}>
-              <StyledCountdown>
-                <StyledCountdownText>
-                  {!nextRebase ? '--' : (
-                    <Countdown date={new Date(nextRebase)} renderer={renderer} />
-                  )}
-                </StyledCountdownText>
-                <Label text="Next rebase" />
-              </StyledCountdown>
-            </Dial>
-          </Box>
+          {DisplayRebaseProgress}
           <Spacer />
           <Button
             disabled={!account}
@@ -121,10 +142,19 @@ const StyledCountdown = styled.div`
   display: flex;
   flex-direction: column;
 `
+
 const StyledCountdownText = styled.span`
   color: ${props => props.theme.colors.primary.main};
   font-size: 36px;
   font-weight: 700;
 `
+
+const StyledCountdownTextBar = styled.span`
+  color: ${props => props.theme.colors.primary.main};
+  font-size: 36px;
+  font-weight: 700;
+  height: 41px;
+`
+
 
 export default Rebase

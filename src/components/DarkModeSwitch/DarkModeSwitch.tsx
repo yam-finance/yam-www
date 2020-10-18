@@ -14,6 +14,11 @@ const DarkModeSwitch: React.FC = () => {
   const [_, setDarkModeSetting] = useLocalStorage('darkMode', darkMode)
 
   useEffect(() => {
+    if (darkMode) {
+      document.documentElement.style.setProperty('--gridline-drop-shadow', 'drop-shadow( 0px 1px 0px rgba(240, 240, 240, 0.13))');
+    } else {
+      document.documentElement.style.setProperty('--gridline-drop-shadow', 'drop-shadow(0 -1px 0px hsl(338deg 20% 90% / 100%))');
+    }
     setDarkModeSetting(darkMode)
   }, [
     darkMode,

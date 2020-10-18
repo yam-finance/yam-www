@@ -24,6 +24,7 @@ import Farm from 'views/Farm'
 import FAQ from 'views/FAQ'
 import Home from 'views/Home'
 import Migrate from 'views/Migrate'
+import Dashboard from 'views/Dashboard'
 import Governance from 'views/Governance'
 
 import styled from 'styled-components'
@@ -34,6 +35,7 @@ const App: React.FC = () => {
   const handleDismissMobileMenu = useCallback(() => {
     setMobileMenu(false)
   }, [setMobileMenu])
+
   const handlePresentMobileMenu = useCallback(() => {
     setMobileMenu(true)
   }, [setMobileMenu])
@@ -55,6 +57,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/migrate">
             <Migrate />
+          </Route>
+          <Route exact path="/dashboard">
+            <Dashboard />
           </Route>
           <Route exact path="/governance">
             <Governance />
