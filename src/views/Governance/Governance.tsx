@@ -79,8 +79,8 @@ const Governance: React.FC = () => {
           <Spacer />
           <Button
             full
-            text="Forum"
-            href="https://forum.yam.finance"
+            text="Discord"
+            href="https://strain.buzz/discord"
             variant="tertiary"
           />
           <Spacer />

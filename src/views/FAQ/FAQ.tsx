@@ -46,7 +46,7 @@ const FAQ: React.FC = () => {
               question="What is YAM?"
               slug="yam-token"
             >
-              <span>YAM is the governance token for the YAM protocol. Using token voting, YAM holders have direct influence over the YAM treasury and direction of the protocol. Governance discussions take place on the <ExternalLink href="https://forum.yam.finance/">Yam Governance Forum.</ExternalLink></span>
+              <span>YAM is the governance token for the YAM protocol. Using token voting, YAM holders have direct influence over the YAM treasury and direction of the protocol. Governance discussions take place on the discord</span>
             </Question>
             <Question
               active={activeSlug === "rebase"}
@@ -87,7 +87,7 @@ const FAQ: React.FC = () => {
               question="How does YAM have a treasury?"
               slug="treasury"
             >
-              <span>Every positive rebase, the treasury mints 10% of the rebase amount and sells YAM to the YAM/yUSD Uniswap pool. The yUSD acquired through this action is sent to the treasury which is managed by YAM holders. The current treasury amount can be seen on yam.finance.</span>
+              <span>Every positive rebase, the treasury mints 10% of the rebase amount and sells YAM to the YAM/yUSD Uniswap pool. The yUSD acquired through this action is sent to the treasury which is managed by YAM holders. The current treasury amount can be seen on strainnft.com.</span>
             </Question>
             <Question
               active={activeSlug === "farming"}
@@ -102,7 +102,7 @@ const FAQ: React.FC = () => {
               question="What is the scaling factor?"
               slug="scaling-factor"
             >
-              <span>Because YAM supply is constantly changing due to rebases, it’s hard to keep up with the ever changing supply amount. Yam.finance provides a scaling factor that you can use which allows you to go from initial Yam v3 supply amount to today’s supply amount.</span>
+              <span>Because YAM supply is constantly changing due to rebases, it’s hard to keep up with the ever changing supply amount. Strain $STRN provides a scaling factor that you can use which allows you to go from initial Yam v3 supply amount to today’s supply amount.</span>
             </Question>
             <Question
               active={activeSlug === "yusd"}

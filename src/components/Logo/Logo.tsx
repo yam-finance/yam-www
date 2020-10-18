@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom'
 const Logo: React.FC = () => {
   return (
     <StyledLogo to="/">
-      <StyledEmoji>🍠</StyledEmoji>
-      <StyledText>YAM Finance</StyledText>
+      <StyledText>Strain NFT</StyledText>
     </StyledLogo>
   )
 }
