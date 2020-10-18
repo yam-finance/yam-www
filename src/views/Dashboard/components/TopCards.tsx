@@ -15,7 +15,7 @@ import {
   getProjectedRebase,
   getProjectedMint,
   getProjectedRebasePercent,
-  getMintPercent
+  getProjectedMintPercent,
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
@@ -31,14 +31,14 @@ const TopCards: React.FC = () => {
   const [projectedRebase, setProjectedRebase] = useState<string>();
   const [projectedMint, setProjectedMint] = useState<string>();
   const [projectedRebasePercent, setProjectedRebasePercent] = useState<string>();
-  const [mintPercent, setMintPercent] = useState<string>();
+  const [projectedMintPercent, setProjectedMintPercent] = useState<string>();
   const { status } = useWallet();
 
   const fetchOnce = useCallback(async () => {
     const maxSupply = await getMaxSupply();
     const marketCap = await getMarketCap();
-    setMaxSupply(numeral(maxSupply).format("0.0a"));
-    setMarketCap(numeral(marketCap).format("0.0a"));
+    setMaxSupply(numeral(maxSupply).format("0.00a"));
+    setMarketCap(numeral(marketCap).format("0.00a"));
   }, [setMaxSupply, setMarketCap]);
 
   useEffect(() => {
@@ -54,14 +54,22 @@ const TopCards: React.FC = () => {
     const projectedRebase = await getProjectedRebase(yam);
     const projectedMint = await getProjectedMint(yam);
     const projectedRebasePercent = await getProjectedRebasePercent(yam);
-    const mintPercent = await getMintPercent(yam);
+    const projectedMintPercent = await getProjectedMintPercent(yam);
     setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
     setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
-    setProjectedRebase((Math.sign(projectedRebase) === 1 ? "+" : "") + numeral(projectedRebase).format("0.0a"));
-    //setProjectedMint(numeral((projectedMint)).format("0.0a"));
-    //setMintPercent(numeral((mintPercent)).format("0.00a"));
-    //setProjectedRebasePercent(numeral((projectedRebasePercent)).format("0.00a"));
-  }, [setCurrentPrice, setScalingFactor ,setProjectedRebase,setProjectedMint,setMintPercent,setProjectedRebasePercent,yam]);
+    setProjectedRebase((Math.sign(projectedRebase) === 1 ? "+" : "") + numeral(projectedRebase).format("0.00a"));
+    // setProjectedRebasePercent(numeral((projectedRebasePercent)).format("0.00a"));
+    // setProjectedMint(numeral((projectedMint)).format("0.00a"));
+    // setProjectedMintPercent(numeral((projectedMintPercent)).format("0.00a"));
+  }, [
+    setCurrentPrice,
+    setScalingFactor,
+    setProjectedRebase,
+    setProjectedMint,
+    setProjectedMintPercent,
+    setProjectedRebasePercent,
+    yam,
+  ]);
 
   useEffect(() => {
     fetchStats();
@@ -72,7 +80,7 @@ const TopCards: React.FC = () => {
   const { totalYUsdValue } = useTreasury();
   const treasuryValue =
     typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0
-      ? "$" + numeral(totalYUsdValue * 1.15).format("0.0a")
+      ? "$" + numeral(totalYUsdValue * 1.15).format("0.00a")
       : "--";
 
   const col = [
