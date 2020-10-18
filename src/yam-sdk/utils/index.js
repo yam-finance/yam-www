@@ -168,7 +168,6 @@ export const getProjectedRebase = async (yam) => {
   let projected_rebase_perc = await getProjectedRebasePercent(yam);
   if(projected_rebase_perc==0)
     return 0;
-  let BASE = new BigNumber(10).pow(18);
   let total_supply = new BigNumber(await getMaxSupply());
   return total_supply.dividedBy(100).times(projected_rebase_perc).toNumber();
 }
@@ -702,4 +701,3 @@ export const getMaxSupply = async () => {
   const data = await requestYam();
   return data.market_data.max_supply;
 };
-
