@@ -6,7 +6,7 @@ import { Box, Card, CardContent, Spacer } from "react-neu";
 import FancyValue from "components/FancyValue";
 import useYam from "hooks/useYam";
 import { bnToDec } from "utils";
-import { getCurrentPrice, getScalingFactor, getMaxSupply, getMarketCap } from "yam-sdk/utils";
+import { getCurrentPrice, getScalingFactor, getMaxSupply, getMarketCap, getProjectedRebase, getProjectedMint } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
 import Rebase from "views/Home/components/Rebase";
@@ -18,6 +18,8 @@ const TopCards: React.FC = () => {
   const [scalingFactor, setScalingFactor] = useState<string>();
   const [maxSupply, setMaxSupply] = useState<string>();
   const [marketCap, setMarketCap] = useState<string>();
+  const [projectedRebase, setProjectedRebase] = useState<string>();
+  const [projectedMint, setProjectedMint] = useState<string>();
   const { status } = useWallet();
   const toAdd = true; // update
 
@@ -38,9 +40,13 @@ const TopCards: React.FC = () => {
     if (!yam) return;
     const price = await getCurrentPrice(yam);
     const factor = await getScalingFactor(yam);
+    const projectedRebase = await getProjectedRebase(yam);
+    const projectedMint = await getProjectedMint(yam);
     setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
     setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
-  }, [setCurrentPrice, setScalingFactor, yam]);
+    setProjectedRebase(numeral((projectedRebase)).format("0.0a"));
+    setProjectedMint(numeral((projectedMint)).format("0.0a"));
+  }, [setCurrentPrice, setScalingFactor ,setProjectedRebase, ,setProjectedMint,yam]);
 
   useEffect(() => {
     fetchStats();
@@ -72,12 +78,12 @@ const TopCards: React.FC = () => {
       {
         icon: "🧱",
         label: "YAM Supply",
-        value: maxSupply ? `$${maxSupply} ` : "--",
+        value: maxSupply ? `${maxSupply} ` : "--",
       },
       {
-        icon: toAdd ? "🎂" : "🍃",
-        label: "YAM to be " + (toAdd ? "minted" : "rebased"),
-        value: !toAdd ? `$${toAdd} ` : "--", // -2.0%
+        icon: "🍃",
+        label: "YAM to be rebased",
+        value: projectedRebase ? `${projectedRebase} ` : "--", // -2.0%
       },
     ],
     [
@@ -91,7 +97,7 @@ const TopCards: React.FC = () => {
         label: "Treasury value",
         value: treasuryValue ? `${treasuryValue} ` : "--",
       },
-    ],
+    ]
   ];
 
   return (
@@ -136,8 +142,10 @@ const TopCards: React.FC = () => {
           </CardContent>
         </Card>
       </Box>
+
     </Split>
   );
+
 };
 
 export default TopCards;

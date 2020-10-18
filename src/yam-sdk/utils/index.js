@@ -2,6 +2,7 @@ import {ethers} from 'ethers'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import request from "request";
+import {bnToDec} from 'utils';
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -161,6 +162,27 @@ export const getCurrentPrice = async (yam) => {
 
 export const getTargetPrice = async (yam) => {
   return yam.toBigN(1).toFixed(2);
+}
+
+export const getProjectedRebase = async (yam) => {
+
+  let twap = await getCurrentPrice(yam);
+  let target_price = await getTargetPrice(yam);
+  let total_supply = await getMaxSupply();
+
+  if(twap>=0.95 && twap<=1.05)
+    return 0;
+
+  let deviation = (bnToDec(twap) - target_price) / target_price;
+  return total_supply* (deviation/20);
+
+}
+
+export const getProjectedMint = async (yam) => {
+
+  let rebase = await getProjectedRebase(yam);
+  return rebase==0? 0:(rebase*0.1);
+
 }
 
 export const getCirculatingSupply = async (yam) => {
