@@ -58,9 +58,9 @@ const TopCards: React.FC = () => {
     setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
     setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
     setProjectedRebase((Math.sign(projectedRebase) === 1 ? "+" : "") + numeral(projectedRebase).format("0.00a"));
-    // setProjectedRebasePercent(numeral((projectedRebasePercent)).format("0.00a"));
-    // setProjectedMint(numeral((projectedMint)).format("0.00a"));
-    // setProjectedMintPercent(numeral((projectedMintPercent)).format("0.00a"));
+    // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
+    // setProjectedMint(numeral(projectedMint).format("0.00a"));
+    // setProjectedMintPercent(numeral(projectedMintPercent).format("0.00a"));
   }, [
     setCurrentPrice,
     setScalingFactor,
