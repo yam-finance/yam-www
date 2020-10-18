@@ -142,10 +142,8 @@ const TopCards: React.FC = () => {
           </CardContent>
         </Card>
       </Box>
-
     </Split>
   );
-
 };
 
 export default TopCards;
