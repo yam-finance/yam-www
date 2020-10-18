@@ -86,13 +86,13 @@ export const harvest = async (yam, account, onTxHash) => {
       .send({ from: account, gas: 200000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
-            console.log("Harvest error", error)
+            console.log("Claim error", error)
             return false
         }
         onTxHash && onTxHash(txHash)
         const status = await waitTransaction(yam.web3.eth, txHash)
         if (!status) {
-          console.log("Harvest transaction failed.")
+          console.log("Claim transaction failed.")
           return false
         }
         return true

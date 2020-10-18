@@ -31,7 +31,7 @@ const Farm: React.FC = () => {
       return (
         <Button
           disabled
-          text="Harvest &amp; Unstake"
+          text="Claim &amp; Unstake"
           variant="secondary"
         />
       )
@@ -40,7 +40,7 @@ const Farm: React.FC = () => {
       return (
         <Button
           onClick={onRedeem}
-          text="Harvest &amp; Unstake"
+          text="Claim &amp; Unstake"
           variant="secondary"
         />
       )
@@ -60,8 +60,8 @@ const Farm: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon="🧑‍🌾"
-        subtitle="Stake YAM/yUSD LP tokens and grow YAMs"
+        icon=""
+        subtitle="Stake STRN/ETH LP tokens and farm STRN"
         title="Farm"
       />
       <Container>
