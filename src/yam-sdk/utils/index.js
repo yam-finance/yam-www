@@ -192,7 +192,7 @@ export const getProjectedMint = async (yam) => {
 
 export const getMintPercent = async(yam) => {
   let BASE = new BigNumber(10).pow(18);
-  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100);
+  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
 }
 
 export const getRebaseLag = async(yam) =>{
