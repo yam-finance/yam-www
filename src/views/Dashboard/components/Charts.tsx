@@ -498,7 +498,7 @@ const Charts: React.FC = () => {
   }, [fetchReserves])
 
   const DisplayCharts = useMemo(() => {
-    if (status === 'connected') {
+    if (status === "connected") {
       return (
         <>
           <Split>
@@ -549,20 +549,13 @@ const Charts: React.FC = () => {
       );
     }
     return (
-      <div>
+      <>
         <Box row justifyContent="center">
-          <Button
-            onClick={handleUnlockWalletClick}
-            text="Unlock wallet to display charts"
-            variant="secondary"
-          />
+          <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display charts" variant="secondary" />
         </Box>
-        <UnlockWalletModal
-          isOpen={unlockModalIsOpen}
-          onDismiss={handleDismissUnlockModal}
-        />
-      </div>
-    )
+        <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
+      </>
+    );
   }, [
     darkMode,
     status,
@@ -573,7 +566,7 @@ const Charts: React.FC = () => {
     scalingOpts,
     series,
     opts,
-  ])
+  ]);
   
   
   return (
