@@ -30,8 +30,8 @@ const WalletModal: React.FC<ModalProps> = ({
 
   const { reset } = useWallet()
   const {
-    yamV2Balance,
-    yamV3Balance
+    strnEthLpBalance,
+    strnTokenBalance
   } = useBalances()
 
   const {
@@ -58,16 +58,16 @@ const WalletModal: React.FC<ModalProps> = ({
         <Split>
           <Box row>
             <FancyValue
-              icon="🍠"
-              label="YAM balance"
-              value={getDisplayBalance(yamV3Balance)}
+              icon="🧬"
+              label="STRN balance"
+              value={getDisplayBalance(strnTokenBalance)}
             />
           </Box>
           <Box row>
             <FancyValue
-              icon={<span role="img" style={{ opacity: 0.5 }} >🍠</span>}
-              label="YAMV2 balance"
-              value={getDisplayBalance(yamV2Balance)}
+              icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
+              label="UNI-V2 balance"
+              value={getDisplayBalance(strnEthLpBalance)}
             />
           </Box>
         </Split>
@@ -77,15 +77,15 @@ const WalletModal: React.FC<ModalProps> = ({
         <Split>
           <Box row>
             <FancyValue
-              icon="🎁"
-              label="Vested YAM (Delegator)"
+              icon="🧬"
+              label="Claimable STRN"
               value={getDisplayBalance(vestedDelegatorRewardBalance)}
             />
           </Box>
           <Box row>
             <FancyValue
-              icon="🦋"
-              label="Vested YAM (Migrated)"
+              icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
+              label="Staked LP Tokens"
               value={getDisplayBalance(vestedMigratedBalance)}
             />
           </Box>

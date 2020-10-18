@@ -76,6 +76,8 @@ const Providers: React.FC = ({ children }) => {
       borderRadius: 28,
     })
   }, [])
+  // TODO: set to rinkeby for testing needs to be set to mainnet for launch
+  const chainId = 4;
   return (
     <ThemeProvider
       darkModeEnabled={darkModeSetting}
@@ -83,7 +85,7 @@ const Providers: React.FC = ({ children }) => {
       lightTheme={lightTheme}
     >
       <UseWalletProvider
-        chainId={1}
+        chainId={chainId}
         connectors={{
           walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
         }}

@@ -4,8 +4,8 @@ import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 
 import {
-  yamv2 as yamV2Address,
-  yamv3 as yamV3Address,
+  strn as strnTokenAddress,
+  strnEthLP as strnLPTokenAddress,
   yycrvUniLp as yyrcvUniLpAddress,
 } from 'constants/tokenAddresses'
 import { getBalance } from 'utils'
@@ -13,24 +13,24 @@ import { getBalance } from 'utils'
 import Context from './Context'
 
 const Provider: React.FC = ({ children }) => {
-  const [yamV2Balance, setYamV2Balance] = useState<BigNumber>()
-  const [yamV3Balance, setYamV3Balance] = useState<BigNumber>()
+  const [strnEthLpBalance, setStrnEthLpBalance] = useState<BigNumber>()
+  const [strnTokenBalance, setStrnTokenBalance] = useState<BigNumber>()
   const [yycrvUniLpBalance, setYycrvUniLpBalance] = useState<BigNumber>()
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
   const fetchBalances = useCallback(async (userAddress: string, provider: provider) => {
     const balances = await Promise.all([
-      await getBalance(provider, yamV2Address, userAddress),
-      await getBalance(provider, yamV3Address, userAddress),
+      await getBalance(provider, strnLPTokenAddress, userAddress),
+      await getBalance(provider, strnTokenAddress, userAddress),
       await getBalance(provider, yyrcvUniLpAddress, userAddress)
     ])
-    setYamV2Balance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(24)))
-    setYamV3Balance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))
+    setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
+    setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))
     setYycrvUniLpBalance(new BigNumber(balances[2]).dividedBy(new BigNumber(10).pow(18)))
   }, [
-    setYamV2Balance,
-    setYamV3Balance,
+    setStrnEthLpBalance,
+    setStrnTokenBalance,
     setYycrvUniLpBalance
   ])
 
@@ -58,8 +58,8 @@ const Provider: React.FC = ({ children }) => {
 
   return (
     <Context.Provider value={{
-      yamV2Balance,
-      yamV3Balance,
+      strnEthLpBalance,
+      strnTokenBalance,
       yycrvUniLpBalance,
     }}>
       {children}

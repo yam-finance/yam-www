@@ -9,10 +9,9 @@ import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
 import Split from 'components/Split'
 
-import useBalances from 'hooks/useBalances'
+//import useBalances from 'hooks/useBalances'
 import useVesting from 'hooks/useVesting'
 
-import MigrationNotice from './components/MigrationNotice'
 import Rebase from './components/Rebase'
 import RegisterVoteNotice from './components/RegisterVoteNotice'
 import Stats from './components/Stats'
@@ -21,7 +20,7 @@ import VestingNotice from './components/VestingNotice'
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme()
-  const { yamV2Balance } = useBalances()
+  //const { strnEthLpBalance } = useBalances()
   const { vestedBalance } = useVesting()
   return (
     <Page>
@@ -33,12 +32,6 @@ const Home: React.FC = () => {
       <Container>
         <RegisterVoteNotice />
         <Spacer />
-        {(yamV2Balance && yamV2Balance.toNumber() > 0) && (
-          <>
-            <MigrationNotice />
-            <Spacer />
-          </>
-        )}
         {(vestedBalance && vestedBalance.toNumber() > 0) && (
           <>
             <VestingNotice />
