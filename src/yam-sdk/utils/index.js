@@ -1,6 +1,8 @@
 import {ethers} from 'ethers'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
+import request from "request";
+import {bnToDec} from 'utils';
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -161,6 +163,40 @@ export const getCurrentPrice = async (yam) => {
 
 export const getTargetPrice = async (yam) => {
   return yam.toBigN(1).toFixed(2);
+}
+
+export const getProjectedRebase = async (yam) => {
+  let projected_rebase_perc = await getProjectedRebasePercent(yam);
+  if(projected_rebase_perc==0)
+    return 0;
+  let total_supply = new BigNumber(await getMaxSupply());
+  return total_supply.dividedBy(100).times(projected_rebase_perc).toNumber();
+}
+
+export const getProjectedRebasePercent = async (yam) =>{
+  let BASE = new BigNumber(10).pow(18);
+  let twap = (await getCurrentPrice(yam)).dividedBy(BASE);
+  if(twap.isGreaterThanOrEqualTo(0.95) && twap.isLessThanOrEqualTo(1.05))
+    return 0;
+  let target_price = await getTargetPrice(yam);
+  let rebase_lag = await getRebaseLag(yam);
+  let deviation = twap.minus(target_price).dividedBy(target_price);
+  return deviation.dividedBy(rebase_lag).times(100).toNumber();
+}
+
+export const getProjectedMint = async (yam) => {
+  let rebase = await getProjectedRebase(yam);
+  let mint_percent = await getProjectedMintPercent(yam);
+  return rebase<=0? 0:(rebase * mint_percent/100);
+}
+
+export const getProjectedMintPercent = async(yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
+}
+
+export const getRebaseLag = async(yam) =>{
+  return await yam.contracts.rebaser.methods.rebaseLag().call();
 }
 
 export const getCirculatingSupply = async (yam) => {
@@ -566,6 +602,66 @@ export const claimVested = async (yam, account, onTxHash) => {
   return await yam.contracts.migrator.methods.claimVested().send({from: account, gas: 140000});
 }
 
+export const scalingFactors = async (yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  let BASE24 = new BigNumber(10).pow(24);
+
+  let rebases = await yam.contracts.yamV3.getPastEvents('Rebase', {fromBlock: 10886913, toBlock: 'latest'});
+  let scalingFactors = [];
+  let blockNumbers = [];
+  for (let i = 0; i < rebases.length; i++) {
+      scalingFactors.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["prevYamsScalingFactor"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      blockNumbers.push(rebases[i]["blockNumber"]);
+  }
+  return {factors: scalingFactors, blockNumbers: blockNumbers};
+}
+
+export const treasuryEvents = async (yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  let BASE24 = new BigNumber(10).pow(24);
+
+  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 'latest'});
+  let reservesAdded = [];
+  let yamsSold = [];
+  let yamsFromReserves = [];
+  let yamsToReserves = [];
+  let blockNumbers = [];
+  for (let i = 0; i < rebases.length; i++) {
+      reservesAdded.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["reservesAdded"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsSold.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsSold"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsFromReserves.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsFromReserves"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsToReserves.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsToReserves"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      blockNumbers.push(rebases[i]["blockNumber"]);
+  }
+  return {
+    reservesAdded: reservesAdded,
+    yamsSold: yamsSold,
+    yamsFromReserves: yamsFromReserves,
+    yamsToReserves: yamsToReserves,
+    blockNumbers: blockNumbers
+  };
+}
+
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -580,3 +676,29 @@ export const waitTransaction = async (provider, txHash) => {
   }
   return (txReceipt.status)
 }
+
+const requestYam = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/yam-2",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getMarketCap = async () => {
+  const data = await requestYam();
+  return data.market_data.market_cap.usd;
+};
+
+export const getMaxSupply = async () => {
+  const data = await requestYam();
+  return data.market_data.max_supply;
+};

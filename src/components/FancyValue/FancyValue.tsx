@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Box, Spacer } from 'react-neu'
 import styled from 'styled-components'
 
@@ -9,32 +9,51 @@ interface FancyValueProps {
   icon: React.ReactNode,
   label: string,
   value: string,
+  wrap?: boolean,
 }
 
-const FancyValue: React.FC<FancyValueProps> = ({
-  icon,
-  label,
-  value,
-}) => {
+const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, wrap }) => {
+  const FancyLabelDisplay = useMemo(() => {
+    if (wrap) {
+      return (
+        <>
+          <LabelWrapDisplay>
+            <Label text={label} />
+          </LabelWrapDisplay>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Label text={label} />
+        </>
+      );
+    }
+  }, []);
+
   return (
-    <Box
-      alignItems="center"
-      row
-    >
+    <Box alignItems="center" row>
       <Box row justifyContent="center" minWidth={48}>
         <StyledIcon>{icon}</StyledIcon>
       </Box>
       <Spacer size="sm" />
       <Box flex={1}>
         <Value value={value} />
-        <Label text={label} />
+        {FancyLabelDisplay}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-const StyledIcon = styled.span.attrs({ role: 'img' })`
+const StyledIcon = styled.span.attrs({ role: "img" })`
   font-size: 32px;
-`
+`;
 
-export default FancyValue
+const LabelWrapDisplay = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+`;
+
+export default FancyValue;

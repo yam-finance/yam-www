@@ -14,12 +14,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
       <StyledMobileMenuWrapper>
         <StyledBackdrop onClick={onDismiss} />
         <StyledMobileMenu>
-          <StyledLink exact activeClassName="active" to="/" onClick={onDismiss}>Home</StyledLink>
-          <StyledLink exact activeClassName="active" to="/farm" onClick={onDismiss}>Farm</StyledLink>
-          <StyledLink exact activeClassName="active" to="/migrate" onClick={onDismiss}>Migrate</StyledLink>
-          <StyledLink exact activeClassName="active" to="/governance" onClick={onDismiss}>Govern</StyledLink>
-          <StyledLink activeClassName="active" to="/faq" onClick={onDismiss}>FAQ</StyledLink>
-          <StyledLinkOut href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLinkOut>
+          <StyledRouterLink exact activeClassName="active" to="/" onClick={onDismiss}>Home</StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/dashboard" onClick={onDismiss}>Dashboard</StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/governance" onClick={onDismiss}>Govern</StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/farm" onClick={onDismiss}>Farm</StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/migrate" onClick={onDismiss}>Migrate</StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/faq" onClick={onDismiss}>FAQ</StyledRouterLink>
         </StyledMobileMenu>
       </StyledMobileMenuWrapper>
     )
@@ -63,7 +63,7 @@ const StyledMobileMenu = styled.div`
   width: calc(100% - 48px);
 `
 
-const StyledLink = styled(NavLink)`
+const StyledRouterLink = styled(NavLink)`
   box-sizing: border-box;
   color: ${props => props.theme.colors.grey[500]};
   font-size: 24px;
@@ -80,7 +80,7 @@ const StyledLink = styled(NavLink)`
   }
 `
 
-const StyledLinkOut = styled.a`
+const StyledLink = styled.a`
     box-sizing: border-box;
     color: ${props => props.theme.colors.grey[500]};
     font-size: 24px;
