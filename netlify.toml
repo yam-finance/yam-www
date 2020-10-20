@@ -2,6 +2,6 @@
   from = "/"
   to = "/451.html"
   status = 451
-  force = true
+  force = false
   conditions = {Country = ["us","es"]}
   headers = {Link="<https://yam.finance>"}
