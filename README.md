@@ -6,17 +6,17 @@ YAM is the governance token for the YAM protocol. A decentralized cryptocurrency
 
 ## Access
 https://yam.finance/ - Live website 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/c6e1a55f-0f94-4b2d-937c-0749cf108ebd/deploy-status)](https://app.netlify.com/sites/epic-goldberg-1d6f10/deploys)
+<a href="https://app.netlify.com/sites/epic-goldberg-1d6f10/deploys" target="_blank">![Netlify Status](https://api.netlify.com/api/v1/badges/c6e1a55f-0f94-4b2d-937c-0749cf108ebd/deploy-status)</a>
 
 https://develop.yam.finance/ - Devleopment builds 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/aeee282a-58a9-4cf7-8965-a9cafc836168/deploy-status)](https://app.netlify.com/sites/naughty-villani-786b2d/deploys)
-
+<a href="https://app.netlify.com/sites/naughty-villani-786b2d/deploys" target="_blank">![Netlify Status](https://api.netlify.com/api/v1/badges/aeee282a-58a9-4cf7-8965-a9cafc836168/deploy-status)</a>
 
 ## Developments
 **Install the deps**
 ```sh
 yarn install
 ```
+
 **Start the project**
 ```sh
 yarn start
