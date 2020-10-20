@@ -107,7 +107,7 @@ export const redeem = async (yam, account, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
-      .exit()
+      .exit(String(new BigNumber(0)))
       .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -145,9 +145,10 @@ export const getPoolContracts = async (yam) => {
 }
 
 export const getEarned = async (yam, pool, account) => {
-  const scalingFactor = new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call())
+  //const scalingFactor = new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call())
   const earned = new BigNumber(await pool.methods.earned(account).call())
-  return earned.multipliedBy(scalingFactor.dividedBy(new BigNumber(10).pow(18)))
+  //return earned.multipliedBy(scalingFactor.dividedBy(new BigNumber(10).pow(18)))
+  return yam.toBigN(await pool.methods.earned(account).call())
 }
 
 export const getStaked = async (yam, pool, account) => {
@@ -501,8 +502,7 @@ export const currVested = async (yam, account) => {
 
 export const currUnclaimedDelegatorRewards = async (yam, account) => {
   let BASE = new BigNumber(10).pow(18);
-  let BASE24 = new BigNumber(10).pow(24);
-
+  /*
   let start = new BigNumber(1600444800);
   let duration = new BigNumber(90 * 86400);
   let now = new BigNumber(new Date().getTime() / 1000);
@@ -510,9 +510,11 @@ export const currUnclaimedDelegatorRewards = async (yam, account) => {
   if (percDone.gt(1)) {
     percDone = new BigNumber(1)
   }
-  let totalVesting = new BigNumber(await yam.contracts.migrator.methods.delegator_vesting(account).call());
-  let claimed = new BigNumber(await yam.contracts.migrator.methods.delegator_claimed(account).call());
-  let unclaimed = ((totalVesting.multipliedBy(percDone)).minus(claimed));
+  */
+  //let totalVesting = new BigNumber(await yam.contracts.migrator.methods.delegator_vesting(account).call());
+  //let claimed = new BigNumber(await yam.contracts.migrator.methods.delegator_claimed(account).call());
+  //let unclaimed = ((totalVesting.multipliedBy(percDone)).minus(claimed));
+  let unclaimed = new BigNumber(await yam.contracts.strneth_pool.methods.earned(account).call());
   let amt = await yamToFragment(yam, unclaimed);
   return amt.dividedBy(BASE);
 }

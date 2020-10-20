@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -21,7 +21,8 @@ import FancyValue from 'components/FancyValue'
 import Split from 'components/Split'
 
 import useBalances from 'hooks/useBalances'
-import useVesting from 'hooks/useVesting'
+import useFarming from 'hooks/useFarming'
+import { bnToDec } from 'utils'
 
 const WalletModal: React.FC<ModalProps> = ({
   isOpen,
@@ -31,13 +32,13 @@ const WalletModal: React.FC<ModalProps> = ({
   const { reset } = useWallet()
   const {
     strnEthLpBalance,
-    strnTokenBalance
+    strnTokenBalance,
+    strnIncBalance
   } = useBalances()
 
   const {
-    vestedDelegatorRewardBalance,
-    vestedMigratedBalance,
-  } = useVesting()
+    earnedBalance
+  } = useFarming()
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
@@ -46,6 +47,14 @@ const WalletModal: React.FC<ModalProps> = ({
       return '--'
     }
   }, [])
+
+  const formattedEarnedBalance = useMemo(() => {
+    if (earnedBalance) {
+      return numeral(bnToDec(earnedBalance)).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [earnedBalance])
 
   const handleSignOut = useCallback(() => {
     reset()
@@ -79,14 +88,14 @@ const WalletModal: React.FC<ModalProps> = ({
             <FancyValue
               icon="🧬"
               label="Claimable STRN"
-              value={getDisplayBalance(vestedDelegatorRewardBalance)}
+              value={formattedEarnedBalance}
             />
           </Box>
           <Box row>
             <FancyValue
               icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
               label="Staked LP Tokens"
-              value={getDisplayBalance(vestedMigratedBalance)}
+              value={getDisplayBalance(strnIncBalance)}
             />
           </Box>
         </Split>
