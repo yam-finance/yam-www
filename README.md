@@ -28,4 +28,3 @@ If you are interested to contribute feel free to [open an issue](https://github.
 For any other questions or bugs that you like to submit please join [the chat](https://discord.gg/TgFpmDj) to speak about it.
 
 ## License
--
