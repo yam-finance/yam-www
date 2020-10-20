@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/farm"
-  to = "/faq
+  to = "/faq"
   status = 301
   force = true
