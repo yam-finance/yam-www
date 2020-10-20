@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/farm"
+  to = "/faq"
+  status = 200
+  force = true
