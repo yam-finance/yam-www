@@ -4,7 +4,6 @@
   status = 451
   force = true
   conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW","US","ES"]}
-  headers = {Link="<https://yam.finance>"}
 
 [[redirects]]
   from = "/*"
