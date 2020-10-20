@@ -101,13 +101,14 @@ const Stake: React.FC = () => {
         />
       )
     }
-
     if (isApproved) {
       return (
         <Button
           full
           onClick={handleStakeClick}
           text="Stake"
+          disabled={true}
+          variant="secondary"
         />
       )
     }
@@ -190,7 +191,7 @@ const Stake: React.FC = () => {
         </CardContent>
         <CardActions>
           {UnstakeButton}
-          {StakeButton}
+          {/* {StakeButton} */}
         </CardActions>
         {typeof countdown !== 'undefined' && countdown > 0 && (
           <CardActions>
