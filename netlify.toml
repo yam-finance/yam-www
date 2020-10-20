@@ -1,7 +1,7 @@
 [[redirects]]
-  from = "https://deploy-preview-38--epic-goldberg-1d6f10.netlify.app/*"
+  from = "/"
   to = "/451.html"
   status = 451
   force = true
-  conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW","US","ES"]}
+  conditions = {Country = ["us","es"]}
   headers = {Link="<https://yam.finance>"}
