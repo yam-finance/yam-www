@@ -4,16 +4,16 @@ import { Container, Spacer } from 'react-neu'
 import styled from 'styled-components'
 
 interface PageHeaderProps {
-  icon: React.ReactNode,
+  imgSrc: string,
   subtitle?: string,
   title?: string,
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ icon, subtitle, title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ imgSrc, subtitle, title }) => {
   return (
     <Container size="sm">
     <StyledPageHeader>
-      <StyledIcon>{icon}</StyledIcon>
+      <img src={imgSrc} height={96}/>
       <Spacer size="sm" />
       <StyledTitle>{title}</StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>

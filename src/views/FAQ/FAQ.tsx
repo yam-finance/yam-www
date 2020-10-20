@@ -27,7 +27,7 @@ const FAQ: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon="📖"
+        imgSrc=""
         subtitle="Learn about YAM"
         title="FAQ"
       />

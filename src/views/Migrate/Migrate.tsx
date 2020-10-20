@@ -13,7 +13,7 @@ const Migrate: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon="🦋"
+        imgSrc=""
         subtitle="This is the last time you'll need to migrate!"
         title="Migrate to V3"
       />

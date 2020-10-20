@@ -60,7 +60,7 @@ const Farm: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon=""
+        imgSrc=""
         subtitle="Stake STRN/ETH LP tokens and farm STRN"
         title="Farm"
       />

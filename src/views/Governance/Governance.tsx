@@ -67,7 +67,7 @@ const Governance: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon={`${astronaut}`}
+        imgSrc=""
         subtitle="View and vote on proposals below!"
         title="Govern"
       />

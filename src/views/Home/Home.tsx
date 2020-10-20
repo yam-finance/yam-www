@@ -17,6 +17,7 @@ import RegisterVoteNotice from './components/RegisterVoteNotice'
 import Stats from './components/Stats'
 import Treasury from './components/Treasury'
 import VestingNotice from './components/VestingNotice'
+import twoStrains from '../../assets/two-strains.png'
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme()
@@ -25,9 +26,9 @@ const Home: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon={darkMode ? "🌚" : "🌞"}
+        imgSrc={twoStrains}
         subtitle={darkMode ? "🤫 shhh... the YAMs are sleeping." : "It's a great day to farm YAMs!"}
-        title="Welcome to YAM Finance."
+        title="Welcome to Strain."
       />
       <Container>
         <RegisterVoteNotice />
