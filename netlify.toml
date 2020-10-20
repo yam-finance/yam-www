@@ -1,11 +1,11 @@
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
-      
-[[redirects]]
-  from = "/*"
   to = "/451.html"
   status = 451
   conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW","US","ES"]}
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
