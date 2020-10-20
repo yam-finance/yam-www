@@ -6,18 +6,13 @@ import {
 } from 'react-neu'
 
 import Page from 'components/Page'
-import PageHeader from 'components/PageHeader'
-import Split from 'components/Split'
+import HomePageHeader from 'components/HomePageHeader'
+import HowItWorks from 'components/HowItWorks';
 
 //import useBalances from 'hooks/useBalances'
 import useVesting from 'hooks/useVesting'
-
-import Rebase from './components/Rebase'
-import RegisterVoteNotice from './components/RegisterVoteNotice'
-import Stats from './components/Stats'
-import Treasury from './components/Treasury'
-import VestingNotice from './components/VestingNotice'
 import twoStrains from '../../assets/two-strains.png'
+import plant from '../../assets/plant.png'
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme()
@@ -25,27 +20,13 @@ const Home: React.FC = () => {
   const { vestedBalance } = useVesting()
   return (
     <Page>
-      <PageHeader
+      <HomePageHeader
         imgSrc={twoStrains}
-        subtitle={darkMode ? "🤫 shhh... the YAMs are sleeping." : "It's a great day to farm YAMs!"}
-        title="Welcome to Strain."
+        subtitle="Upgrade and breed yield generating ERC 1155's"
+        title="Fun, DeFi-staked NFT Collectibles"
+        imgSrc2={plant}
       />
-      <Container>
-        <RegisterVoteNotice />
-        <Spacer />
-        {(vestedBalance && vestedBalance.toNumber() > 0) && (
-          <>
-            <VestingNotice />
-            <Spacer />
-          </>
-        )}
-        <Treasury />
-        <Spacer />
-        <Split>
-          <Rebase />
-          <Stats />
-        </Split>
-      </Container>
+      <HowItWorks></HowItWorks>
     </Page>
   )
 }

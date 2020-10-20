@@ -7,16 +7,18 @@ interface PageHeaderProps {
   imgSrc: string,
   subtitle?: string,
   title?: string,
+  imgSrc2?: string
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ imgSrc, subtitle, title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ imgSrc, subtitle, title, imgSrc2 }) => {
   return (
-    <Container size="sm">
+    <Container size="lg">
     <StyledPageHeader>
       <img src={imgSrc} height={96}/>
       <Spacer size="sm" />
       <StyledTitle>{title}</StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>
+      <img src={imgSrc2} height={192}/>
     </StyledPageHeader>
     </Container>
   )
