@@ -1,0 +1,8 @@
+  
+[[redirects]]
+  from = "/*"
+  to = "/451.html"
+  status = 451
+  force = true
+  conditions = {Country=["BY","CU","IR","IQ","CI","LR","KP","SD","SY","ZW","US"]}
+  headers = {Link="<https://yam.finance>"}
