@@ -1,5 +1,5 @@
 [[redirects]]
-  from = "*"
+  from = "https://deploy-preview-38--epic-goldberg-1d6f10.netlify.app/*"
   to = "/451.html"
   status = 451
   force = true
