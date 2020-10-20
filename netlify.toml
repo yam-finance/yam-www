@@ -1,7 +1,7 @@
 [[redirects]]
-  from = "/"
-  to = "/451.html"
+  from = "/farm"
+  to = "/faq"
   status = 451
-  force = false
-  conditions = {Country = ["us","es"]}
+  force = true
   headers = {Link="<https://yam.finance>"}
+
