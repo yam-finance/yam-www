@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Unavailable For Legal Reasons</title>
+    <style>
+        body {
+            background: radial-gradient(circle at center top, rgb(247, 243, 244), rgb(243, 237, 239)) 0% 0% / cover fixed;
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            padding: 0px 20px 0px 20px;
+            color: #961042;
+            font-family: sans-serif;
+            font-size: 34px;
+            text-shadow: 1px -3px 3px #ffffff, -1px 2px 3px #0000001c;
+            margin-top: -150px;
+        }
+
+        .hold {
+            position: relative;
+            margin-top: 280px;
+        }
+
+        .hold:after {
+            content: "";
+            background: #00000026;
+            border-radius: 100px;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            top: 20px;
+            display: block;
+            right: 20px;
+            z-index: 900;
+            animation: shadow 5s ease-in-out infinite alternate;
+            transform: translateX(35px) translateY(30px) skewX(-35deg);
+            filter: blur(20px);
+        }
+
+        .yam {
+            content: "";
+            position: absolute;
+            top: -80%;
+            left: 50%;
+            transform: translate(-50%, -80%);
+            width: 200px;
+            height: 200px;
+            animation: move 5s ease-in-out infinite alternate;
+            font-size: 150px;
+            text-align: center;
+        }
+
+        .yam:before {
+            content: "🍠";
+            position: absolute;
+            left: 6%;
+            opacity: 0.2;
+            height: 100%;
+            width: 90%;
+            filter: blur(0.9px);
+        }
+
+        .yam:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 40%;
+            left: 20%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.8) 14%, rgba(255, 255, 255, 0) 24%);
+            transform: translateX(-80px) translateY(-90px) skewX(-20deg);
+            filter: blur(20px);
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(-50%, -80%);
+            }
+
+            100% {
+                transform: translate(-50%, -40%);
+            }
+        }
+
+        @keyframes shadow {
+            0% {
+                opacity: 0.2;
+                filter: blur(20px);
+            }
+
+            100% {
+                opacity: 0.8;
+                filter: blur(8px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Unavailable For Legal Reasons</h1>
+    <div class="hold">
+        <div class="yam"></div>
+    </div>
+</body>
+
+</html>

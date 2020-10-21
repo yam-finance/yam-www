@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react'
 
+import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
+
 import {
   Card,
   CardContent,
@@ -94,7 +97,7 @@ const FAQ: React.FC = () => {
               question="Can I farm YAM?"
               slug="farming"
             >
-              <span>Yes. Currently, you’re able to earn YAM rewards by providing liquidity to the <ExternalLink href="https://uniswap.info/pair/0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC">yUSD/YAM Uniswap pool</ExternalLink>. The rewards given to the pool are 92,500 in week 1, decreasing by 10% every week after. Please realize that you must apply the YAM scaling factor to get the current reward amount at any given time.</span>
+              <span>Currently check: <RouterLink to="/farm">Farm</RouterLink> to know if you are able to farm. If you were able to farm as indicated on the page: you will be eligible to earn YAM rewards by providing liquidity to the <ExternalLink href="https://uniswap.info/pair/0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC">yUSD/YAM Uniswap pool</ExternalLink>. The rewards given to the pool are 92,500 in week 1, decreasing by 10% every week after. Please realize that you must apply the YAM scaling factor to get the current reward amount at any given time.</span>
             </Question>
 
             <Question
@@ -118,5 +121,11 @@ const FAQ: React.FC = () => {
   )
 }
 
+const RouterLink = styled(NavLink)`
+  color: ${props => props.theme.colors.primary.light};
+  &:hover {
+    color: ${props => props.theme.colors.primary.light};
+  }
+`
 
 export default FAQ
