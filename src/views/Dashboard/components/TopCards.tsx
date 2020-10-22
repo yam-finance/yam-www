@@ -16,6 +16,7 @@ import {
   getProjectedMint,
   getProjectedRebasePercent,
   getProjectedMintPercent,
+  getRebaseType,
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
@@ -31,7 +32,6 @@ const TopCards: React.FC = () => {
   const [projectedRebase, setProjectedRebase] = useState<string>();
   const [projectedMint, setProjectedMint] = useState<string>();
   const [projectedRebasePercent, setProjectedRebasePercent] = useState<string>();
-  const [projectedMintPercent, setProjectedMintPercent] = useState<string>();
   const { status } = useWallet();
 
   const fetchOnce = useCallback(async () => {
@@ -52,21 +52,19 @@ const TopCards: React.FC = () => {
     const price = await getCurrentPrice(yam);
     const factor = await getScalingFactor(yam);
     const projectedRebase = await getProjectedRebase(yam);
-    const projectedMint = await getProjectedMint(yam);
-    const projectedRebasePercent = await getProjectedRebasePercent(yam);
-    const projectedMintPercent = await getProjectedMintPercent(yam);
+    const rebaseType = getRebaseType(projectedRebase);
+    // const projectedMint = await getProjectedMint(yam);
+    // const projectedRebasePercent = await getProjectedRebasePercent(yam);
     setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
     setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
-    setProjectedRebase((Math.sign(projectedRebase) === 1 ? "+" : "") + numeral(projectedRebase).format("0.00a"));
-    // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
+    setProjectedRebase((rebaseType ? "+" : "") + numeral(projectedRebase).format("0.00a"));
     // setProjectedMint(numeral(projectedMint).format("0.00a"));
-    // setProjectedMintPercent(numeral(projectedMintPercent).format("0.00a"));
+    // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
   }, [
     setCurrentPrice,
     setScalingFactor,
     setProjectedRebase,
     setProjectedMint,
-    setProjectedMintPercent,
     setProjectedRebasePercent,
     yam,
   ]);

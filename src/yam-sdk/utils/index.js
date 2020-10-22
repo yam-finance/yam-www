@@ -190,8 +190,11 @@ export const getProjectedMint = async (yam) => {
   return rebase<=0? 0:(rebase * mint_percent/100);
 }
 
-export const getProjectedMintPercent = async(yam) => {
+export const getProjectedMintPercent = async (yam, rebaseType) => {
   let BASE = new BigNumber(10).pow(18);
+  if(!rebaseType) {
+    return 0;
+  }
   return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
 }
 
@@ -660,6 +663,10 @@ export const treasuryEvents = async (yam) => {
     yamsToReserves: yamsToReserves,
     blockNumbers: blockNumbers
   };
+}
+
+export const getRebaseType = async (rebaseValue) => {
+  return Math.sign(rebaseValue) === 1;
 }
 
 const sleep = (ms) => {
