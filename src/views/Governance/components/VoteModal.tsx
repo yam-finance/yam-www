@@ -235,5 +235,6 @@ const StyledDescription = styled.div`
 
 const StyledInfo = styled.div`
   font-size: 14px;
+  overflow-x: scroll;
 `
 export default VoteModal
