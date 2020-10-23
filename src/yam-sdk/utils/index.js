@@ -20,7 +20,9 @@ const GAS_LIMIT = {
 const knownSnapshots = {
   "0x110f2263e5adf63ea82514bbec3440762edefed1bdf4f0ee06a9458fc3e7e2e7": "https://snapshot.page/#/yamv2/proposal/QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9",
   "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7" : "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf",
-  "0xd00307c2982b4fba5790f238ff8df9faab975794dd4144eddbd30ac67eb873ed" : "https://snapshot.page/#/yam/proposal/QmQxMTQkz7fW3AXma69ueEwhq5Sf8HNdUYseEFQFw3uKEx"
+  "0xd00307c2982b4fba5790f238ff8df9faab975794dd4144eddbd30ac67eb873ed" : "https://snapshot.page/#/yam/proposal/QmQxMTQkz7fW3AXma69ueEwhq5Sf8HNdUYseEFQFw3uKEx",
+  "0xe4e06aae747e811b8de892c0c8b1ca78238b437a2893e78a3b1be91db608f75e" : "https://snapshot.page/#/yam/proposal/Qmf6ECSwrmWqHNq6CRTtnFR66ZFhth4kBXTbRy24wcVzLg"
+
 }
 
 export const getPoolStartTime = async (poolContract) => {
