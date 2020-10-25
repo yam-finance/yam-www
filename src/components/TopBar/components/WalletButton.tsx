@@ -46,6 +46,13 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
     }
   }, []);
 
+  const fetchConnection = useCallback(async () => {
+    if (status === "disconnected") {
+      setUserAccount(null);
+      localStorage.removeItem("account");
+    }
+  }, [status, setUserAccount]);
+
   useEffect(() => {
     checkLocalUserAccount();
     const localAccount: any = (account ? account.toString() : false) || localStorage.getItem("account");
@@ -55,17 +62,14 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
     }
   }, [account, userAccount, handleDismissWalletModal]);
 
-  const fetchConnection = useCallback(async () => {
-    await sleep(2000);
-    if (status === "disconnected") {
-      setUserAccount(null);
-      localStorage.removeItem("account");
-    }
-  }, [status]);
-
   useEffect(() => {
-    fetchConnection();
-  }, [status]);
+    let checkConnection = setTimeout(() => {
+      fetchConnection();
+    }, 2000);
+    return () => {
+      clearTimeout(checkConnection);
+    };
+  }, [status, fetchConnection]);
 
   useEffect(() => {
     const localAccount = localStorage.getItem("account");
