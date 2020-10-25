@@ -776,6 +776,7 @@ const Charts: React.FC = () => {
     }
 
     const handleScaleChange = async(event:any,page:any) => {
+
         if(scalingCurrentPage!=page)
         {
             setScalingPagingDisabled(true);
@@ -784,7 +785,8 @@ const Charts: React.FC = () => {
     }
 
     const handleYamMintedChange = async(event:any,page:any) => {
-        if(scalingCurrentPage!=page)
+
+        if(yamMintedCurrentPage!=page)
         {
             setYamMintedPagingDisabled(true);
             setYamMintedCurrentPage(page);
