@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 
 import numeral from 'numeral'
 import Chart from "react-apexcharts";
+import ChartPagination from "components/ChartPagination";
 import { useWallet } from 'use-wallet'
 
 import {
@@ -17,15 +18,15 @@ import {
   useTheme
 } from 'react-neu'
 
-import FancyValue from 'components/FancyValue'
 import Split from 'components/Split'
 
 import useYam from 'hooks/useYam'
 import {
-  treasuryEvents,
-  scalingFactors
+  scalingFactors,
+  yamSold,
+  yamMinted,
+  reservesHistory
 } from 'yam-sdk/utils'
-import UnlockWalletModal from 'components/UnlockWalletModal'
 
 export interface ChartOptions {
   type: string,
@@ -228,168 +229,410 @@ const Charts: React.FC = () => {
   const [opts, setOpts] = useState<OptionInterface[]>()
   const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>()
   const [scalingOpts, setScalingOpts] = useState<OptionInterface>()
+  const [scalingTotalPages, setScalingTotalPages] = useState<number>(1);
+  const [scalingCurrentPage, setScalingCurrentPage] = useState<number>(0);
+  const [scalingPagingDisabled, setScalingPagingDisabled] = useState<boolean>(false);
+  const [yamSoldTotalPages, setYamSoldTotalPages] = useState<number>(1);
+  const [yamSoldCurrentPage, setYamSoldCurrentPage] = useState<number>(0);
+  const [yamSoldOpts, setYamSoldOpts] = useState<OptionInterface>()
+  const [yamSeries, setYamSeries] = useState<SeriesInterface[]>()
+  const [yamSoldPagingDisabled, setYamSoldPagingDisabled] = useState<boolean>(false);
+  const [yamMintedTotalPages, setYamMintedTotalPages] = useState<number>(1);
+  const [yamMintedCurrentPage, setYamMintedCurrentPage] = useState<number>(0);
+  const [yamMintedOpts, setYamMintedOpts] = useState<OptionInterface>()
+  const [yamMintedSeries, setYamMintedSeries] = useState<SeriesInterface[]>()
+  const [yamMintedPagingDisabled, setYamMintedPagingDisabled] = useState<boolean>(false);
+  const [reservesTotalPages, setReservesTotalPages] = useState<number>(1);
+  const [reservesCurrentPage, setReservesCurrentPage] = useState<number>(0);
+  const [reservesOpts, setReservesOpts] = useState<OptionInterface>()
+  const [reservesSeries, setReservesSeries] = useState<SeriesInterface[]>()
+  const [reservesPagingDisabled, setReservesPagingDisabled] = useState<boolean>(false);
   const { status } = useWallet()
-  const daysRange = 14;
 
-  const fetchReserves = useCallback(async () => {
-    if (!yam) {
-      return
-    }
-    const {reservesAdded, yamsSold, yamsFromReserves, yamsToReserves, blockNumbers} = await treasuryEvents(yam);
-    let reserves: TimeSeries[] = [];
-    let running = 0;
-    for (let i = 0; i < reservesAdded.length; i++) {
-      running += reservesAdded[i];
-      const tmp: TimeSeries = {
-        x: blockNumbers[i],
-        y: running
-      };
-      reserves.push(tmp);
-    }
+    const fetchYamMinted = useCallback( async()=> {
 
-    let sales: number[] = [];
-    for (let i = 0; i < yamsSold.length; i++) {
-      sales.push(yamsSold[i]);
-    }
+        const {yamMint, timestamps,currentPage,totalPages} =  await yamMinted(yamMintedCurrentPage);
+        if(!yamMintedCurrentPage)
+            setYamMintedCurrentPage(currentPage);
 
-    let mints: number[] = [];
-    for (let i = 0; i < yamsSold.length; i++) {
-      mints.push(yamsSold[i] - yamsFromReserves[i] + yamsToReserves[i]);
-    }
-
-    const asSeries: SeriesInterface[] = [{
-        name: 'yUSD Reserves',
-        data: reserves.slice(reserves.length - daysRange)
-    }, {
-        name: 'Yams Sold',
-        data: sales.slice(sales.length - daysRange)
-    }, {
-        name: 'Yam Minted',
-        data: mints.slice(mints.length - daysRange)
-    }];
-
-    let theme;
-    let labelColor;
-    let borderColor;
-    if (darkMode) {
-      theme = 'dark'
-      labelColor = colors.grey[600]
-      borderColor = colors.grey[900]
-    } else {
-      theme = 'light'
-      labelColor = colors.grey[600]
-      borderColor = colors.grey[600]
-    }
-    let reservesOpts: OptionInterface = {
-        chart: {
-          type: 'line',
-          height: 350
-        },
-        dataLabels: {
-          enabled: false
-        },
-        markers: {
-          hover: {
-            sizeOffset: 4
-          }
-        },
-        colors: ['#c60c4d'],
-        xaxis: {
-          labels: {
-            style: {
-              colors: labelColor
-            },
-          },
-          axisBorder: {
-            show: false
-          },
-          title: {
-            text: "Block Number",
-            style: {
-              color: labelColor
-            }
-          }
-        },
-        yaxis: {
-          title: {
-            text:"yUSD In Reserves",
-            style: {
-              color: labelColor
-            }
-          },
-          labels: {
-            style: {
-              colors: labelColor
-            },
-            formatter: (value: any) => { return numeral(value).format('0.00a')}
-          },
-          axisBorder: {
-            show: false
-          },
-        },
-        grid: {
-          borderColor: borderColor,
-          padding: {
-            right: 5
-          }
-        },
-        theme: {
-          mode: theme
-        },
-        tooltip: {
-          theme: theme
+        let mints: TimeSeries[] = [];
+        for (let i = 0; i < yamMint.length; i++) {
+            const tmp: TimeSeries = {
+                x: timestamps[i],
+                y: yamMint[i]
+            };
+            mints.push(tmp);
         }
-      };
 
-    let soldOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (soldOpts && soldOpts.chart && soldOpts.xaxis && soldOpts.yaxis && soldOpts.yaxis.title && soldOpts.yaxis.labels) {
-      soldOpts.yaxis.title.text = "YAMs Sold";
-      soldOpts.yaxis.title.style = {color: labelColor}
-      soldOpts.chart.type = "bar";
-      soldOpts.xaxis.categories = blockNumbers;
-      soldOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
-    }
+        const series: SeriesInterface[] = [{
+            name: 'Yams Minted',
+            data: mints
+        }];
 
-    let mintedOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (mintedOpts && mintedOpts.chart && mintedOpts.xaxis && mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
-      mintedOpts.yaxis.title.text = "YAMs Minted";
-      mintedOpts.yaxis.title.style = {color: labelColor}
-      mintedOpts.chart.type = "bar";
-      mintedOpts.xaxis.categories = blockNumbers;
-      mintedOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
-    }
+        let theme;
+        let labelColor;
+        let borderColor;
+        if (darkMode) {
+            theme = 'dark'
+            labelColor = colors.grey[600]
+            borderColor = colors.grey[900]
+        } else {
+            theme = 'light'
+            labelColor = colors.grey[600]
+            borderColor = colors.grey[600]
+        }
 
-    reservesOpts.stroke = { curve: 'stepline'}
+        let yamOpts: OptionInterface = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            dataLabels: {
+                enabled: false
+            },
+            markers: {
+                hover: {
+                    sizeOffset: 4
+                }
+            },
+            colors: ['#c60c4d'],
+            xaxis: {
+                labels: {
+                    style: {
+                        colors: labelColor
+                    },
+                    formatter: (value: any) => {
+                        if(typeof value !== 'undefined')
+                        {
+                            let d = new Date(value*1000);
+                            return ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) +
+                                "/" + (d.getFullYear().toString().substr(-2));
+                        }
 
-    if (reservesOpts.xaxis) {
-      reservesOpts.xaxis.type = 'numeric';
-    }
-    setSeries(asSeries);
-    setOpts([reservesOpts, soldOpts, mintedOpts]);
-  }, [
-    setSeries,
-    setOpts,
-    darkMode,
-    status,
-    yam
-  ])
+                        return value;
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                title: {
+                    text: "",
+                    style: {
+                        color: labelColor
+                    }
+                },
+                type:'datetime'
+            },
+            yaxis: {
+                title: {
+                    text:"YAMs Minted",
+                    style: {
+                        color: labelColor
+                    }
+                },
+                labels: {
+                    style: {
+                        colors: labelColor
+                    },
+                    formatter: (value: any) => { return numeral(value).format('0.00a')}
+                },
+                axisBorder: {
+                    show: false
+                },
+            },
+            grid: {
+                borderColor: borderColor,
+                padding: {
+                    right: 5
+                }
+            },
+            theme: {
+                mode: theme
+            },
+            tooltip: {
+                theme: theme
+            }
+        };
 
-  const fetchScalingFactors = useCallback(async () => {
-    if (!yam) {
-      return
-    }
-    const {factors, blockNumbers} = await scalingFactors(yam);
+        setYamMintedSeries(series);
+        setYamMintedOpts(yamOpts);
+        setYamMintedTotalPages(totalPages);
+        setYamMintedPagingDisabled(false);
+
+    },[
+        setYamMintedSeries,
+        setYamMintedOpts,
+        setYamMintedTotalPages,
+        setYamMintedCurrentPage,
+        setYamMintedPagingDisabled,
+        yamMintedCurrentPage,
+        darkMode
+
+    ])
+
+    const fetchReserves = useCallback( async()=> {
+
+        const {reserves, timestamps,currentPage,totalPages} =  await reservesHistory(reservesCurrentPage);
+        if(!reservesCurrentPage)
+            setReservesCurrentPage(currentPage);
+
+        let data: TimeSeries[] = [];
+        for (let i = 0; i < reserves.length; i++) {
+            const tmp: TimeSeries = {
+                x: timestamps[i],
+                y: reserves[i]
+            };
+            data.push(tmp);
+        }
+
+        const asSeries: SeriesInterface[] = [{
+            name: 'yUSD Reserves',
+            data: data
+        }];
+
+
+        let theme;
+        let labelColor;
+        let borderColor;
+        if (darkMode) {
+            theme = 'dark'
+            labelColor = colors.grey[600]
+            borderColor = colors.grey[900]
+        } else {
+            theme = 'light'
+            labelColor = colors.grey[600]
+            borderColor = colors.grey[600]
+        }
+
+        let reservesOpts: OptionInterface = {
+            chart: {
+                type: 'line',
+                height: 350
+            },
+            stroke: {
+                curve: 'smooth',
+            },
+            dataLabels: {
+                enabled: false
+            },
+            markers: {
+                hover: {
+                    sizeOffset: 4
+                }
+            },
+            colors: ['#c60c4d'],
+            xaxis: {
+                labels: {
+                    style: {
+                        colors: labelColor
+                    },
+                    formatter: (value: any) => {
+                        if(typeof value !== 'undefined')
+                        {
+                            let d = new Date(value*1000);
+                            return ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) +
+                                "/" + (d.getFullYear().toString().substr(-2));
+                        }
+
+                        return value;
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                title: {
+                    text: "",
+                    style: {
+                        color: labelColor
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text:"yUSD In Reserves",
+                    style: {
+                        color: labelColor
+                    }
+                },
+                labels: {
+                    style: {
+                        colors: labelColor
+                    },
+                    formatter: (value: any) => { return numeral(value).format('0.00a')}
+                },
+                axisBorder: {
+                    show: false
+                },
+            },
+            grid: {
+                borderColor: borderColor,
+                padding: {
+                    right: 5
+                }
+            },
+            theme: {
+                mode: theme
+            },
+            tooltip: {
+                theme: theme
+            }
+        };
+
+        setReservesSeries(asSeries);
+        setReservesOpts(reservesOpts);
+        setReservesTotalPages(totalPages);
+        setReservesPagingDisabled(false);
+
+    },[
+        setReservesSeries,
+        setReservesOpts,
+        setReservesTotalPages,
+        setReservesCurrentPage,
+        setReservesPagingDisabled,
+        reservesCurrentPage,
+        darkMode
+
+    ])
+
+    const fetchYamSold = useCallback( async()=> {
+
+        const {yamSolds, timestamps,currentPage,totalPages} =  await yamSold(yamSoldCurrentPage);
+        if(!yamSoldCurrentPage)
+            setYamSoldCurrentPage(currentPage);
+
+        let sales: TimeSeries[] = [];
+        for (let i = 0; i < yamSolds.length; i++) {
+
+            const tmp: TimeSeries = {
+                x: timestamps[i],
+                y: yamSolds[i]
+            };
+            sales.push(tmp);
+        }
+
+        const series: SeriesInterface[] = [{
+            name: 'Yams Sold',
+            data: sales
+        }];
+
+        let theme;
+        let labelColor;
+        let borderColor;
+        if (darkMode) {
+            theme = 'dark'
+            labelColor = colors.grey[600]
+            borderColor = colors.grey[900]
+        } else {
+            theme = 'light'
+            labelColor = colors.grey[600]
+            borderColor = colors.grey[600]
+        }
+
+        let yamOpts: OptionInterface = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            dataLabels: {
+                enabled: false
+            },
+            markers: {
+                hover: {
+                    sizeOffset: 4
+                }
+            },
+            colors: ['#c60c4d'],
+            xaxis: {
+                labels: {
+                    style: {
+                        colors: labelColor
+                    },
+                    formatter: (value: any) => {
+                        if(typeof value !== 'undefined')
+                        {
+                            let d = new Date(value*1000);
+                            return ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) +
+                                "/" + (d.getFullYear().toString().substr(-2));
+                        }
+
+                        return value;
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                title: {
+                    text: "",
+                    style: {
+                        color: labelColor
+                    }
+                },
+                type:'datetime'
+            },
+            yaxis: {
+                title: {
+                    text:"YAMs Sold",
+                    style: {
+                        color: labelColor
+                    }
+                },
+                labels: {
+                    style: {
+                        colors: labelColor
+                    },
+                    formatter: (value: any) => { return numeral(value).format('0.00a')}
+                },
+                axisBorder: {
+                    show: false
+                },
+            },
+            grid: {
+                borderColor: borderColor,
+                padding: {
+                    right: 5
+                }
+            },
+            theme: {
+                mode: theme
+            },
+            tooltip: {
+                theme: theme
+            }
+        };
+
+        setYamSeries(series);
+        setYamSoldOpts(yamOpts);
+        setYamSoldTotalPages(totalPages);
+        setYamSoldPagingDisabled(false);
+
+    },[
+    setYamSeries,
+    setYamSoldOpts,
+    setYamSoldTotalPages,
+    setYamSoldCurrentPage,
+    setYamSoldPagingDisabled,
+    yamSoldCurrentPage,
+    darkMode
+
+    ])
+
+    const fetchScalingFactors = useCallback(async () => {
+
+    const {factors, timestamps,currentPage,totalPages} = await scalingFactors(scalingCurrentPage);
+    if(!scalingCurrentPage)
+        setScalingCurrentPage(currentPage);
     let data: TimeSeries[] = [];
     for (let i = 0; i < factors.length; i++) {
       const tmp: TimeSeries = {
-        x: blockNumbers[i],
+        x: timestamps[i],
         y: factors[i]
       };
       data.push(tmp);
     }
+
     const asSeries: SeriesInterface[] = [{
         name: 'Scaling Factor',
-        data: data.slice(factors.length - daysRange)
+        data: data
     }];
     let theme;
     let labelColor;
@@ -410,7 +653,7 @@ const Charts: React.FC = () => {
           height: 350
         },
         stroke: {
-          curve: 'stepline',
+          curve: 'smooth',
         },
         dataLabels: {
           enabled: false
@@ -422,17 +665,27 @@ const Charts: React.FC = () => {
         },
         colors: ['#c60c4d'],
         xaxis: {
-          type: 'numeric',
+          type: 'datetime',
           labels: {
             style: {
               colors: labelColor
             },
+              formatter: (value: any) => {
+                  if(typeof value !== 'undefined')
+                  {
+                      let d = new Date(value*1000);
+                      return ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) +
+                          "/" + (d.getFullYear().toString().substr(-2));
+                  }
+
+                  return value;
+              }
           },
           axisBorder: {
             show: false
           },
           title: {
-            text: "Block Number",
+            text: "",
             style: {
               color: labelColor
             }
@@ -440,7 +693,7 @@ const Charts: React.FC = () => {
         },
         yaxis: {
           labels: {
-            style: {
+              style: {
               colors: labelColor
             }
           },
@@ -448,7 +701,8 @@ const Charts: React.FC = () => {
             show: false
           },
           title: {
-            style: {
+              text:"Scaling Factor",
+              style: {
               color: labelColor
             }
           }
@@ -466,38 +720,79 @@ const Charts: React.FC = () => {
       };
     setScalingSeries(asSeries);
     setScalingOpts(options);
+    setScalingTotalPages(totalPages);
+    setScalingPagingDisabled(false);
+
   }, [
     setScalingSeries,
     setScalingOpts,
+    setScalingTotalPages,
+    setScalingCurrentPage,
+    setScalingPagingDisabled,
+    scalingCurrentPage,
     darkMode,
-    status,
-    yam
   ])
 
-  const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false)
+    useEffect(() => {
+        fetchScalingFactors()
+        let refreshInterval = setInterval(()=> fetchScalingFactors, 100000)
+        return () => clearInterval(refreshInterval)
+    }, [fetchScalingFactors])
 
-  const handleDismissUnlockModal = useCallback(() => {
-    setUnlockModalIsOpen(false)
-  }, [setUnlockModalIsOpen])
+    useEffect(() => {
+        fetchReserves()
+        let refreshInterval = setInterval(() => fetchReserves(), 100000)
+        return () => clearInterval(refreshInterval)
+    }, [fetchReserves])
 
-  const handleUnlockWalletClick = useCallback(() => {
-    setUnlockModalIsOpen(true)
-  }, [setUnlockModalIsOpen])
+    useEffect(() => {
+        fetchYamMinted()
+        let refreshInterval = setInterval(() => fetchYamMinted(), 100000)
+        return () => clearInterval(refreshInterval)
+    }, [fetchYamMinted])
 
-  useEffect(() => {
-    fetchScalingFactors()
-    let refreshInterval = setInterval(() => fetchScalingFactors(), 100000)
-    return () => clearInterval(refreshInterval)
-  }, [fetchScalingFactors])
+    useEffect(() => {
+        fetchYamSold()
+        let refreshInterval = setInterval(() => fetchYamSold(), 100000)
+        return () => clearInterval(refreshInterval)
+    }, [fetchYamSold])
 
-  useEffect(() => {
-    fetchReserves()
-    let refreshInterval = setInterval(() => fetchReserves(), 100000)
-    return () => clearInterval(refreshInterval)
-  }, [fetchReserves])
+    const handleReservesChange = async(event:any,page:any) => {
 
-  const DisplayCharts = useMemo(() => {
-    if (status === "connected") {
+        if(reservesCurrentPage!=page)
+        {
+            setReservesPagingDisabled(true);
+            setReservesCurrentPage(page);
+        }
+    }
+
+    const handleYamSoldChange = async(event:any,page:any) => {
+
+        if(yamSoldCurrentPage!=page)
+        {
+            setYamSoldPagingDisabled(true);
+            setYamSoldCurrentPage(page);
+        }
+    }
+
+    const handleScaleChange = async(event:any,page:any) => {
+        if(scalingCurrentPage!=page)
+        {
+            setScalingPagingDisabled(true);
+            setScalingCurrentPage(page);
+        }
+    }
+
+    const handleYamMintedChange = async(event:any,page:any) => {
+        if(scalingCurrentPage!=page)
+        {
+            setYamMintedPagingDisabled(true);
+            setYamMintedCurrentPage(page);
+        }
+    }
+
+
+    const DisplayCharts = useMemo(() => {
       return (
         <>
           <Split>
@@ -505,6 +800,7 @@ const Charts: React.FC = () => {
               <CardTitle text="🚀 Scaling Factor History" />
               <Spacer size="sm" />
               <CardContent>
+                  <ChartPagination disabled={scalingPagingDisabled} count={scalingTotalPages} curPage={scalingCurrentPage} callback={handleScaleChange}  />
                 <Chart
                   options={scalingOpts ? scalingOpts : {}}
                   series={scalingSeries ? scalingSeries : []}
@@ -517,8 +813,9 @@ const Charts: React.FC = () => {
               <CardTitle text="💰 Reserves History" />
               <Spacer size="sm" />
               <CardContent>
-                <Split>
-                  <Chart options={opts ? opts[0] : {}} series={series ? [series[0]] : []} type="line" height={350} />
+                  <ChartPagination disabled={reservesPagingDisabled} count={reservesTotalPages} curPage={reservesCurrentPage} callback={handleReservesChange}  />
+                  <Split>
+                    <Chart options={reservesOpts ? reservesOpts : {}} series={reservesSeries ? [reservesSeries[0]] : []} type="line" height={350} />
                 </Split>
               </CardContent>
             </Card>
@@ -529,8 +826,9 @@ const Charts: React.FC = () => {
               <CardTitle text="⬇️ Yams Sold Per Rebase" />
               <Spacer size="sm" />
               <CardContent>
-                <Split>
-                  <Chart options={opts ? opts[1] : {}} series={series ? [series[1]] : []} type="bar" height={200} />
+                  <ChartPagination disabled={yamSoldPagingDisabled} count={yamSoldTotalPages} curPage={yamSoldCurrentPage} callback={handleYamSoldChange}  />
+                  <Split>
+                    <Chart options={yamSoldOpts ? yamSoldOpts : {}} series={yamSeries ? [yamSeries[0]] : []} type="bar" height={200} />
                 </Split>
               </CardContent>
             </Card>
@@ -538,36 +836,45 @@ const Charts: React.FC = () => {
               <CardTitle text="⬆️ Yams Minted Per Rebase" />
               <Spacer size="sm" />
               <CardContent>
-                <Split>
-                  <Chart options={opts ? opts[2] : {}} series={series ? [series[2]] : []} type="bar" height={200} />
+                  <ChartPagination disabled={yamMintedPagingDisabled} count={yamMintedTotalPages} curPage={yamMintedCurrentPage} callback={handleYamMintedChange}  />
+                  <Split>
+                    <Chart options={yamMintedOpts ? yamMintedOpts : {}} series={yamMintedSeries ? [yamMintedSeries[0]] : []} type="bar" height={200} />
                 </Split>
               </CardContent>
             </Card>
           </Split>
         </>
       );
-    }
-    return (
-      <>
-        <Box row justifyContent="center">
-          <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display charts" variant="secondary" />
-        </Box>
-        <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
-      </>
-    );
+
+
   }, [
     darkMode,
     status,
-    handleDismissUnlockModal,
-    handleUnlockWalletClick,
-    unlockModalIsOpen,
     scalingSeries,
     scalingOpts,
+    scalingTotalPages,
+    scalingCurrentPage,
+    scalingPagingDisabled,
     series,
     opts,
-  ]);
-  
-  
+    yamSeries,
+    yamSoldOpts,
+    yamSoldTotalPages,
+    yamSoldCurrentPage,
+    yamSoldPagingDisabled,
+    yamMintedSeries,
+    yamMintedOpts,
+    yamMintedTotalPages,
+    yamMintedCurrentPage,
+    yamMintedPagingDisabled,
+    reservesSeries,
+    reservesOpts,
+    reservesTotalPages,
+    reservesCurrentPage,
+    reservesPagingDisabled,
+    ]);
+
+
   return (
     <>
         {DisplayCharts}

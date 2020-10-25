@@ -2,7 +2,6 @@ import {ethers} from 'ethers'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import request from "request";
-import {bnToDec} from 'utils';
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -610,64 +609,75 @@ export const claimVested = async (yam, account, onTxHash) => {
   return await yam.contracts.migrator.methods.claimVested().send({from: account, gas: 140000});
 }
 
-export const scalingFactors = async (yam) => {
-  let BASE = new BigNumber(10).pow(18);
-  let BASE24 = new BigNumber(10).pow(24);
+export const scalingFactors = async (curPage) => {
 
-  let rebases = await yam.contracts.yamV3.getPastEvents('Rebase', {fromBlock: 10886913, toBlock: 'latest'});
   let scalingFactors = [];
-  let blockNumbers = [];
+  let timestamps = [];
+  let dataset = await getHistoricalScaling(10886913,'latest',curPage);
+  let currentPage = dataset.current_page;
+  let totalPages = dataset.last_page;
+  let rebases = dataset.data;
   for (let i = 0; i < rebases.length; i++) {
       scalingFactors.push(
-        Math.round(
-          new BigNumber(rebases[i]["returnValues"]["prevYamsScalingFactor"]).div(BASE).toNumber() * 100
-        ) / 100
+          rebases[i].scaling_factor
       );
-      blockNumbers.push(rebases[i]["blockNumber"]);
+     timestamps.push(rebases[i].timestamp);
   }
-  return {factors: scalingFactors, blockNumbers: blockNumbers};
+  return {factors: scalingFactors, timestamps: timestamps,currentPage:currentPage,totalPages:totalPages};
 }
 
-export const treasuryEvents = async (yam) => {
-  let BASE = new BigNumber(10).pow(18);
-  let BASE24 = new BigNumber(10).pow(24);
+export const yamSold = async (curPage)=>{
 
-  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 'latest'});
-  let reservesAdded = [];
-  let yamsSold = [];
-  let yamsFromReserves = [];
-  let yamsToReserves = [];
-  let blockNumbers = [];
+  let yamSolds = [];
+  let timestamps = [];
+  let dataset = await getYamSoldHistoricalData(10886913,'latest',curPage);
+  let currentPage = dataset.current_page;
+  let totalPages = dataset.last_page;
+  let rebases = dataset.data;
   for (let i = 0; i < rebases.length; i++) {
-      reservesAdded.push(
-        Math.round(
-          new BigNumber(rebases[i]["returnValues"]["reservesAdded"]).div(BASE).toNumber() * 100
-        ) / 100
-      );
-      yamsSold.push(
-        Math.round(
-          new BigNumber(rebases[i]["returnValues"]["yamsSold"]).div(BASE).toNumber() * 100
-        ) / 100
-      );
-      yamsFromReserves.push(
-        Math.round(
-          new BigNumber(rebases[i]["returnValues"]["yamsFromReserves"]).div(BASE).toNumber() * 100
-        ) / 100
-      );
-      yamsToReserves.push(
-        Math.round(
-          new BigNumber(rebases[i]["returnValues"]["yamsToReserves"]).div(BASE).toNumber() * 100
-        ) / 100
-      );
-      blockNumbers.push(rebases[i]["blockNumber"]);
+     yamSolds.push(
+        rebases[i].yams_sold
+    );
+    timestamps.push(rebases[i].timestamp);
   }
-  return {
-    reservesAdded: reservesAdded,
-    yamsSold: yamsSold,
-    yamsFromReserves: yamsFromReserves,
-    yamsToReserves: yamsToReserves,
-    blockNumbers: blockNumbers
-  };
+  return {yamSolds: yamSolds, timestamps: timestamps,currentPage:currentPage,totalPages:totalPages};
+
+}
+
+export const yamMinted = async (curPage)=>{
+
+  let yamMinted = [];
+  let timestamps = [];
+  let dataset = await getYamMintedHistoricalData(10886913,'latest',curPage);
+  let currentPage = dataset.current_page;
+  let totalPages = dataset.last_page;
+  let rebases = dataset.data;
+  for (let i = 0; i < rebases.length; i++) {
+    yamMinted.push(
+        rebases[i].yams_minted
+    );
+    timestamps.push(rebases[i].timestamp);
+  }
+  return {yamMint: yamMinted, timestamps: timestamps,currentPage:currentPage,totalPages:totalPages};
+
+}
+
+export const reservesHistory = async (curPage)=>{
+
+  let reserves = [];
+  let timestamps = [];
+  let dataset = await getReservesHistoricalData(10886913,'latest',curPage);
+  let currentPage = dataset.current_page;
+  let totalPages = dataset.last_page;
+  let rebases = dataset.data;
+  for (let i = 0; i < rebases.length; i++) {
+    reserves.push(
+        rebases[i].reserves
+    );
+    timestamps.push(rebases[i].timestamp);
+  }
+  return {reserves: reserves, timestamps: timestamps,currentPage:currentPage,totalPages:totalPages};
+
 }
 
 export const getRebaseType = async (rebaseValue) => {
@@ -713,4 +723,105 @@ export const getMarketCap = async () => {
 export const getMaxSupply = async () => {
   const data = await requestYam();
   return data.market_data.max_supply;
+};
+
+export const getHistoricalData = async(from,to) =>{
+
+  return new Promise((resolve, reject) => {
+    request({
+          url: "https://treasury.vision/api/v1/history?from="+from+"&to="+to,
+          json: true,
+        }, (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(body);
+          }
+        }
+    );
+  });
+};
+
+export const getReservesHistoricalData = async(from,to,curPage) =>{
+
+  return new Promise((resolve, reject) => {
+    let url = "https://treasury.vision/api/v1/reserves-history?from="+from+"&to="+to;
+    if(curPage)
+      url += "&page="+curPage;
+    request({
+          url: url,
+          json: true,
+        }, (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(body);
+          }
+        }
+    );
+  });
+
+};
+
+export const getYamMintedHistoricalData = async(from,to,curPage) =>{
+
+  return new Promise((resolve, reject) => {
+    let url = "https://treasury.vision/api/v1/yam-minted-history?from="+from+"&to="+to;
+    if(curPage)
+      url += "&page="+curPage;
+    request({
+          url: url,
+          json: true,
+        }, (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(body);
+          }
+        }
+    );
+  });
+
+};
+
+export const getYamSoldHistoricalData = async(from,to,curPage) =>{
+
+  return new Promise((resolve, reject) => {
+    let url = "https://treasury.vision/api/v1/yam-sold-history?from="+from+"&to="+to;
+    if(curPage)
+      url += "&page="+curPage;
+    request({
+          url: url,
+          json: true,
+        }, (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(body);
+          }
+        }
+    );
+  });
+
+};
+
+export const getHistoricalScaling = async(from,to,curPage) =>{
+
+  return new Promise((resolve, reject) => {
+    let url = "https://treasury.vision/api/v1/scaling-history?from="+from+"&to="+to;
+    if(curPage)
+      url += "&page="+curPage;
+    request({
+          url: url,
+          json: true,
+        }, (error, response, body) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(body);
+          }
+        }
+    );
+  });
+
 };
