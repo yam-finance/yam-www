@@ -12,13 +12,13 @@ interface PageHeaderProps {
 
 const PageHeader: React.FC<PageHeaderProps> = ({ imgSrc, subtitle, title, imgSrc2 }) => {
   return (
-    <Container size="lg">
+    <Container size="sm">
     <StyledPageHeader>
-      <img src={imgSrc} height={96}/>
+      {imgSrc && <img src={imgSrc} height={96}/>}
       <Spacer size="sm" />
       <StyledTitle>{title}</StyledTitle>
       <StyledSubtitle>{subtitle}</StyledSubtitle>
-      <img src={imgSrc2} height={192}/>
+      {imgSrc2 && <img src={imgSrc2} height={192}/>}
     </StyledPageHeader>
     </Container>
   )
