@@ -21,7 +21,7 @@ const UnlockWalletModal: React.FC<ModalProps> = ({
   isOpen,
   onDismiss,
 }) => {
-  const { account, connect } = useWallet()
+  const { account, connector, connect } = useWallet()
 
   const handleConnectMetamask = useCallback(() => {
     connect('injected')
@@ -34,6 +34,9 @@ const UnlockWalletModal: React.FC<ModalProps> = ({
   useEffect(() => {
     if (account) {
       onDismiss && onDismiss()
+    }
+    if(connector) {
+      localStorage.setItem("walletProvider", connector);
     }
   }, [account, onDismiss])
 
