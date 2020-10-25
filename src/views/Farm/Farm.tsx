@@ -17,6 +17,7 @@ import useWallet from 'hooks/useWallet'
 
 import HarvestCard from './components/Harvest'
 import StakeCard from './components/Stake'
+import PausedLPsNotice from './components/PausedLPsNotice'
 
 const Farm: React.FC = () => {
   const { status } = useWallet()
@@ -64,6 +65,8 @@ const Farm: React.FC = () => {
         title="Farm"
       />
       <Container>
+        <PausedLPsNotice />
+        <Spacer />
         <Split>
           <StakeCard />
           <HarvestCard />

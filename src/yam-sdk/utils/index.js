@@ -1,6 +1,8 @@
 import {ethers} from 'ethers'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
+import request from "request";
+import {bnToDec} from 'utils';
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -17,7 +19,10 @@ const GAS_LIMIT = {
 
 const knownSnapshots = {
   "0x110f2263e5adf63ea82514bbec3440762edefed1bdf4f0ee06a9458fc3e7e2e7": "https://snapshot.page/#/yamv2/proposal/QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9",
-  "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7" : "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf"
+  "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7" : "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf",
+  "0xd00307c2982b4fba5790f238ff8df9faab975794dd4144eddbd30ac67eb873ed" : "https://snapshot.page/#/yam/proposal/QmQxMTQkz7fW3AXma69ueEwhq5Sf8HNdUYseEFQFw3uKEx",
+  "0xe4e06aae747e811b8de892c0c8b1ca78238b437a2893e78a3b1be91db608f75e" : "https://snapshot.page/#/yam/proposal/Qmf6ECSwrmWqHNq6CRTtnFR66ZFhth4kBXTbRy24wcVzLg"
+
 }
 
 export const getPoolStartTime = async (poolContract) => {
@@ -160,6 +165,40 @@ export const getCurrentPrice = async (yam) => {
 
 export const getTargetPrice = async (yam) => {
   return yam.toBigN(1).toFixed(2);
+}
+
+export const getProjectedRebase = async (yam) => {
+  let projected_rebase_perc = await getProjectedRebasePercent(yam);
+  if(projected_rebase_perc==0)
+    return 0;
+  let total_supply = new BigNumber(await getMaxSupply());
+  return total_supply.dividedBy(100).times(projected_rebase_perc).toNumber();
+}
+
+export const getProjectedRebasePercent = async (yam) =>{
+  let BASE = new BigNumber(10).pow(18);
+  let twap = (await getCurrentPrice(yam)).dividedBy(BASE);
+  if(twap.isGreaterThanOrEqualTo(0.95) && twap.isLessThanOrEqualTo(1.05))
+    return 0;
+  let target_price = await getTargetPrice(yam);
+  let rebase_lag = await getRebaseLag(yam);
+  let deviation = twap.minus(target_price).dividedBy(target_price);
+  return deviation.dividedBy(rebase_lag).times(100).toNumber();
+}
+
+export const getProjectedMint = async (yam) => {
+  let rebase = await getProjectedRebase(yam);
+  let mint_percent = await getProjectedMintPercent(yam);
+  return rebase<=0? 0:(rebase * mint_percent/100);
+}
+
+export const getProjectedMintPercent = async(yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
+}
+
+export const getRebaseLag = async(yam) =>{
+  return await yam.contracts.rebaser.methods.rebaseLag().call();
 }
 
 export const getCirculatingSupply = async (yam) => {
@@ -364,12 +403,15 @@ export const getProposals = async (yam) => {
     let ins = [];
     for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
       let abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
-      let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
-      let fr = []
-      for (let k = 0; k < result.__length__; k++) {
-        fr.push(result[k.toString()]);
+      if (abi_types[0] != "") {
+        let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
+        let fr = []
+        for (let k = 0; k < result.__length__; k++) {
+          fr.push(result[k.toString()]);
+        }
+        ins.push(fr);
       }
-      ins.push(fr);
+
     }
 
 
@@ -565,6 +607,66 @@ export const claimVested = async (yam, account, onTxHash) => {
   return await yam.contracts.migrator.methods.claimVested().send({from: account, gas: 140000});
 }
 
+export const scalingFactors = async (yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  let BASE24 = new BigNumber(10).pow(24);
+
+  let rebases = await yam.contracts.yamV3.getPastEvents('Rebase', {fromBlock: 10886913, toBlock: 'latest'});
+  let scalingFactors = [];
+  let blockNumbers = [];
+  for (let i = 0; i < rebases.length; i++) {
+      scalingFactors.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["prevYamsScalingFactor"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      blockNumbers.push(rebases[i]["blockNumber"]);
+  }
+  return {factors: scalingFactors, blockNumbers: blockNumbers};
+}
+
+export const treasuryEvents = async (yam) => {
+  let BASE = new BigNumber(10).pow(18);
+  let BASE24 = new BigNumber(10).pow(24);
+
+  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 'latest'});
+  let reservesAdded = [];
+  let yamsSold = [];
+  let yamsFromReserves = [];
+  let yamsToReserves = [];
+  let blockNumbers = [];
+  for (let i = 0; i < rebases.length; i++) {
+      reservesAdded.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["reservesAdded"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsSold.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsSold"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsFromReserves.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsFromReserves"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      yamsToReserves.push(
+        Math.round(
+          new BigNumber(rebases[i]["returnValues"]["yamsToReserves"]).div(BASE).toNumber() * 100
+        ) / 100
+      );
+      blockNumbers.push(rebases[i]["blockNumber"]);
+  }
+  return {
+    reservesAdded: reservesAdded,
+    yamsSold: yamsSold,
+    yamsFromReserves: yamsFromReserves,
+    yamsToReserves: yamsToReserves,
+    blockNumbers: blockNumbers
+  };
+}
+
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -579,3 +681,29 @@ export const waitTransaction = async (provider, txHash) => {
   }
   return (txReceipt.status)
 }
+
+const requestYam = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/yam-2",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getMarketCap = async () => {
+  const data = await requestYam();
+  return data.market_data.market_cap.usd;
+};
+
+export const getMaxSupply = async () => {
+  const data = await requestYam();
+  return data.market_data.max_supply;
+};

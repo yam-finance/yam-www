@@ -9,6 +9,8 @@ import YAMv2MigrationJson from '../clean_build/contracts/YAMv2Migration.json';
 import YAMJson from '../clean_build/contracts/YAMDelegator.json';
 import YAMRebaserJson from '../clean_build/contracts/YAMRebaser.json';
 import YAMReservesJson from '../clean_build/contracts/YAMReserves.json';
+import YAMReserves2Json from '../clean_build/contracts/YAMReserves2.json';
+import OTCJson from '../clean_build/contracts/OTC.json';
 import YAMGovJson from '../clean_build/contracts/GovernorAlpha.json';
 import YAMTimelockJson from '../clean_build/contracts/Timelock.json';
 import WETHJson from './weth.json';
@@ -88,6 +90,8 @@ export class Contracts {
 
     this.rebaser = new this.web3.eth.Contract(YAMRebaserJson.abi);
     this.reserves = new this.web3.eth.Contract(YAMReservesJson.abi);
+    this.reserves2 = new this.web3.eth.Contract(YAMReserves2Json.abi);
+    this.otc = new this.web3.eth.Contract(OTCJson.abi);
     this.gov = new this.web3.eth.Contract(YAMGovJson.abi);
     this.gov2 = new this.web3.eth.Contract(YAMGovJson.abi);
     this.timelock = new this.web3.eth.Contract(YAMTimelockJson.abi);
@@ -110,7 +114,9 @@ export class Contracts {
       { contract: this.yam, json: YAMJson },
       { contract: this.rebaser, json: YAMRebaserJson },
       { contract: this.reserves, json: YAMReservesJson },
+      { contract: this.reserves2, json: YAMReserves2Json },
       { contract: this.gov, json: YAMGovJson },
+      { contract: this.otc, json: OTCJson },
       { contract: this.timelock, json: YAMTimelockJson },
       { contract: this.ycrv_pool, json: IncOldJson },
       { contract: this.yycrv_pool, json: IncJson },
@@ -150,6 +156,8 @@ export class Contracts {
     this.yam_ycrv_uni_lp.options.address = addressMap["YAMYCRV"];
     this.yam_yycrv_uni_lp.options.address = addressMap["YAMYYCRV"];
     this.gov2.options.address = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026";
+    this.reserves2.options.address = "0x97990B693835da58A281636296D2Bf02787DEa17";
+    this.otc.options.address = "0x92ab5CCe7Af1605da2681458aE52a0BEc4eCB74C";
 
     this.pools = [
       {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},
@@ -175,6 +183,8 @@ export class Contracts {
     this.names[this.yamV3.options.address] = "YAM (v3)";
     this.names[this.migrator.options.address] = "Migrator";
     this.names[this.gov2.options.address] = "Current Governor";
+    this.names[this.otc.options.address] = "OTC";
+    this.names[this.reserves2.options.address] = "New Reserves";
   }
 
   setDefaultAccount(

@@ -130,7 +130,7 @@ const VoteModal: React.FC<VoteModalProps> = ({
             </StyledDescription>
             <Spacer size="sm"/>
             <StyledInfo>
-              <span>  {prop.description}</span>
+              <span>  {prop.description ? prop.description.replace("Kill", "Pause"): ""}</span>
             </StyledInfo>
             <Spacer size="sm"/>
             <Separator />
@@ -140,7 +140,7 @@ const VoteModal: React.FC<VoteModalProps> = ({
             </StyledDescription>
             <Spacer size="sm"/>
             <StyledInfo>
-              <span>  {prop.targets}</span>
+              <span>  {prop.targets.join(", ")}</span>
             </StyledInfo>
             <Spacer size="sm"/>
             <Separator />
@@ -150,7 +150,7 @@ const VoteModal: React.FC<VoteModalProps> = ({
             </StyledDescription>
             <Spacer size="sm"/>
             <StyledInfo>
-            {prop.signatures.map(sig => <code>{sig}</code>)}
+            <code> {prop.signatures.join(", ")}</code>
             </StyledInfo>
             <Spacer size="sm"/>
             <Separator />
@@ -234,5 +234,6 @@ const StyledDescription = styled.div`
 
 const StyledInfo = styled.div`
   font-size: 14px;
+  overflow-x: scroll;
 `
 export default VoteModal

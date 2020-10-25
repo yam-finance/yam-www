@@ -66,7 +66,7 @@ const Stats: React.FC = () => {
           <FancyValue
             icon="🚀"
             label="Scaling factor"
-            value={scalingFactor ? scalingFactor : '--'}
+            value={scalingFactor ? 'x' + scalingFactor : '--'}
           />
         </CardContent>
       </Card>
