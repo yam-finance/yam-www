@@ -48,25 +48,27 @@ const TopCards: React.FC = () => {
   }, [status]);
 
   const fetchStats = useCallback(async () => {
-    if (!yam) return;
-    const price = await getCurrentPrice(yam);
-    const factor = await getScalingFactor(yam);
-    const projectedRebase = await getProjectedRebase(yam);
-    const rebaseType = getRebaseType(projectedRebase);
-    // const projectedMint = await getProjectedMint(yam);
-    // const projectedRebasePercent = await getProjectedRebasePercent(yam);
-    setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
-    setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
-    setProjectedRebase((rebaseType ? "+" : "") + numeral(projectedRebase).format("0.00a"));
-    // setProjectedMint(numeral(projectedMint).format("0.00a"));
-    // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
+    if (status === "connected") {
+      if (!yam) return;
+      const price = await getCurrentPrice(yam);
+      const factor = await getScalingFactor(yam);
+      const projectedRebase = await getProjectedRebase(yam);
+      const rebaseType = getRebaseType(projectedRebase);
+      // const projectedMint = await getProjectedMint(yam);
+      // const projectedRebasePercent = await getProjectedRebasePercent(yam);
+      setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
+      setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
+      setProjectedRebase((rebaseType ? "+" : "") + numeral(projectedRebase).format("0.00a"));
+      // setProjectedMint(numeral(projectedMint).format("0.00a"));
+      // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
+    }
   }, [
+    yam,
     setCurrentPrice,
     setScalingFactor,
     setProjectedRebase,
     setProjectedMint,
     setProjectedRebasePercent,
-    yam,
   ]);
 
   useEffect(() => {

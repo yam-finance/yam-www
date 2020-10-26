@@ -670,7 +670,7 @@ export const treasuryEvents = async (yam) => {
   };
 }
 
-export const getRebaseType = async (rebaseValue) => {
+export const getRebaseType = (rebaseValue) => {
   return Math.sign(rebaseValue) === 1;
 }
 
