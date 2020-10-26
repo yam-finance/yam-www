@@ -33,7 +33,7 @@ export const stake = async (yam, amount, account, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .stake(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(0)))
-      .send({ from: account, gas: 300000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Staking error", error)
@@ -58,7 +58,7 @@ export const unstake = async (yam, amount, account, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(0)))
-      .send({ from: account, gas: 300000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Unstaking error", error)
@@ -83,7 +83,7 @@ export const harvest = async (yam, account, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .getReward()
-      .send({ from: account, gas: 300000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Claim error", error)
@@ -108,7 +108,7 @@ export const redeem = async (yam, account, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .exit(String(new BigNumber(0)))
-      .send({ from: account, gas: 300000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Redeem error", error)
