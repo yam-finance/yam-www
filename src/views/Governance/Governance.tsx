@@ -80,7 +80,7 @@ const Governance: React.FC = () => {
           <Button
             full
             text="Discord"
-            href="https://strain.buzz/discord"
+            href="https://discord.gg/3T7TfFd"
             variant="tertiary"
           />
           <Spacer />
