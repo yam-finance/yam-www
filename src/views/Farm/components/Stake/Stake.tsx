@@ -178,7 +178,7 @@ const Stake: React.FC = () => {
   return (
     <>
       <Card>
-        <CardIcon>🌱</CardIcon>
+        <CardIcon>🔒</CardIcon>
         <CardContent>
           <Box
             alignItems="center"
