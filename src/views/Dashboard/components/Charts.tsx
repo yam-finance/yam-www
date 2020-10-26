@@ -152,6 +152,8 @@ export interface axisInterface {
     type?: string,
     categories?: any[],
     logarithmic?: boolean,
+    min?: number,
+    max?: number,
     labels?: {
         show?: boolean,
         rotate?: number,
@@ -439,6 +441,7 @@ const Charts: React.FC = () => {
           }
         },
         yaxis: {
+          min: 0,
           labels: {
             style: {
               colors: labelColor
