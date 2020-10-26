@@ -8,7 +8,7 @@ import {
 import usePrices from 'hooks/usePrices'
 import useTokenBalance from 'hooks/useTokenBalance'
 
-const treasuryAddress = '0xcf27ca116dd5c7b4201c75b46489d1c075362087'
+const treasuryAddress = '0x97990b693835da58a281636296d2bf02787dea17'
 
 const useTreasury = () => {
   const { yamTwap } = usePrices()
