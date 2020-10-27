@@ -638,7 +638,9 @@ export const treasuryEvents = async (yam) => {
   let yamsFromReserves = [];
   let yamsToReserves = [];
   let blockNumbers = [];
+  let blockTimes = [];
   for (let i = 0; i < rebases.length; i++) {
+      blockTimes.push(await yam.web3.eth.getBlock(rebases[i]["blockNumber"]));
       reservesAdded.push(
         Math.round(
           new BigNumber(rebases[i]["returnValues"]["reservesAdded"]).div(BASE).toNumber() * 100
@@ -666,7 +668,8 @@ export const treasuryEvents = async (yam) => {
     yamsSold: yamsSold,
     yamsFromReserves: yamsFromReserves,
     yamsToReserves: yamsToReserves,
-    blockNumbers: blockNumbers
+    blockNumbers: blockNumbers,
+    blockTimes: blockTimes,
   };
 }
 
@@ -689,6 +692,57 @@ export const waitTransaction = async (provider, txHash) => {
   return (txReceipt.status)
 }
 
+const requestDPIHistory = (from, to) => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/defipulse-index/market_chart/range?vs_currency=usd&from=" + from + "&to=" + to,
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+const requestDPI = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/defipulse-index",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getDPIPrice = async () => {
+  const data = await requestDPI();
+  return data.market_data.current_price.usd;
+};
+
+export const getDPIPrices = async (from, to) => {
+  const data = await requestDPIHistory(from, to);
+  let newPrices = {};
+  for (let i = 0; i < data.prices.length; i++) {
+    newPrices[data.prices[i][0]] = data.prices[i][1];
+  }
+  return newPrices;
+};
+  
+export const getDPIMarketCap = async (from, to) => {
+  const data = await requestDPIHistory(from, to);
+  return data.market_caps;
+};
+  
 const requestYam = () => {
   return new Promise((resolve, reject) => {
     request({

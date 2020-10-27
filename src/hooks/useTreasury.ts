@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import {
   yUsd as yUsdAddress,
   yamv3 as yamV3Address,
+  DPI as DPIAddress,
 } from 'constants/tokenAddresses'
 
 import usePrices from 'hooks/usePrices'
@@ -14,6 +15,7 @@ const useTreasury = () => {
   const { yamTwap } = usePrices()
   const yamBalance = useTokenBalance(treasuryAddress, yamV3Address)
   const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress)
+  const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress)
 
   const totalYUsdValue = useMemo(() => {
     const yamYUsdValue = yamTwap && yamBalance ? yamTwap * yamBalance : 0
@@ -26,6 +28,7 @@ const useTreasury = () => {
 
   return {
     totalYUsdValue,
+    totalDPIValue,
     yamBalance,
     yUsdBalance,
   }
