@@ -1,8 +1,18 @@
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: local('Montserrat-Regular'), url(fonts/Montserrat-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat-SemiBold';
+  src: local('Montserrat-SemiBold'), url(fonts/Montserrat-SemiBold.ttf) format('truetype');
+}
+
 body {
   background: #F0E7EA;
   margin: 0;
-  font-family: 'Nunito', sans-serif;
   font-size: 16px;
+  font-family: 'Montserrat-Regular';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -11,6 +21,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-button {
-  font-family: 'Nunito';
+
+h1, h2, h3, h4 {
+  font-family: 'Montserrat-SemiBold';
 }

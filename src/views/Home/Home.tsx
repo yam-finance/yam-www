@@ -12,7 +12,7 @@ import HowItWorks from 'components/HowItWorks';
 //import useBalances from 'hooks/useBalances'
 import useVesting from 'hooks/useVesting'
 import twoStrains from '../../assets/two-strains.png'
-import plant from '../../assets/plant.png'
+import plant from '../../assets/eth-flower.png'
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme()
