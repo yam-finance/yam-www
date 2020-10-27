@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import roadmap from '../../assets/roadmap.png'
+import { Link  } from 'react-router-dom'
 
 const HowItWorks = () => {
     return (
@@ -12,11 +13,11 @@ const HowItWorks = () => {
                 <tr>
                     <StyledTableData>
                         1. Pool STRN/ETH on Uniswap.
-                        <StyledButtonOne>Provide LP STRN/ETH</StyledButtonOne>
+                        <StyledButtonOne href="https://app.uniswap.org/#/add/ETH/0x90b426067bE0b0FF5De257BC4dd6a4815Ea03b5f" target="_blank">Provide LP STRN/ETH</StyledButtonOne>
                     </StyledTableData>
                     <StyledTableData>
                         2. Stake LP tokens on Strain NFT.
-                        <StyledButtonTwo>Stake</StyledButtonTwo>
+                        <StyledButtonTwo  to="/stake" replace={false}>Stake</StyledButtonTwo>
                     </StyledTableData>
                 </tr>
                 <tr>
@@ -82,32 +83,38 @@ const StyledTableData = styled.td`
     width: 50%;
 `;
 
-const StyledButtonOne = styled.button`
+const StyledButtonOne = styled.a`
     display: block;
     border-radius: 5px;
     border: none;
     font-size: 16px;
     text-align: center;
-    height: 40px;
+    height: 30px;
     background-color: #8D87FB;
     cursor:pointer;
     font-weight: bold;
     margin: auto;
     margin-top: 15px;
+    text-decoration: none;
+    width: 200px;
+    padding-top: 10px;
 `;
 
-const StyledButtonTwo = styled.button`
+const StyledButtonTwo = styled(Link)`
     display: block;
     border-radius: 5px;
     border: none;
     font-size: 16px;
     text-align: center;
-    height: 40px;
+    height: 30px;
     background-color: #00AC69;
     cursor:pointer;
     font-weight: bold;
     margin: auto;
     margin-top: 15px;
+    text-decoration: none;
+    width: 120px;
+    padding-top: 10px;
 `;
 
 export default HowItWorks
