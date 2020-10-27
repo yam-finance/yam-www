@@ -14,15 +14,14 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ imgSrc, subtitle, title
     return (
             <StyledHomePageHeader>
                 <StyledHomePageContainer>
-                    {/*<img src={imgSrc} height={96}/>*/}
                     <Spacer size="sm" />
                     <StyledTitle>{title}</StyledTitle>
                     <StyledSubtitle>{subtitle}</StyledSubtitle>
                     <StyledStrnButton href="https://uniswap.exchange/swap?inputCurrency=ETH&outputCurrency=0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f" target="_blank">Buy STRN</StyledStrnButton>
                 </StyledHomePageContainer>
-                <StyledHomePageContainer>
+                <StyledHomePageContainer2>
                     <img src={imgSrc2} height={384}/>
-                </StyledHomePageContainer>
+                </StyledHomePageContainer2>
             </StyledHomePageHeader>
     )
 };
@@ -31,7 +30,6 @@ const StyledHomePageHeader = styled.div`
   align-items: center;
   box-sizing: border-box;
   max-width: 1200px;
-  width: 1200px;
   margin: 0 auto;
 `;
 
@@ -44,6 +42,26 @@ const StyledHomePageContainer = styled.div`
   margin: 0 auto;
   text-align: center;
   vertical-align: middle;
+  
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    margin-left: 30px;
+  }
+`;
+
+const StyledHomePageContainer2 = styled.div`
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50%;
+  padding-bottom: ${props => props.theme.spacing[6]}px;
+  margin: 0 auto;
+  text-align: center;
+  vertical-align: middle;
+  
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StyledTitle = styled.h1`
