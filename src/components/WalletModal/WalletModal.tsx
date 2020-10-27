@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from "react"
 
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -23,12 +23,9 @@ import Split from 'components/Split'
 import useBalances from 'hooks/useBalances'
 import useVesting from 'hooks/useVesting'
 
-const WalletModal: React.FC<ModalProps> = ({
-  isOpen,
-  onDismiss,
-}) => {
-
-  const { reset } = useWallet()
+const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
+  const [walletModalIsOpen, setWalletModalIsOpen] = useState(false);
+  const { reset } = useWallet();
   const {
     yamV2Balance,
     yamV3Balance
@@ -48,8 +45,18 @@ const WalletModal: React.FC<ModalProps> = ({
   }, [])
 
   const handleSignOut = useCallback(() => {
-    reset()
-  }, [reset])
+    localStorage.removeItem("account");
+    localStorage.removeItem("walletProvider");
+    setWalletModalIsOpen(false);
+    reset();
+    if (onDismiss) {
+      onDismiss();
+    }
+  }, [reset]);
+
+  useEffect(() => {
+    isOpen = !isOpen;
+  }, [setWalletModalIsOpen]);
 
   return (
     <Modal isOpen={isOpen}>
@@ -94,15 +101,8 @@ const WalletModal: React.FC<ModalProps> = ({
       </ModalContent>
       <Separator />
       <ModalActions>
-        <Button
-          onClick={onDismiss}
-          text="Cancel"
-          variant="secondary"
-        />
-        <Button
-          onClick={handleSignOut}
-          text="SignOut"
-        />
+        <Button onClick={onDismiss} text="Cancel" variant="secondary" />
+        <Button onClick={handleSignOut} text="Sign Out" />
       </ModalActions>
     </Modal>
   )

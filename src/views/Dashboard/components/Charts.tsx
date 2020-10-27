@@ -152,6 +152,8 @@ export interface axisInterface {
     type?: string,
     categories?: any[],
     logarithmic?: boolean,
+    min?: number,
+    max?: number,
     labels?: {
         show?: boolean,
         rotate?: number,
@@ -226,11 +228,10 @@ const Charts: React.FC = () => {
   const { darkMode, colors } = useTheme()
   const [series, setSeries] = useState<SeriesInterface[]>()
   const [opts, setOpts] = useState<OptionInterface[]>()
-
   const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>()
   const [scalingOpts, setScalingOpts] = useState<OptionInterface>()
-  
   const { status } = useWallet()
+  const daysRange = 14;
 
   const fetchReserves = useCallback(async () => {
     if (!yam) {
@@ -260,13 +261,13 @@ const Charts: React.FC = () => {
 
     const asSeries: SeriesInterface[] = [{
         name: 'yUSD Reserves',
-        data: reserves
+        data: reserves.slice(reserves.length - daysRange)
     }, {
         name: 'Yams Sold',
-        data: sales
+        data: sales.slice(sales.length - daysRange)
     }, {
         name: 'Yam Minted',
-        data: mints
+        data: mints.slice(mints.length - daysRange)
     }];
 
     let theme;
@@ -390,7 +391,7 @@ const Charts: React.FC = () => {
     }
     const asSeries: SeriesInterface[] = [{
         name: 'Scaling Factor',
-        data: data
+        data: data.slice(factors.length - daysRange)
     }];
     let theme;
     let labelColor;
@@ -440,6 +441,7 @@ const Charts: React.FC = () => {
           }
         },
         yaxis: {
+          min: 0,
           labels: {
             style: {
               colors: labelColor
