@@ -58,7 +58,7 @@ const Treasury: React.FC = () => {
       <CardActions>
         <Box row justifyContent="center">
           <Button
-            href="https://etherscan.io/address/0xcf27ca116dd5c7b4201c75b46489d1c075362087"
+            href="https://etherscan.io/tokenholdings?a=0x97990B693835da58A281636296D2Bf02787DEa17"
             text="View on Etherscan"
             variant="secondary"
           />
