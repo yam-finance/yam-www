@@ -64,6 +64,8 @@ const StyledHr = styled.div`
 const StyledHowItWorksTable = styled.div`
     display: grid;
     grid-template-columns: 50% 50%;
+    grid-auto-rows: auto;
+
     grid-gap: 1px;
 
     @media (max-width: 613px) {
@@ -80,37 +82,37 @@ const StyledTableData = styled.div`
 
 const StyledOneBlock = styled(StyledTableData)`
     grid-column: 1;
-    gid-row: 1;
+    grid-row: 1;
 `
 
 const StyledTwoBlock = styled(StyledTableData)`
     grid-column: 2;
-    gid-row: 1;
+    grid-row: 1;
 
     @media (max-width: 613px) {
         grid-column: 1;
-        gid-row: 2;
+        grid-row: 2;
     }
     `
 
 const StyledThreeBlock = styled(StyledTableData)`
     grid-column: 1;
-    gid-row: 2;
+    grid-row: 2;
 
     @media (max-width: 613px) {
         grid-column: 1;
-        gid-row: 3;
+        grid-row: 3;
     }
 
 `
 
 const StyledFourBlock = styled(StyledTableData)`
     grid-column: 2;
-    gid-row: 2;
+    grid-row: 2;
 
     @media (max-width: 613px) {
         grid-column: 1;
-        gid-row: 4;
+        grid-row: 4;
     }
 
     `
@@ -122,7 +124,7 @@ const StyledTableDataInfo = styled(StyledTableData)`
 
     @media (max-width: 613px) {
         grid-column: 1;
-        gid-row: 5;
+        grid-row: 5;
     }
 
     `
