@@ -8,4 +8,4 @@ export const strn = '0x40fDD7f354aCB16a8A0Ba39d15EAc982bCa7b2eb'
 export const strnEthLP = '0x96e61f99c7d377f69d8f3766cb430565bd6fcf75'
 export const strnIncentivizer = '0x6853a4b89C5b0a771a5bD599741eAEE42FA6663F'
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
-// make sure chainId is "1" and not "4"
+// make sure chainId is "1" and not "4" src/App.tsx

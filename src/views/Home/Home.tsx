@@ -22,7 +22,7 @@ const Home: React.FC = () => {
     <Page>
       <HomePageHeader
         imgSrc={twoStrains}
-        subtitle="Upgrade and breed yield generating ERC 1155's"
+        subtitle="Upgrade and breed yield generating NFTs"
         title="Fun, DeFi-staked NFT Collectibles"
         imgSrc2={plant}
       />
