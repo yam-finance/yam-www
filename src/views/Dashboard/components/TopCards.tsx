@@ -105,7 +105,7 @@ const TopCards: React.FC = () => {
       },
       {
         icon: "🍠",
-        label: "YAM to be rebased",
+        label: "YAM rebase impact",
         value: projectedRebase ? projectedRebase : "--", // -2.0%
       },
     ],
