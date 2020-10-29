@@ -96,3 +96,9 @@ export const decToBn = (dec: number, decimals = 18) => {
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
   return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed()
 }
+
+export const getNearestBlock = (from: Array<any>, target: number) => {
+  return from.reduce(function (prev: any, curr: any) {
+    return Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev;
+  });
+}

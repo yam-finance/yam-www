@@ -1,35 +1,19 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-
-import numeral from 'numeral'
+import useTreasury from "hooks/useTreasury";
+import useYam from "hooks/useYam";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
+import { Box, Button, Card, CardActions, CardContent, CardTitle, Container, Spacer, useTheme } from "react-neu";
+import { useWallet } from "use-wallet";
+import { getNearestBlock } from "utils";
+import { treasuryEvents, getDPIPrices, scalingFactors } from "yam-sdk/utils";
 import Chart from "react-apexcharts";
-import { useWallet } from 'use-wallet'
-
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardTitle,
-  Container,
-  Spacer,
-  useTheme
-} from 'react-neu'
-
-import FancyValue from 'components/FancyValue'
-import Split from 'components/Split'
-
-import useYam from 'hooks/useYam'
-import {
-  treasuryEvents,
-  scalingFactors
-} from 'yam-sdk/utils'
-import UnlockWalletModal from 'components/UnlockWalletModal'
+import Split from "components/Split";
+import UnlockWalletModal from "components/UnlockWalletModal";
+import numeral from "numeral";
 
 export interface ChartOptions {
-  type: string,
-  height: number
+  type: string;
+  height: number;
+  stacked?: boolean;
 }
 
 export interface StrokeOptions {
@@ -50,7 +34,25 @@ export interface HoverOptions {
 }
 
 export interface MarkerOptions {
-  hover: HoverOptions
+  hover: HoverOptions;
+}
+
+export interface ChartLegend {
+  position?: string;
+  horizontalAlign?: string;
+}
+
+export interface ChartFill {
+  colors?: Array<any>;
+  hover?: HoverOptions;
+  type?: string;
+  gradient?: {
+    shade?: string;
+    opacityFrom?: number;
+    opacityTo?: number;
+    shadeIntensity?: number;
+    stops?: Array<any>;
+  };
 }
 
 export interface OptionInterface {
@@ -62,6 +64,8 @@ export interface OptionInterface {
   colors?: string[],
   xaxis?: axisInterface,
   yaxis?: axisInterface,
+  legend?: ChartLegend,
+  fill?: ChartFill,
   grid?: GridInterface,
   tooltip?: tooltipInterface,
   theme?: themeInterface
@@ -224,29 +228,73 @@ export interface TimeSeries {
 }
 
 const Charts: React.FC = () => {
-  const yam = useYam()
-  const { darkMode, colors } = useTheme()
-  const [series, setSeries] = useState<SeriesInterface[]>()
-  const [opts, setOpts] = useState<OptionInterface[]>()
-  const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>()
-  const [scalingOpts, setScalingOpts] = useState<OptionInterface>()
-  const { status } = useWallet()
-  const daysRange = 14;
+  const yam = useYam();
+  const [series, setSeries] = useState<SeriesInterface[]>();
+  const [opts, setOpts] = useState<OptionInterface[]>();
+  const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>();
+  const [scalingOpts, setScalingOpts] = useState<OptionInterface>();
+  const { darkMode, colors } = useTheme();
+  const { totalDPIValue } = useTreasury();
+  const { status } = useWallet();
+  const daysRange = 28;
+  const yUSDValue = 1.15;
 
   const fetchReserves = useCallback(async () => {
-    if (!yam) {
-      return
+    if (!yam || !totalDPIValue) {
+      return;
     }
-    const {reservesAdded, yamsSold, yamsFromReserves, yamsToReserves, blockNumbers} = await treasuryEvents(yam);
+    const {
+      reservesAdded,
+      yamsSold,
+      yamsFromReserves,
+      yamsToReserves,
+      blockNumbers,
+      blockTimes,
+    } = await treasuryEvents(yam);
+
     let reserves: TimeSeries[] = [];
     let running = 0;
     for (let i = 0; i < reservesAdded.length; i++) {
       running += reservesAdded[i];
-      const tmp: TimeSeries = {
-        x: blockNumbers[i],
-        y: running
-      };
-      reserves.push(tmp);
+      if (blockNumbers[i] > 10946646) { // live remove
+        const tmp: TimeSeries = {
+          x: blockNumbers[i],
+          y: 2297013 * yUSDValue, // get pastEvents on blocknumber 11133885 (1603739830) for yUSD in reserve
+        };
+        reserves.push(tmp);
+      } else {
+        const tmp: TimeSeries = {
+          x: blockNumbers[i],
+          y: running * yUSDValue,
+        };
+        reserves.push(tmp);
+      }
+    }
+
+    let now = Math.floor(Date.now() / 1000);
+    let DPIBalance = totalDPIValue;
+    let reservesDPI: TimeSeries[] = [];
+    let prices: any = await getDPIPrices("1603739830", now.toString());
+    let pricesArray = [];
+    for (var prop in prices) {
+      pricesArray.push(prop);
+    }
+    for (let i = 0; i < reservesAdded.length; i++) {
+      if (DPIBalance && blockNumbers[i] > 10946646) { // 11133885 live set
+        let blockTime: number = blockTimes[i].timestamp;
+        let blockCurr: any = getNearestBlock(pricesArray, blockTime);
+        const tmp: TimeSeries = {
+          x: blockNumbers[i],
+          y: DPIBalance * prices[blockCurr],
+        };
+        reservesDPI.push(tmp);
+      } else {
+        const tmp: TimeSeries = {
+          x: blockNumbers[i],
+          y: 0,
+        };
+        reservesDPI.push(tmp);
+      }
     }
 
     let sales: number[] = [];
@@ -259,122 +307,162 @@ const Charts: React.FC = () => {
       mints.push(yamsSold[i] - yamsFromReserves[i] + yamsToReserves[i]);
     }
 
-    const asSeries: SeriesInterface[] = [{
-        name: 'yUSD Reserves',
-        data: reserves.slice(reserves.length - daysRange)
-    }, {
-        name: 'Yams Sold',
-        data: sales.slice(sales.length - daysRange)
-    }, {
-        name: 'Yam Minted',
-        data: mints.slice(mints.length - daysRange)
-    }];
+    const asSeries: SeriesInterface[] = [
+      {
+        name: "yUSD Reserves",
+        data: reserves.slice(reserves.length - daysRange),
+      },
+      {
+        name: "DPI Reserves",
+        data: reservesDPI.slice(reservesDPI.length - daysRange),
+      },
+      {
+        name: "Yams Sold",
+        data: sales.slice(sales.length - daysRange),
+      },
+      {
+        name: "Yam Minted",
+        data: mints.slice(mints.length - daysRange),
+      },
+    ];
 
     let theme;
     let labelColor;
     let borderColor;
+    let shadeColor;
     if (darkMode) {
-      theme = 'dark'
-      labelColor = colors.grey[600]
-      borderColor = colors.grey[900]
+      theme = "dark";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[900];
+      shadeColor = "dark";
     } else {
-      theme = 'light'
-      labelColor = colors.grey[600]
-      borderColor = colors.grey[600]
+      theme = "light";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[600];
+      shadeColor = "light";
     }
+
     let reservesOpts: OptionInterface = {
-        chart: {
-          type: 'line',
-          height: 350
+      chart: {
+        type: "area",
+        height: 350,
+        stacked: true,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      fill: {
+        colors: ["#C60C4D", "#8150E6"],
+      },
+      legend: {
+        position: "top",
+        horizontalAlign: "left",
+      },
+      markers: {
+        hover: {
+          sizeOffset: 4,
         },
-        dataLabels: {
-          enabled: false
-        },
-        markers: {
-          hover: {
-            sizeOffset: 4
-          }
-        },
-        colors: ['#c60c4d'],
-        xaxis: {
-          labels: {
-            style: {
-              colors: labelColor
-            },
-          },
-          axisBorder: {
-            show: false
-          },
-          title: {
-            text: "Block Number",
-            style: {
-              color: labelColor
-            }
-          }
-        },
-        yaxis: {
-          title: {
-            text:"yUSD In Reserves",
-            style: {
-              color: labelColor
-            }
-          },
-          labels: {
-            style: {
-              colors: labelColor
-            },
-            formatter: (value: any) => { return numeral(value).format('0.00a')}
-          },
-          axisBorder: {
-            show: false
+      },
+      colors: ["#C60C4D", "#8150E6"],
+      xaxis: {
+        labels: {
+          style: {
+            colors: labelColor,
           },
         },
-        grid: {
-          borderColor: borderColor,
-          padding: {
-            right: 5
-          }
+        axisBorder: {
+          show: false,
         },
-        theme: {
-          mode: theme
+        title: {
+          text: "Block Number",
+          style: {
+            color: labelColor,
+          },
         },
-        tooltip: {
-          theme: theme
-        }
-      };
+      },
+      yaxis: {
+        title: {
+          text: "yUSD In Reserves",
+          style: {
+            color: labelColor,
+          },
+        },
+        labels: {
+          style: {
+            colors: labelColor,
+          },
+          formatter: (value: any) => {
+            return numeral(value).format("0.00a");
+          },
+        },
+        axisBorder: {
+          show: false,
+        },
+      },
+      grid: {
+        borderColor: borderColor,
+        padding: {
+          right: 5,
+        },
+      },
+      theme: {
+        mode: theme,
+      },
+      tooltip: {
+        theme: theme,
+      },
+    };
 
     let soldOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (soldOpts && soldOpts.chart && soldOpts.xaxis && soldOpts.yaxis && soldOpts.yaxis.title && soldOpts.yaxis.labels) {
+    if (
+      soldOpts &&
+      soldOpts.chart &&
+      soldOpts.xaxis &&
+      soldOpts.yaxis &&
+      soldOpts.yaxis.title &&
+      soldOpts.yaxis.labels
+    ) {
       soldOpts.yaxis.title.text = "YAMs Sold";
-      soldOpts.yaxis.title.style = {color: labelColor}
+      soldOpts.yaxis.title.style = { color: labelColor };
       soldOpts.chart.type = "bar";
       soldOpts.xaxis.categories = blockNumbers;
-      soldOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
+      delete soldOpts.fill;
+      soldOpts.yaxis.labels.formatter = (value: any) => {
+        return numeral(value).format("0.00a");
+      };
     }
 
     let mintedOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (mintedOpts && mintedOpts.chart && mintedOpts.xaxis && mintedOpts.yaxis && mintedOpts.yaxis.title && mintedOpts.yaxis.labels ) {
+    if (
+      mintedOpts &&
+      mintedOpts.chart &&
+      mintedOpts.xaxis &&
+      mintedOpts.yaxis &&
+      mintedOpts.yaxis.title &&
+      mintedOpts.yaxis.labels
+    ) {
       mintedOpts.yaxis.title.text = "YAMs Minted";
-      mintedOpts.yaxis.title.style = {color: labelColor}
+      mintedOpts.yaxis.title.style = { color: labelColor };
       mintedOpts.chart.type = "bar";
       mintedOpts.xaxis.categories = blockNumbers;
-      mintedOpts.yaxis.labels.formatter = (value: any) => { return numeral(value).format('0.00a')}
+      delete mintedOpts.fill;
+      mintedOpts.yaxis.labels.formatter = (value: any) => {
+        return numeral(value).format("0.00a");
+      };
     }
 
-    reservesOpts.stroke = { curve: 'stepline'}
+    reservesOpts.stroke = { curve: "stepline" };
+    // reservesOpts.stroke = { curve: "smooth" };
 
     if (reservesOpts.xaxis) {
       reservesOpts.xaxis.type = 'numeric';
     }
     setSeries(asSeries);
     setOpts([reservesOpts, soldOpts, mintedOpts]);
-  }, [
-    setSeries,
-    setOpts,
-    darkMode,
-    status,
-    yam
-  ])
+  }, [setSeries, setOpts, darkMode, status, yam, totalDPIValue]);
 
   const fetchScalingFactors = useCallback(async () => {
     if (!yam) {
@@ -389,10 +477,12 @@ const Charts: React.FC = () => {
       };
       data.push(tmp);
     }
-    const asSeries: SeriesInterface[] = [{
-        name: 'Scaling Factor',
-        data: data.slice(factors.length - daysRange)
-    }];
+    const asSeries: SeriesInterface[] = [
+      {
+        name: "Scaling Factor",
+        data: data.slice(factors.length - daysRange / 2),
+      },
+    ];
     let theme;
     let labelColor;
     let borderColor;
@@ -412,7 +502,8 @@ const Charts: React.FC = () => {
           height: 350
         },
         stroke: {
-          curve: 'stepline',
+          curve: "stepline",
+          // curve: "smooth",
         },
         dataLabels: {
           enabled: false
@@ -512,16 +603,21 @@ const Charts: React.FC = () => {
                   options={scalingOpts ? scalingOpts : {}}
                   series={scalingSeries ? scalingSeries : []}
                   type="line"
-                  height={350}
+                  height={300}
                 />
               </CardContent>
             </Card>
             <Card>
-              <CardTitle text="💰 Reserves History" />
+              <CardTitle text="💰 Reserves History ($)" />
               <Spacer size="sm" />
               <CardContent>
                 <Split>
-                  <Chart options={opts ? opts[0] : {}} series={series ? [series[0]] : []} type="line" height={350} />
+                  <Chart
+                    options={opts ? opts[0] : {}}
+                    series={series ? [series[0], series[1]] : []}
+                    type="area"
+                    height={300}
+                  />
                 </Split>
               </CardContent>
             </Card>
@@ -533,7 +629,7 @@ const Charts: React.FC = () => {
               <Spacer size="sm" />
               <CardContent>
                 <Split>
-                  <Chart options={opts ? opts[1] : {}} series={series ? [series[1]] : []} type="bar" height={200} />
+                  <Chart options={opts ? opts[1] : {}} series={series ? [series[2]] : []} type="bar" height={200} />
                 </Split>
               </CardContent>
             </Card>
@@ -542,7 +638,7 @@ const Charts: React.FC = () => {
               <Spacer size="sm" />
               <CardContent>
                 <Split>
-                  <Chart options={opts ? opts[2] : {}} series={series ? [series[2]] : []} type="bar" height={200} />
+                  <Chart options={opts ? opts[2] : {}} series={series ? [series[3]] : []} type="bar" height={200} />
                 </Split>
               </CardContent>
             </Card>
@@ -569,8 +665,8 @@ const Charts: React.FC = () => {
     series,
     opts,
   ]);
-  
-  
+
+
   return (
     <>
         {DisplayCharts}

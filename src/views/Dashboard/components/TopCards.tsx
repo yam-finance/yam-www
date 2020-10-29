@@ -17,6 +17,7 @@ import {
   getProjectedRebasePercent,
   getProjectedMintPercent,
   getRebaseType,
+  getDPIPrice,
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
@@ -25,10 +26,12 @@ import { useWallet } from "use-wallet";
 
 const TopCards: React.FC = () => {
   const yam = useYam();
+  const { totalYUsdValue, totalDPIValue } = useTreasury();
   const [currentPrice, setCurrentPrice] = useState<string>();
   const [scalingFactor, setScalingFactor] = useState<string>();
   const [maxSupply, setMaxSupply] = useState<string>();
   const [marketCap, setMarketCap] = useState<string>();
+  const [dpiPrice, setDPIPrice] = useState<number>();
   const [projectedRebase, setProjectedRebase] = useState<string>();
   const [projectedMint, setProjectedMint] = useState<string>();
   const [projectedRebasePercent, setProjectedRebasePercent] = useState<string>();
@@ -37,9 +40,11 @@ const TopCards: React.FC = () => {
   const fetchOnce = useCallback(async () => {
     const maxSupply = await getMaxSupply();
     const marketCap = await getMarketCap();
+    const dpiPrice = await getDPIPrice();
     setMaxSupply(numeral(maxSupply).format("0.00a"));
     setMarketCap(numeral(marketCap).format("0.00a"));
-  }, [setMaxSupply, setMarketCap]);
+    setDPIPrice(dpiPrice);
+  }, [setMaxSupply, setMarketCap, setDPIPrice]);
 
   useEffect(() => {
     if (status === "connected") {
@@ -62,14 +67,7 @@ const TopCards: React.FC = () => {
       // setProjectedMint(numeral(projectedMint).format("0.00a"));
       // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
     }
-  }, [
-    yam,
-    setCurrentPrice,
-    setScalingFactor,
-    setProjectedRebase,
-    setProjectedMint,
-    setProjectedRebasePercent,
-  ]);
+  }, [yam, setCurrentPrice, setScalingFactor, setProjectedRebase, setProjectedMint, setProjectedRebasePercent]);
 
   useEffect(() => {
     fetchStats();
@@ -77,10 +75,13 @@ const TopCards: React.FC = () => {
     return () => clearInterval(refreshInterval);
   }, [fetchStats, yam]);
 
-  const { totalYUsdValue } = useTreasury();
+  const assetYUSD = totalYUsdValue * 1.15;
+  const assetDPI = (totalDPIValue ? totalDPIValue : 0) * (dpiPrice ? dpiPrice : 0);
+
+  const treasuryAssets = assetYUSD + assetDPI;
   const treasuryValue =
     typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0
-      ? "$" + numeral(totalYUsdValue * 1.15).format("0.00a")
+      ? "~$" + numeral(treasuryAssets).format("0.00a")
       : "--";
 
   const col = [
