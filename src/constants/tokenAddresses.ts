@@ -6,6 +6,6 @@ export const yycrvUniLp = '0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC'
 export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 export const strn = '0x710CCAA8748dF2cf2E60c1633C9f17D302083e09'
 export const strnEthLP = '0x4de1c71fef9e2c9782e6645f04802bd75c83bdf0'
-export const strnIncentivizer = '0xaFf00B64CBCAAfC1bE4A45361326390c6F045c7B'
+export const strnIncentivizer = '0x19Bf9bef453f57983319Eb3033a95a7aa7DB764d'
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
 // make sure chainId is "1" and not "4"

@@ -75,8 +75,7 @@ const Providers: React.FC = ({ children }) => {
       borderRadius: 28,
     })
   }, [])
-  // TODO: set to rinkeby for testing needs to be set to mainnet for launch
-  const chainId = 4;
+  const chainId = 1;
   return (
     <ThemeProvider
       darkModeEnabled={darkModeSetting}
