@@ -61,7 +61,7 @@ const Charts: React.FC = () => {
     fetchReserves();
     fetchSold();
     fetchMinted();
-  }, [status, yam, treasuryValues]);
+  }, [darkMode, status, yam, treasuryValues]);
 
   const fetchScaling = useCallback(async () => {
     if (!yam) {
@@ -81,7 +81,6 @@ const Charts: React.FC = () => {
       {
         name: "Scaling Factor",
         data: data ? data.slice(factors.length - defaultRebaseRange) : [],
-        // data: data,
       },
     ];
     let theme;
@@ -169,7 +168,7 @@ const Charts: React.FC = () => {
 
     setSeriesScaling(series);
     setOptsScaling(options);
-  }, [setOptsScaling, setSeriesScaling, status, yam, treasuryValues]);
+  }, [setOptsScaling, setSeriesScaling, darkMode, status, yam, treasuryValues]);
 
   const fetchReserves = useCallback(async () => {
     if (!yam || !totalDPIValue || !treasuryValues) {
@@ -253,12 +252,10 @@ const Charts: React.FC = () => {
       {
         name: "yUSD Reserves",
         data: reserves ? reserves.slice(reserves.length - defaultRebaseRange) : [],
-        // data: reserves,
       },
       {
         name: "DPI Reserves",
         data: reservesDPI ? reservesDPI.slice(reservesDPI.length - defaultRebaseRange) : [],
-        // data: reservesDPI,
       },
     ];
 
@@ -359,7 +356,7 @@ const Charts: React.FC = () => {
 
     setOptsReserves(options);
     setSeriesReserves(series);
-  }, [setOptsReserves, setSeriesReserves, status, yam, totalDPIValue, treasuryValues]);
+  }, [setOptsReserves, setSeriesReserves, darkMode, status, yam, totalDPIValue, treasuryValues]);
 
   const fetchSold = useCallback(async () => {
     if (!yam || !treasuryValues) {
@@ -473,7 +470,7 @@ const Charts: React.FC = () => {
 
     setOptsSold(options);
     setSeriesSold(series);
-  }, [setOptsSold, setSeriesSold, status, yam, treasuryValues]);
+  }, [setOptsSold, setSeriesSold, darkMode, status, yam, treasuryValues]);
 
   const fetchMinted = useCallback(async () => {
     if (!yam || !treasuryValues) {
@@ -584,7 +581,7 @@ const Charts: React.FC = () => {
 
     setOptsMinted(options);
     setSeriesMinted(series);
-  }, [setOptsMinted, setSeriesMinted, status, yam, treasuryValues]);
+  }, [setOptsMinted, setSeriesMinted, darkMode, status, yam, treasuryValues]);
 
   useEffect(() => {
     fetchTreasury()
@@ -701,7 +698,7 @@ const Charts: React.FC = () => {
               {DisplayChartScaling}
             </Card>
             <Card>
-              <CardTitle text="💰 Reserves History ($)" />
+              <CardTitle text="💰 Treasury History ($)" />
               <Spacer size="sm" />
               {DisplayChartReserves}
             </Card>
@@ -731,7 +728,6 @@ const Charts: React.FC = () => {
       </>
     );
   }, [
-    darkMode,
     status,
     unlockModalIsOpen,
     handleDismissUnlockModal,
