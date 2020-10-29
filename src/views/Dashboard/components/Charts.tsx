@@ -3,245 +3,37 @@ import useYam from "hooks/useYam";
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Box, Button, Card, CardActions, CardContent, CardTitle, Container, Spacer, useTheme } from "react-neu";
 import { useWallet } from "use-wallet";
-import { getNearestBlock } from "utils";
-import { treasuryEvents, getDPIPrices, scalingFactors } from "yam-sdk/utils";
+import { getNearestBlock, getTimestampDate } from "utils";
+import { treasuryEvents, getDPIPrices, scalingFactors, getDPIPrice } from "yam-sdk/utils";
+import { OptionInterface, SeriesInterface, TimeSeries } from "types/Charts";
+import YamLoader from "components/YamLoader";
 import Chart from "react-apexcharts";
 import Split from "components/Split";
 import UnlockWalletModal from "components/UnlockWalletModal";
 import numeral from "numeral";
 
-export interface ChartOptions {
-  type: string;
-  height: number;
-  stacked?: boolean;
-}
-
-export interface StrokeOptions {
-  curve: string
-}
-
-export interface LabelsOptions {
-  enabled: boolean
-}
-
-export interface TitleOptions {
-  text?: string,
-  align?: string
-}
-
-export interface HoverOptions {
-  sizeOffset: number
-}
-
-export interface MarkerOptions {
-  hover: HoverOptions;
-}
-
-export interface ChartLegend {
-  position?: string;
-  horizontalAlign?: string;
-}
-
-export interface ChartFill {
-  colors?: Array<any>;
-  hover?: HoverOptions;
-  type?: string;
-  gradient?: {
-    shade?: string;
-    opacityFrom?: number;
-    opacityTo?: number;
-    shadeIntensity?: number;
-    stops?: Array<any>;
-  };
-}
-
-export interface OptionInterface {
-  chart?: ChartOptions,
-  stroke?: StrokeOptions,
-  dataLabels?: LabelsOptions,
-  title?: TitleOptions,
-  markers?: MarkerOptions,
-  colors?: string[],
-  xaxis?: axisInterface,
-  yaxis?: axisInterface,
-  legend?: ChartLegend,
-  fill?: ChartFill,
-  grid?: GridInterface,
-  tooltip?: tooltipInterface,
-  theme?: themeInterface
-}
-
-export interface themeInterface {
-  mode?: string
-}
-
-export interface SeriesInterface {
-    name?: string,
-    data?: number[] | TimeSeries[]
-}
-
-export interface GridInterface {
-    show?: boolean,
-    borderColor?: string,
-    strokeDashArray?: number,
-    position?: string,
-    padding?: {
-      top?: number,
-      right?: number,
-      bottom?: number,
-      left?: number
-    },
-    xaxis?: {
-        lines?: {
-            show?: boolean
-        }
-    },
-    yaxis?: {
-        lines?: {
-            show?: boolean
-        }
-    },
-    row?: {
-        colors?: string[],
-        opacity?: number
-    },
-    column?: {
-        colors?: string[],
-        opacity?: number
-    }
-}
-
-export interface tooltipInterface {
-      enabled?: boolean,
-      enabledOnSeries?: boolean,
-      shared?: boolean,
-      followCursor?: boolean,
-      intersect?: boolean,
-      inverseOrder?: boolean,
-      fillSeriesColor?: boolean,
-      theme?: string,
-      style?: {
-        fontSize?: string,
-        fontFamily?: string
-      },
-      onDatasetHover?: {
-          highlightDataSeries?: boolean,
-      },
-      x?: {
-          show?: boolean,
-          format?: string
-      },
-      y?: {
-          title?: string,
-      },
-      z?: {
-          formatter?: undefined,
-          title?: string
-      },
-      marker?: {
-          show?: boolean,
-      },
-      items?: {
-         display?: any,
-      },
-      fixed?: {
-          enabled?: boolean,
-          position?: string,
-          offsetX?: number,
-          offsetY?: number,
-      },
-}
-
-export interface axisInterface {
-    type?: string,
-    categories?: any[],
-    logarithmic?: boolean,
-    min?: number,
-    max?: number,
-    labels?: {
-        show?: boolean,
-        rotate?: number,
-        rotateAlways?: boolean,
-        style?: {
-            colors?: string[] | string,
-            fontSize?: string,
-            fontFamily?: string,
-            fontWeight?: number,
-            cssClass?: string
-        },
-        offsetX?: number,
-        offsetY?: number,
-        formatter?: any
-    },
-    axisBorder?: {
-        show?: boolean,
-        color?: string,
-        height?: number,
-        width?: string
-    },
-    axisTicks?: {
-        show?: boolean,
-        borderType?: string,
-        color?: string,
-        height?: number
-    },
-    title?: {
-        text?: string,
-        style?: {
-            color?: string,
-            fontSize?: string,
-            fontFamily?: string,
-            fontWeight?: number
-        },
-    },
-    crosshairs?: {
-        show?: boolean,
-        width?: number,
-        position?: string,
-        opacity?: number,
-        stroke?: {
-            color?: string,
-            width?: number,
-            dashArray?: number
-        },
-        dropShadow?: {
-            enabled?: boolean,
-            top?: number,
-            left?: number,
-            blur?: number,
-            opacity?: number,
-        },
-    },
-    tooltip?: {
-        enabled?: boolean,
-        theme?: string,
-        style?: {
-          fontSize?: number,
-          fontFamily?: number,
-        },
-    },
-}
-
-export interface TimeSeries {
-  x: number,
-  y: number
-}
-
 const Charts: React.FC = () => {
   const yam = useYam();
-  const [series, setSeries] = useState<SeriesInterface[]>();
-  const [opts, setOpts] = useState<OptionInterface[]>();
-  const [scalingSeries, setScalingSeries] = useState<SeriesInterface[]>();
-  const [scalingOpts, setScalingOpts] = useState<OptionInterface>();
+  const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
+  const [optsScaling, setOptsScaling] = useState<OptionInterface>();
+  const [seriesScaling, setSeriesScaling] = useState<SeriesInterface[]>();
+  const [optsReserves, setOptsReserves] = useState<OptionInterface>();
+  const [seriesReserves, setSeriesReserves] = useState<SeriesInterface[]>();
+  const [optsSold, setOptsSold] = useState<OptionInterface>();
+  const [seriesSold, setSeriesSold] = useState<SeriesInterface[]>();
+  const [optsMinted, setOptsMinted] = useState<OptionInterface>();
+  const [seriesMinted, setSeriesMinted] = useState<SeriesInterface[]>();
+  const [treasuryValues, setTreasuryValues] = useState<any>();
   const { darkMode, colors } = useTheme();
-  const { totalDPIValue } = useTreasury();
-  const { status } = useWallet();
-  const daysRange = 28;
-  const yUSDValue = 1.15;
+  const { totalYUsdValue, totalDPIValue } = useTreasury();
 
-  const fetchReserves = useCallback(async () => {
-    if (!yam || !totalDPIValue) {
-      return;
+  const { status } = useWallet();
+  const defaultRebaseRange = (14 * 2);
+  const yUSDRate = 1.16;
+
+  const fetchTreasury = useCallback(async () => {
+    if(!yam) {
+      return
     }
     const {
       reservesAdded,
@@ -251,105 +43,247 @@ const Charts: React.FC = () => {
       blockNumbers,
       blockTimes,
     } = await treasuryEvents(yam);
+    setTreasuryValues({
+      reservesAdded,
+      yamsSold,
+      yamsFromReserves,
+      yamsToReserves,
+      blockNumbers,
+      blockTimes,
+    });
+  }, [yam, setTreasuryValues]);
 
-    let reserves: TimeSeries[] = [];
-    let running = 0;
-    for (let i = 0; i < reservesAdded.length; i++) {
-      running += reservesAdded[i];
-      if (blockNumbers[i] > 10946646) { // live remove
-        const tmp: TimeSeries = {
-          x: blockNumbers[i],
-          y: 2297013 * yUSDValue, // get pastEvents on blocknumber 11133885 (1603739830) for yUSD in reserve
-        };
-        reserves.push(tmp);
-      } else {
-        const tmp: TimeSeries = {
-          x: blockNumbers[i],
-          y: running * yUSDValue,
-        };
-        reserves.push(tmp);
-      }
+  useEffect(() => {
+    if (status !== "connected" || !yam || !treasuryValues) {
+      return
+    }
+    fetchScaling();
+    fetchReserves();
+    fetchSold();
+    fetchMinted();
+  }, [status, yam, treasuryValues]);
+
+  const fetchScaling = useCallback(async () => {
+    if (!yam) {
+      return;
+    }
+    const { factors, blockNumbers, blockTimes } = await scalingFactors(yam);
+    let data: TimeSeries[] = [];
+    for (let i = 0; i < factors.length; i++) {
+      const tmp: TimeSeries = {
+        x: blockNumbers[i],
+        // x: blockTimes[i],
+        y: factors[i],
+      };
+      data.push(tmp);
+    }
+    const series: SeriesInterface[] = [
+      {
+        name: "Scaling Factor",
+        data: data ? data.slice(factors.length - defaultRebaseRange) : [],
+        // data: data,
+      },
+    ];
+    let theme;
+    let labelColor;
+    let borderColor;
+    if (darkMode) {
+      theme = "dark";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[900];
+    } else {
+      theme = "light";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[600];
+    }
+
+    const options: OptionInterface = {
+      chart: {
+        background: "#ffffff00",
+        type: "line",
+        height: 350,
+      },
+      stroke: {
+        curve: "stepline",
+        // curve: "smooth",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      markers: {
+        hover: {
+          sizeOffset: 5,
+        },
+      },
+      colors: ["#c60c4d"],
+      xaxis: {
+        // type: "datetime",
+        labels: {
+          style: {
+            colors: labelColor,
+          },
+          // formatter: (value: any) => {
+          //   return getTimestampDate({ ts: value });
+          // },
+        },
+        axisBorder: {
+          show: false,
+        },
+        title: {
+          // text: "Block Number",
+          style: {
+            color: labelColor,
+          },
+        },
+      },
+      yaxis: {
+        min: 0,
+        labels: {
+          style: {
+            colors: labelColor,
+          },
+          formatter: (value: any) => {
+            return "x" + numeral(value).format("0.00a");
+          },
+        },
+        axisBorder: {
+          show: false,
+        },
+        title: {
+          style: {
+            color: labelColor,
+          },
+        },
+      },
+      grid: {
+        borderColor: borderColor,
+        padding: {
+          right: 5,
+          left: 5,
+        },
+      },
+      theme: {
+        mode: theme,
+      },
+    };
+
+    setSeriesScaling(series);
+    setOptsScaling(options);
+  }, [setOptsScaling, setSeriesScaling, status, yam, treasuryValues]);
+
+  const fetchReserves = useCallback(async () => {
+    if (!yam || !totalDPIValue || !treasuryValues) {
+      return;
     }
 
     let now = Math.floor(Date.now() / 1000);
+    let reserves: TimeSeries[] = [];
+    let running = 0;
+    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+      running += treasuryValues.reservesAdded[i];
+      // if (treasuryValues.blockNumbers[i] > 10946646) { // live remove (only for reserves)
+      //   const tmp: TimeSeries = {
+      //     // x: treasuryValues.blockNumbers[i],
+      //     x: treasuryValues.blockTimes[i],
+      //     y: totalYUsdValue * yUSDRate, // get pastEvents on blocknumber 11133885 (1603739830) for yUSD in reserve
+      //   };
+      //   reserves.push(tmp);
+      // } else {
+      // }
+      const tmp: TimeSeries = {
+        // x: treasuryValues.blockTimes[i],
+        x: treasuryValues.blockNumbers[i],
+        y: running * yUSDRate,
+      };
+      reserves.push(tmp);
+    }
+    // on DPI purchase
+    reserves.push({
+      // x: 1603739830,
+      x: 11133885,
+      y: totalYUsdValue * yUSDRate,
+    });
+    // now
+    reserves.push({
+      // x: now,
+      x: 11149703,
+      y: totalYUsdValue * yUSDRate,
+    })
+
+
+    const dpiPrice = await getDPIPrice();
     let DPIBalance = totalDPIValue;
     let reservesDPI: TimeSeries[] = [];
     let prices: any = await getDPIPrices("1603739830", now.toString());
-    let pricesArray = [];
+    let timeArray = [];
     for (var prop in prices) {
-      pricesArray.push(prop);
+      timeArray.push(prop);
     }
-    for (let i = 0; i < reservesAdded.length; i++) {
-      if (DPIBalance && blockNumbers[i] > 10946646) { // 11133885 live set
-        let blockTime: number = blockTimes[i].timestamp;
-        let blockCurr: any = getNearestBlock(pricesArray, blockTime);
-        const tmp: TimeSeries = {
-          x: blockNumbers[i],
-          y: DPIBalance * prices[blockCurr],
-        };
-        reservesDPI.push(tmp);
-      } else {
-        const tmp: TimeSeries = {
-          x: blockNumbers[i],
-          y: 0,
-        };
-        reservesDPI.push(tmp);
-      }
+    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+      // if (DPIBalance && treasuryValues.blockNumbers[i] > 11133885) { // live set 11133885 (test: 10946646)
+      //   const tmp: TimeSeries = {
+      //     // x: treasuryValues.blockNumbers[i],
+      //     x: treasuryValues.blockTimes[i],
+      //     y: DPIBalance * prices[getNearestBlock(timeArray, treasuryValues.blockTimes[i])],
+      //   };
+      //   reservesDPI.push(tmp);
+      // } else {
+      // }
+      const tmp: TimeSeries = {
+        // x: treasuryValues.blockTimes[i],
+        x: treasuryValues.blockNumbers[i],
+        y: 0,
+      };
+      reservesDPI.push(tmp);
     }
+    // DPI purchase
+    reservesDPI.push({
+      // x: 1603739830,
+      x: 11133885,
+      y: DPIBalance * 75,
+    });
+    // now
+    reservesDPI.push({
+      // x: now,
+      x: 11149703,
+      y: DPIBalance * dpiPrice,
+    });
 
-    let sales: number[] = [];
-    for (let i = 0; i < yamsSold.length; i++) {
-      sales.push(yamsSold[i]);
-    }
-
-    let mints: number[] = [];
-    for (let i = 0; i < yamsSold.length; i++) {
-      mints.push(yamsSold[i] - yamsFromReserves[i] + yamsToReserves[i]);
-    }
-
-    const asSeries: SeriesInterface[] = [
+    const series: SeriesInterface[] = [
       {
         name: "yUSD Reserves",
-        data: reserves.slice(reserves.length - daysRange),
+        data: reserves ? reserves.slice(reserves.length - defaultRebaseRange) : [],
+        // data: reserves,
       },
       {
         name: "DPI Reserves",
-        data: reservesDPI.slice(reservesDPI.length - daysRange),
-      },
-      {
-        name: "Yams Sold",
-        data: sales.slice(sales.length - daysRange),
-      },
-      {
-        name: "Yam Minted",
-        data: mints.slice(mints.length - daysRange),
+        data: reservesDPI ? reservesDPI.slice(reservesDPI.length - defaultRebaseRange) : [],
+        // data: reservesDPI,
       },
     ];
 
     let theme;
     let labelColor;
     let borderColor;
-    let shadeColor;
     if (darkMode) {
       theme = "dark";
       labelColor = colors.grey[600];
       borderColor = colors.grey[900];
-      shadeColor = "dark";
     } else {
       theme = "light";
       labelColor = colors.grey[600];
       borderColor = colors.grey[600];
-      shadeColor = "light";
     }
 
-    let reservesOpts: OptionInterface = {
+    let options: OptionInterface = {
       chart: {
+        background: "#ffffff00",
         type: "area",
         height: 350,
         stacked: true,
       },
       stroke: {
-        curve: "smooth",
+        curve: "stepline",
       },
       dataLabels: {
         enabled: false,
@@ -360,24 +294,31 @@ const Charts: React.FC = () => {
       legend: {
         position: "top",
         horizontalAlign: "left",
+        labels: {
+          colors: [labelColor],
+        },
       },
       markers: {
         hover: {
-          sizeOffset: 4,
+          sizeOffset: 5,
         },
       },
       colors: ["#C60C4D", "#8150E6"],
       xaxis: {
+        // type: "datetime",
         labels: {
           style: {
             colors: labelColor,
           },
+          // formatter: (value: any) => {
+          //   return getTimestampDate({ ts: value });
+          // },
         },
         axisBorder: {
           show: false,
         },
         title: {
-          text: "Block Number",
+          // text: "Block Number",
           style: {
             color: labelColor,
           },
@@ -385,7 +326,7 @@ const Charts: React.FC = () => {
       },
       yaxis: {
         title: {
-          text: "yUSD In Reserves",
+          // text: "yUSD In Reserves",
           style: {
             color: labelColor,
           },
@@ -416,159 +357,241 @@ const Charts: React.FC = () => {
       },
     };
 
-    let soldOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (
-      soldOpts &&
-      soldOpts.chart &&
-      soldOpts.xaxis &&
-      soldOpts.yaxis &&
-      soldOpts.yaxis.title &&
-      soldOpts.yaxis.labels
-    ) {
-      soldOpts.yaxis.title.text = "YAMs Sold";
-      soldOpts.yaxis.title.style = { color: labelColor };
-      soldOpts.chart.type = "bar";
-      soldOpts.xaxis.categories = blockNumbers;
-      delete soldOpts.fill;
-      soldOpts.yaxis.labels.formatter = (value: any) => {
-        return numeral(value).format("0.00a");
-      };
+    setOptsReserves(options);
+    setSeriesReserves(series);
+  }, [setOptsReserves, setSeriesReserves, status, yam, totalDPIValue, treasuryValues]);
+
+  const fetchSold = useCallback(async () => {
+    if (!yam || !treasuryValues) {
+      return;
     }
 
-    let mintedOpts: OptionInterface = JSON.parse(JSON.stringify(reservesOpts));
-    if (
-      mintedOpts &&
-      mintedOpts.chart &&
-      mintedOpts.xaxis &&
-      mintedOpts.yaxis &&
-      mintedOpts.yaxis.title &&
-      mintedOpts.yaxis.labels
-    ) {
-      mintedOpts.yaxis.title.text = "YAMs Minted";
-      mintedOpts.yaxis.title.style = { color: labelColor };
-      mintedOpts.chart.type = "bar";
-      mintedOpts.xaxis.categories = blockNumbers;
-      delete mintedOpts.fill;
-      mintedOpts.yaxis.labels.formatter = (value: any) => {
-        return numeral(value).format("0.00a");
-      };
+    let sales: number[] = [];
+    for (let i = 0; i < treasuryValues.yamsSold.length; i++) {
+      sales.push(treasuryValues.yamsSold[i]);
     }
 
-    reservesOpts.stroke = { curve: "stepline" };
-    // reservesOpts.stroke = { curve: "smooth" };
-
-    if (reservesOpts.xaxis) {
-      reservesOpts.xaxis.type = 'numeric';
-    }
-    setSeries(asSeries);
-    setOpts([reservesOpts, soldOpts, mintedOpts]);
-  }, [setSeries, setOpts, darkMode, status, yam, totalDPIValue]);
-
-  const fetchScalingFactors = useCallback(async () => {
-    if (!yam) {
-      return
-    }
-    const {factors, blockNumbers} = await scalingFactors(yam);
-    let data: TimeSeries[] = [];
-    for (let i = 0; i < factors.length; i++) {
-      const tmp: TimeSeries = {
-        x: blockNumbers[i],
-        y: factors[i]
-      };
-      data.push(tmp);
-    }
-    const asSeries: SeriesInterface[] = [
+    const series: SeriesInterface[] = [
       {
-        name: "Scaling Factor",
-        data: data.slice(factors.length - daysRange / 2),
+        name: "Yams Sold",
+        data: sales ? sales.slice(sales.length - defaultRebaseRange) : [],
       },
     ];
+
     let theme;
     let labelColor;
     let borderColor;
     if (darkMode) {
-      theme = 'dark'
-      labelColor = colors.grey[600]
-      borderColor = colors.grey[900]
+      theme = "dark";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[900];
     } else {
-      theme = 'light'
-      labelColor = colors.grey[600]
-      borderColor = colors.grey[600]
+      theme = "light";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[600];
     }
 
-    const options: OptionInterface = {
-        chart: {
-          type: 'line',
-          height: 350
+    let options: OptionInterface = {
+      chart: {
+        background: "#ffffff00",
+        type: "bar",
+        height: 350,
+        stacked: true,
+      },
+      stroke: {
+        curve: "stepline",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      // fill: {
+      //   colors: ["#C60C4D", "#8150E6"],
+      // },
+      legend: {
+        position: "top",
+        horizontalAlign: "left",
+      },
+      markers: {
+        hover: {
+          sizeOffset: 5,
         },
-        stroke: {
-          curve: "stepline",
-          // curve: "smooth",
-        },
-        dataLabels: {
-          enabled: false
-        },
-        markers: {
-          hover: {
-            sizeOffset: 4
-          }
-        },
-        colors: ['#c60c4d'],
-        xaxis: {
-          type: 'numeric',
-          labels: {
-            style: {
-              colors: labelColor
-            },
+      },
+      colors: ["#C60C4D", "#8150E6"],
+      xaxis: {
+        // type: "datetime",
+        categories: treasuryValues.blockNumbers ? treasuryValues.blockNumbers : [],
+        labels: {
+          style: {
+            colors: labelColor,
           },
-          axisBorder: {
-            show: false
-          },
-          title: {
-            text: "Block Number",
-            style: {
-              color: labelColor
-            }
-          }
+          // formatter: (value: any) => {
+          //   return getTimestampDate({ ts: value });
+          // },
         },
-        yaxis: {
-          min: 0,
-          labels: {
-            style: {
-              colors: labelColor
-            }
-          },
-          axisBorder: {
-            show: false
-          },
-          title: {
-            style: {
-              color: labelColor
-            }
-          }
+        axisBorder: {
+          show: false,
         },
-        grid: {
-          borderColor: borderColor,
-          padding: {
-            right: 5,
-            left: 5
-          }
+        title: {
+          // text: "Block Number",
+          style: {
+            color: labelColor,
+          },
         },
-        theme: {
-          mode: theme
-        }
-      };
-    setScalingSeries(asSeries);
-    setScalingOpts(options);
-  }, [
-    setScalingSeries,
-    setScalingOpts,
-    darkMode,
-    status,
-    yam
-  ])
+      },
+      yaxis: {
+        title: {
+          // text: "YAMs Sold",
+          style: {
+            color: labelColor,
+          },
+        },
+        labels: {
+          style: {
+            colors: labelColor,
+          },
+          formatter: (value: any) => {
+            return numeral(value).format("0a");
+          },
+        },
+        axisBorder: {
+          show: false,
+        },
+      },
+      grid: {
+        borderColor: borderColor,
+        padding: {
+          right: 5,
+        },
+      },
+      theme: {
+        mode: theme,
+      },
+      tooltip: {
+        theme: theme,
+      },
+    };
 
-  const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false)
+    setOptsSold(options);
+    setSeriesSold(series);
+  }, [setOptsSold, setSeriesSold, status, yam, treasuryValues]);
+
+  const fetchMinted = useCallback(async () => {
+    if (!yam || !treasuryValues) {
+      return;
+    }
+
+    let mints: number[] = [];
+    for (let i = 0; i < treasuryValues.yamsSold.length; i++) {
+      mints.push(treasuryValues.yamsSold[i] - treasuryValues.yamsFromReserves[i] + treasuryValues.yamsToReserves[i]);
+    }
+
+    const series: SeriesInterface[] = [
+      {
+        name: "Yam Minted",
+        data: mints ? mints.slice(mints.length - defaultRebaseRange) : [],
+      },
+    ];
+
+    let theme;
+    let labelColor;
+    let borderColor;
+    if (darkMode) {
+      theme = "dark";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[900];
+    } else {
+      theme = "light";
+      labelColor = colors.grey[600];
+      borderColor = colors.grey[600];
+    }
+
+    let options: OptionInterface = {
+      chart: {
+        background: "#ffffff00",
+        type: "bar",
+        height: 350,
+        stacked: true,
+      },
+      stroke: {
+        curve: "stepline",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      legend: {
+        position: "top",
+        horizontalAlign: "left",
+      },
+      markers: {
+        hover: {
+          sizeOffset: 5,
+        },
+      },
+      colors: ["#C60C4D", "#8150E6"],
+      xaxis: {
+        // type: "datetime",
+        categories: treasuryValues.blockNumbers ? treasuryValues.blockNumbers : [],
+        labels: {
+          style: {
+            colors: labelColor,
+          },
+          // formatter: (value: any) => {
+          //   return getTimestampDate({ ts: value });
+          // },
+        },
+        axisBorder: {
+          show: false,
+        },
+        title: {
+          // text: "Block Number",
+          style: {
+            color: labelColor,
+          },
+        },
+      },
+      yaxis: {
+        title: {
+          // text: "YAMs Minted",
+          style: {
+            color: labelColor,
+          },
+        },
+        labels: {
+          style: {
+            colors: labelColor,
+          },
+          formatter: (value: any) => {
+            return numeral(value).format("0a");
+          },
+        },
+        axisBorder: {
+          show: false,
+        },
+      },
+      grid: {
+        borderColor: borderColor,
+        padding: {
+          right: 5,
+        },
+      },
+      theme: {
+        mode: theme,
+      },
+      tooltip: {
+        theme: theme,
+      },
+    };
+
+    setOptsMinted(options);
+    setSeriesMinted(series);
+  }, [setOptsMinted, setSeriesMinted, status, yam, treasuryValues]);
+
+  useEffect(() => {
+    fetchTreasury()
+    let refreshInterval = setInterval(() => fetchTreasury(), 100000)
+    console.log("refreshInterval treasuryValues", treasuryValues);
+    return () => clearInterval(refreshInterval)
+  }, [fetchTreasury])
 
   const handleDismissUnlockModal = useCallback(() => {
     setUnlockModalIsOpen(false)
@@ -578,17 +601,94 @@ const Charts: React.FC = () => {
     setUnlockModalIsOpen(true)
   }, [setUnlockModalIsOpen])
 
-  useEffect(() => {
-    fetchScalingFactors()
-    let refreshInterval = setInterval(() => fetchScalingFactors(), 100000)
-    return () => clearInterval(refreshInterval)
-  }, [fetchScalingFactors])
+  const DisplayChartScaling = useMemo(() => {
+    if (seriesScaling) {
+      return (
+        <>
+          <CardContent>
+            <Chart
+              options={optsScaling ? optsScaling : {}}
+              series={seriesScaling ? seriesScaling : []}
+              type="line"
+              height={300}
+            />
+          </CardContent>
+        </>
+      );
+    } else {
+      return <><YamLoader space={320}></YamLoader></>;
+    }
+  }, [
+    optsScaling,
+    optsScaling,
+  ]);
 
-  useEffect(() => {
-    fetchReserves()
-    let refreshInterval = setInterval(() => fetchReserves(), 100000)
-    return () => clearInterval(refreshInterval)
-  }, [fetchReserves])
+  const DisplayChartReserves = useMemo(() => {
+    if (seriesReserves) {
+      return (
+        <>
+          <CardContent>
+            <Split>
+              <Chart
+                options={optsReserves ? optsReserves : {}}
+                series={seriesReserves ? seriesReserves : []}
+                type="area"
+                height={300}
+              />
+            </Split>
+          </CardContent>
+        </>
+      );
+    } else {
+      return <><YamLoader space={320}></YamLoader></>;
+    }
+  }, [
+    optsReserves,
+    seriesReserves,
+  ]);
+
+  const DisplayChartSold = useMemo(() => {
+    if (seriesSold) {
+      return (
+        <>
+          <CardContent>
+            <Split>
+              <Chart options={optsSold ? optsSold : {}} series={seriesSold ? seriesSold : []} type="bar" height={200} />
+            </Split>
+          </CardContent>
+        </>
+      );
+    } else {
+      return <><YamLoader space={200}></YamLoader></>;
+    }
+  }, [
+    optsSold,
+    seriesSold,
+  ]);
+
+  const DisplayChartMint = useMemo(() => {
+    if (seriesMinted) {
+      return (
+        <>
+          <CardContent>
+            <Split>
+              <Chart
+                options={optsMinted ? optsMinted : {}}
+                series={seriesMinted ? seriesMinted : []}
+                type="bar"
+                height={200}
+              />
+            </Split>
+          </CardContent>
+        </>
+      );
+    } else {
+      return <><YamLoader space={200}></YamLoader></>;
+    }
+  }, [
+    optsMinted,
+    seriesMinted,
+  ]);
 
   const DisplayCharts = useMemo(() => {
     if (status === "connected") {
@@ -598,49 +698,25 @@ const Charts: React.FC = () => {
             <Card>
               <CardTitle text="🚀 Scaling Factor History" />
               <Spacer size="sm" />
-              <CardContent>
-                <Chart
-                  options={scalingOpts ? scalingOpts : {}}
-                  series={scalingSeries ? scalingSeries : []}
-                  type="line"
-                  height={300}
-                />
-              </CardContent>
+              {DisplayChartScaling}
             </Card>
             <Card>
               <CardTitle text="💰 Reserves History ($)" />
               <Spacer size="sm" />
-              <CardContent>
-                <Split>
-                  <Chart
-                    options={opts ? opts[0] : {}}
-                    series={series ? [series[0], series[1]] : []}
-                    type="area"
-                    height={300}
-                  />
-                </Split>
-              </CardContent>
+              {DisplayChartReserves}
             </Card>
           </Split>
           <Spacer />
           <Split>
             <Card>
-              <CardTitle text="⬇️ Yams Sold Per Rebase" />
+              <CardTitle text="🔽 Yams Sold Per Rebase" />
               <Spacer size="sm" />
-              <CardContent>
-                <Split>
-                  <Chart options={opts ? opts[1] : {}} series={series ? [series[2]] : []} type="bar" height={200} />
-                </Split>
-              </CardContent>
+              {DisplayChartSold}
             </Card>
             <Card>
-              <CardTitle text="⬆️ Yams Minted Per Rebase" />
+              <CardTitle text="🔼 Yams Minted Per Rebase" />
               <Spacer size="sm" />
-              <CardContent>
-                <Split>
-                  <Chart options={opts ? opts[2] : {}} series={series ? [series[3]] : []} type="bar" height={200} />
-                </Split>
-              </CardContent>
+              {DisplayChartMint}
             </Card>
           </Split>
         </>
@@ -657,21 +733,20 @@ const Charts: React.FC = () => {
   }, [
     darkMode,
     status,
+    unlockModalIsOpen,
     handleDismissUnlockModal,
     handleUnlockWalletClick,
-    unlockModalIsOpen,
-    scalingSeries,
-    scalingOpts,
-    series,
-    opts,
+    optsScaling,
+    seriesScaling,
+    optsReserves,
+    seriesReserves,
+    optsSold,
+    seriesSold,
+    optsMinted,
+    seriesMinted,
   ]);
 
+  return <>{DisplayCharts}</>;
+};
 
-  return (
-    <>
-        {DisplayCharts}
-    </>
-  );
-}
-
-export default Charts
+export default Charts;
