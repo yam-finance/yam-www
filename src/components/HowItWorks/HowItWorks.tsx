@@ -22,7 +22,7 @@ const HowItWorks = () => {
                 <StyledTableDataInfo >
                     - Shape the future of Strain NFT, when you vote in the StrainSuperDAO! <br />
                         - Breed together multiple Strains in the Greenhouse. <br />
-                        - Trade Stains in the Dispensary with other community members.
+                        - Trade Strains in the Dispensary with other community members.
                     </StyledTableDataInfo>
             </StyledHowItWorksTable>
             <StyledRoadmap src={roadmap} />
