@@ -828,7 +828,7 @@ export const getHistoricalScaling = async(from,to,curPage) =>{
 
 export const pingApi = async() =>{
   return new Promise((resolve, reject) => {
-    let url = "https://treasurdy.vision/api/v1/scaling-history";
+    let url = "https://treasury.vision/api/v1/scaling-history";
 
     request({
           url: url,
