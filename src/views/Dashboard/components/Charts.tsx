@@ -333,7 +333,7 @@ const Charts: React.FC = () => {
             colors: labelColor,
           },
           formatter: (value: any) => {
-            return numeral(value).format("0.00a");
+            return "$" + numeral(value).format("0.00a");
           },
         },
         axisBorder: {
