@@ -18,6 +18,7 @@ import {
   getProjectedMintPercent,
   getRebaseType,
   getDPIPrice,
+  getYam,
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
@@ -35,16 +36,17 @@ const TopCards: React.FC = () => {
   const [projectedRebase, setProjectedRebase] = useState<string>();
   const [projectedMint, setProjectedMint] = useState<string>();
   const [projectedRebasePercent, setProjectedRebasePercent] = useState<string>();
+  const [change24, setChange24] = useState<string>();
   const { status } = useWallet();
 
   const fetchOnce = useCallback(async () => {
-    const maxSupply = await getMaxSupply();
-    const marketCap = await getMarketCap();
+    const yamValues = await getYam();
     const dpiPrice = await getDPIPrice();
-    setMaxSupply(numeral(maxSupply).format("0.00a"));
-    setMarketCap(numeral(marketCap).format("0.00a"));
+    setMaxSupply(numeral(yamValues.market_data.max_supply).format("0.00a"));
+    setMarketCap(numeral(yamValues.market_data.market_cap.usd).format("0.00a"));
+    setChange24(numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
     setDPIPrice(dpiPrice);
-  }, [setMaxSupply, setMarketCap, setDPIPrice]);
+  }, [setMaxSupply, setMarketCap, setDPIPrice, setChange24]);
 
   useEffect(() => {
     if (status === "connected") {
@@ -59,13 +61,13 @@ const TopCards: React.FC = () => {
       const factor = await getScalingFactor(yam);
       const projectedRebase = await getProjectedRebase(yam);
       const rebaseType = getRebaseType(projectedRebase);
+      const projectedRebasePercent = await getProjectedRebasePercent(yam);
       // const projectedMint = await getProjectedMint(yam);
-      // const projectedRebasePercent = await getProjectedRebasePercent(yam);
       setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
       setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
       setProjectedRebase((rebaseType ? "+" : "") + numeral(projectedRebase).format("0.00a"));
+      setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a") + "%");
       // setProjectedMint(numeral(projectedMint).format("0.00a"));
-      // setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a"));
     }
   }, [yam, setCurrentPrice, setScalingFactor, setProjectedRebase, setProjectedMint, setProjectedRebasePercent]);
 
@@ -90,11 +92,15 @@ const TopCards: React.FC = () => {
         icon: "💲",
         label: "Current price TWAP",
         value: currentPrice ? `${currentPrice} yUSD` : "--",
+        hint: change24 ? change24 : "-",
+        tooltip: "24h Change",
       },
       {
         icon: "🚀",
         label: "Scaling factor",
         value: scalingFactor ? `x${scalingFactor}` : "--",
+        hint: "",
+        tooltip: "",
       },
     ],
     [
@@ -102,11 +108,15 @@ const TopCards: React.FC = () => {
         icon: "🧱",
         label: "YAM total supply",
         value: maxSupply ? maxSupply : "--",
+        hint: "",
+        tooltip: "",
       },
       {
         icon: "🍠",
         label: "YAM rebase impact",
-        value: projectedRebase ? projectedRebase : "--", // -2.0%
+        value: projectedRebase ? projectedRebase : "--",
+        hint: projectedRebasePercent ? projectedRebasePercent : "-",
+        tooltip: "",
       },
     ],
     [
@@ -114,11 +124,15 @@ const TopCards: React.FC = () => {
         icon: "🌎",
         label: "Marketcap",
         value: marketCap ? `$${marketCap}` : "--",
+        hint: "",
+        tooltip: "",
       },
       {
         icon: "💰",
         label: "Treasury value",
         value: treasuryValue ? treasuryValue : "--",
+        hint: "",
+        tooltip: "",
       },
     ],
   ];
@@ -129,39 +143,81 @@ const TopCards: React.FC = () => {
       <Box column>
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[0][0].icon} label={col[0][0].label} value={col[0][0].value} />
+            <FancyValue
+              wrap
+              icon={col[0][0].icon}
+              label={col[0][0].label}
+              value={col[0][0].value}
+              hint={col[0][0].hint}
+              tooltip={col[0][0].tooltip}
+            />
           </CardContent>
         </Card>
         <Spacer />
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[0][1].icon} label={col[0][1].label} value={col[0][1].value} />
+            <FancyValue
+              wrap
+              icon={col[0][1].icon}
+              label={col[0][1].label}
+              value={col[0][1].value}
+              hint={col[0][1].hint}
+              tooltip={col[0][1].tooltip}
+            />
           </CardContent>
         </Card>
       </Box>
       <Box column>
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[1][0].icon} label={col[1][0].label} value={col[1][0].value} />
+            <FancyValue
+              wrap
+              icon={col[1][0].icon}
+              label={col[1][0].label}
+              value={col[1][0].value}
+              hint={col[1][0].hint}
+              tooltip={col[1][0].tooltip}
+            />
           </CardContent>
         </Card>
         <Spacer />
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[1][1].icon} label={col[1][1].label} value={col[1][1].value} />
+            <FancyValue
+              wrap
+              icon={col[1][1].icon}
+              label={col[1][1].label}
+              value={col[1][1].value}
+              hint={col[1][1].hint}
+              tooltip={col[1][1].tooltip}
+            />
           </CardContent>
         </Card>
       </Box>
       <Box column>
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[2][0].icon} label={col[2][0].label} value={col[2][0].value} />
+            <FancyValue
+              wrap
+              icon={col[2][0].icon}
+              label={col[2][0].label}
+              value={col[2][0].value}
+              hint={col[2][0].hint}
+              tooltip={col[2][0].tooltip}
+            />
           </CardContent>
         </Card>
         <Spacer />
         <Card>
           <CardContent>
-            <FancyValue wrap icon={col[2][1].icon} label={col[2][1].label} value={col[2][1].value} />
+            <FancyValue
+              wrap
+              icon={col[2][1].icon}
+              label={col[2][1].label}
+              value={col[2][1].value}
+              hint={col[2][1].hint}
+              tooltip={col[2][1].tooltip}
+            />
           </CardContent>
         </Card>
       </Box>
