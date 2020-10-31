@@ -124,51 +124,53 @@ const VoteModal: React.FC<VoteModalProps> = ({
           </Card>
         </Split>
         <Spacer size="md"/>
-        <Card>
-          <CardContent>
-            <StyledDescription>
-              <span>Description:</span>
-            </StyledDescription>
-            <Spacer size="sm"/>
-            <StyledInfo>
-              <span>  {prop.description ? prop.description.replace("Kill", "Pause"): ""}</span>
-            </StyledInfo>
-            <Spacer size="sm"/>
-            <Separator />
-            <Spacer size="sm"/>
-            <StyledDescription>
-              <span>Affecting:</span>
-            </StyledDescription>
-            <Spacer size="sm"/>
-            <StyledInfo>
-              <span>  {prop.targets.join(", ")}</span>
-            </StyledInfo>
-            <Spacer size="sm"/>
-            <Separator />
-            <Spacer size="sm"/>
-            <StyledDescription>
-              <span>Function Calls:</span>
-            </StyledDescription>
-            <Spacer size="sm"/>
-            <StyledInfo>
-            <code> {prop.signatures.join(", ")}</code>
-            </StyledInfo>
-            <Spacer size="sm"/>
-            <Separator />
-            <Spacer size="sm"/>
-            <StyledDescription>
-              <span>Inputs:</span>
-            </StyledDescription>
-            <Spacer size="sm"/>
-            <StyledInfo>
-              {
-                prop.inputs.map((input, i) => {
-                  return (<code>{JSON.stringify(input)}</code>)
-                })
-              }
-            </StyledInfo>
-          </CardContent>
-        </Card>
+        <StyledParams>
+          <Card>
+            <CardContent>
+              <StyledDescription>
+                <span>Description:</span>
+              </StyledDescription>
+              <Spacer size="sm"/>
+              <StyledInfo>
+                <span>  {prop.description ? prop.description.replace("Kill", "Pause"): ""}</span>
+              </StyledInfo>
+              <Spacer size="sm"/>
+              <Separator />
+              <Spacer size="sm"/>
+              <StyledDescription>
+                <span>Affecting:</span>
+              </StyledDescription>
+              <Spacer size="sm"/>
+              <StyledInfo>
+                <span>  {prop.targets.join(", ")}</span>
+              </StyledInfo>
+              <Spacer size="sm"/>
+              <Separator />
+              <Spacer size="sm"/>
+              <StyledDescription>
+                <span>Function Calls:</span>
+              </StyledDescription>
+              <Spacer size="sm"/>
+              <StyledInfo>
+              <code> {prop.signatures.join(", ")}</code>
+              </StyledInfo>
+              <Spacer size="sm"/>
+              <Separator />
+              <Spacer size="sm"/>
+              <StyledDescription>
+                <span>Inputs:</span>
+              </StyledDescription>
+              <Spacer size="sm"/>
+              <StyledInfo>
+                {
+                  prop.inputs.map((input, i) => {
+                    return (<code>{JSON.stringify(input)}</code>)
+                  })
+                }
+              </StyledInfo>
+            </CardContent>
+          </Card>
+        </StyledParams>
       </ModalContent>
       <ModalActions>
         <Button
@@ -237,4 +239,10 @@ const StyledInfo = styled.div`
   font-size: 14px;
   overflow-x: scroll;
 `
+
+export const StyledParams = styled.div`
+  overflow: auto;
+  height: 250px;
+`
+
 export default VoteModal
