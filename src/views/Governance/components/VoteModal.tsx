@@ -124,8 +124,8 @@ const VoteModal: React.FC<VoteModalProps> = ({
           </Card>
         </Split>
         <Spacer size="md"/>
-        <StyledParams>
-          <Card>
+        <Card>
+          <StyledParams>
             <CardContent>
               <StyledDescription>
                 <span>Description:</span>
@@ -169,8 +169,8 @@ const VoteModal: React.FC<VoteModalProps> = ({
                 }
               </StyledInfo>
             </CardContent>
-          </Card>
-        </StyledParams>
+          </StyledParams>
+        </Card>
       </ModalContent>
       <ModalActions>
         <Button
