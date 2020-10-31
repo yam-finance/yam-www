@@ -96,3 +96,24 @@ export const decToBn = (dec: number, decimals = 18) => {
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
   return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed()
 }
+
+export const getNearestBlock = (from: Array<any>, target: number) => {
+  return from.reduce(function (prev: any, curr: any) {
+    return Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev;
+  });
+}
+
+export const getAMPM = (date: any) => {
+  const hours = date.getHours();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  return ampm;
+}
+
+export const getTimestampDate = (obj: {ts: number, ap?: boolean}) => {
+  const d = new Date(obj.ts * 1000);
+  const s = ".";
+  const day = d.getDate();
+  const month = (d.getMonth() + 1);
+  const year = (d.getFullYear()).toString().substring(0, 2) + (obj.ap ? " " + getAMPM(d) : "");
+  return (day < 9 ? "0" + day : day) + s + (month <= 9 ? "0" + month : month) + s + year;
+}

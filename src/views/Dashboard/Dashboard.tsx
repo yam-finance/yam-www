@@ -3,10 +3,9 @@ import { Container, Spacer } from 'react-neu'
 
 import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
-import TopCards from './components/TopCards'
 import styled from 'styled-components'
-
 import Charts from './components/Charts'
+import TopCards from './components/TopCards'
 
 const Dashboard: React.FC = () => {
   return (

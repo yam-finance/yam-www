@@ -617,15 +617,19 @@ export const scalingFactors = async (yam) => {
   let rebases = await yam.contracts.yamV3.getPastEvents('Rebase', {fromBlock: 10886913, toBlock: 'latest'});
   let scalingFactors = [];
   let blockNumbers = [];
+  let blockTimes = [];
   for (let i = 0; i < rebases.length; i++) {
+      // const block = await yam.web3.eth.getBlock(rebases[i]["blockNumber"])
+      // blockNumbers.push(block.blockNumber);
+      // blockTimes.push(block.timestamp);
+      blockNumbers.push(rebases[i]["blockNumber"]);
       scalingFactors.push(
         Math.round(
           new BigNumber(rebases[i]["returnValues"]["prevYamsScalingFactor"]).div(BASE).toNumber() * 100
         ) / 100
       );
-      blockNumbers.push(rebases[i]["blockNumber"]);
   }
-  return {factors: scalingFactors, blockNumbers: blockNumbers};
+  return {factors: scalingFactors, blockNumbers: blockNumbers, blockTimes: blockTimes};
 }
 
 export const treasuryEvents = async (yam) => {
@@ -638,7 +642,12 @@ export const treasuryEvents = async (yam) => {
   let yamsFromReserves = [];
   let yamsToReserves = [];
   let blockNumbers = [];
+  let blockTimes = [];
   for (let i = 0; i < rebases.length; i++) {
+      // const block = await yam.web3.eth.getBlock(rebases[i]["blockNumber"])
+      // blockNumbers.push(block.blockNumber);
+      // blockTimes.push(block.timestamp);
+      blockNumbers.push(rebases[i]["blockNumber"]);
       reservesAdded.push(
         Math.round(
           new BigNumber(rebases[i]["returnValues"]["reservesAdded"]).div(BASE).toNumber() * 100
@@ -659,14 +668,14 @@ export const treasuryEvents = async (yam) => {
           new BigNumber(rebases[i]["returnValues"]["yamsToReserves"]).div(BASE).toNumber() * 100
         ) / 100
       );
-      blockNumbers.push(rebases[i]["blockNumber"]);
   }
   return {
     reservesAdded: reservesAdded,
     yamsSold: yamsSold,
     yamsFromReserves: yamsFromReserves,
     yamsToReserves: yamsToReserves,
-    blockNumbers: blockNumbers
+    blockNumbers: blockNumbers,
+    blockTimes: blockTimes,
   };
 }
 
@@ -689,6 +698,57 @@ export const waitTransaction = async (provider, txHash) => {
   return (txReceipt.status)
 }
 
+const requestDPIHistory = (from, to) => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/defipulse-index/market_chart/range?vs_currency=usd&from=" + from + "&to=" + to,
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+const requestDPI = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/defipulse-index",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getDPIPrice = async () => {
+  const data = await requestDPI();
+  return data.market_data.current_price.usd;
+};
+
+export const getDPIPrices = async (from, to) => {
+  const data = await requestDPIHistory(from, to);
+  let newPrices = {};
+  for (let i = 0; i < data.prices.length; i++) {
+    newPrices[data.prices[i][0]] = data.prices[i][1];
+  }
+  return newPrices;
+};
+  
+export const getDPIMarketCap = async (from, to) => {
+  const data = await requestDPIHistory(from, to);
+  return data.market_caps;
+};
+  
 const requestYam = () => {
   return new Promise((resolve, reject) => {
     request({
@@ -703,6 +763,11 @@ const requestYam = () => {
       }
     );
   });
+};
+
+export const getYam = async () => {
+  const data = await requestYam();
+  return data;
 };
 
 export const getMarketCap = async () => {
