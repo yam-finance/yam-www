@@ -62,3 +62,17 @@ button {
 .apexcharts-xaxistooltip-bottom.apexcharts-theme-dark::after {
   border-bottom-color: rgba(45, 32, 36, 1) !important;
 }
+
+.tooltip {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  border-radius: 150px !important;
+  border: 2px solid !important;
+}
+
+.tooltip {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  border-radius: 150px !important;
+  border: 2px solid !important;
+}
