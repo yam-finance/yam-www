@@ -33,7 +33,9 @@ const WalletModal: React.FC<ModalProps> = ({
   const {
     strnEthLpBalance,
     strnTokenBalance,
-    strnIncBalance
+    strnXiotLpBalance,
+    strnEthLpPoolBalance,
+    strnXiotLpPoolBalance
   } = useBalances()
 
   const {
@@ -47,6 +49,38 @@ const WalletModal: React.FC<ModalProps> = ({
       return '--'
     }
   }, [])
+
+  const formattedStrnLPBalance = useMemo(() => {
+    if (strnEthLpBalance) {
+      return numeral(strnEthLpBalance).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [strnXiotLpBalance])
+
+  const formattedStrnEthPoolBalance = useMemo(() => {
+    if (strnEthLpPoolBalance) {
+      return numeral(strnEthLpPoolBalance).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [strnEthLpPoolBalance])
+
+  const formattedStrnXiotLPBalance = useMemo(() => {
+    if (strnXiotLpBalance) {
+      return strnXiotLpBalance.toFixed(8)
+    } else {
+      return '--'
+    }
+  }, [strnXiotLpBalance])
+
+  const formattedStrnXiotPoolBalance = useMemo(() => {
+    if (strnXiotLpPoolBalance) {
+      return strnXiotLpPoolBalance.toFixed(8)
+    } else {
+      return '--'
+    }
+  }, [strnXiotLpPoolBalance])
 
   const formattedEarnedBalance = useMemo(() => {
     if (earnedBalance) {
@@ -72,11 +106,17 @@ const WalletModal: React.FC<ModalProps> = ({
               value={getDisplayBalance(strnTokenBalance)}
             />
           </Box>
-          <Box row>
+          <Box column>
             <FancyValue
               icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
-              label="UNI-V2 balance"
-              value={getDisplayBalance(strnEthLpBalance)}
+              label="STRN/ETH balance"
+              value={formattedStrnLPBalance}
+            />
+            <Spacer />
+            <FancyValue
+              icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
+              label="STRN/XIOT balance"
+              value={formattedStrnXiotLPBalance}
             />
           </Box>
         </Split>
@@ -91,11 +131,17 @@ const WalletModal: React.FC<ModalProps> = ({
               value={formattedEarnedBalance}
             />
           </Box>
-          <Box row>
+          <Box column>
             <FancyValue
               icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
-              label="Staked LP Tokens"
-              value={getDisplayBalance(strnIncBalance)}
+              label="Staked STRN/ETH Tokens"
+              value={formattedStrnEthPoolBalance}
+            />
+            <Spacer />
+            <FancyValue
+              icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
+              label="Staked STRN/XIOT Tokens"
+              value={formattedStrnXiotPoolBalance}
             />
           </Box>
         </Split>
