@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import Countdown, { CountdownRenderProps} from 'react-countdown'
+import numeral from 'numeral'
 import {
   Box,
   Button,
@@ -7,8 +9,6 @@ import {
   CardActions,
   CardContent,
   CardIcon,
-  Container,
-  Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
 
@@ -17,62 +17,28 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
+import { bnToDec } from 'utils'
+
 import StakeModal from './components/StakeModal'
 import UnstakeModal from './components/UnstakeModal'
-import styled from 'styled-components'
-import useApproval from 'hooks/useApproval'
-import useBalances from 'hooks/useBalances'
-import Split from 'components/Split'
-import { StyledSubtitle } from 'components/PageHeader/PageHeader'
-import { getItemValue } from 'utils'
 
-const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpImage?: string }> = ({ poolId, lpEmoji, lpImage, lpLabel }) => {
+const Stake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
+
   const { status } = useWallet()
   const {
-    getPoolLPAddress,
-    setConfirmTxModalIsOpen,
+    countdown,
+    farmingStartTime,
+    isApproved,
+    isApproving,
     isStaking,
     isUnstaking,
+    onApprove,
     onStake,
     onUnstake,
-    strnEthPoolAddress,
+    stakedBalance,
   } = useFarming()
-
-  const {
-    strnEthLpBalance,
-    strnXiotLpBalance,
-    strnEthLpPoolBalance,
-    strnXiotLpPoolBalance
-  } = useBalances()
-
-  // need better way to get pool specific data
-  const sigDigits = poolId === "0" ? 2 : 8;
-  const poolBalance = useMemo(() => {
-    // need better way to get specific pool balance
-    return poolId === "0" ? strnEthLpPoolBalance : strnXiotLpPoolBalance
-  }, [strnEthLpPoolBalance, strnXiotLpPoolBalance])
-
-  const walletBalance = useMemo(() => {
-    // need better way to get specific pool balance
-    return poolId === "0" ? strnEthLpBalance : strnXiotLpBalance
-  }, [strnEthLpBalance, strnXiotLpBalance])
-
-  const { isApproved, isApproving, onApprove } = useApproval(
-    getPoolLPAddress(poolId),
-    strnEthPoolAddress,
-    () => setConfirmTxModalIsOpen(false)
-  )
-
-  const handleApprove = useCallback(() => {
-    setConfirmTxModalIsOpen(true)
-    onApprove()
-  }, [
-    onApprove,
-    setConfirmTxModalIsOpen,
-  ])
-
 
   const handleDismissStakeModal = useCallback(() => {
     setStakeModalIsOpen(false)
@@ -83,12 +49,12 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [setUnstakeModalIsOpen])
 
   const handleOnStake = useCallback((amount: string) => {
-    onStake(poolId, amount)
+    onStake(amount)
     handleDismissStakeModal()
   }, [handleDismissStakeModal, onStake])
 
   const handleOnUnstake = useCallback((amount: string) => {
-    onUnstake(poolId, amount)
+    onUnstake(amount)
     handleDismissUnstakeModal()
   }, [
     handleDismissUnstakeModal,
@@ -114,7 +80,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         />
       )
     }
-    if (getItemValue(isStaking, poolId)) {
+    if (isStaking) {
       return (
         <Button
           disabled
@@ -129,7 +95,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         <Button
           disabled={isApproving}
           full
-          onClick={handleApprove}
+          onClick={onApprove}
           text={!isApproving ? "Approve staking" : "Approving staking..."}
           variant={isApproving || status !== 'connected' ? 'secondary' : 'default'}
         />
@@ -146,14 +112,15 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
       )
     }
   }, [
+    countdown,
     handleStakeClick,
     isApproving,
-    handleApprove,
+    onApprove,
     status,
   ])
 
   const UnstakeButton = useMemo(() => {
-    const hasStaked = poolBalance && poolBalance.toNumber() > 0
+    const hasStaked = stakedBalance && stakedBalance.toNumber() > 0
     if (status !== 'connected' || !hasStaked) {
       return (
         <Button
@@ -164,7 +131,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         />
       )
     }
-    if (getItemValue(isUnstaking, poolId)) {
+    if (isUnstaking) {
       return (
         <Button
           disabled
@@ -185,74 +152,61 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [
     handleUnstakeClick,
     isApproving,
-    handleApprove,
+    onApprove,
     status,
   ])
 
   const formattedStakedBalance = useMemo(() => {
-    if (poolBalance) {
-      return poolBalance.gt(0) ? poolBalance.toFixed(sigDigits) : "0.00"
+    if (stakedBalance) {
+      return numeral(bnToDec(stakedBalance)).format('0.00a')
     } else {
       return '--'
     }
-  }, [poolBalance])
+  }, [stakedBalance])
 
-  const formattedWalletBalance = useMemo(() => {
-    if (walletBalance) {
-      return walletBalance.gt(0) ? walletBalance.toFixed(sigDigits) : "0.00"
-    } else {
-      return '--'
-    }
-  }, [walletBalance])
-
-  const StyledImage = styled.img`
-    display: block;
-    width: '50px';
-`;
+  const renderer = (countdownProps: CountdownRenderProps) => {
+    const { hours, minutes, seconds } = countdownProps
+    const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds
+    const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
+    const paddedHours = hours < 10 ? `0${hours}` : hours
+    return (
+      <Box row justifyContent="center">
+        <Label text={`Farming starts in ${paddedHours}:${paddedMinutes}:${paddedSeconds}`} />
+      </Box>)
+  }
 
   return (
     <>
       <Card>
-        <Container size="sm">
-          <Spacer />
-          <StyledSubtitle>{`${lpLabel} LP `}</StyledSubtitle>
-        </Container>
-        <CardIcon>{lpEmoji ? lpEmoji : <StyledImage src={require(`../../../../assets/${lpImage}`)} />}</CardIcon>
+        <CardIcon>🔒</CardIcon>
         <CardContent>
           <Box
             alignItems="center"
-            row
+            column
           >
-            <Split>
-              <>
-                <Value value={formattedStakedBalance} />
-                <Label text={`Staked`} />
-              </>
-              <>
-                <Value value={formattedWalletBalance} />
-                <Label text={`Wallet`} />
-              </>
-            </Split>
+            <Value value={formattedStakedBalance} />
+            <Label text="Staked LP STRN/ETH Tokens" />
           </Box>
         </CardContent>
         <CardActions>
           {UnstakeButton}
           {StakeButton}
         </CardActions>
+        {typeof countdown !== 'undefined' && countdown > 0 && (
+          <CardActions>
+            <Countdown date={farmingStartTime} renderer={renderer} />
+          </CardActions>
+        )}
       </Card>
       <StakeModal
         isOpen={stakeModalIsOpen}
         onDismiss={handleDismissStakeModal}
         onStake={handleOnStake}
-        lpLabel={lpLabel}
-        poolId={poolId}
       />
       <UnstakeModal
         isOpen={unstakeModalIsOpen}
         onDismiss={handleDismissUnstakeModal}
         onUnstake={handleOnUnstake}
-        lpLabel={lpLabel}
-        poolId={poolId}
       />
     </>
   )

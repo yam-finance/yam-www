@@ -4,10 +4,8 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
-import {
-  strnEthLP as strnEthLPAddress,
-  strnXiotLP as strnXiotLPAddress
-} from 'constants/tokenAddresses'
+import { strnEthLP as strnEthLPAddress } from 'constants/tokenAddresses'
+import useApproval from 'hooks/useApproval'
 import useYam from 'hooks/useYam'
 
 import {
@@ -20,27 +18,29 @@ import {
 } from 'yam-sdk/utils'
 
 import Context from './Context'
-import { setItemValue } from 'utils'
+
+const farmingStartTime = 1600545500*1000
 
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
-  const [isHarvesting, setIsHarvesting] = useState([false, false])
-  const [isRedeeming, setIsRedeeming] = useState([false, false])
-  const [isStaking, setIsStaking] = useState([false, false])
-  const [isUnstaking, setIsUnstaking] = useState([false, false])
+  const [countdown, setCountdown] = useState<number>()
+  const [isHarvesting, setIsHarvesting] = useState(false)
+  const [isRedeeming, setIsRedeeming] = useState(false)
+  const [isStaking, setIsStaking] = useState(false)
+  const [isUnstaking, setIsUnstaking] = useState(false)
 
   const [earnedBalance, setEarnedBalance] = useState<BigNumber>()
   const [stakedBalance, setStakedBalance] = useState<BigNumber>()
 
   const yam = useYam()
   const { account } = useWallet()
-
+  
   const strnEthPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
-
-  const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
-  const getPoolLPAddress = (poolId: string) => {
-    return lpAddresses[Number(poolId)]
-  }
+  const { isApproved, isApproving, onApprove } = useApproval(
+    strnEthLPAddress,
+    strnEthPoolAddress,
+    () => setConfirmTxModalIsOpen(false)
+  )
 
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
@@ -70,14 +70,22 @@ const Provider: React.FC = ({ children }) => {
     fetchStakedBalance,
   ])
 
-  const handleHarvest = useCallback(async (poolId) => {
+  const handleApprove = useCallback(() => {
+    setConfirmTxModalIsOpen(true)
+    onApprove()
+  }, [
+    onApprove,
+    setConfirmTxModalIsOpen,
+  ])
+
+  const handleHarvest = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     await harvest(yam, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsHarvesting(setItemValue(isHarvesting, poolId, true))
+      setIsHarvesting(true)
     })
-    setIsHarvesting(setItemValue(isHarvesting, poolId, false))
+    setIsHarvesting(false)
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -85,14 +93,14 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleRedeem = useCallback(async (poolId) => {
+  const handleRedeem = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await redeem(yam, poolId, account, () => {
+    await redeem(yam, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsRedeeming(setItemValue(isRedeeming, poolId, true))
+      setIsRedeeming(true)
     })
-    setIsRedeeming(setItemValue(isRedeeming, poolId, false))
+    setIsRedeeming(false)
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -100,14 +108,14 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleStake = useCallback(async (poolId: string, amount: string) => {
+  const handleStake = useCallback(async (amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await stake(yam, poolId, amount, account, () => {
+    await stake(yam, amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsStaking(setItemValue(isStaking, poolId, true))
+      setIsStaking(true)
     })
-    setIsStaking(setItemValue(isStaking, poolId, false))
+    setIsStaking(false)
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -115,14 +123,14 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleUnstake = useCallback(async (poolId: string, amount: string) => {
+  const handleUnstake = useCallback(async (amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await unstake(yam, poolId, amount, account, () => {
+    await unstake(yam, amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsUnstaking(setItemValue(isUnstaking, poolId, true))
+      setIsUnstaking(true)
     })
-    setIsUnstaking(setItemValue(isUnstaking, poolId, false))
+    setIsUnstaking(false)
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -136,16 +144,23 @@ const Provider: React.FC = ({ children }) => {
     return () => clearInterval(refreshInterval)
   }, [fetchBalances])
 
+  useEffect(() => {
+    let refreshInterval = setInterval(() => setCountdown(farmingStartTime - Date.now()), 1000)
+    return () => clearInterval(refreshInterval)
+  }, [setCountdown])
+
   return (
     <Context.Provider value={{
-      getPoolLPAddress,
-      setConfirmTxModalIsOpen,
-      strnEthPoolAddress,
+      farmingStartTime,
+      countdown,
       earnedBalance,
+      isApproved,
+      isApproving,
       isHarvesting,
       isRedeeming,
       isStaking,
       isUnstaking,
+      onApprove: handleApprove,
       onHarvest: handleHarvest,
       onRedeem: handleRedeem,
       onStake: handleStake,

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import Countdown, { CountdownRenderProps} from 'react-countdown'
 import {
   Box,
   Button,
@@ -53,6 +54,18 @@ const Rebase: React.FC = () => {
     await yam.contracts.rebaser.methods.rebase().send({ from: account, gas: 500000 })
   }, [account, yam])
 
+  const renderer = (countdownProps: CountdownRenderProps) => {
+    const { hours, minutes, seconds } = countdownProps
+    const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds
+    const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
+    const paddedHours = hours < 10 ? `0${hours}` : hours
+    return (
+      <span>{paddedHours}:{paddedMinutes}:{paddedSeconds}</span>
+    )
+  }
+
+  const dialValue = (nextRebase - Date.now()) / (1000 * 60 * 60 * 12) * 100
+
   return (
     <>
       <Card>
@@ -62,6 +75,16 @@ const Rebase: React.FC = () => {
             justifyContent="center"
             row
           >
+            <Dial size={196} value={dialValue}>
+              <StyledCountdown>
+                <StyledCountdownText>
+                  {!nextRebase ? '--' : (
+                    <Countdown date={new Date(nextRebase)} renderer={renderer} />
+                  )}
+                </StyledCountdownText>
+                <Label text="Next rebase" />
+              </StyledCountdown>
+            </Dial>
           </Box>
           <Spacer />
           <Button

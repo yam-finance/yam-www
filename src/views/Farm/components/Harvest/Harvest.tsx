@@ -16,9 +16,9 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
-import { bnToDec, getItemValue } from 'utils'
+import { bnToDec } from 'utils'
 
-const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
+const Harvest: React.FC = () => {
   const {
     earnedBalance,
     isHarvesting,
@@ -39,16 +39,16 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
         />
       )
     }
-    if (!getItemValue(isHarvesting, poolId)) {
+    if (!isHarvesting) {
       return (
         <Button
           full
-          onClick={() => onHarvest(poolId)}
+          onClick={onHarvest}
           text="Claim"
         />
       )
     }
-    if (getItemValue(isHarvesting, poolId)) {
+    if (isHarvesting) {
       return (
         <Button
           disabled

@@ -16,6 +16,7 @@ import plant from '../../assets/eth-flower.png'
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme()
+  //const { strnEthLpBalance } = useBalances()
   const { vestedBalance } = useVesting()
   return (
     <Page>
