@@ -63,6 +63,12 @@ button {
   border-bottom-color: rgba(45, 32, 36, 1) !important;
 }
 
+.address.combine > span {
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align:middle;
+}
+
 .tooltip {
   font-size: 14px !important;
   font-weight: bold !important;
