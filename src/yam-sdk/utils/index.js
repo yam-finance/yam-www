@@ -161,7 +161,7 @@ export const getStaked = async (yam, pool, account) => {
 
 export const getCurrentPrice = async (yam) => {
   // FORBROCK: get current YAM price
-  return new BigNumber(await yam.contracts.rebaser.methods.getCurrentTWAP().call())
+  return new BigNumber(await yam.contracts.eth_rebaser.methods.getCurrentTWAP().call())
 }
 
 export const getTargetPrice = async (yam) => {
@@ -198,11 +198,11 @@ export const getProjectedMintPercent = async (yam, rebaseType) => {
   if(!rebaseType) {
     return 0;
   }
-  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
+  return new BigNumber(await yam.contracts.eth_rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
 }
 
 export const getRebaseLag = async(yam) =>{
-  return await yam.contracts.rebaser.methods.rebaseLag().call();
+  return await yam.contracts.eth_rebaser.methods.rebaseLag().call();
 }
 
 export const getCirculatingSupply = async (yam) => {
@@ -223,7 +223,7 @@ export const getCirculatingSupply = async (yam) => {
 
 export const getLastRebaseTimestamp = async (yam) => {
   try {
-    const lastTimestamp = yam.toBigN(await yam.contracts.rebaser.methods.lastRebaseTimestampSec().call()).toNumber()
+    const lastTimestamp = yam.toBigN(await yam.contracts.eth_rebaser.methods.lastRebaseTimestampSec().call()).toNumber()
     return lastTimestamp
   } catch (e) {
     console.log(e)
@@ -236,7 +236,7 @@ export const getNextRebaseTimestamp = async (yam) => {
     let interval = 43200; // 12 hours
     let offset = 28800; // 8am/8pm utc
     let secondsToRebase = 0;
-    if (await yam.contracts.rebaser.methods.rebasingActive().call()) {
+    if (await yam.contracts.eth_rebaser.methods.rebasingActive().call()) {
       if (now % interval > offset) {
           secondsToRebase = (interval - (now % interval)) + offset;
        } else {
@@ -641,7 +641,8 @@ export const treasuryEvents = async (yam) => {
   let BASE = new BigNumber(10).pow(18);
   let BASE24 = new BigNumber(10).pow(24);
 
-  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 'latest'});
+  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 11199322+4000});
+  rebases = rebases.push(...(await yam.contracts.eth_rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 11185822, toBlock: 'latest'}));
   let reservesAdded = [];
   let yamsSold = [];
   let yamsFromReserves = [];
