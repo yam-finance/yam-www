@@ -290,7 +290,7 @@ export const didDelegate = async (yam, account) => {
 }
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {
-  return yam.contracts.gov2
+  return yam.contracts.gov3
     .methods
     .castVote(proposal, side).send(
       {from: account, gas: 130000 },
@@ -445,6 +445,72 @@ export const getProposals = async (yam) => {
       start: v2Proposals[i]["returnValues"]["startBlock"],
       end: v2Proposals[i]["returnValues"]["endBlock"],
       hash: v2Proposals[i]["transactionHash"],
+      more: more
+    });
+  }
+
+  const v3Proposals = await yam.contracts.gov3.getPastEvents("ProposalCreated", {fromBlock: 11185996, toBlock: 'latest'})
+  for (let i = 0; i < v3Proposals.length; i++) {
+    let id = v3Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v3Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v3Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v3Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v3Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v3Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v3Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v3Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v3Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v3Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types;
+      try {
+        abi_types = v3Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+        if (abi_types[0] != "") {
+          let result = yam.web3.eth.abi.decodeParameters(abi_types, v3Proposals[i]["returnValues"]["calldatas"][j]);
+          let fr = []
+          for (let k = 0; k < result.__length__; k++) {
+            fr.push(result[k.toString()]);
+          }
+          ins.push(fr);
+        }
+      } catch (e) {
+        console.log("Error parsing prop", e);
+      }
+    }
+
+
+    let proposal = await yam.contracts.gov3.methods.proposals(id).call();
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+
+    let more;
+    if (knownSnapshots[v3Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v3Proposals[i]["transactionHash"]]
+    }
+
+    proposals.push({
+      gov: "gov3",
+      description: v3Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov3.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
+      id: id,
+      start: v3Proposals[i]["returnValues"]["startBlock"],
+      end: v3Proposals[i]["returnValues"]["endBlock"],
+      hash: v3Proposals[i]["transactionHash"],
       more: more
     });
   }
