@@ -402,8 +402,9 @@ export const getProposals = async (yam) => {
 
     let ins = [];
     for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
-      if(v2Proposals[i]["returnValues"]["signatures"][j]) {
-        let abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+      let abi_types;
+      try {
+        abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
         if (abi_types[0] != "") {
           let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
           let fr = []
@@ -412,6 +413,8 @@ export const getProposals = async (yam) => {
           }
           ins.push(fr);
         }
+      } catch (e) {
+        console.log("Error parsing prop", e);
       }
     }
 
@@ -741,12 +744,12 @@ export const getDPIPrices = async (from, to) => {
   }
   return newPrices;
 };
-  
+
 export const getDPIMarketCap = async (from, to) => {
   const data = await requestDPIHistory(from, to);
   return data.market_caps;
 };
-  
+
 const requestYam = () => {
   return new Promise((resolve, reject) => {
     request({

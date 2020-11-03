@@ -31,6 +31,7 @@ import LINKPoolJson from '../clean_build/contracts/YAMLINKPool.json';
 
 import IncOldJson from '../clean_build/contracts/YAMIncentivizerOld.json';
 import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
+import VotingIncJson from '../clean_build/contracts/YAMIncentivizerWithVoting.json';
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
@@ -184,7 +185,7 @@ export class Contracts {
     this.names[this.yamV2migration.options.address] = "YAMv1-YAMv2 Migrator";
     this.names[this.yamV3.options.address] = "YAM (v3)";
     this.names[this.migrator.options.address] = "Migrator";
-    this.names[this.gov2.options.address] = "Current Governor";
+    this.names[this.gov2.options.address] = "Second Governor";
     this.names[this.otc.options.address] = "OTC";
     this.names[this.reserves2.options.address] = "New Reserves";
     this.names[this.voting_eth_pool.options.address] = "Voting ETH/YAM Incentivizer";
