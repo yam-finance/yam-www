@@ -82,6 +82,12 @@ const Farm: React.FC = () => {
         <Split>
           <Button
             full
+            text="Addresses"
+            to="/addresses"
+            variant="secondary"
+          />
+          <Button
+            full
             text="Buy yUSD"
             href="https://app.uniswap.org/#/swap?inputCurrency=0x5dbcf33d8c2e976c6b560249878e6f1491bca25c&outputCurrency=ETH"
             variant="tertiary"

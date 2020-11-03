@@ -130,7 +130,7 @@ const ValueHint = styled.span<ValueHintProps>`
   line-height: 16px;
   font-weight: bold;
   font-size: 12px;
-  border: 1.5px solid ${(props) => props.theme.colors.primary.main};
+  border: 2px solid ${(props) => props.theme.colors.primary.main};
   border-radius: 100px;
   padding: 0px 5px 1px 5px;
   opacity: 0.4;
