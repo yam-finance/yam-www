@@ -60,7 +60,9 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
       <Box row>
         <StyledButton darkMode={darkMode} uniswap={uniswap}>
           <StyledSpan>
-            <StyledName darkMode={darkMode}>{name ? name + " " : ""}</StyledName>
+            <StyledName darkMode={darkMode} uniswap={uniswap}>
+              {name ? name + " " : ""}
+            </StyledName>
             <StyledLink
               darkMode={darkMode}
               color="hsl(339deg 89% 49% / 100%)"
@@ -91,6 +93,7 @@ interface StyledButtonProps {
 
 interface StyledSpanProps {
   darkMode?: boolean;
+  uniswap?: boolean;
 }
 
 interface StyledLinkProps {
@@ -154,7 +157,7 @@ const StyledUniswapButton = styled(StyledButton)`
 const StyledName = styled.span<StyledSpanProps>`
   color: ${(props) => (props.darkMode ? props.theme.colors.grey[100] : props.theme.colors.grey[400])};
   margin: 0px 5px 0px 0px;
-  min-width: 45px;
+  min-width: ${(props) => (!props.uniswap ? "85" : "45")}px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
