@@ -708,7 +708,7 @@ export const treasuryEvents = async (yam) => {
   let BASE24 = new BigNumber(10).pow(24);
 
   let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 11199322+4000});
-  rebases = rebases.push(...(await yam.contracts.eth_rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 11185822, toBlock: 'latest'}));
+  rebases = rebases.push(...(await yam.contracts.eth_rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 11185822, toBlock: 'latest'})));
   let reservesAdded = [];
   let yamsSold = [];
   let yamsFromReserves = [];
