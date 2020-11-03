@@ -155,6 +155,9 @@ const StyledName = styled.span<StyledSpanProps>`
   color: ${(props) => (props.darkMode ? props.theme.colors.grey[100] : props.theme.colors.grey[400])};
   margin: 0px 5px 0px 0px;
   min-width: 45px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const StyledLink = styled.a<StyledLinkProps>`
@@ -184,7 +187,7 @@ const StyledCopy = styled.span<StyledCopyProps>`
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 12px;
   background-color: ${(props) => (props.darkMode ? props.theme.colors.primary.main : props.theme.colors.grey[500])};
-  width: ${(props) => (!props.uniswap ? "15" : "50")}px;
+  width: ${(props) => (!props.uniswap ? "32" : "50")}px;
   margin: 20px 0px 16px 5px;
   &:hover {
     opacity: 0.6;

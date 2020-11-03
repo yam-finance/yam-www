@@ -13,8 +13,8 @@ const Addresses: React.FC = () => {
       <Container size="sm">
         <h2>Yam Addresses &amp; Assets</h2>
         <AddressButton name="YAM" address={yamv3} uniswap={true} />
-        <AddressButton name="yUSD" address={yUsd} uniswap={false} />
-        <AddressButton name="DPI" address={DPI} uniswap={false} />
+        <AddressButton name="yUSD" address={yUsd} uniswap={true} />
+        <AddressButton name="DPI" address={DPI} uniswap={true} />
 
         <h3>Yam Contracts Addresses</h3>
         <AddressButton name="Reserves" address={reservesContract} uniswap={false} />
