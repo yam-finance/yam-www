@@ -22,7 +22,8 @@ const knownSnapshots = {
   "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7" : "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf",
   "0xd00307c2982b4fba5790f238ff8df9faab975794dd4144eddbd30ac67eb873ed" : "https://snapshot.page/#/yam/proposal/QmQxMTQkz7fW3AXma69ueEwhq5Sf8HNdUYseEFQFw3uKEx",
   "0xe4e06aae747e811b8de892c0c8b1ca78238b437a2893e78a3b1be91db608f75e" : "https://snapshot.page/#/yam/proposal/Qmf6ECSwrmWqHNq6CRTtnFR66ZFhth4kBXTbRy24wcVzLg",
-  "0x64c9c21c8fa9482456aaf0234e5deb07a06318a714434388b2c7bdc3336140a7" : "https://snapshot.page/#/yam/proposal/QmPYUwtbqsAjQxHZJ6HzGMmrP22FDVhL81cz5X2yFAe7vG"
+  "0x64c9c21c8fa9482456aaf0234e5deb07a06318a714434388b2c7bdc3336140a7" : "https://snapshot.page/#/yam/proposal/QmPYUwtbqsAjQxHZJ6HzGMmrP22FDVhL81cz5X2yFAe7vG",
+  "0x8fd235442f5edec67d5af587640115cc26b98ae04ab4a2212f0815d589d1ea80": "https://snapshot.page/#/yam/proposal/QmdPpHZZ5zpYmmM3SxGWmi8MCa8shPnmWvRGcsV1qkRUDJ"
 }
 
 export const getPoolStartTime = async (poolContract) => {
