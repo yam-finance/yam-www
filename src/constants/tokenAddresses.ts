@@ -6,6 +6,8 @@ export const DPI = '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b'
 export const yycrvUniLp = '0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC'
 export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 export const reservesContractv2 = "0xCF27cA116dd5C7b4201c75B46489D1c075362087"
+export const YAMETHSLPAddress = '0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c'
+// export const YAMETHLPVoteAddress = '0x6eBF85F830e7D5b3D01Eb64e34A1003223942EAD'
 
 export const governorContract = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026"
 export const timelockContract = "0x8b4f1616751117C38a0f84F9A146cca191ea3EC5"
