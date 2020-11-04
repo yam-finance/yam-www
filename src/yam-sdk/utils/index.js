@@ -30,8 +30,8 @@ export const getPoolStartTime = async (poolContract) => {
   return await poolContract.methods.starttime().call()
 }
 
-export const stake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+
+export const stake = async (yam, amount, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   // const gas = GAS_LIMIT.STAKING[tokenName.toUpperCase()] || GAS_LIMIT.STAKING.DEFAULT;
   const gas = GAS_LIMIT.STAKING.DEFAULT
@@ -57,8 +57,7 @@ export const stake = async (yam, amount, account, onTxHash) => {
   }
 }
 
-export const unstake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
@@ -82,8 +81,7 @@ export const unstake = async (yam, amount, account, onTxHash) => {
   }
 }
 
-export const harvest = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+export const harvest = async (yam, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
@@ -107,8 +105,7 @@ export const harvest = async (yam, account, onTxHash) => {
   }
 }
 
-export const redeem = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+export const redeem = async (yam, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods

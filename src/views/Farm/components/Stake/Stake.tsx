@@ -35,9 +35,10 @@ const Stake: React.FC = () => {
     isStaking,
     isUnstaking,
     onApprove,
-    onStake,
-    onUnstake,
-    stakedBalance,
+    onStakeYAMETH,
+    onUnstakeYAMETH,
+    stakedBalanceYAMYUSD,
+    stakedBalanceYAMETH,
   } = useFarming()
 
   const handleDismissStakeModal = useCallback(() => {
@@ -49,16 +50,16 @@ const Stake: React.FC = () => {
   }, [setUnstakeModalIsOpen])
 
   const handleOnStake = useCallback((amount: string) => {
-    onStake(amount)
+    onStakeYAMETH(amount)
     handleDismissStakeModal()
-  }, [handleDismissStakeModal, onStake])
+  }, [handleDismissStakeModal, onStakeYAMETH])
 
   const handleOnUnstake = useCallback((amount: string) => {
-    onUnstake(amount)
+    onUnstakeYAMETH(amount)
     handleDismissUnstakeModal()
   }, [
     handleDismissUnstakeModal,
-    onUnstake,
+    onUnstakeYAMETH,
   ])
 
   const handleStakeClick = useCallback(() => {
@@ -107,7 +108,6 @@ const Stake: React.FC = () => {
           full
           onClick={handleStakeClick}
           text="Stake"
-          disabled={true}
           variant="secondary"
         />
       )
@@ -119,9 +119,9 @@ const Stake: React.FC = () => {
     onApprove,
     status,
   ])
-
+  
   const UnstakeButton = useMemo(() => {
-    const hasStaked = stakedBalance && stakedBalance.toNumber() > 0
+    const hasStaked = stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0
     if (status !== 'connected' || !hasStaked) {
       return (
         <Button
@@ -156,14 +156,15 @@ const Stake: React.FC = () => {
     onApprove,
     status,
   ])
-
+  
+  
   const formattedStakedBalance = useMemo(() => {
-    if (stakedBalance) {
-      return numeral(bnToDec(stakedBalance)).format('0.00a')
+    if (stakedBalanceYAMETH) {
+      return numeral(bnToDec(stakedBalanceYAMETH)).format('0.00a')
     } else {
       return '--'
     }
-  }, [stakedBalance])
+  }, [stakedBalanceYAMETH])
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -186,12 +187,12 @@ const Stake: React.FC = () => {
             column
           >
             <Value value={formattedStakedBalance} />
-            <Label text="Staked LP YAM/yUSD Tokens" />
+            <Label text="Staked YAM/ETH LP Tokens" />
           </Box>
         </CardContent>
         <CardActions>
           {UnstakeButton}
-          {/* {StakeButton} */}
+          {StakeButton}
         </CardActions>
         {typeof countdown !== 'undefined' && countdown > 0 && (
           <CardActions>
