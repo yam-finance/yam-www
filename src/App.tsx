@@ -28,6 +28,7 @@ import Dashboard from 'views/Dashboard'
 import Governance from 'views/Governance'
 
 import styled from 'styled-components'
+import Addresses from 'views/Addresses'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -63,6 +64,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/governance">
             <Governance />
+          </Route>
+          <Route exact path="/addresses">
+            <Addresses />
           </Route>
           <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
         </Switch>

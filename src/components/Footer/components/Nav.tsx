@@ -1,9 +1,11 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Nav: React.FC = () => {
   return (
     <StyledNav>
+      <StyledRouterLink exact to="/addresses">Addresses</StyledRouterLink>
       <StyledLink href="https://github.com/yam-finance/yam-www" target="_blank">Github</StyledLink>
       <StyledLink href="https://twitter.com/YamFinance" target="_blank">Twitter</StyledLink>
       <StyledLink href="https://discord.gg/nKKhBbk" target="_blank">Discord</StyledLink>
@@ -21,6 +23,16 @@ const StyledNav = styled.nav`
 `
 
 const StyledLink = styled.a`
+  color: ${props => props.theme.colors.grey[500]};
+  padding-left: ${props => props.theme.spacing[3]}px;
+  padding-right: ${props => props.theme.spacing[3]}px;
+  text-decoration: none;
+  &:hover {
+    color: ${props => props.theme.colors.grey[600]};
+  }
+`
+
+const StyledRouterLink = styled(NavLink)`
   color: ${props => props.theme.colors.grey[500]};
   padding-left: ${props => props.theme.spacing[3]}px;
   padding-right: ${props => props.theme.spacing[3]}px;

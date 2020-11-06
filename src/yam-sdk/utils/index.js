@@ -420,7 +420,6 @@ export const getProposals = async (yam) => {
       } catch (e) {
         console.log("Error parsing prop", e);
       }
-
     }
 
 
