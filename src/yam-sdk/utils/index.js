@@ -405,16 +405,17 @@ export const getProposals = async (yam) => {
 
     let ins = [];
     for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
-      let abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
-      if (abi_types[0] != "") {
-        let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
-        let fr = []
-        for (let k = 0; k < result.__length__; k++) {
-          fr.push(result[k.toString()]);
+      if(v2Proposals[i]["returnValues"]["signatures"][j]) {
+        let abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+        if (abi_types[0] != "") {
+          let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
+          let fr = []
+          for (let k = 0; k < result.__length__; k++) {
+            fr.push(result[k.toString()]);
+          }
+          ins.push(fr);
         }
-        ins.push(fr);
       }
-
     }
 
 

@@ -200,12 +200,17 @@ const Charts: React.FC = () => {
     reserves.push({
       // x: 1603739830,
       x: 11133885,
-      y: totalYUsdValue * yUSDRate,
+      y: (totalYUsdValue + 161304) * yUSDRate,
     });
+    // comps
+    reserves.push({
+      x: 11160087,
+      y: totalYUsdValue * yUSDRate,
+    })
     // now
     reserves.push({
       // x: now,
-      x: 11149703,
+      x: 11205544,
       y: totalYUsdValue * yUSDRate,
     })
 
@@ -241,10 +246,15 @@ const Charts: React.FC = () => {
       x: 11133885,
       y: DPIBalance * 75,
     });
+    // comps
+    reservesDPI.push({
+      x: 11160087,
+      y: DPIBalance * dpiPrice,
+    })
     // now
     reservesDPI.push({
       // x: now,
-      x: 11149703,
+      x: 11205544,
       y: DPIBalance * dpiPrice,
     });
 
