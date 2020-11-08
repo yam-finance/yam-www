@@ -30,6 +30,7 @@ import LINKPoolJson from '../clean_build/contracts/YAMLINKPool.json';
 import IncOldJson from '../clean_build/contracts/YAMIncentivizerOld.json';
 import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
 import StrnEthIncJson from '../clean_build/contracts/STRNIncentivizer.json'
+import StrnXiotIncJson from '../clean_build/contracts/STRNXIOTIncentivizer.json'
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
@@ -65,7 +66,7 @@ export class Contracts {IncJson
 
     // new STRN incentivizer
     this.strneth_pool = new this.web3.eth.Contract(StrnEthIncJson.abi);
-
+    this.strnxiot_pool = new this.web3.eth.Contract(StrnXiotIncJson.abi);
 
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
@@ -121,6 +122,7 @@ export class Contracts {IncJson
       { contract: this.ycrv_pool, json: IncOldJson },
       { contract: this.yycrv_pool, json: IncJson },
       { contract: this.strneth_pool, json: StrnEthIncJson },
+      { contract: this.strnxiot_pool, json: StrnXiotIncJson },
       { contract: this.eth_pool, json: WETHPoolJson },
       { contract: this.yfi_pool, json: YFIPoolJson },
       { contract: this.ampl_pool, json: AMPLPoolJson },
@@ -178,6 +180,7 @@ export class Contracts {IncJson
     this.names[this.ycrv_pool.options.address] = "YCRV Pool";
     this.names[this.yycrv_pool.options.address] = "yUSD Farming";
     this.names[this.strneth_pool.options.address] = "STRN Farming";
+    this.names[this.strnxiot_pool.options.address] = "STRN Farming";
     this.names[this.yamV2.options.address] = "YAMv2";
     this.names[this.yamV2migration.options.address] = "YAMv1-YAMv2 Migrator";
     this.names[this.yamV3.options.address] = "YAM (v3)";

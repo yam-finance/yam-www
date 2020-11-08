@@ -25,14 +25,13 @@ export const getPoolStartTime = async (poolContract) => {
   return await poolContract.methods.starttime().call()
 }
 
-export const stake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.strneth_pool
+export const stake = async (poolContract, provider, poolId, amount, account, onTxHash) => {
   let now = new Date().getTime() / 1000;
   // const gas = GAS_LIMIT.STAKING[tokenName.toUpperCase()] || GAS_LIMIT.STAKING.DEFAULT;
   const gas = GAS_LIMIT.STAKING.DEFAULT
   if (now >= 1597172400) {
     return poolContract.methods
-      .stake(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(0)))
+      .stake(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(poolId)))
       .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -40,7 +39,7 @@ export const stake = async (yam, amount, account, onTxHash) => {
             return false
         }
         onTxHash && onTxHash(txHash)
-        const status = await waitTransaction(yam.web3.eth, txHash)
+        const status = await waitTransaction(provider, txHash)
         if (!status) {
           console.log("Staking transaction failed.")
           return false
@@ -52,12 +51,11 @@ export const stake = async (yam, amount, account, onTxHash) => {
   }
 }
 
-export const unstake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.strneth_pool
+export const unstake = async (poolContract, provider, poolId, amount, account, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
-      .withdraw(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(0)))
+      .withdraw(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(poolId)))
       .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -65,7 +63,7 @@ export const unstake = async (yam, amount, account, onTxHash) => {
             return false
         }
         onTxHash && onTxHash(txHash)
-        const status = await waitTransaction(yam.web3.eth, txHash)
+        const status = await waitTransaction(provider, txHash)
         if (!status) {
           console.log("Unstaking transaction failed.")
           return false
@@ -77,8 +75,7 @@ export const unstake = async (yam, amount, account, onTxHash) => {
   }
 }
 
-export const harvest = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.strneth_pool
+export const harvest = async (poolContract, provider, account, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
@@ -90,7 +87,7 @@ export const harvest = async (yam, account, onTxHash) => {
             return false
         }
         onTxHash && onTxHash(txHash)
-        const status = await waitTransaction(yam.web3.eth, txHash)
+        const status = await waitTransaction(provider, txHash)
         if (!status) {
           console.log("Claim transaction failed.")
           return false
@@ -102,12 +99,11 @@ export const harvest = async (yam, account, onTxHash) => {
   }
 }
 
-export const redeem = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.strneth_pool
+export const redeem = async (poolContract, provider, poolId, account, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
-      .exit(String(new BigNumber(0)))
+      .exit(String(new BigNumber(poolId)))
       .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -115,7 +111,7 @@ export const redeem = async (yam, account, onTxHash) => {
             return false
         }
         onTxHash && onTxHash(txHash)
-        const status = await waitTransaction(yam.web3.eth, txHash)
+        const status = await waitTransaction(provider, txHash)
         if (!status) {
           console.log("Redeem transaction failed.")
           return false
@@ -145,9 +141,6 @@ export const getPoolContracts = async (yam) => {
 }
 
 export const getEarned = async (yam, pool, account) => {
-  //const scalingFactor = new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call())
-  const earned = new BigNumber(await pool.methods.earned(account).call())
-  //return earned.multipliedBy(scalingFactor.dividedBy(new BigNumber(10).pow(18)))
   return yam.toBigN(await pool.methods.earned(account).call())
 }
 

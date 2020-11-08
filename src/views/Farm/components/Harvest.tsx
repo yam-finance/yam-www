@@ -8,6 +8,8 @@ import {
   CardActions,
   CardContent,
   CardIcon,
+  Container,
+  Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
 
@@ -16,11 +18,13 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
-import { bnToDec } from 'utils'
+import { bnToDec, getItemValue } from 'utils'
+import { StyledSubtitle } from 'components/PageHeader/PageHeader'
+import BigNumber from 'bignumber.js'
 
-const Harvest: React.FC = () => {
+const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
   const {
-    earnedBalance,
+    getEarnedBalances,
     isHarvesting,
     isRedeeming,
     onHarvest,
@@ -29,6 +33,7 @@ const Harvest: React.FC = () => {
   const { status } = useWallet()
 
   const HarvestAction = useMemo(() => {
+    const isClaiming = getItemValue(isHarvesting, poolId) || getItemValue(isRedeeming, poolId);
     if (status !== 'connected') {
       return (
         <Button
@@ -39,16 +44,16 @@ const Harvest: React.FC = () => {
         />
       )
     }
-    if (!isHarvesting) {
+    if (!isClaiming) {
       return (
         <Button
           full
-          onClick={onHarvest}
+          onClick={() => onHarvest(poolId)}
           text="Claim"
         />
       )
     }
-    if (isHarvesting) {
+    if (isClaiming) {
       return (
         <Button
           disabled
@@ -59,21 +64,27 @@ const Harvest: React.FC = () => {
       )
     }
   }, [
-    isHarvesting,
-    isRedeeming,
+    String(isHarvesting),
+    String(isRedeeming),
     onHarvest,
+    status
   ])
 
   const formattedEarnedBalance = useMemo(() => {
-    if (earnedBalance) {
-      return numeral(bnToDec(earnedBalance)).format('0.00a')
+    const balance = getEarnedBalances(poolId)
+    if (balance) {
+      return numeral(bnToDec(balance)).format('0.00a')
     } else {
       return '--'
     }
-  }, [earnedBalance])
+  }, [getEarnedBalances])
 
   return (
     <Card>
+      <Container size="sm">
+        <Spacer />
+        <StyledSubtitle>Earned STRN</StyledSubtitle>
+      </Container>
       <CardIcon>🧬</CardIcon>
       <CardContent>
         <Box

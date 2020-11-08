@@ -4,8 +4,12 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
-import { strnEthLP as strnEthLPAddress } from 'constants/tokenAddresses'
-import useApproval from 'hooks/useApproval'
+import {
+  strnEthLP as strnEthLPAddress,
+  strnIncentivizer,
+  strnXiotLP as strnXiotLPAddress,
+  strnXiotIncentivizer
+} from 'constants/tokenAddresses'
 import useYam from 'hooks/useYam'
 
 import {
@@ -18,74 +22,75 @@ import {
 } from 'yam-sdk/utils'
 
 import Context from './Context'
-
-const farmingStartTime = 1600545500*1000
+import { getItemValue, setItemValue } from 'utils'
 
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
-  const [countdown, setCountdown] = useState<number>()
-  const [isHarvesting, setIsHarvesting] = useState(false)
-  const [isRedeeming, setIsRedeeming] = useState(false)
-  const [isStaking, setIsStaking] = useState(false)
-  const [isUnstaking, setIsUnstaking] = useState(false)
+  const [isHarvesting, setIsHarvesting] = useState([false, false])
+  const [isRedeeming, setIsRedeeming] = useState([false, false])
+  const [isStaking, setIsStaking] = useState([false, false])
+  const [isUnstaking, setIsUnstaking] = useState([false, false])
 
-  const [earnedBalance, setEarnedBalance] = useState<BigNumber>()
-  const [stakedBalance, setStakedBalance] = useState<BigNumber>()
+  const [earnedStrnPoolBalances, setEarnedStrnPoolBalance] = useState<BigNumber>()
+  const [earnedXiotPoolBalances, setEarnedXiotPoolBalance] = useState<BigNumber>()
 
   const yam = useYam()
   const { account } = useWallet()
+
+  const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
+  const getPoolLPAddress = (poolId: string) => {
+    return lpAddresses[Number(poolId)]
+  }
   
-  const strnEthPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
-  const { isApproved, isApproving, onApprove } = useApproval(
-    strnEthLPAddress,
-    strnEthPoolAddress,
-    () => setConfirmTxModalIsOpen(false)
-  )
+  const incentivizerAddresses = [strnIncentivizer, strnXiotIncentivizer]
+  const getIncentivizerAddress = (poolId: string) => {
+    return incentivizerAddresses[Number(poolId)]
+  }
 
-  const fetchEarnedBalance = useCallback(async () => {
+  const getSetRewardsBalanceMethod = (poolId: string = "0") => {
+    return [setEarnedStrnPoolBalance, setEarnedXiotPoolBalance][Number(poolId)]
+  }
+
+  const getIncContract = (poolId: string) => {
+    if (yam) {
+      if (poolId === "0") {
+        return yam.contracts.strneth_pool
+      }
+      return yam.contracts.strnxiot_pool
+    }
+  }
+
+  const getEarnedBalances = (poolId: string): BigNumber => {
+    return [earnedStrnPoolBalances, earnedXiotPoolBalances][Number(poolId)] || new BigNumber(0)
+  }
+
+  const fetchEarnedBalance = useCallback(async (poolId) => {
     if (!account || !yam) return
-    const balance = await getEarned(yam, yam.contracts.strneth_pool, account)
-    setEarnedBalance(balance)
+    const balance = await getEarned(yam, getIncContract(poolId), account)
+    getSetRewardsBalanceMethod(poolId)(balance)
   }, [
     account,
-    setEarnedBalance,
+    setEarnedStrnPoolBalance,
+    setEarnedXiotPoolBalance,
     yam
   ])
 
-  const fetchStakedBalance = useCallback(async () => {
-    if (!account || !yam) return
-    const balance = await getStaked(yam, yam.contracts.strneth_pool, account)
-    setStakedBalance(balance)
-  }, [
-    account,
-    setStakedBalance,
-    yam
-  ])
-
-  const fetchBalances = useCallback(async () => {
-    fetchEarnedBalance()
-    fetchStakedBalance()
+  const fetchBalances = useCallback(async (poolId) => {
+    fetchEarnedBalance(poolId)
   }, [
     fetchEarnedBalance,
-    fetchStakedBalance,
   ])
 
-  const handleApprove = useCallback(() => {
-    setConfirmTxModalIsOpen(true)
-    onApprove()
-  }, [
-    onApprove,
-    setConfirmTxModalIsOpen,
-  ])
-
-  const handleHarvest = useCallback(async () => {
+  const handleHarvest = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await harvest(yam, account, () => {
+    setIsHarvesting(setItemValue(isHarvesting, poolId, true))
+    await harvest(getIncContract(poolId), yam.web3.eth, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsHarvesting(true)
+    }).catch(e => {
+      console.error(e)
     })
-    setIsHarvesting(false)
+    setIsHarvesting(setItemValue(isHarvesting, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -93,14 +98,17 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleRedeem = useCallback(async () => {
+  const handleRedeem = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await redeem(yam, account, () => {
+    setIsRedeeming(setItemValue(isRedeeming, poolId, true))
+    await redeem(getIncContract(poolId), yam.web3.eth, "0", account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsRedeeming(true)
+    }).catch(e => {
+      console.error(e)
+      setIsRedeeming(setItemValue(isRedeeming, poolId, false))
     })
-    setIsRedeeming(false)
+    setIsRedeeming(setItemValue(isRedeeming, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -108,14 +116,17 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleStake = useCallback(async (amount: string) => {
+  const handleStake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await stake(yam, amount, account, () => {
+    setIsStaking(setItemValue(isStaking, poolId, true))
+    await stake(getIncContract(poolId), yam.web3.eth, "0", amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsStaking(true)
+    }).catch(e => {
+      console.error(e)
+      setIsStaking(setItemValue(isStaking, poolId, false))
     })
-    setIsStaking(false)
+    setIsStaking(setItemValue(isStaking, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -123,14 +134,17 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleUnstake = useCallback(async (amount: string) => {
+  const handleUnstake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await unstake(yam, amount, account, () => {
+    setIsUnstaking(setItemValue(isUnstaking, poolId, true))
+    await unstake(getIncContract(poolId), yam.web3.eth, "0", amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsUnstaking(true)
+    }).catch(e => {
+      console.error(e)
+      setIsUnstaking(setItemValue(isUnstaking, poolId, false))  
     })
-    setIsUnstaking(false)
+    setIsUnstaking(setItemValue(isUnstaking, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -139,33 +153,29 @@ const Provider: React.FC = ({ children }) => {
   ])
 
   useEffect(() => {
-    fetchBalances()
-    let refreshInterval = setInterval(() => fetchBalances(), 10000)
+    fetchBalances("0")
+    fetchBalances("1")
+    let refreshInterval = setInterval(() => {
+      fetchBalances("0")
+      fetchBalances("1")
+    }, 10000)
     return () => clearInterval(refreshInterval)
   }, [fetchBalances])
 
-  useEffect(() => {
-    let refreshInterval = setInterval(() => setCountdown(farmingStartTime - Date.now()), 1000)
-    return () => clearInterval(refreshInterval)
-  }, [setCountdown])
-
   return (
     <Context.Provider value={{
-      farmingStartTime,
-      countdown,
-      earnedBalance,
-      isApproved,
-      isApproving,
+      getPoolLPAddress,
+      setConfirmTxModalIsOpen,
+      getEarnedBalances,
       isHarvesting,
       isRedeeming,
       isStaking,
       isUnstaking,
-      onApprove: handleApprove,
       onHarvest: handleHarvest,
       onRedeem: handleRedeem,
       onStake: handleStake,
       onUnstake: handleUnstake,
-      stakedBalance,
+      getIncentivizerAddress,
     }}>
       {children}
       <ConfirmTransactionModal isOpen={confirmTxModalIsOpen} />

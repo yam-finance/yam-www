@@ -14,30 +14,40 @@ import TokenInput from 'components/TokenInput'
 
 import useFarming from 'hooks/useFarming'
 import { getFullDisplayBalance } from 'utils'
+import useBalances from 'hooks/useBalances'
 
 interface UnstakeModalProps extends ModalProps {
-  onUnstake: (amount: string) => void
+  onUnstake: (amount: string) => void,
+  lpLabel: string,
+  poolId: string,
 }
 
 const UnstakeModal: React.FC<UnstakeModalProps> = ({
   isOpen,
   onDismiss,
   onUnstake,
+  lpLabel,
+  poolId,
 }) => {
 
   const [val, setVal] = useState('')
-  const { stakedBalance } = useFarming()
-
+  const {
+    strnEthLpPoolBalance,
+    strnXiotLpPoolBalance
+  } = useBalances()
+  
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(stakedBalance || new BigNumber(0))
-  }, [stakedBalance])
+    // need better way to get specific pool balance
+    const balance = poolId === "0" ? strnEthLpPoolBalance : strnXiotLpPoolBalance
+    return balance || new BigNumber(0)
+  }, [strnEthLpPoolBalance, strnXiotLpPoolBalance])
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
   }, [setVal])
 
   const handleSelectMax = useCallback(() => {
-    setVal(fullBalance)
+    setVal(String(fullBalance))
   }, [fullBalance, setVal])
 
   const handleUnstakeClick = useCallback(() => {
@@ -52,8 +62,8 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({
           value={val}
           onSelectMax={handleSelectMax}
           onChange={handleChange}
-          max={fullBalance}
-          symbol="STRN/ETH UNI-V2 LP"
+          max={String(fullBalance)}
+          symbol={`${lpLabel} UNI-V2 LP`}
         />
       </ModalContent>
       <ModalActions>

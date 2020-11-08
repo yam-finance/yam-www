@@ -43,7 +43,7 @@ const StyledIcon = styled.span.attrs({
   min-width: 96px;
 `
 
-const StyledTitle = styled.h1`
+export const StyledTitle = styled.h1`
   color: ${props => props.theme.textColor};
   font-size: 36px;
   font-weight: 700;
@@ -52,7 +52,7 @@ const StyledTitle = styled.h1`
   text-align: center;
 `
 
-const StyledSubtitle = styled.h3`
+export const StyledSubtitle = styled.h3`
   color: ${props => props.theme.textColor};
   font-size: 18px;
   font-weight: 400;

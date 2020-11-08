@@ -27,6 +27,7 @@ import Migrate from 'views/Migrate'
 import Governance from 'views/Governance'
 
 import styled from 'styled-components'
+import { chainId } from 'constants/tokenAddresses'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -75,7 +76,7 @@ const Providers: React.FC = ({ children }) => {
       borderRadius: 28,
     })
   }, [])
-  const chainId = 1;
+
   return (
     <ThemeProvider
       darkModeEnabled={darkModeSetting}
