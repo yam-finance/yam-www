@@ -7,6 +7,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0px;
+}
+
+a {
+  color: #ec0e5c;
+  text-decoration-line: none;
+  font-weight: 600;
+}
+
+a:hover {
+  /* text-decoration-line: underline; */
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -14,8 +28,6 @@ code {
 button {
   font-family: 'Nunito';
 }
-
-
 
 .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
   background: rgb(68, 51, 56) !important;
@@ -61,6 +73,50 @@ button {
 
 .apexcharts-xaxistooltip-bottom.apexcharts-theme-dark::after {
   border-bottom-color: rgba(45, 32, 36, 1) !important;
+}
+
+
+
+.progressbar .buffer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  display: block;
+  background-color: #ec0e5c;
+  background-size: 80px 50px;
+  background-image: linear-gradient(
+    115deg,
+    rgb(255 255 255 / 0%) 10%,
+    #ffffff00 35%,
+    #ffffff00 50%,
+    rgb(0 0 0 / 0.15) 50%,
+    rgb(0 0 0 / 0.15) 75%,
+    #ffffff00 75%,
+    #ffffff00
+  );
+  animation: buffermove 5s linear infinite;
+}
+
+@keyframes buffermove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 80px 0;
+  }
+}
+
+@-webkit-keyframes bufferblink {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.4;
+  }
 }
 
 .address.combine > span {
