@@ -63,6 +63,7 @@ export class Contracts {
     this.ampl_pool = new this.web3.eth.Contract(AMPLPoolJson.abi);
     this.ycrv_pool = new this.web3.eth.Contract(IncOldJson.abi);
     this.yycrv_pool = new this.web3.eth.Contract(IncJson.abi);
+    this.voting_eth_pool = new this.web3.eth.Contract(VotingIncJson.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
     this.link_pool = new this.web3.eth.Contract(LINKPoolJson.abi);
@@ -158,6 +159,7 @@ export class Contracts {
     this.gov2.options.address = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026";
     this.reserves2.options.address = "0x97990B693835da58A281636296D2Bf02787DEa17";
     this.otc.options.address = "0x92ab5CCe7Af1605da2681458aE52a0BEc4eCB74C";
+    this.voting_eth_pool.options.address = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
 
     this.pools = [
       {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},
@@ -185,6 +187,8 @@ export class Contracts {
     this.names[this.gov2.options.address] = "Current Governor";
     this.names[this.otc.options.address] = "OTC";
     this.names[this.reserves2.options.address] = "New Reserves";
+    this.names[this.voting_eth_pool.options.address] = "Voting ETH/YAM Incentivizer";
+
   }
 
   setDefaultAccount(
