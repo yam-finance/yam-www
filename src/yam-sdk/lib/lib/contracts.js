@@ -171,8 +171,8 @@ export class Contracts {
     this.gov2.options.address = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026";
     this.reserves2.options.address = "0x97990B693835da58A281636296D2Bf02787DEa17";
     this.otc.options.address = "0x92ab5CCe7Af1605da2681458aE52a0BEc4eCB74C";
-    this.gov3.options.address = "0xEDf7C3D4CB2e89506C1469709073025d09D47bDd";
-    this.voting_eth_pool.options.address = "0x6eBF85F830e7D5b3D01Eb64e34A1003223942EAD";
+    this.gov3.options.address = "0xC32f9b0292965c5dd4A0Ea1abfcC1f5a36d66986";
+    this.voting_eth_pool.options.address = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
     this.eth_rebaser.options.address = "0xD93f403b432d39aa0f736C2021bE6051d85a1D55";
 
     this.pools = [
