@@ -38,7 +38,7 @@ const StyledFooterInner = styled.div`
 
 const StyledFooterDarkModeSwitch = styled.div`
   display: none;
-  @media (max-width: 980px) {
+  @media (max-width: 1060px) {
     display: block;
   }
 `
