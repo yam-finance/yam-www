@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { useTheme } from "react-neu";
 
-interface BarProgress {
+interface BarProgressProps {
   value?: number;
   invert?: boolean;
 }
 
-const Bar: React.FC<BarProgress> = ({ value, invert }) => {
+const Bar: React.FC<BarProgressProps> = ({ value, invert }) => {
   if (invert) {
     value = 100 - (value || 0);
   }

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Countdown, { CountdownRenderProps} from 'react-countdown'
 import numeral from 'numeral'
@@ -17,15 +17,17 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
-import { bnToDec } from 'utils'
+import { bnToDec, getFullDisplayBalance } from 'utils'
 
 import StakeModal from './components/StakeModal'
 import UnstakeModal from './components/UnstakeModal'
+import BigNumber from 'bignumber.js'
 
 const Stake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
-
+  const [stakeBalance, setStakeBalance] = useState('--')
+  
   const { status } = useWallet()
   const {
     countdown,
@@ -35,9 +37,10 @@ const Stake: React.FC = () => {
     isStaking,
     isUnstaking,
     onApprove,
-    onStake,
-    onUnstake,
-    stakedBalance,
+    onStakeYAMETH,
+    onUnstakeYAMETH,
+    stakedBalanceYAMYUSD,
+    stakedBalanceYAMETH,
   } = useFarming()
 
   const handleDismissStakeModal = useCallback(() => {
@@ -49,16 +52,16 @@ const Stake: React.FC = () => {
   }, [setUnstakeModalIsOpen])
 
   const handleOnStake = useCallback((amount: string) => {
-    onStake(amount)
+    onStakeYAMETH(amount)
     handleDismissStakeModal()
-  }, [handleDismissStakeModal, onStake])
+  }, [handleDismissStakeModal, onStakeYAMETH])
 
   const handleOnUnstake = useCallback((amount: string) => {
-    onUnstake(amount)
+    onUnstakeYAMETH(amount)
     handleDismissUnstakeModal()
   }, [
     handleDismissUnstakeModal,
-    onUnstake,
+    onUnstakeYAMETH,
   ])
 
   const handleStakeClick = useCallback(() => {
@@ -107,7 +110,6 @@ const Stake: React.FC = () => {
           full
           onClick={handleStakeClick}
           text="Stake"
-          disabled={true}
           variant="secondary"
         />
       )
@@ -119,9 +121,9 @@ const Stake: React.FC = () => {
     onApprove,
     status,
   ])
-
+  
   const UnstakeButton = useMemo(() => {
-    const hasStaked = stakedBalance && stakedBalance.toNumber() > 0
+    const hasStaked = stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0
     if (status !== 'connected' || !hasStaked) {
       return (
         <Button
@@ -156,14 +158,20 @@ const Stake: React.FC = () => {
     onApprove,
     status,
   ])
-
-  const formattedStakedBalance = useMemo(() => {
-    if (stakedBalance) {
-      return numeral(bnToDec(stakedBalance)).format('0.00a')
+  
+  const formattedStakedBalance = useCallback(async () => {
+    if (stakedBalanceYAMETH && bnToDec(stakedBalanceYAMETH) > 0) {
+      setStakeBalance(getFullDisplayBalance(stakedBalanceYAMETH))
     } else {
-      return '--'
+      setStakeBalance('--')
     }
-  }, [stakedBalance])
+  }, [stakedBalanceYAMETH])
+
+  useEffect(() => {
+    formattedStakedBalance();
+    let refreshInterval = setInterval(formattedStakedBalance, 10000);
+    return () => clearInterval(refreshInterval);
+  }, [formattedStakedBalance]);
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -185,13 +193,13 @@ const Stake: React.FC = () => {
             alignItems="center"
             column
           >
-            <Value value={formattedStakedBalance} />
-            <Label text="Staked LP YAM/yUSD Tokens" />
+            <Value value={stakeBalance} />
+            <Label text="Staked YAM/ETH LP Tokens" />
           </Box>
         </CardContent>
         <CardActions>
           {UnstakeButton}
-          {/* {StakeButton} */}
+          {StakeButton}
         </CardActions>
         {typeof countdown !== 'undefined' && countdown > 0 && (
           <CardActions>
