@@ -15,7 +15,7 @@ const ResumedLPsNotice: React.FC = () => (
       <NoticeIcon>💧</NoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span>LP rewards are resumed, you can now farm again!</span>
+          <span>LP rewards will be resumed Nov 12 at 6PM UTC!</span>
           <Box flex={1} />
           <Spacer size="sm" />
           <Button
