@@ -159,13 +159,9 @@ const Stake: React.FC = () => {
     status,
   ])
   
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(stakedBalanceYAMETH || new BigNumber(0))
-  }, [stakedBalanceYAMETH])
-
   const formattedStakedBalance = useCallback(async () => {
-    if (stakedBalanceYAMETH) {
-      setStakeBalance(fullBalance)
+    if (stakedBalanceYAMETH && bnToDec(stakedBalanceYAMETH) > 0) {
+      setStakeBalance(getFullDisplayBalance(stakedBalanceYAMETH))
     } else {
       setStakeBalance('--')
     }
