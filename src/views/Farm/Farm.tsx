@@ -64,7 +64,7 @@ const Farm: React.FC = () => {
     <Page>
       <PageHeader
         icon="🌾🍠"
-        subtitle="Stake YAM/ETH LP tokens and grow YAMs"
+        subtitle="Stake YAM/ETH Sushiswap LP tokens and grow YAMs"
         title="Farm"
       />
       <Container>
