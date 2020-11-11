@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Countdown, { CountdownRenderProps} from 'react-countdown'
 import numeral from 'numeral'
@@ -17,15 +17,17 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
-import { bnToDec } from 'utils'
+import { bnToDec, getFullDisplayBalance } from 'utils'
 
 import StakeModal from './components/StakeModal'
 import UnstakeModal from './components/UnstakeModal'
+import BigNumber from 'bignumber.js'
 
 const Stake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
-
+  const [stakeBalance, setStakeBalance] = useState('--')
+  
   const { status } = useWallet()
   const {
     countdown,
@@ -157,14 +159,23 @@ const Stake: React.FC = () => {
     status,
   ])
   
-  
-  const formattedStakedBalance = useMemo(() => {
+  const fullBalance = useMemo(() => {
+    return getFullDisplayBalance(stakedBalanceYAMETH || new BigNumber(0))
+  }, [stakedBalanceYAMETH])
+
+  const formattedStakedBalance = useCallback(async () => {
     if (stakedBalanceYAMETH) {
-      return numeral(bnToDec(stakedBalanceYAMETH)).format('0.00a')
+      setStakeBalance(fullBalance)
     } else {
-      return '--'
+      setStakeBalance('--')
     }
   }, [stakedBalanceYAMETH])
+
+  useEffect(() => {
+    formattedStakedBalance();
+    let refreshInterval = setInterval(formattedStakedBalance, 10000);
+    return () => clearInterval(refreshInterval);
+  }, [formattedStakedBalance]);
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -186,7 +197,7 @@ const Stake: React.FC = () => {
             alignItems="center"
             column
           >
-            <Value value={formattedStakedBalance} />
+            <Value value={stakeBalance} />
             <Label text="Staked YAM/ETH LP Tokens" />
           </Box>
         </CardContent>
