@@ -6,10 +6,12 @@ export const DPI = '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b'
 export const yycrvUniLp = '0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC'
 export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 export const reservesContractv2 = "0xCF27cA116dd5C7b4201c75B46489D1c075362087"
+export const YAMETHSLPAddress = '0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c'
 
 export const governorContract = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026"
 export const timelockContract = "0x8b4f1616751117C38a0f84F9A146cca191ea3EC5"
 export const rebaserContract = "0x1fB361f274f316d383B94D761832AB68099A7B00"
-export const incentivizerContract = "0x5b0501F7041120d36Bc8c6DC3FAeA0b74b32a0Ed"
+export const incentivizerOldContract = "0x5b0501F7041120d36Bc8c6DC3FAeA0b74b32a0Ed"
+export const incentivizerContract = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0"
 export const reservesContract = "0x97990b693835da58a281636296d2bf02787dea17"
 export const migratorContract = "0x72CFEd9293cbFB2bfC7515c413048c697C6c811C"

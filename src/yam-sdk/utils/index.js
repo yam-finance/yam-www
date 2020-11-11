@@ -11,7 +11,7 @@ BigNumber.config({
 
 const GAS_LIMIT = {
   STAKING: {
-    DEFAULT: 200000,
+    DEFAULT: 380000,
     SNX: 850000,
   }
 };
@@ -30,8 +30,8 @@ export const getPoolStartTime = async (poolContract) => {
   return await poolContract.methods.starttime().call()
 }
 
-export const stake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+
+export const stake = async (yam, amount, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   // const gas = GAS_LIMIT.STAKING[tokenName.toUpperCase()] || GAS_LIMIT.STAKING.DEFAULT;
   const gas = GAS_LIMIT.STAKING.DEFAULT
@@ -57,13 +57,12 @@ export const stake = async (yam, amount, account, onTxHash) => {
   }
 }
 
-export const unstake = async (yam, amount, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw((new BigNumber(amount).times(new BigNumber(10).pow(18))).toString())
-      .send({ from: account, gas: 200000 }, async (error, txHash) => {
+      .send({ from: account, gas: 380000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Unstaking error", error)
@@ -82,13 +81,12 @@ export const unstake = async (yam, amount, account, onTxHash) => {
   }
 }
 
-export const harvest = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+export const harvest = async (yam, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
       .getReward()
-      .send({ from: account, gas: 200000 }, async (error, txHash) => {
+      .send({ from: account, gas: 380000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Harvest error", error)
@@ -107,8 +105,7 @@ export const harvest = async (yam, account, onTxHash) => {
   }
 }
 
-export const redeem = async (yam, account, onTxHash) => {
-  const poolContract = yam.contracts.yycrv_pool
+export const redeem = async (yam, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
@@ -748,12 +745,12 @@ export const getDPIPrices = async (from, to) => {
   }
   return newPrices;
 };
-  
+
 export const getDPIMarketCap = async (from, to) => {
   const data = await requestDPIHistory(from, to);
   return data.market_caps;
 };
-  
+
 const requestYam = () => {
   return new Promise((resolve, reject) => {
     request({
