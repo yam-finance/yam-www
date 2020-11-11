@@ -8,10 +8,12 @@ interface AddressButtonProps {
   name?: string;
   address?: string;
   uniswap?: boolean;
+  unitext?: string;
+  unilink?: string;
   to?: string;
 }
 
-const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswap }) => {
+const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswap, unitext, unilink }) => {
   const { darkMode } = useTheme();
 
   const DisplayUniswap = useMemo(() => {
@@ -21,13 +23,13 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
           <Spacer />
           <StyledLink
             darkMode={darkMode}
-            href={"https://uniswap.exchange/swap?inputCurrency=" + address}
+            href={(unilink ? unilink + address : "https://uniswap.exchange/swap?inputCurrency=" + address) }
             target="_blank"
             color="white"
             overflow={true}>
             <StyledUniswapButton darkMode={darkMode}>
               <StyledSpan>
-                <span>Buy at Uniswap</span>
+                <span>{(unitext ? unitext : "Buy at Uniswap")}</span>
               </StyledSpan>
             </StyledUniswapButton>
           </StyledLink>
