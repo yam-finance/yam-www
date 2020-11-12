@@ -22,17 +22,17 @@ import { bnToDec } from 'utils'
 const Harvest: React.FC = () => {
   const [earnedBalanceValue, setEarnedBalanceValue] = useState<number>(0);
   const { status } = useWallet();
-  const { earnedBalance, isHarvesting, isRedeeming, onHarvestYAMETH } = useFarming();
+  const { earnedBalanceYAMETH, isHarvesting, isRedeeming, onHarvestYAMETH } = useFarming();
 
 
   const formattedEarnedBalance = useMemo(() => {
-    if (earnedBalance) {
-      setEarnedBalanceValue(bnToDec(earnedBalance))
-      return numeral(bnToDec(earnedBalance)).format('0.00a')
+    if (earnedBalanceYAMETH) {
+      setEarnedBalanceValue(bnToDec(earnedBalanceYAMETH))
+      return numeral(bnToDec(earnedBalanceYAMETH)).format('0.00a')
     } else {
       return '--'
     }
-  }, [earnedBalance])
+  }, [earnedBalanceYAMETH])
   
 
   const HarvestAction = useMemo(() => {

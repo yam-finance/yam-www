@@ -63,7 +63,7 @@ export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw((new BigNumber(amount).times(new BigNumber(10).pow(18))).toString())
-      .send({ from: account, gas: 380000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Unstaking error", error)
@@ -87,7 +87,7 @@ export const harvest = async (yam, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .getReward()
-      .send({ from: account, gas: 380000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Harvest error", error)
@@ -783,6 +783,28 @@ const requestDPIHistory = (from, to) => {
     );
   });
 };
+
+const requestWETH = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/weth",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getWETHPrice = async () => {
+  const data = await requestWETH();
+  return data.market_data.current_price.usd;
+};
+
 
 const requestDPI = () => {
   return new Promise((resolve, reject) => {
