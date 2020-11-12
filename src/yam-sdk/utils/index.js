@@ -159,7 +159,7 @@ export const getStaked = async (yam, pool, account) => {
 
 export const getCurrentPrice = async (yam) => {
   // FORBROCK: get current YAM price
-  return new BigNumber(await yam.contracts.rebaser.methods.getCurrentTWAP().call())
+  return new BigNumber(await yam.contracts.eth_rebaser.methods.getCurrentTWAP().call())
 }
 
 export const getTargetPrice = async (yam) => {
@@ -196,11 +196,11 @@ export const getProjectedMintPercent = async (yam, rebaseType) => {
   if(!rebaseType) {
     return 0;
   }
-  return new BigNumber(await yam.contracts.rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
+  return new BigNumber(await yam.contracts.eth_rebaser.methods.rebaseMintPerc().call()).div(BASE).times(100).toNumber();
 }
 
 export const getRebaseLag = async(yam) =>{
-  return await yam.contracts.rebaser.methods.rebaseLag().call();
+  return await yam.contracts.eth_rebaser.methods.rebaseLag().call();
 }
 
 export const getCirculatingSupply = async (yam) => {
@@ -221,7 +221,7 @@ export const getCirculatingSupply = async (yam) => {
 
 export const getLastRebaseTimestamp = async (yam) => {
   try {
-    const lastTimestamp = yam.toBigN(await yam.contracts.rebaser.methods.lastRebaseTimestampSec().call()).toNumber()
+    const lastTimestamp = yam.toBigN(await yam.contracts.eth_rebaser.methods.lastRebaseTimestampSec().call()).toNumber()
     return lastTimestamp
   } catch (e) {
     console.log(e)
@@ -234,7 +234,7 @@ export const getNextRebaseTimestamp = async (yam) => {
     let interval = 43200; // 12 hours
     let offset = 28800; // 8am/8pm utc
     let secondsToRebase = 0;
-    if (await yam.contracts.rebaser.methods.rebasingActive().call()) {
+    if (await yam.contracts.eth_rebaser.methods.rebasingActive().call()) {
       if (now % interval > offset) {
           secondsToRebase = (interval - (now % interval)) + offset;
        } else {
@@ -288,7 +288,7 @@ export const didDelegate = async (yam, account) => {
 }
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {
-  return yam.contracts.gov2
+  return yam.contracts.gov3
     .methods
     .castVote(proposal, side).send(
       {from: account, gas: 130000 },
@@ -443,6 +443,72 @@ export const getProposals = async (yam) => {
       start: v2Proposals[i]["returnValues"]["startBlock"],
       end: v2Proposals[i]["returnValues"]["endBlock"],
       hash: v2Proposals[i]["transactionHash"],
+      more: more
+    });
+  }
+
+  const v3Proposals = await yam.contracts.gov3.getPastEvents("ProposalCreated", {fromBlock: 11185996, toBlock: 'latest'})
+  for (let i = 0; i < v3Proposals.length; i++) {
+    let id = v3Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v3Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v3Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v3Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v3Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v3Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v3Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v3Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v3Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v3Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types;
+      try {
+        abi_types = v3Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
+        if (abi_types[0] != "") {
+          let result = yam.web3.eth.abi.decodeParameters(abi_types, v3Proposals[i]["returnValues"]["calldatas"][j]);
+          let fr = []
+          for (let k = 0; k < result.__length__; k++) {
+            fr.push(result[k.toString()]);
+          }
+          ins.push(fr);
+        }
+      } catch (e) {
+        console.log("Error parsing prop", e);
+      }
+    }
+
+
+    let proposal = await yam.contracts.gov3.methods.proposals(id).call();
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+
+    let more;
+    if (knownSnapshots[v3Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v3Proposals[i]["transactionHash"]]
+    }
+
+    proposals.push({
+      gov: "gov3",
+      description: v3Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov3.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
+      id: id,
+      start: v3Proposals[i]["returnValues"]["startBlock"],
+      end: v3Proposals[i]["returnValues"]["endBlock"],
+      hash: v3Proposals[i]["transactionHash"],
       more: more
     });
   }
@@ -639,7 +705,8 @@ export const treasuryEvents = async (yam) => {
   let BASE = new BigNumber(10).pow(18);
   let BASE24 = new BigNumber(10).pow(24);
 
-  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 'latest'});
+  let rebases = await yam.contracts.rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 10886913, toBlock: 11199322+4000});
+  rebases.push(...(await yam.contracts.eth_rebaser.getPastEvents('TreasuryIncreased', {fromBlock: 11185822, toBlock: 'latest'})));
   let reservesAdded = [];
   let yamsSold = [];
   let yamsFromReserves = [];

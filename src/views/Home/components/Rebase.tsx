@@ -34,7 +34,7 @@ const Rebase: React.FC<RebaseProps> = ({ type }) => {
 
   const [nextRebase, setNextRebase] = useState(0)
   const [rebaseWarningModal, setRebaseWarningModal] = useState(false)
-  
+
   const { account } = useWallet()
   const fetchNextRebase = useCallback( async() => {
     if (!yam) return
@@ -57,7 +57,7 @@ const Rebase: React.FC<RebaseProps> = ({ type }) => {
 
   const handleRebaseClick = useCallback(async () => {
     if (!yam) return
-    await yam.contracts.rebaser.methods.rebase().send({ from: account, gas: 500000 })
+    await yam.contracts.eth_rebaser.methods.rebase().send({ from: account, gas: 700000 })
   }, [account, yam])
 
   const renderer = (countdownProps: CountdownRenderProps) => {
