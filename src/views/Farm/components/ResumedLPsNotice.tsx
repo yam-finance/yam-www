@@ -9,6 +9,7 @@ import {
 } from 'react-neu'
 import styled from 'styled-components'
 
+// <span>LP rewards are resumed, you can now farm again!</span>
 const ResumedLPsNotice: React.FC = () => (
   <>
     <Notice>
@@ -16,7 +17,6 @@ const ResumedLPsNotice: React.FC = () => (
       <NoticeContent>
         <StyledNoticeContentInner>
           <span>LP rewards will be resumed Nov 12 at 6PM UTC!</span>
-//          <span>LP rewards are resumed, you can now farm again!</span>
           <Box flex={1} />
           <Spacer size="sm" />
           <Button
