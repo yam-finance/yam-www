@@ -7,11 +7,18 @@ import ERC20Json from '../clean_build/contracts/IERC20.json';
 import YAMv2Json from '../clean_build/contracts/YAMv2.json';
 import YAMv2MigrationJson from '../clean_build/contracts/YAMv2Migration.json';
 import YAMJson from '../clean_build/contracts/YAMDelegator.json';
+
 import YAMRebaserJson from '../clean_build/contracts/YAMRebaser.json';
+import YAMRebaser2Json from '../clean_build/contracts/YAMRebaser2.json';
+
 import YAMReservesJson from '../clean_build/contracts/YAMReserves.json';
 import YAMReserves2Json from '../clean_build/contracts/YAMReserves2.json';
+
 import OTCJson from '../clean_build/contracts/OTC.json';
+
 import YAMGovJson from '../clean_build/contracts/GovernorAlpha.json';
+import DualGovJson from '../clean_build/contracts/DualGovernorAlpha.json';
+
 import YAMTimelockJson from '../clean_build/contracts/Timelock.json';
 import WETHJson from './weth.json';
 import SNXJson from './snx.json';
@@ -19,10 +26,10 @@ import UNIFactJson from './unifact2.json';
 import UNIPairJson from './uni2.json';
 import UNIRouterJson from './uniR.json';
 
+
 import WETHPoolJson from '../clean_build/contracts/YAMETHPool.json';
 import AMPLPoolJson from '../clean_build/contracts/YAMAMPLPool.json';
 import YFIPoolJson from '../clean_build/contracts/YAMYFIPool.json';
-
 import MKRPoolJson from '../clean_build/contracts/YAMMKRPool.json';
 import LENDPoolJson from '../clean_build/contracts/YAMLENDPool.json';
 import COMPPoolJson from '../clean_build/contracts/YAMCOMPPool.json';
@@ -35,6 +42,7 @@ import VotingIncJson from '../clean_build/contracts/YAMIncentivizerWithVoting.js
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
+import YAMLogic2Json from "../clean_build/contracts/YAMDelegate2.json"
 
 export class Contracts {
   constructor(
@@ -87,15 +95,17 @@ export class Contracts {
     this.yamV2 = new this.web3.eth.Contract(YAMv2Json.abi);
     this.yamV2migration = new this.web3.eth.Contract(YAMv2MigrationJson.abi);
 
-    this.yamV3 = new this.web3.eth.Contract(YAMv3Json.abi);
+    this.yamV3 = new this.web3.eth.Contract(YAMLogic2Json.abi);
     this.migrator = new this.web3.eth.Contract(MigratorJson.abi);
 
     this.rebaser = new this.web3.eth.Contract(YAMRebaserJson.abi);
+    this.eth_rebaser = new this.web3.eth.Contract(YAMRebaser2Json.abi);
     this.reserves = new this.web3.eth.Contract(YAMReservesJson.abi);
     this.reserves2 = new this.web3.eth.Contract(YAMReserves2Json.abi);
     this.otc = new this.web3.eth.Contract(OTCJson.abi);
     this.gov = new this.web3.eth.Contract(YAMGovJson.abi);
     this.gov2 = new this.web3.eth.Contract(YAMGovJson.abi);
+    this.gov3 = new this.web3.eth.Contract(DualGovJson.abi);
     this.timelock = new this.web3.eth.Contract(YAMTimelockJson.abi);
     this.weth = new this.web3.eth.Contract(WETHJson);
     this.setProvider(provider, networkId);
@@ -115,6 +125,7 @@ export class Contracts {
     const contracts = [
       { contract: this.yam, json: YAMJson },
       { contract: this.rebaser, json: YAMRebaserJson },
+      { contract: this.eth_rebaser, json: YAMRebaser2Json },
       { contract: this.reserves, json: YAMReservesJson },
       { contract: this.reserves2, json: YAMReserves2Json },
       { contract: this.gov, json: YAMGovJson },
@@ -160,7 +171,9 @@ export class Contracts {
     this.gov2.options.address = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026";
     this.reserves2.options.address = "0x97990B693835da58A281636296D2Bf02787DEa17";
     this.otc.options.address = "0x92ab5CCe7Af1605da2681458aE52a0BEc4eCB74C";
+    this.gov3.options.address = "0xC32f9b0292965c5dd4A0Ea1abfcC1f5a36d66986";
     this.voting_eth_pool.options.address = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
+    this.eth_rebaser.options.address = "0xD93f403b432d39aa0f736C2021bE6051d85a1D55";
 
     this.pools = [
       {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},
@@ -188,6 +201,8 @@ export class Contracts {
     this.names[this.gov2.options.address] = "Second Governor";
     this.names[this.otc.options.address] = "OTC";
     this.names[this.reserves2.options.address] = "New Reserves";
+    this.names[this.gov3.options.address] = "Dual Governor (current)";
+    this.names[this.eth_rebaser.options.address] = "ETH Rebaser";
     this.names[this.voting_eth_pool.options.address] = "Voting ETH/YAM Incentivizer";
 
   }
