@@ -37,7 +37,7 @@ const YCP: React.FC = () => {
         <h2>Links</h2>
         <Split>
           <div>
-            <b>Name:</b> TBD<br/>
+            <b>Name:</b> <a href="https://snapshot.page/#/yam/proposal/QmYSsKSFSe7fbgEt2rwrKz9Pq4KxtRziPA4ajpuhRyiPgZ" target="_blank">TBD</a><br/>
             <b>Website:</b> TBD<br/>
           </div>
           <div>
@@ -51,10 +51,10 @@ const YCP: React.FC = () => {
           Lorem ipsum dolor sit <a href="#">amet</a> consectetur adipisicing elit. Magni quasi impedit, et, itaque eligendi ex harum iusto nulla laudantium vitae distinctio aspernatur ipsum! At quibusdam perferendis ratione odit molestias perspiciatis!
         </span> */}
         <Spacer />
-        <h2>Protocol Design</h2>
+        {/* <h2>Protocol Design</h2>
         <a href={DesignFlow} target="_blank">
           <InformationDesign src={DesignFlow} alt=""/>
-        </a>
+        </a> */}
       </Container>
     </Page>
   );
