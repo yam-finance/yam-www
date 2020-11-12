@@ -1,3 +1,4 @@
+export const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
 export const yam = '0x0e2298e3b3390e3b945a5456fbf59ecc3f55da16'
 export const yamv2 = '0xaba8cac6866b83ae4eec97dd07ed254282f6ad8a'
 export const yamv3 = '0x0AaCfbeC6a24756c20D41914F2caba817C0d8521'

@@ -15,18 +15,21 @@ import FancyValue from 'components/FancyValue'
 import Split from 'components/Split'
 
 import useTreasury from 'hooks/useTreasury'
-import { getDPIPrice } from 'yam-sdk/utils'
+import { getDPIPrice, getWETHPrice } from 'yam-sdk/utils'
 import { useWallet } from 'use-wallet'
 
 const Treasury: React.FC = () => {
   const { status } = useWallet();
   const [dpiPrice, setDPIPrice] = useState<number>();
-  const { totalYUsdValue, totalDPIValue, yamBalance, yUsdBalance } = useTreasury()
+  const [wethPrice, setWETHPrice] = useState<number>();
+  const { totalYUsdValue, totalDPIValue, totalWETHValue, yamBalance, yUsdBalance } = useTreasury()
   
   const fetchOnce = useCallback(async () => {
     const dpiPrice = await getDPIPrice();
+    const wethPrice = await getWETHPrice();
     setDPIPrice(dpiPrice);
-  }, [setDPIPrice]);
+    setWETHPrice(wethPrice);
+  }, [setDPIPrice, setWETHPrice]);
 
   useEffect(() => {
     if (status === "connected") {
@@ -36,8 +39,9 @@ const Treasury: React.FC = () => {
 
   const assetYUSD = totalYUsdValue * 1.15;
   const assetDPI = (totalDPIValue ? totalDPIValue : 0) * (dpiPrice ? dpiPrice : 0);
+  const assetWETH = (totalWETHValue ? totalWETHValue : 0) * (wethPrice ? wethPrice : 0);
 
-  const treasuryAssets = assetYUSD + assetDPI;
+  const treasuryAssets = assetYUSD + assetDPI + assetWETH;
   const treasuryValue =
     typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0
       ? "~$" + numeral(treasuryAssets).format("0.00a")

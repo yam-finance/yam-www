@@ -4,6 +4,7 @@ import {
   yUsd as yUsdAddress,
   yamv3 as yamV3Address,
   DPI as DPIAddress,
+  WETH,
 } from 'constants/tokenAddresses'
 
 import usePrices from 'hooks/usePrices'
@@ -16,6 +17,7 @@ const useTreasury = () => {
   const yamBalance = useTokenBalance(treasuryAddress, yamV3Address)
   const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress)
   const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress)
+  const totalWETHValue = useTokenBalance(treasuryAddress, WETH)
 
   const totalYUsdValue = useMemo(() => {
     const yamYUsdValue = yamTwap && yamBalance ? yamTwap * yamBalance : 0
@@ -29,6 +31,7 @@ const useTreasury = () => {
   return {
     totalYUsdValue,
     totalDPIValue,
+    totalWETHValue,
     yamBalance,
     yUsdBalance,
   }
