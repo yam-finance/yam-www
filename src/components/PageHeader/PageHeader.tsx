@@ -1,33 +1,80 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
-import { Container, Spacer } from 'react-neu'
+import { Container, Spacer, useTheme } from 'react-neu'
 import styled from 'styled-components'
 
 interface PageHeaderProps {
   icon: React.ReactNode,
-  subtitle?: string,
   title?: string,
+  titleSize?: number,
+  titleColor?: string,
+  titleWeight?: string,
+  className?: string,
+  subtitle?: string,
+  subtitleWeight?: string,
+  subtitleOpacity?: string,
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ icon, subtitle, title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({
+  icon,
+  title,
+  titleSize,
+  titleColor,
+  titleWeight,
+  className,
+  subtitle,
+  subtitleWeight,
+  subtitleOpacity,
+}) => {
+
+  const { darkMode } = useTheme();
+
+  const DisplaySubtitle = useMemo(() => {
+    if (subtitle) {
+      return (
+        <StyledSubtitle subtitleWeight={subtitleWeight} subtitleOpacity={subtitleOpacity}>{subtitle}</StyledSubtitle>
+      );
+    }
+  }, [subtitle]);
+
   return (
     <Container size="sm">
-    <StyledPageHeader>
-      <StyledIcon>{icon}</StyledIcon>
-      <Spacer size="sm" />
-      <StyledTitle>{title}</StyledTitle>
-      <StyledSubtitle>{subtitle}</StyledSubtitle>
-    </StyledPageHeader>
+      <StyledPageHeader subtitle={subtitle}>
+        <StyledIcon>{icon}</StyledIcon>
+        <Spacer size="sm" />
+        <div className={className}>
+          <StyledTitle titleSize={titleSize} titleWeight={titleWeight} titleColor={titleColor} darkMode={darkMode}>
+            {title}
+          </StyledTitle>
+        </div>
+        {DisplaySubtitle}
+      </StyledPageHeader>
     </Container>
-  )
+  );
+};
+
+interface StyledTitleProps {
+  darkMode?: boolean;
+  titleSize?: number;
+  titleColor?: string;
+  titleWeight?: string;
 }
 
-const StyledPageHeader = styled.div`
+interface StyledSubtitleProps {
+  subtitleWeight?: string;
+  subtitleOpacity?: string;
+}
+
+interface StyledPageHeaderProps {
+  subtitle?: string;
+}
+
+const StyledPageHeader = styled.div<StyledPageHeaderProps>`
   align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding-bottom: ${props => props.theme.spacing[6]}px;
+  padding-bottom: ${props => (props.subtitle ? props.theme.spacing[6] : "20")}px;
   margin: 0 auto;
 `
 
@@ -41,21 +88,21 @@ const StyledIcon = styled.span.attrs({
   min-width: 96px;
 `
 
-const StyledTitle = styled.h1`
-  color: ${props => props.theme.textColor};
-  font-size: 36px;
-  font-weight: 700;
+const StyledTitle = styled.h1<StyledTitleProps>`
+  color: ${props => (props.titleColor ? props.titleColor : (!props.darkMode && (props.titleSize && props.titleSize > 60) ? "hsl(339deg 20% 70%)" : props.theme.textColor))};
+  font-size: ${props => (props.titleSize ? props.titleSize.toString() : "36")}px;
+  font-weight: ${props => (props.titleWeight ? props.titleWeight : "700")};
   margin: 0;
   padding: 0;
   text-align: center;
 `
 
-const StyledSubtitle = styled.h3`
+const StyledSubtitle = styled.h3<StyledSubtitleProps>`
   color: ${props => props.theme.textColor};
   font-size: 18px;
-  font-weight: 400;
+  font-weight: ${props => (props.subtitleWeight ? props.subtitleWeight : "400")};
   margin: 0;
-  opacity: 0.66;
+  opacity: ${props => (props.subtitleOpacity ? props.subtitleOpacity : "0.66")};
   padding: 0;
   text-align: center;
 `

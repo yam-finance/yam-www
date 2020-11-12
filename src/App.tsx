@@ -17,8 +17,8 @@ import { PricesProvider } from 'contexts/Prices'
 import { VestingProvider } from 'contexts/Vesting'
 import { GovernanceProvider } from 'contexts/Governance'
 import YamProvider from 'contexts/YamProvider'
-
 import useLocalStorage from 'hooks/useLocalStorage'
+import styled from 'styled-components'
 
 import Farm from 'views/Farm'
 import FAQ from 'views/FAQ'
@@ -26,9 +26,8 @@ import Home from 'views/Home'
 import Migrate from 'views/Migrate'
 import Dashboard from 'views/Dashboard'
 import Governance from 'views/Governance'
-
-import styled from 'styled-components'
 import Addresses from 'views/Addresses'
+import YCP from 'views/Landings'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -67,6 +66,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/addresses">
             <Addresses />
+          </Route>
+          <Route exact path="/ycp">
+            <YCP />
           </Route>
           <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
         </Switch>
