@@ -27,7 +27,7 @@ const Stake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
   const [stakeBalance, setStakeBalance] = useState('--')
-  
+
   const { status } = useWallet()
   const {
     countdown,
@@ -121,7 +121,7 @@ const Stake: React.FC = () => {
     onApprove,
     status,
   ])
-  
+
   const UnstakeButton = useMemo(() => {
     const hasStaked = stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0
     if (status !== 'connected' || !hasStaked) {
@@ -158,7 +158,7 @@ const Stake: React.FC = () => {
     onApprove,
     status,
   ])
-  
+
   const formattedStakedBalance = useCallback(async () => {
     if (stakedBalanceYAMETH && bnToDec(stakedBalanceYAMETH) > 0) {
       setStakeBalance(getFullDisplayBalance(stakedBalanceYAMETH))
