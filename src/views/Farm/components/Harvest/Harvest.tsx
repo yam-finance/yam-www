@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import numeral from 'numeral'
 import {
@@ -8,6 +8,7 @@ import {
   CardActions,
   CardContent,
   CardIcon,
+  Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
 
@@ -19,14 +20,20 @@ import useFarming from 'hooks/useFarming'
 import { bnToDec } from 'utils'
 
 const Harvest: React.FC = () => {
-  const {
-    earnedBalance,
-    isHarvesting,
-    isRedeeming,
-    onHarvest,
-  } = useFarming()
+  const [earnedBalanceValue, setEarnedBalanceValue] = useState<number>(0);
+  const { status } = useWallet();
+  const { earnedBalance, isHarvesting, isRedeeming, onHarvestYAMETH } = useFarming();
 
-  const { status } = useWallet()
+
+  const formattedEarnedBalance = useMemo(() => {
+    if (earnedBalance) {
+      setEarnedBalanceValue(bnToDec(earnedBalance))
+      return numeral(bnToDec(earnedBalance)).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [earnedBalance])
+  
 
   const HarvestAction = useMemo(() => {
     if (status !== 'connected') {
@@ -42,9 +49,11 @@ const Harvest: React.FC = () => {
     if (!isHarvesting) {
       return (
         <Button
+          disabled={earnedBalanceValue <= 0}
           full
-          onClick={onHarvest}
+          onClick={onHarvestYAMETH}
           text="Harvest"
+          variant="secondary"
         />
       )
     }
@@ -61,34 +70,26 @@ const Harvest: React.FC = () => {
   }, [
     isHarvesting,
     isRedeeming,
-    onHarvest,
+    earnedBalanceValue,
+    onHarvestYAMETH,
   ])
 
-  const formattedEarnedBalance = useMemo(() => {
-    if (earnedBalance) {
-      return numeral(bnToDec(earnedBalance)).format('0.00a')
-    } else {
-      return '--'
-    }
-  }, [earnedBalance])
-
   return (
-    <Card>
-      <CardIcon>🍠</CardIcon>
-      <CardContent>
-        <Box
-          alignItems="center"
-          column
-        >
-          <Value value={formattedEarnedBalance} />
-          <Label text="Unharvested YAMs" />
-        </Box>
-      </CardContent>
-      <CardActions>
-        {HarvestAction}
-      </CardActions>
-    </Card>
-  )
+    <>
+      <Card>
+        <CardIcon>🍠</CardIcon>
+        <CardContent>
+          <Box alignItems="center" column>
+            <Value value={formattedEarnedBalance} />
+            <Label text="Unharvested YAMs" />
+          </Box>
+        </CardContent>
+        <CardActions>
+          {HarvestAction}
+        </CardActions>
+      </Card>
+    </>
+  );
 }
 
 export default Harvest

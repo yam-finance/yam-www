@@ -12,7 +12,7 @@ const Addresses: React.FC = () => {
       <PageHeader icon={"🎖️"} title={"Addresses"} subtitle={"Official Addresses"} />
       <Container size="sm">
         <h2>Yam Addresses &amp; Assets</h2>
-        <AddressButton name="YAM" address={yamv3} uniswap={true} />
+        <AddressButton name="YAM" address={yamv3} uniswap={true} unitext="Buy at Sushiswap" unilink="https://exchange.sushiswapclassic.org/#/?inputCurrency=" />
         <AddressButton name="yUSD" address={yUsd} uniswap={true} />
         <AddressButton name="DPI" address={DPI} uniswap={true} />
 

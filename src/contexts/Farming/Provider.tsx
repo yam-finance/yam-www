@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
-import { yycrvUniLp as yycrvUniLpAddress } from 'constants/tokenAddresses'
+import { YAMETHSLPAddress, yycrvUniLp as yycrvUniLpAddress } from 'constants/tokenAddresses'
 import useApproval from 'hooks/useApproval'
 import useYam from 'hooks/useYam'
 
@@ -28,46 +28,72 @@ const Provider: React.FC = ({ children }) => {
   const [isRedeeming, setIsRedeeming] = useState(false)
   const [isStaking, setIsStaking] = useState(false)
   const [isUnstaking, setIsUnstaking] = useState(false)
-
-  const [earnedBalance, setEarnedBalance] = useState<BigNumber>()
-  const [stakedBalance, setStakedBalance] = useState<BigNumber>()
-
+  const [earnedBalanceYAMYUSD, setEarnedBalanceYAMYUSD] = useState<BigNumber>()
+  const [stakedBalanceYAMYUSD, setStakedBalanceYAMYUSD] = useState<BigNumber>()
+  const [earnedBalanceYAMETH, setEarnedBalanceYAMETH] = useState<BigNumber>()
+  const [stakedBalanceYAMETH, setStakedBalanceYAMETH] = useState<BigNumber>()
   const yam = useYam()
   const { account } = useWallet()
   
-  const yycrvPoolAddress = yam ? yam.contracts.yycrv_pool.options.address : ''
-  const { isApproved, isApproving, onApprove } = useApproval(
-    yycrvUniLpAddress,
-    yycrvPoolAddress,
-    () => setConfirmTxModalIsOpen(false)
-  )
+  // const yycrvPoolAddress = yam ? yam.contracts.yycrv_pool.options.address : ''
+  // const { isApproved, isApproving, onApprove } = useApproval(yycrvUniLpAddress, yycrvPoolAddress, () =>
+  //   setConfirmTxModalIsOpen(false)
+  // );
+  const YAMETHPoolAddress = yam ? yam.contracts.voting_eth_pool.options.address : ''
+  const { isApproved, isApproving, onApprove } = useApproval(YAMETHSLPAddress, YAMETHPoolAddress, () =>
+    setConfirmTxModalIsOpen(false)
+  );
 
-  const fetchEarnedBalance = useCallback(async () => {
+  const fetchEarnedBalanceYAMYUSD = useCallback(async () => {
     if (!account || !yam) return
     const balance = await getEarned(yam, yam.contracts.yycrv_pool, account)
-    setEarnedBalance(balance)
+    setEarnedBalanceYAMYUSD(balance)
   }, [
     account,
-    setEarnedBalance,
+    setEarnedBalanceYAMYUSD,
     yam
   ])
 
-  const fetchStakedBalance = useCallback(async () => {
+  const fetchStakedBalanceYAMYUSD = useCallback(async () => {
     if (!account || !yam) return
     const balance = await getStaked(yam, yam.contracts.yycrv_pool, account)
-    setStakedBalance(balance)
+    setStakedBalanceYAMYUSD(balance)
   }, [
     account,
-    setStakedBalance,
+    setStakedBalanceYAMYUSD,
+    yam
+  ])
+
+  const fetchEarnedBalanceYAMETH = useCallback(async () => {
+    if (!account || !yam) return
+    const balance = await getEarned(yam, yam.contracts.voting_eth_pool, account)
+    setEarnedBalanceYAMETH(balance)
+  }, [
+    account,
+    setEarnedBalanceYAMETH,
+    yam
+  ])
+
+  const fetchStakedBalanceYAMETH = useCallback(async () => {
+    if (!account || !yam) return
+    const balance = await getStaked(yam, yam.contracts.voting_eth_pool, account)
+    setStakedBalanceYAMETH(balance)
+  }, [
+    account,
+    setStakedBalanceYAMETH,
     yam
   ])
 
   const fetchBalances = useCallback(async () => {
-    fetchEarnedBalance()
-    fetchStakedBalance()
+    fetchEarnedBalanceYAMYUSD()
+    fetchStakedBalanceYAMYUSD()
+    fetchEarnedBalanceYAMETH()
+    fetchStakedBalanceYAMETH()
   }, [
-    fetchEarnedBalance,
-    fetchStakedBalance,
+    fetchEarnedBalanceYAMYUSD,
+    fetchStakedBalanceYAMYUSD,
+    fetchEarnedBalanceYAMETH,
+    fetchStakedBalanceYAMETH,
   ])
 
   const handleApprove = useCallback(() => {
@@ -78,10 +104,10 @@ const Provider: React.FC = ({ children }) => {
     setConfirmTxModalIsOpen,
   ])
 
-  const handleHarvest = useCallback(async () => {
+  const handleHarvestYAMYUSD = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await harvest(yam, account, () => {
+    await harvest(yam, account, yam.contracts.yycrv_pool, () => {
       setConfirmTxModalIsOpen(false)
       setIsHarvesting(true)
     })
@@ -93,10 +119,10 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleRedeem = useCallback(async () => {
+  const handleRedeemYAMYUSD = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await redeem(yam, account, () => {
+    await redeem(yam, account, yam.contracts.yycrv_pool, () => {
       setConfirmTxModalIsOpen(false)
       setIsRedeeming(true)
     })
@@ -108,10 +134,10 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleStake = useCallback(async (amount: string) => {
+  const handleStakeYAMYUSD = useCallback(async (amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await stake(yam, amount, account, () => {
+    await stake(yam, amount, account, yam.contracts.yycrv_pool, () => {
       setConfirmTxModalIsOpen(false)
       setIsStaking(true)
     })
@@ -123,10 +149,70 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleUnstake = useCallback(async (amount: string) => {
+  const handleUnstakeYAMYUSD = useCallback(async (amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await unstake(yam, amount, account, () => {
+    await unstake(yam, amount, account, yam.contracts.yycrv_pool, () => {
+      setConfirmTxModalIsOpen(false)
+      setIsUnstaking(true)
+    })
+    setIsUnstaking(false)
+  }, [
+    account,
+    setConfirmTxModalIsOpen,
+    setIsUnstaking,
+    yam
+  ])
+
+  const handleHarvestYAMETH = useCallback(async () => {
+    if (!yam) return
+    setConfirmTxModalIsOpen(true)
+    await harvest(yam, account, yam.contracts.voting_eth_pool, () => {
+      setConfirmTxModalIsOpen(false)
+      setIsHarvesting(true)
+    })
+    setIsHarvesting(false)
+  }, [
+    account,
+    setConfirmTxModalIsOpen,
+    setIsHarvesting,
+    yam
+  ])
+
+  const handleRedeemYAMETH = useCallback(async () => {
+    if (!yam) return
+    setConfirmTxModalIsOpen(true)
+    await redeem(yam, account, yam.contracts.voting_eth_pool, () => {
+      setConfirmTxModalIsOpen(false)
+      setIsRedeeming(true)
+    })
+    setIsRedeeming(false)
+  }, [
+    account,
+    setConfirmTxModalIsOpen,
+    setIsRedeeming,
+    yam
+  ])
+
+  const handleStakeYAMETH = useCallback(async (amount: string) => {
+    if (!yam) return
+    setConfirmTxModalIsOpen(true)
+    await stake(yam, amount, account, yam.contracts.voting_eth_pool, () => {
+      setConfirmTxModalIsOpen(false)
+      setIsStaking(true)
+    })
+    setIsStaking(false)
+  }, [
+    account,
+    setConfirmTxModalIsOpen,
+    setIsStaking,
+    yam
+  ])
+
+  const handleUnstakeYAMETH = useCallback(async (amount: string) => {
+    if (!yam) return
+    setConfirmTxModalIsOpen(true)
+    await unstake(yam, amount, account, yam.contracts.voting_eth_pool, () => {
       setConfirmTxModalIsOpen(false)
       setIsUnstaking(true)
     })
@@ -153,7 +239,6 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       farmingStartTime,
       countdown,
-      earnedBalance,
       isApproved,
       isApproving,
       isHarvesting,
@@ -161,11 +246,18 @@ const Provider: React.FC = ({ children }) => {
       isStaking,
       isUnstaking,
       onApprove: handleApprove,
-      onHarvest: handleHarvest,
-      onRedeem: handleRedeem,
-      onStake: handleStake,
-      onUnstake: handleUnstake,
-      stakedBalance,
+      onHarvestYAMYUSD: handleHarvestYAMYUSD,
+      onRedeemYAMYUSD: handleRedeemYAMYUSD,
+      onStakeYAMYUSD: handleStakeYAMYUSD,
+      onUnstakeYAMYUSD: handleUnstakeYAMYUSD,
+      onHarvestYAMETH: handleHarvestYAMETH,
+      onRedeemYAMETH: handleRedeemYAMETH,
+      onStakeYAMETH: handleStakeYAMETH,
+      onUnstakeYAMETH: handleUnstakeYAMETH,
+      earnedBalanceYAMYUSD,
+      stakedBalanceYAMYUSD,
+      earnedBalanceYAMETH,
+      stakedBalanceYAMETH,
     }}>
       {children}
       <ConfirmTransactionModal isOpen={confirmTxModalIsOpen} />

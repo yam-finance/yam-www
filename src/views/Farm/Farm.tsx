@@ -19,12 +19,14 @@ import useFarming from 'hooks/useFarming'
 import HarvestCard from './components/Harvest'
 import StakeCard from './components/Stake'
 import PausedLPsNotice from './components/PausedLPsNotice'
+import ResumedLPsNotice from './components/ResumedLPsNotice'
+import HarvestLPsNoticeYAMYUSD from './components/HarvestLPsNoticeYAMYUSD'
 
 const Farm: React.FC = () => {
   const { status } = useWallet()
   const {
     isRedeeming,
-    onRedeem,
+    onRedeemYAMETH,
   } = useFarming()
 
   const RedeemButton = useMemo(() => {
@@ -32,7 +34,7 @@ const Farm: React.FC = () => {
       return (
         <Button
           disabled
-          text="Harvest &amp; Unstake"
+          text="Harvest &amp; Unstake YAM/ETH"
           variant="secondary"
         />
       )
@@ -40,8 +42,8 @@ const Farm: React.FC = () => {
     if (!isRedeeming) {
       return (
         <Button
-          onClick={onRedeem}
-          text="Harvest &amp; Unstake"
+          onClick={onRedeemYAMETH}
+          text="Harvest &amp; Unstake YAM/ETH"
           variant="secondary"
         />
       )
@@ -55,19 +57,20 @@ const Farm: React.FC = () => {
     )
   }, [
     isRedeeming,
-    onRedeem,
+    onRedeemYAMETH,
   ])
 
   return (
     <Page>
       <PageHeader
-        icon="🧑‍🌾"
-        subtitle="Stake YAM/yUSD LP tokens and grow YAMs"
+        icon="🌾🍠"
+        subtitle="Stake YAM/ETH Sushiswap LP tokens and grow YAMs"
         title="Farm"
       />
       <Container>
-        <PausedLPsNotice />
-        <Spacer />
+        <HarvestLPsNoticeYAMYUSD />
+        <ResumedLPsNotice />
+        {/* <PausedLPsNotice /> */}
         <Split>
           <StakeCard />
           <HarvestCard />
@@ -88,20 +91,8 @@ const Farm: React.FC = () => {
           />
           <Button
             full
-            text="Buy yUSD"
-            href="https://app.uniswap.org/#/swap?inputCurrency=0x5dbcf33d8c2e976c6b560249878e6f1491bca25c&outputCurrency=ETH"
-            variant="tertiary"
-          />
-          <Button
-            full
-            text="Mint yUSD"
-            href="https://zapper.fi/invest"
-            variant="tertiary"
-          />
-          <Button
-            full
-            text="Get YAM/yUSD LP tokens"
-            href="https://app.uniswap.org/#/add/0x0aacfbec6a24756c20d41914f2caba817c0d8521/0x5dbcf33d8c2e976c6b560249878e6f1491bca25c"
+            text="Get YAM/ETH LP tokens"
+            href="https://exchange.sushiswapclassic.org/#/add/0x0aacfbec6a24756c20d41914f2caba817c0d8521/ETH"
             variant="tertiary"
           />
         </Split>

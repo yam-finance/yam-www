@@ -9,19 +9,20 @@ import {
 } from 'react-neu'
 import styled from 'styled-components'
 
-const PausedLPsNotice: React.FC = () => (
+// <span>LP rewards are resumed, you can now farm again!</span>
+const ResumedLPsNotice: React.FC = () => (
   <>
     <Notice>
       <NoticeIcon>💧</NoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span>LP rewards are paused for now, remove your liquidity.</span>
+          <span>LP rewards will be resumed Nov 12 at 6PM UTC!</span>
           <Box flex={1} />
           <Spacer size="sm" />
           <Button
             size="sm"
-            text="Remove Liquidity"
-            href="https://app.uniswap.org/#/remove/0x0AaCfbeC6a24756c20D41914F2caba817C0d8521/0x5dbcf33d8c2e976c6b560249878e6f1491bca25c"
+            text="Add Liquidity"
+            href="https://exchange.sushiswapclassic.org/#/add/0x0aacfbec6a24756c20d41914f2caba817c0d8521/ETH"
             variant="secondary"
           />
         </StyledNoticeContentInner>
@@ -40,4 +41,4 @@ const StyledNoticeContentInner = styled.div`
   }
 `
 
-export default PausedLPsNotice
+export default ResumedLPsNotice

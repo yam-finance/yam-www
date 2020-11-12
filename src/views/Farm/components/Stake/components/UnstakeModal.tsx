@@ -26,11 +26,11 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({
 }) => {
 
   const [val, setVal] = useState('')
-  const { stakedBalance } = useFarming()
+  const { stakedBalanceYAMETH } = useFarming()
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(stakedBalance || new BigNumber(0))
-  }, [stakedBalance])
+    return getFullDisplayBalance(stakedBalanceYAMETH || new BigNumber(0))
+  }, [stakedBalanceYAMETH])
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
