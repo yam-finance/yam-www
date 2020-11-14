@@ -39,7 +39,7 @@ const HarvestLPsNoticeYAMYUSD: React.FC = () => {
             <NoticeIcon>❗</NoticeIcon>
             <NoticeContent>
               <StyledNoticeContentInner>
-                <span>You was farming on the old pool with {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "")} {(stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : "")} {(earnedBalanceYUSDLP ? earnedBalanceYUSDLP + " Yam to harvest!" : "")} </span>
+                <span>You was farming on the old pool with {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "") + (stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : ".") + (earnedBalanceYUSDLP ? earnedBalanceYUSDLP + " Yam to harvest!" : "")} </span>
                 <Box flex={1} />
                 <Spacer size="sm" />
                 <span>
