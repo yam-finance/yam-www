@@ -218,9 +218,9 @@ const Charts: React.FC = () => {
       x: 11160087,
       y: totalYUsdValue * yusdPrice,
     })
-    // last update
+    // on ETH purchase
     reserves.push({
-      x: 11254648,
+      x: 11244494,
       y: totalYUsdValue * yusdPrice,
     });
     // now
@@ -268,9 +268,9 @@ const Charts: React.FC = () => {
       x: 11160087,
       y: DPIBalance * dpiPrice,
     })
-    // last update
+    // on ETH purchase
     reservesDPI.push({
-      x: 11254648,
+      x: 11244494,
       y: DPIBalance * dpiPrice,
     });
     // now
@@ -303,9 +303,9 @@ const Charts: React.FC = () => {
       x: 11160087,
       y: 0,
     })
-    // last update
+    // on ETH purchase
     reservesETH.push({
-      x: 11254648,
+      x: 11244494,
       y: totalWETHValue * wethPrice,
     });
     // now
@@ -317,11 +317,6 @@ const Charts: React.FC = () => {
     reserves.sort((a, b) => (a.x > b.x) ? 1 : -1)
     reservesDPI.sort((a, b) => (a.x > b.x) ? 1 : -1)
     reservesETH.sort((a, b) => (a.x > b.x) ? 1 : -1)
-    // 
-    console.log("reserves", reserves);
-    console.log("reservesDPI", reservesDPI);
-    console.log("reservesETH", reservesETH);
-
     const series: SeriesInterface[] = [
       {
         name: "yUSD Reserves",
@@ -664,7 +659,7 @@ const Charts: React.FC = () => {
   useEffect(() => {
     fetchTreasury()
     let refreshInterval = setInterval(() => fetchTreasury(), 100000)
-    console.log("refreshInterval treasuryValues", treasuryValues);
+    // console.log("treasuryValues", treasuryValues);
     return () => clearInterval(refreshInterval)
   }, [fetchTreasury])
 
