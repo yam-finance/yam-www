@@ -768,6 +768,14 @@ export const waitTransaction = async (provider, txHash) => {
   return (txReceipt.status)
 }
 
+export const getCurrentBlock = async (yam) => {
+  try {
+    return await yam.web3.eth.getBlock('latest');
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const requestDPIHistory = (from, to) => {
   return new Promise((resolve, reject) => {
     request({
@@ -805,6 +813,26 @@ export const getWETHPrice = async () => {
   return data.market_data.current_price.usd;
 };
 
+const requestYUSD = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/yvault-lp-ycurve",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getYUSDPrice = async () => {
+  const data = await requestYUSD();
+  return data.market_data.current_price.usd;
+};
 
 const requestDPI = () => {
   return new Promise((resolve, reject) => {
