@@ -20,7 +20,7 @@ const Farm: React.FC = () => {
   const [showDefaultXiotri, setShowDefaultXiotri] = useState(true)
 
   useEffect(() => {
-    let imagePicker = setInterval(() => setShowDefaultXiotri(!showDefaultXiotri), 60 * 1000)
+    let imagePicker = setInterval(() => setShowDefaultXiotri(!showDefaultXiotri), 20 * 1000)
     return () => clearInterval(imagePicker)
   },[showDefaultXiotri])
 

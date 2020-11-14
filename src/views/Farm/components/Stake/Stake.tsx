@@ -22,7 +22,7 @@ import UnstakeModal from './components/UnstakeModal'
 import styled from 'styled-components'
 import useApproval from 'hooks/useApproval'
 import useBalances from 'hooks/useBalances'
-import Split from 'components/Split'
+import SplitRow from 'components/SplitRow'
 import { StyledSubtitle } from 'components/PageHeader/PageHeader'
 import { getItemValue } from 'utils'
 
@@ -225,7 +225,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
             alignItems="center"
             row
           >
-            <Split>
+            <SplitRow>
               <>
                 <Value value={formattedStakedBalance} />
                 <Label text={`Staked`} />
@@ -234,7 +234,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
                 <Value value={formattedWalletBalance} />
                 <Label text={`Wallet`} />
               </>
-            </Split>
+            </SplitRow>
           </Box>
         </CardContent>
         <CardActions>
