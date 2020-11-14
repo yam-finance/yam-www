@@ -11,6 +11,7 @@ import useYam from 'hooks/useYam'
 import {
   getEarned,
   getStaked,
+  getTVL,
   harvest,
   redeem,
   stake,
@@ -24,6 +25,7 @@ const farmingStartTime = 1600545500*1000
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [countdown, setCountdown] = useState<number>()
+  const [tvl, setTVL] = useState<number>()
   const [isHarvesting, setIsHarvesting] = useState(false)
   const [isRedeeming, setIsRedeeming] = useState(false)
   const [isStaking, setIsStaking] = useState(false)
@@ -224,6 +226,21 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
+  const fetchTVL = useCallback(async () => {
+    if (!yam) return
+    const tvl = await getTVL(yam)
+    setTVL(tvl)
+  }, [
+    setTVL,
+    yam
+  ])
+
+  useEffect(() => {
+    fetchTVL();
+    let refreshInterval = setInterval(fetchTVL, 100000);
+    return () => clearInterval(refreshInterval);
+  }, [fetchTVL]);
+
   useEffect(() => {
     fetchBalances()
     let refreshInterval = setInterval(() => fetchBalances(), 10000)
@@ -239,6 +256,7 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       farmingStartTime,
       countdown,
+      tvl,
       isApproved,
       isApproving,
       isHarvesting,

@@ -56,10 +56,10 @@ const FAQ: React.FC = () => {
               question="What is rebasing?"
               slug="rebase"
             >
-              <span>Rebases occur every 12 hours. In order to target a price of 1 yUSD, YAM supply is either increased or decreased during each rebase. In theory, an increase in supply would put downward pressure on price towards 1 and a decrease in supply would put upward pressure on price towards 1.</span>
-              <span>If YAM price is above 1.05 yUSD, YAM supply increases. This is known as a positive rebase.</span>
-              <span>If YAM price is below 0.95 yUSD, YAM supply decreases. This is known as a negative rebase.</span>
-              <span>If YAM price is between 0.95 and 1.05 yUSD, YAM does not rebase.</span>
+              <span>Rebasing is a mechanism generally used to promote price stability by increasing the supply when the price is above the target price and decrease supply when price is below the target. YAM is currently pegged to 1 USDC, and uses the YAM/ETH  and ETH/USDC Sushiswap pools to generate a two-hop TWAP (Time-Weighted Average Price) oracle to determine the necessary change in supply.</span>
+              <span>If YAM price is above 1.05 USDC, YAM supply increases. This is known as a positive rebase.</span>
+              <span>If YAM price is below 0.95 USDC, YAM supply decreases. This is known as a negative rebase.</span>
+              <span>If YAM price is between 0.95 and 1.05 USDC, YAM does not rebase.</span>
               <span>Every YAM holder gets the same increase or decrease in supply every rebase. However, this increase or decrease is offset by the subsequent increase or decrease in price.</span>
             </Question>
             <Question
@@ -90,14 +90,14 @@ const FAQ: React.FC = () => {
               question="How does YAM have a treasury?"
               slug="treasury"
             >
-              <span>Every positive rebase, the treasury mints 10% of the rebase amount and sells YAM to the YAM/yUSD Uniswap pool. The yUSD acquired through this action is sent to the treasury which is managed by YAM holders. The current treasury amount can be seen on yam.finance.</span>
+              <span>In the Yam protocol, when a positive rebase occurs, 10% of the YAM rebase amount is minted and sold for ETH via the YAM/ETH Sushiswap pool. The ETH is subsequently deposited to the governance-controlled treasury.</span>
             </Question>
             <Question
               active={activeSlug === "farming"}
               question="Can I farm YAM?"
               slug="farming"
             >
-              <span>Currently check: <RouterLink to="/farm">Farm</RouterLink> to know if you are able to farm. If you were able to farm as indicated on the page: you will be eligible to earn YAM rewards by providing liquidity to the <ExternalLink href="https://uniswap.info/pair/0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC">yUSD/YAM Uniswap pool</ExternalLink>. The rewards given to the pool are 92,500 in week 1, decreasing by 10% every week after. Please realize that you must apply the YAM scaling factor to get the current reward amount at any given time.</span>
+              <span>Currently check: <RouterLink to="/farm">Farm</RouterLink> to know if you are able to farm.</span>
             </Question>
 
             <Question

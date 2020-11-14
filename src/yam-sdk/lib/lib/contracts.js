@@ -39,6 +39,8 @@ import LINKPoolJson from '../clean_build/contracts/YAMLINKPool.json';
 import IncOldJson from '../clean_build/contracts/YAMIncentivizerOld.json';
 import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
 import VotingIncJson from '../clean_build/contracts/YAMIncentivizerWithVoting.json';
+import MasterChefJson from '../clean_build/contracts/MasterChef.json';
+import SushiswapPoolJson from '../clean_build/contracts/SushiswapPool.json';
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
@@ -73,6 +75,8 @@ export class Contracts {
     this.ycrv_pool = new this.web3.eth.Contract(IncOldJson.abi);
     this.yycrv_pool = new this.web3.eth.Contract(IncJson.abi);
     this.voting_eth_pool = new this.web3.eth.Contract(VotingIncJson.abi);
+    this.masterchef = new this.web3.eth.Contract(MasterChefJson.abi);
+    this.slp = new this.web3.eth.Contract(SushiswapPoolJson.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
     this.link_pool = new this.web3.eth.Contract(LINKPoolJson.abi);
@@ -145,6 +149,8 @@ export class Contracts {
       { contract: this.yamV2migration, json: YAMv2MigrationJson },
       { contract: this.yamV3, json: YAMv3Json },
       { contract: this.migrator, json: MigratorJson },
+      { contract: this.masterchef, json: MasterChefJson },
+      { contract: this.slp, json: SushiswapPoolJson },
     ]
 
     contracts.forEach(contract => this.setContractProvider(
@@ -174,6 +180,8 @@ export class Contracts {
     this.gov3.options.address = "0xC32f9b0292965c5dd4A0Ea1abfcC1f5a36d66986";
     this.voting_eth_pool.options.address = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
     this.eth_rebaser.options.address = "0xD93f403b432d39aa0f736C2021bE6051d85a1D55";
+    this.masterchef.options.address = "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd";
+    this.slp.options.address = "0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c";
 
     this.pools = [
       {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},
@@ -204,7 +212,8 @@ export class Contracts {
     this.names[this.gov3.options.address] = "Dual Governor (current)";
     this.names[this.eth_rebaser.options.address] = "ETH Rebaser";
     this.names[this.voting_eth_pool.options.address] = "Voting ETH/YAM Incentivizer";
-
+    this.names[this.masterchef.options.address] = "Master Chef";
+    this.names[this.slp.options.address] = "Sushiswap LP";
   }
 
   setDefaultAccount(

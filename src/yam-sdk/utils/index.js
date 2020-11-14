@@ -3,6 +3,7 @@ import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import request from "request";
 import {bnToDec} from 'utils';
+import { incentivizerContract } from 'constants/tokenAddresses';
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -405,7 +406,7 @@ export const getProposals = async (yam) => {
     let ins = [];
     for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
       let abi_types;
-      try {
+      if (v2Proposals[i]["returnValues"]["signatures"][j]) {
         abi_types = v2Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0,-1)[0].split(",");
         if (abi_types[0] != "") {
           let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
@@ -415,8 +416,6 @@ export const getProposals = async (yam) => {
           }
           ins.push(fr);
         }
-      } catch (e) {
-        console.log("Error parsing prop", e);
       }
     }
 
@@ -747,6 +746,18 @@ export const treasuryEvents = async (yam) => {
     blockNumbers: blockNumbers,
     blockTimes: blockTimes,
   };
+}
+
+export const getTVL = async (yam) => {
+  const BASE = new BigNumber(10).pow(18);
+  const yamPrice = bnToDec(await getCurrentPrice(yam));
+  const wethPrice = await getWETHPrice();
+  const totalIncentivizerValue = (await yam.contracts.masterchef.methods.userInfo(44, incentivizerContract).call()).amount;
+  const totalSLPSupply = await yam.contracts.slp.methods.totalSupply().call();
+  const totalSLPReserves = await yam.contracts.slp.methods.getReserves().call();
+  const Yamvalue = new BigNumber(totalSLPReserves._reserve0).dividedBy(BASE).toNumber();
+  const ETHvalue = new BigNumber(totalSLPReserves._reserve1).dividedBy(BASE).toNumber();
+  return Math.round(totalIncentivizerValue / totalSLPSupply * ((ETHvalue * wethPrice) + (Yamvalue * yamPrice)) * 1e0 ) / 1e0;
 }
 
 export const getRebaseType = (rebaseValue) => {
