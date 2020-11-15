@@ -11,7 +11,7 @@ export const YAMETHSLPAddress = '0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c'
 
 export const governorContract = "0x78BdD33e95ECbcAC16745FB28DB0FFb703344026"
 export const timelockContract = "0x8b4f1616751117C38a0f84F9A146cca191ea3EC5"
-export const rebaserContract = "0x1fB361f274f316d383B94D761832AB68099A7B00"
+export const rebaserContract = "0xd93f403b432d39aa0f736c2021be6051d85a1d55"
 export const incentivizerOldContract = "0x5b0501F7041120d36Bc8c6DC3FAeA0b74b32a0Ed"
 export const incentivizerContract = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0"
 export const reservesContract = "0x97990b693835da58a281636296d2bf02787dea17"
