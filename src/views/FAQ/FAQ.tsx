@@ -97,7 +97,7 @@ const FAQ: React.FC = () => {
               question="Can LPs participate in governance?"
               slug="govlp"
             >
-              <span>Only LPs that are staked in the Incentivizer contract can participate in governance. Only LPs that are staked in the Incentivizer contract can participate in governance. Voting power is determined by distributing the voting power of YAM held in the YAM/ETH Sushiswap pool, but distributed to only YAM Incentivizer stakers. This was done to mitigate flashloan threats in voting, so the Incentivizer contract keeps a record of the necessary values at needed block heights to facilitate those mitigations.</span>
+              <span>Only LPs that are staked in the Incentivizer contract can participate in governance. Voting power is determined by distributing the voting power of YAM held in the YAM/ETH Sushiswap pool, but distributed to only YAM Incentivizer stakers. This was done to mitigate flashloan threats in voting, so the Incentivizer contract keeps a record of the necessary values at needed block heights to facilitate those mitigations.</span>
             </Question>
             <Question
               active={activeSlug === "farming"}
