@@ -30,6 +30,7 @@ const Farm: React.FC = () => {
 
   const {
     tvl,
+    apr,
     isRedeeming,
     onRedeemYAMETH,
   } = useFarming()
@@ -80,10 +81,11 @@ const Farm: React.FC = () => {
           <CardContent>
             <FancyValue
               wrap
-              value={(tvl ? "TVL $"+ numeral(tvl).format("000,000,000") : "Loading TVL...")}
+              value={(tvl ? `TVL $${numeral(tvl).format("000,000,000")}` : "Loading TVL...")}
               valueSize="54px"
               valueColor={colors.primary.main}
               valueBold="800"
+              label={(apr ? `APR ${numeral(apr).format("0.00a")}%` : "Loading APR...")}
             />
           </CardContent>
         </Card>
