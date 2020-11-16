@@ -19,7 +19,7 @@ const VestingNotice: React.FC = () => (
         <Button
           size="sm"
           text="Learn more"
-          to="/faq"
+          href="https://docs.yam.finance/faq#how-does-yamv2-to-yam-migration-work"
           variant="tertiary"
         />
       </StyledNoticeContentInner>
