@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import useFarming from "hooks/useFarming";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
@@ -7,36 +8,43 @@ import { bnToDec } from "utils";
 
 const HarvestLPsNoticeYAMYUSD: React.FC = () => {
   const [stakedBalanceYUSDLP, setStakedBalanceYUSDLP] = useState<number>(0);
-  const { stakedBalanceYAMYUSD, onRedeemYAMYUSD } = useFarming();
+  const [earnedBalanceYUSDLP, setEarnedBalanceYUSDLP] = useState<number>(0);
+  const { stakedBalanceYAMYUSD, earnedBalanceYAMYUSD, onRedeemYAMYUSD, onHarvestYAMYUSD } = useFarming();
   const { status } = useWallet();
 
-  const checkOldStakedBalance = useCallback(() => {
+  const checkOldStakedEarned = useCallback(() => {
     if (status !== "connected") {
       return;
     }
+
     if (stakedBalanceYAMYUSD) {
       setStakedBalanceYUSDLP(bnToDec(stakedBalanceYAMYUSD));
     }
-  }, [stakedBalanceYAMYUSD, setStakedBalanceYUSDLP]);
+    if (earnedBalanceYAMYUSD) {
+      setEarnedBalanceYUSDLP(bnToDec(earnedBalanceYAMYUSD));
+    }
+  }, [stakedBalanceYAMYUSD, earnedBalanceYAMYUSD, setStakedBalanceYUSDLP, setEarnedBalanceYUSDLP]);
 
   useEffect(() => {
-    checkOldStakedBalance();
-    let refreshInterval = setInterval(() => checkOldStakedBalance(), 100000);
+    checkOldStakedEarned();
+    let refreshInterval = setInterval(() => checkOldStakedEarned(), 100000);
     return () => clearInterval(refreshInterval);
-  }, [checkOldStakedBalance]);
+  }, [checkOldStakedEarned]);
 
   const HarvestNotice = useMemo(() => {
-    if (status === "connected" && stakedBalanceYUSDLP > 0) {
+    if (status === "connected" && (stakedBalanceYUSDLP > 0 || earnedBalanceYUSDLP > 0)) {
       return (
         <>
           <Notice>
             <NoticeIcon>❗</NoticeIcon>
             <NoticeContent>
               <StyledNoticeContentInner>
-                <span>You was farming on the old pool with {stakedBalanceYUSDLP} LP tokens.</span>
+                <span>You was farming on the old pool with {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "") + (stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : "") + (earnedBalanceYUSDLP ? earnedBalanceYUSDLP.toFixed(2) + " Yam!" : "")} </span>
                 <Box flex={1} />
                 <Spacer size="sm" />
-                <Button size="sm" text="Harvest &amp; Unstake YAM/yUSD" onClick={onRedeemYAMYUSD} variant="secondary" />
+                <span>
+                  <Button size="sm" text={(earnedBalanceYUSDLP ? "Harvest YAM from Old LP" : "Harvest & Unstake YAM/yUSD")} onClick={(!stakedBalanceYUSDLP && earnedBalanceYUSDLP ? onHarvestYAMYUSD : onRedeemYAMYUSD)} variant="secondary" />
+                </span>
               </StyledNoticeContentInner>
             </NoticeContent>
           </Notice>
