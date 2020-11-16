@@ -291,7 +291,7 @@ export const vote = async (yam, proposal, side, account, onTxHash) => {
   return yam.contracts.gov3
     .methods
     .castVote(proposal, side).send(
-      {from: account, gas: 130000 },
+      {from: account, gas: 180000 },
       async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
