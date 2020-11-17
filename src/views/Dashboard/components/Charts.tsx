@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Box, Button, Card, CardActions, CardContent, CardTitle, Container, Spacer, useTheme } from "react-neu";
 import { useWallet } from "use-wallet";
 import { getNearestBlock, getTimestampDate } from "utils";
-import { treasuryEvents, getDPIPrices, scalingFactors, getDPIPrice } from "yam-sdk/utils";
+import { treasuryEvents, getDPIPrices, scalingFactors, getDPIPrice, getCurrentBlock, getWETHPrice, getYUSDPrice } from "yam-sdk/utils";
 import { OptionInterface, SeriesInterface, TimeSeries } from "types/Charts";
 import YamLoader from "components/YamLoader";
 import Chart from "react-apexcharts";
@@ -25,11 +25,10 @@ const Charts: React.FC = () => {
   const [seriesMinted, setSeriesMinted] = useState<SeriesInterface[]>();
   const [treasuryValues, setTreasuryValues] = useState<any>();
   const { darkMode, colors } = useTheme();
-  const { totalYUsdValue, totalDPIValue } = useTreasury();
+  const { totalYUsdValue, totalWETHValue, totalDPIValue } = useTreasury();
 
   const { status } = useWallet();
   const defaultRebaseRange = (14 * 2);
-  const yUSDRate = 1.16;
 
   const fetchTreasury = useCallback(async () => {
     if(!yam) {
@@ -174,6 +173,14 @@ const Charts: React.FC = () => {
     if (!yam || !totalDPIValue || !treasuryValues) {
       return;
     }
+    if (!totalYUsdValue || !totalWETHValue || !totalDPIValue) {
+      return;
+    }
+
+    const currentBlock = (await getCurrentBlock(yam)).number;
+    const wethPrice = await getWETHPrice();
+    const yusdPrice = await getYUSDPrice();
+    const dpiPrice = await getDPIPrice();
 
     let now = Math.floor(Date.now() / 1000);
     let reserves: TimeSeries[] = [];
@@ -189,40 +196,46 @@ const Charts: React.FC = () => {
       //   reserves.push(tmp);
       // } else {
       // }
-      const tmp: TimeSeries = {
-        // x: treasuryValues.blockTimes[i],
-        x: treasuryValues.blockNumbers[i],
-        y: running * yUSDRate,
-      };
-      reserves.push(tmp);
+      if(
+        treasuryValues.blockNumbers[i] !== 11254648
+      ){
+        const tmp: TimeSeries = {
+          // x: treasuryValues.blockTimes[i],
+          x: treasuryValues.blockNumbers[i],
+          y: running * yusdPrice,
+        };
+        reserves.push(tmp);
+      }
     }
     // on DPI purchase
     reserves.push({
       // x: 1603739830,
       x: 11133885,
-      y: (totalYUsdValue + 161304) * yUSDRate,
+      y: (totalYUsdValue + 161304) * yusdPrice,
     });
     // comps
     reserves.push({
       x: 11160087,
-      y: totalYUsdValue * yUSDRate,
+      y: totalYUsdValue * yusdPrice,
     })
+    // on ETH purchase
+    reserves.push({
+      x: 11244494,
+      y: totalYUsdValue * yusdPrice,
+    });
     // now
     reserves.push({
-      // x: now,
-      x: 11205544,
-      y: totalYUsdValue * yUSDRate,
+      x: currentBlock,
+      y: totalYUsdValue * yusdPrice,
     })
 
-
-    const dpiPrice = await getDPIPrice();
     let DPIBalance = totalDPIValue;
     let reservesDPI: TimeSeries[] = [];
-    let prices: any = await getDPIPrices("1603739830", now.toString());
-    let timeArray = [];
-    for (var prop in prices) {
-      timeArray.push(prop);
-    }
+    // let prices: any = await getDPIPrices("1603739830", now.toString());
+    // let timeArray = [];
+    // for (var prop in prices) {
+    //   timeArray.push(prop);
+    // }
     for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
       // if (DPIBalance && treasuryValues.blockNumbers[i] > 11133885) { // live set 11133885 (test: 10946646)
       //   const tmp: TimeSeries = {
@@ -233,12 +246,16 @@ const Charts: React.FC = () => {
       //   reservesDPI.push(tmp);
       // } else {
       // }
-      const tmp: TimeSeries = {
-        // x: treasuryValues.blockTimes[i],
-        x: treasuryValues.blockNumbers[i],
-        y: 0,
-      };
-      reservesDPI.push(tmp);
+      if(
+        treasuryValues.blockNumbers[i] !== 11254648
+      ){
+        const tmp: TimeSeries = {
+          // x: treasuryValues.blockTimes[i],
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesDPI.push(tmp);
+      }
     }
     // DPI purchase
     reservesDPI.push({
@@ -251,13 +268,55 @@ const Charts: React.FC = () => {
       x: 11160087,
       y: DPIBalance * dpiPrice,
     })
+    // on ETH purchase
+    reservesDPI.push({
+      x: 11244494,
+      y: DPIBalance * dpiPrice,
+    });
     // now
     reservesDPI.push({
-      // x: now,
-      x: 11205544,
+      x: currentBlock,
       y: DPIBalance * dpiPrice,
     });
 
+    let reservesETH: TimeSeries[] = [];
+    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+      if(
+        treasuryValues.blockNumbers[i] !== 11254648
+      ){
+        const tmp: TimeSeries = {
+          // x: treasuryValues.blockTimes[i],
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesETH.push(tmp);
+      }
+    }
+    // on DPI purchase
+    reservesETH.push({
+      // x: 1603739830,
+      x: 11133885,
+      y: 0,
+    });
+    // comps
+    reservesETH.push({
+      x: 11160087,
+      y: 0,
+    })
+    // on ETH purchase
+    reservesETH.push({
+      x: 11244494,
+      y: totalWETHValue * wethPrice,
+    });
+    // now
+    reservesETH.push({
+      x: currentBlock,
+      y: totalWETHValue * wethPrice,
+    })
+
+    reserves.sort((a, b) => (a.x > b.x) ? 1 : -1)
+    reservesDPI.sort((a, b) => (a.x > b.x) ? 1 : -1)
+    reservesETH.sort((a, b) => (a.x > b.x) ? 1 : -1)
     const series: SeriesInterface[] = [
       {
         name: "yUSD Reserves",
@@ -266,6 +325,10 @@ const Charts: React.FC = () => {
       {
         name: "DPI Reserves",
         data: reservesDPI ? reservesDPI.slice(reservesDPI.length - defaultRebaseRange) : [],
+      },
+      {
+        name: "ETH Reserves",
+        data: reservesETH ? reservesETH.slice(reservesETH.length - defaultRebaseRange) : [],
       },
     ];
 
@@ -296,7 +359,7 @@ const Charts: React.FC = () => {
         enabled: false,
       },
       fill: {
-        colors: ["#C60C4D", "#8150E6"],
+        colors: ["#C60C4D", "#8150E6", "#4777e0"],
       },
       legend: {
         position: "top",
@@ -310,7 +373,7 @@ const Charts: React.FC = () => {
           sizeOffset: 5,
         },
       },
-      colors: ["#C60C4D", "#8150E6"],
+      colors: ["#C60C4D", "#8150E6", "#4777e0"],
       xaxis: {
         // type: "datetime",
         labels: {
@@ -596,7 +659,7 @@ const Charts: React.FC = () => {
   useEffect(() => {
     fetchTreasury()
     let refreshInterval = setInterval(() => fetchTreasury(), 100000)
-    console.log("refreshInterval treasuryValues", treasuryValues);
+    // console.log("treasuryValues", treasuryValues);
     return () => clearInterval(refreshInterval)
   }, [fetchTreasury])
 

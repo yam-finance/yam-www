@@ -11,7 +11,7 @@ BigNumber.config({
 
 const GAS_LIMIT = {
   STAKING: {
-    DEFAULT: 380000,
+    DEFAULT: 410000,
     SNX: 850000,
   }
 };
@@ -63,7 +63,7 @@ export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw((new BigNumber(amount).times(new BigNumber(10).pow(18))).toString())
-      .send({ from: account, gas: 380000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Unstaking error", error)
@@ -87,7 +87,7 @@ export const harvest = async (yam, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .getReward()
-      .send({ from: account, gas: 380000 }, async (error, txHash) => {
+      .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Harvest error", error)
@@ -768,6 +768,14 @@ export const waitTransaction = async (provider, txHash) => {
   return (txReceipt.status)
 }
 
+export const getCurrentBlock = async (yam) => {
+  try {
+    return await yam.web3.eth.getBlock('latest');
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const requestDPIHistory = (from, to) => {
   return new Promise((resolve, reject) => {
     request({
@@ -782,6 +790,48 @@ const requestDPIHistory = (from, to) => {
       }
     );
   });
+};
+
+const requestWETH = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/weth",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getWETHPrice = async () => {
+  const data = await requestWETH();
+  return data.market_data.current_price.usd;
+};
+
+const requestYUSD = () => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: "https://api.coingecko.com/api/v3/coins/yvault-lp-ycurve",
+        json: true,
+      }, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
+
+export const getYUSDPrice = async () => {
+  const data = await requestYUSD();
+  return data.market_data.current_price.usd;
 };
 
 const requestDPI = () => {
