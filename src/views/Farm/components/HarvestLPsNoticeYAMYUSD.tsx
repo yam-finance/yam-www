@@ -9,7 +9,7 @@ import { bnToDec } from "utils";
 const HarvestLPsNoticeYAMYUSD: React.FC = () => {
   const [stakedBalanceYUSDLP, setStakedBalanceYUSDLP] = useState<number>(0);
   const [earnedBalanceYUSDLP, setEarnedBalanceYUSDLP] = useState<number>(0);
-  const { stakedBalanceYAMYUSD, earnedBalanceYAMYUSD, onRedeemYAMYUSD } = useFarming();
+  const { stakedBalanceYAMYUSD, earnedBalanceYAMYUSD, onRedeemYAMYUSD, onHarvestYAMYUSD } = useFarming();
   const { status } = useWallet();
 
   const checkOldStakedEarned = useCallback(() => {
@@ -23,7 +23,7 @@ const HarvestLPsNoticeYAMYUSD: React.FC = () => {
     if (earnedBalanceYAMYUSD) {
       setEarnedBalanceYUSDLP(bnToDec(earnedBalanceYAMYUSD));
     }
-  }, [stakedBalanceYAMYUSD, setStakedBalanceYUSDLP, setEarnedBalanceYUSDLP]);
+  }, [stakedBalanceYAMYUSD, earnedBalanceYAMYUSD, setStakedBalanceYUSDLP, setEarnedBalanceYUSDLP]);
 
   useEffect(() => {
     checkOldStakedEarned();
@@ -39,11 +39,11 @@ const HarvestLPsNoticeYAMYUSD: React.FC = () => {
             <NoticeIcon>❗</NoticeIcon>
             <NoticeContent>
               <StyledNoticeContentInner>
-                <span>You was farming on the old pool with {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "") + (stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : ".") + (earnedBalanceYUSDLP ? earnedBalanceYUSDLP + " Yam to harvest!" : "")} </span>
+                <span>You was farming on the old pool with {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "") + (stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : "") + (earnedBalanceYUSDLP ? earnedBalanceYUSDLP.toFixed(2) + " Yam!" : "")} </span>
                 <Box flex={1} />
                 <Spacer size="sm" />
                 <span>
-                  <Button size="sm" text="Harvest &amp; Unstake YAM/yUSD" onClick={onRedeemYAMYUSD} variant="secondary" />
+                  <Button size="sm" text={(earnedBalanceYUSDLP ? "Harvest YAM from Old LP" : "Harvest & Unstake YAM/yUSD")} onClick={(!stakedBalanceYUSDLP && earnedBalanceYUSDLP ? onHarvestYAMYUSD : onRedeemYAMYUSD)} variant="secondary" />
                 </span>
               </StyledNoticeContentInner>
             </NoticeContent>
