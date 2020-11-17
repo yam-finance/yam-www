@@ -5,9 +5,10 @@ import { useTheme } from "react-neu";
 interface BarProgressProps {
   value?: number;
   invert?: boolean;
+  type?: "buffer" | "normal";
 }
 
-const Bar: React.FC<BarProgressProps> = ({ value, invert }) => {
+const Bar: React.FC<BarProgressProps> = ({ value, invert, type }) => {
   if (invert) {
     value = 100 - (value || 0);
   }
@@ -15,14 +16,19 @@ const Bar: React.FC<BarProgressProps> = ({ value, invert }) => {
 
   return (
     <>
-      <StyledBar darkMode={darkMode}>
-        <StyledBarInner style={{ width: `${value}%` }} />
+      <StyledBar className="progressbar" darkMode={darkMode}>
+        <StyledBarInner className={`${type === "buffer" ? "buffer" : ""}`} style={{ width: `${value}%` }} />
+        <StyledBarProgressText darkMode={darkMode}>{value}%</StyledBarProgressText>
       </StyledBar>
     </>
   );
 };
 
 interface StyledBarProps {
+  darkMode?: boolean;
+}
+
+interface StyledBarProgressTextProps {
   darkMode?: boolean;
 }
 
@@ -40,6 +46,19 @@ const StyledBarInner = styled.div`
   border-radius: 15px;
   height: 100%;
   transition: width 0.8s ease-in;
+`;
+
+const StyledBarProgressText = styled.div<StyledBarProgressTextProps>`
+  cursor: default;
+  position: relative;
+  top: 0px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 46px;
+  color: white;
+  z-index: 90;
+  opacity: 0.95;
 `;
 
 export default Bar;
