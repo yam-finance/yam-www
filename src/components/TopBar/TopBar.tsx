@@ -96,7 +96,7 @@ const StyledMenuButton = styled.button`
 `
 
 const StyledTopBarDarkModeSwitch = styled.div`
-  @media (max-width: 1060px) {
+  @media (max-width: 1130px) {
     display: none;
   }
 `
