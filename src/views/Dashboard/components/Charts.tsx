@@ -227,7 +227,7 @@ const Charts: React.FC = () => {
     reserves.push({
       // x: 1603739830,
       x: 11133885,
-      y: (totalYUsdValue + (DPIBalance * dpiPrice)) * yusdPrice,
+      y: (totalYUsdValue * yusdPrice) + (DPIBalance * dpiPrice),
     });
     // comps
     reserves.push({
@@ -237,12 +237,12 @@ const Charts: React.FC = () => {
     // on ETH purchase
     reserves.push({
       x: 11244494,
-      y: (totalYUsdValue - (totalWETHValue * wethPrice)) * yusdPrice,
+      y: (totalYUsdValue * yusdPrice) - (totalWETHValue * wethPrice),
     });
     // now
     reserves.push({
       x: currentBlock,
-      y: (totalYUsdValue - (totalWETHValue * wethPrice)) * yusdPrice,
+      y: (totalYUsdValue * yusdPrice) - (totalWETHValue * wethPrice),
     })
 
     // let reservesDPI: TimeSeries[] = [];

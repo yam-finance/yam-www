@@ -20,6 +20,7 @@ import {
   getDPIPrice,
   getYam,
   getWETHPrice,
+  getYUSDPrice,
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
@@ -33,6 +34,7 @@ const TopCards: React.FC = () => {
   const [scalingFactor, setScalingFactor] = useState<string>();
   const [maxSupply, setMaxSupply] = useState<string>();
   const [marketCap, setMarketCap] = useState<string>();
+  const [yusdPrice, setYUSDPrice] = useState<number>();
   const [dpiPrice, setDPIPrice] = useState<number>();
   const [wethPrice, setWETHPrice] = useState<number>();
   const [projectedRebase, setProjectedRebase] = useState<string>();
@@ -43,14 +45,17 @@ const TopCards: React.FC = () => {
 
   const fetchOnce = useCallback(async () => {
     const yamValues = await getYam();
+
+    const yusdPrice = await getYUSDPrice();
     const dpiPrice = await getDPIPrice();
     const wethPrice = await getWETHPrice();
     setMaxSupply(numeral(yamValues.market_data.max_supply).format("0.00a"));
     setMarketCap(numeral(yamValues.market_data.market_cap.usd).format("0.00a"));
     setChange24(numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
+    setYUSDPrice(yusdPrice);
     setDPIPrice(dpiPrice);
     setWETHPrice(wethPrice);
-  }, [setMaxSupply, setMarketCap, setDPIPrice, setChange24]);
+  }, [setMaxSupply, setMarketCap, setYUSDPrice, setDPIPrice, setChange24]);
 
   useEffect(() => {
     if (status === "connected") {
@@ -81,7 +86,7 @@ const TopCards: React.FC = () => {
     return () => clearInterval(refreshInterval);
   }, [fetchStats, yam]);
 
-  const assetYUSD = totalYUsdValue * 1.15;
+  const assetYUSD = (totalYUsdValue ? totalYUsdValue : 0) * (yusdPrice ? yusdPrice : 0);
   const assetDPI = (totalDPIValue ? totalDPIValue : 0) * (dpiPrice ? dpiPrice : 0);
   const assetWETH = (totalWETHValue ? totalWETHValue : 0) * (wethPrice ? wethPrice : 0);
 
