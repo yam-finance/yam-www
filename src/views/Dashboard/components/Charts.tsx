@@ -184,6 +184,7 @@ const Charts: React.FC = () => {
 
     let now = Math.floor(Date.now() / 1000);
     let reserves: TimeSeries[] = [];
+    // let reservesWETH: TimeSeries[] = [];
     let running = 0;
     for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
       running += treasuryValues.reservesAdded[i];

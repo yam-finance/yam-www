@@ -7,15 +7,18 @@ import Label from 'components/Label'
 import Value from 'components/Value'
 
 interface FancyValueProps {
-  icon: React.ReactNode,
-  label: string,
+  icon?: React.ReactNode,
+  label?: string,
   value: string,
+  valueSize?: string,
+  valueColor?: string,
+  valueBold?: string,
   wrap?: boolean,
   hint?: string,
   tooltip?: string,
 }
 
-const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, wrap, hint, tooltip }) => {
+const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip }) => {
   const { darkMode, colors } = useTheme();
 
   let labelColor: string;
@@ -62,7 +65,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, wrap, hint,
         <>
           {DisplayHint}
           <LabelWrapDisplay>
-            <Label text={label} />
+            <Label text={label} labelPosition={!icon ? "center" : "left"} />
           </LabelWrapDisplay>
         </>
       );
@@ -70,7 +73,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, wrap, hint,
       return (
         <>
           {DisplayHint}
-          <Label text={label} />
+          <Label text={label} labelPosition={!icon ? "center" : "left"} />
         </>
       );
     }
@@ -82,16 +85,28 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, wrap, hint,
     hint,
   ]);
 
-  return (
-    <>
-      <DisplayFancyValue>
-        <Box alignItems="center" row>
+  const IconDisplay = useMemo(() => {
+    if (icon) {
+      return (
+        <>
           <Box row justifyContent="center" minWidth={48}>
             <StyledIcon>{icon}</StyledIcon>
           </Box>
           <Spacer size="sm" />
+        </>
+      );
+    }
+  }, [
+    icon,
+  ]);
+
+  return (
+    <>
+      <DisplayFancyValue>
+        <Box alignItems="center" row>
+          {IconDisplay}
           <Box flex={1}>
-            <Value value={value} />
+            <Value value={value} valuePosition={!icon ? "center" : "left"} valueSize={valueSize} valueColor={valueColor} valueBold={valueBold} />
             {FancyLabelDisplay}
           </Box>
         </Box>

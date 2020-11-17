@@ -26,7 +26,7 @@ import BigNumber from 'bignumber.js'
 const Stake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
-  const [stakeBalance, setStakeBalance] = useState('--')
+  const [stakeBalance, setStakeBalance] = useState<number>(0);
 
   const { status } = useWallet()
   const {
@@ -161,9 +161,9 @@ const Stake: React.FC = () => {
 
   const formattedStakedBalance = useCallback(async () => {
     if (stakedBalanceYAMETH && bnToDec(stakedBalanceYAMETH) > 0) {
-      setStakeBalance(getFullDisplayBalance(stakedBalanceYAMETH))
+      setStakeBalance(Number(getFullDisplayBalance(stakedBalanceYAMETH)))
     } else {
-      setStakeBalance('--')
+      setStakeBalance(0)
     }
   }, [stakedBalanceYAMETH])
 
@@ -193,7 +193,7 @@ const Stake: React.FC = () => {
             alignItems="center"
             column
           >
-            <Value value={stakeBalance} />
+            <Value value={(stakeBalance > 0 ? stakeBalance.toString() : "--")} />
             <Label text="Staked YAM/ETH LP Tokens" />
           </Box>
         </CardContent>

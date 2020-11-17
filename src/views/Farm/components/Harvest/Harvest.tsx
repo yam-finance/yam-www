@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import numeral from 'numeral'
 import {
@@ -20,20 +20,24 @@ import useFarming from 'hooks/useFarming'
 import { bnToDec } from 'utils'
 
 const Harvest: React.FC = () => {
-  const [earnedBalanceValue, setEarnedBalanceValue] = useState<number>(0);
+  const [earnedBalance, setEarnedBalance] = useState<number>(0);
   const { status } = useWallet();
   const { earnedBalanceYAMETH, isHarvesting, isRedeeming, onHarvestYAMETH } = useFarming();
 
 
-  const formattedEarnedBalance = useMemo(() => {
-    if (earnedBalanceYAMETH) {
-      setEarnedBalanceValue(bnToDec(earnedBalanceYAMETH))
-      return numeral(bnToDec(earnedBalanceYAMETH)).format('0.00a')
+  const formattedEarnedBalance = useCallback(async () => {
+    if (earnedBalanceYAMETH && bnToDec(earnedBalanceYAMETH) > 0) {
+      setEarnedBalance(bnToDec(earnedBalanceYAMETH))
     } else {
-      return '--'
+      setEarnedBalance(0)
     }
   }, [earnedBalanceYAMETH])
   
+  useEffect(() => {
+    formattedEarnedBalance();
+    let refreshInterval = setInterval(formattedEarnedBalance, 10000);
+    return () => clearInterval(refreshInterval);
+  }, [formattedEarnedBalance]);
 
   const HarvestAction = useMemo(() => {
     if (status !== 'connected') {
@@ -49,7 +53,7 @@ const Harvest: React.FC = () => {
     if (!isHarvesting) {
       return (
         <Button
-          disabled={earnedBalanceValue <= 0}
+          disabled={earnedBalance <= 0}
           full
           onClick={onHarvestYAMETH}
           text="Harvest"
@@ -70,7 +74,7 @@ const Harvest: React.FC = () => {
   }, [
     isHarvesting,
     isRedeeming,
-    earnedBalanceValue,
+    earnedBalance,
     onHarvestYAMETH,
   ])
 
@@ -80,7 +84,7 @@ const Harvest: React.FC = () => {
         <CardIcon>🍠</CardIcon>
         <CardContent>
           <Box alignItems="center" column>
-            <Value value={formattedEarnedBalance} />
+            <Value value={(earnedBalance > 0 ? earnedBalance.toString() : "--")} />
             <Label text="Unharvested YAMs" />
           </Box>
         </CardContent>

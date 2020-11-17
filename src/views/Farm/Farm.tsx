@@ -1,30 +1,36 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import {
   Box,
   Button,
+  Card,
+  CardContent,
   Container,
   Separator,
   Spacer,
+  useTheme,
 } from 'react-neu'
 
-import { useWallet } from 'use-wallet'
-
+import numeral from 'numeral'
 import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
 import Split from 'components/Split'
-
 import useFarming from 'hooks/useFarming'
-
 import HarvestCard from './components/Harvest'
 import StakeCard from './components/Stake'
 import PausedLPsNotice from './components/PausedLPsNotice'
 import ResumedLPsNotice from './components/ResumedLPsNotice'
 import HarvestLPsNoticeYAMYUSD from './components/HarvestLPsNoticeYAMYUSD'
+import { useWallet } from 'use-wallet'
+import FancyValue from 'components/FancyValue'
 
 const Farm: React.FC = () => {
-  const { status } = useWallet()
+  const { colors } = useTheme();
+  const { status } = useWallet();
+
   const {
+    tvl,
+    apr,
     isRedeeming,
     onRedeemYAMETH,
   } = useFarming()
@@ -71,6 +77,19 @@ const Farm: React.FC = () => {
         <HarvestLPsNoticeYAMYUSD />
         <ResumedLPsNotice />
         {/* <PausedLPsNotice /> */}
+        <Card>
+          <CardContent>
+            <FancyValue
+              wrap
+              value={(tvl ? `TVL $${numeral(tvl).format("000,000,000")}` : "Loading TVL...")}
+              valueSize="54px"
+              valueColor={colors.primary.main}
+              valueBold="800"
+              label={(apr ? `APR ${numeral(apr).format("0.00a")}%` : "Loading APR...")}
+            />
+          </CardContent>
+        </Card>
+        <Spacer />
         <Split>
           <StakeCard />
           <HarvestCard />

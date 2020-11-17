@@ -52,7 +52,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
           onSelectMax={handleSelectMax}
           onChange={handleChange}
           max={fullBalance}
-          symbol="YAM_ETH_SUSHI_LP"
+          symbol="YAM_ETH_SLP"
         />
       </ModalContent>
       <ModalActions>
