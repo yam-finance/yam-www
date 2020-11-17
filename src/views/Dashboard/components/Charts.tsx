@@ -28,7 +28,7 @@ const Charts: React.FC = () => {
   const { totalYUsdValue, totalWETHValue, totalDPIValue } = useTreasury();
 
   const { status } = useWallet();
-  const defaultRebaseRange = (14 * 2);
+  const defaultRebaseRange = 14;
 
   const fetchTreasury = useCallback(async () => {
     if(!yam) {
@@ -79,7 +79,7 @@ const Charts: React.FC = () => {
     const series: SeriesInterface[] = [
       {
         name: "Scaling Factor",
-        data: data ? data.slice(factors.length - defaultRebaseRange) : [],
+        data: data ? data.slice(factors.length - (defaultRebaseRange * 2)) : [],
       },
     ];
     let theme;
@@ -182,9 +182,11 @@ const Charts: React.FC = () => {
     const yusdPrice = await getYUSDPrice();
     const dpiPrice = await getDPIPrice();
 
+    let DPIBalance = totalDPIValue;
     let now = Math.floor(Date.now() / 1000);
     let reserves: TimeSeries[] = [];
-    // let reservesWETH: TimeSeries[] = [];
+    let reservesDPI: TimeSeries[] = [];
+    let reservesETH: TimeSeries[] = [];
     let running = 0;
     for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
       running += treasuryValues.reservesAdded[i];
@@ -197,22 +199,35 @@ const Charts: React.FC = () => {
       //   reserves.push(tmp);
       // } else {
       // }
+      // 11254648
       if(
-        treasuryValues.blockNumbers[i] !== 11254648
+        treasuryValues.blockNumbers[i] <= 11244494
+        // && treasuryValues.blockNumbers[i] >= currentBlock
       ){
         const tmp: TimeSeries = {
-          // x: treasuryValues.blockTimes[i],
           x: treasuryValues.blockNumbers[i],
           y: running * yusdPrice,
         };
         reserves.push(tmp);
+
+        const tmpDPI: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesDPI.push(tmpDPI);
+
+        const tmpETH: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesETH.push(tmpETH);
       }
     }
     // on DPI purchase
     reserves.push({
       // x: 1603739830,
       x: 11133885,
-      y: (totalYUsdValue + 161304) * yusdPrice,
+      y: (totalYUsdValue + (DPIBalance * dpiPrice)) * yusdPrice,
     });
     // comps
     reserves.push({
@@ -222,42 +237,41 @@ const Charts: React.FC = () => {
     // on ETH purchase
     reserves.push({
       x: 11244494,
-      y: totalYUsdValue * yusdPrice,
+      y: (totalYUsdValue - (totalWETHValue * wethPrice)) * yusdPrice,
     });
     // now
     reserves.push({
       x: currentBlock,
-      y: totalYUsdValue * yusdPrice,
+      y: (totalYUsdValue - (totalWETHValue * wethPrice)) * yusdPrice,
     })
 
-    let DPIBalance = totalDPIValue;
-    let reservesDPI: TimeSeries[] = [];
+    // let reservesDPI: TimeSeries[] = [];
     // let prices: any = await getDPIPrices("1603739830", now.toString());
     // let timeArray = [];
     // for (var prop in prices) {
     //   timeArray.push(prop);
     // }
-    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
-      // if (DPIBalance && treasuryValues.blockNumbers[i] > 11133885) { // live set 11133885 (test: 10946646)
-      //   const tmp: TimeSeries = {
-      //     // x: treasuryValues.blockNumbers[i],
-      //     x: treasuryValues.blockTimes[i],
-      //     y: DPIBalance * prices[getNearestBlock(timeArray, treasuryValues.blockTimes[i])],
-      //   };
-      //   reservesDPI.push(tmp);
-      // } else {
-      // }
-      if(
-        treasuryValues.blockNumbers[i] !== 11254648
-      ){
-        const tmp: TimeSeries = {
-          // x: treasuryValues.blockTimes[i],
-          x: treasuryValues.blockNumbers[i],
-          y: 0,
-        };
-        reservesDPI.push(tmp);
-      }
-    }
+    // for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+    //   // if (DPIBalance && treasuryValues.blockNumbers[i] > 11133885) { // live set 11133885 (test: 10946646)
+    //   //   const tmp: TimeSeries = {
+    //   //     // x: treasuryValues.blockNumbers[i],
+    //   //     x: treasuryValues.blockTimes[i],
+    //   //     y: DPIBalance * prices[getNearestBlock(timeArray, treasuryValues.blockTimes[i])],
+    //   //   };
+    //   //   reservesDPI.push(tmp);
+    //   // } else {
+    //   // }
+    //   if(
+    //     treasuryValues.blockNumbers[i] !== 11254648
+    //   ){
+    //     const tmpDPI: TimeSeries = {
+    //       // x: treasuryValues.blockTimes[i],
+    //       x: treasuryValues.blockNumbers[i],
+    //       y: 0,
+    //     };
+    //     reservesDPI.push(tmpDPI);
+    //   }
+    // }
     // DPI purchase
     reservesDPI.push({
       // x: 1603739830,
@@ -280,19 +294,19 @@ const Charts: React.FC = () => {
       y: DPIBalance * dpiPrice,
     });
 
-    let reservesETH: TimeSeries[] = [];
-    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
-      if(
-        treasuryValues.blockNumbers[i] !== 11254648
-      ){
-        const tmp: TimeSeries = {
-          // x: treasuryValues.blockTimes[i],
-          x: treasuryValues.blockNumbers[i],
-          y: 0,
-        };
-        reservesETH.push(tmp);
-      }
-    }
+    // let reservesETH: TimeSeries[] = [];
+    // for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+    //   if(
+    //     treasuryValues.blockNumbers[i] !== 11254648
+    //   ){
+    //     const tmpETH: TimeSeries = {
+    //       // x: treasuryValues.blockTimes[i],
+    //       x: treasuryValues.blockNumbers[i],
+    //       y: 0,
+    //     };
+    //     reservesETH.push(tmpETH);
+    //   }
+    // }
     // on DPI purchase
     reservesETH.push({
       // x: 1603739830,
@@ -314,22 +328,25 @@ const Charts: React.FC = () => {
       x: currentBlock,
       y: totalWETHValue * wethPrice,
     })
-
+    // console.log("reserves", reserves)
+    // console.log("reservesDPI", reservesDPI)
+    // console.log("reservesETH", reservesETH)
+    
     reserves.sort((a, b) => (a.x > b.x) ? 1 : -1)
     reservesDPI.sort((a, b) => (a.x > b.x) ? 1 : -1)
     reservesETH.sort((a, b) => (a.x > b.x) ? 1 : -1)
     const series: SeriesInterface[] = [
       {
         name: "yUSD Reserves",
-        data: reserves ? reserves.slice(reserves.length - defaultRebaseRange) : [],
+        data: reserves ? reserves.slice(reserves.length - (defaultRebaseRange + 6)) : [],
       },
       {
         name: "DPI Reserves",
-        data: reservesDPI ? reservesDPI.slice(reservesDPI.length - defaultRebaseRange) : [],
+        data: reservesDPI ? reservesDPI.slice(reservesDPI.length - (defaultRebaseRange + 6)) : [],
       },
       {
         name: "ETH Reserves",
-        data: reservesETH ? reservesETH.slice(reservesETH.length - defaultRebaseRange) : [],
+        data: reservesETH ? reservesETH.slice(reservesETH.length - (defaultRebaseRange + 6)) : [],
       },
     ];
 
