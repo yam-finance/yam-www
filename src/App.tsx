@@ -27,7 +27,7 @@ import Migrate from 'views/Migrate'
 import Dashboard from 'views/Dashboard'
 import Governance from 'views/Governance'
 import Addresses from 'views/Addresses'
-import YCP from 'views/Landings'
+import Umbrella from 'views/Landings/Umbrella'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -67,8 +67,8 @@ const App: React.FC = () => {
           <Route exact path="/addresses">
             <Addresses />
           </Route>
-          <Route exact path="/ycp">
-            <YCP />
+          <Route exact path="/umbrella">
+            <Umbrella />
           </Route>
           <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
         </Switch>

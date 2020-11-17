@@ -291,7 +291,7 @@ export const vote = async (yam, proposal, side, account, onTxHash) => {
   return yam.contracts.gov3
     .methods
     .castVote(proposal, side).send(
-      {from: account, gas: 130000 },
+      {from: account, gas: 180000 },
       async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
@@ -381,7 +381,7 @@ export const getProposals = async (yam) => {
       more: more
     });
   }
-  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 'latest'})
+  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", {fromBlock: 10926022, toBlock: 11258285 })
   for (let i = 0; i < v2Proposals.length; i++) {
     let id = v2Proposals[i]["returnValues"]["id"];
     let targets = [];
@@ -536,13 +536,28 @@ export const getVotingPowers = async (yam, proposals, account) => {
         voted: receipt[0],
         side: receipt[1]
       })
-    } else {
+    } else if (proposals[i].gov == "gov2"){
       let receipt = await
           yam.contracts.gov2.methods.getReceipt(proposals[i].id, account).call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
       if (power == 0) {
         power =  new BigNumber(await
                   yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call()
+                ).div(BASE24).toNumber();
+      }
+      powers.push({
+        hash: proposals[i].hash,
+        power: power,
+        voted: receipt[0],
+        side: receipt[1]
+      })
+    } else {
+      let receipt = await
+          yam.contracts.gov3.methods.getReceipt(proposals[i].id, account).call();
+      let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      if (power == 0) {
+        power =  new BigNumber(await
+                  yam.contracts.gov3.methods.getPriorVotes(account, proposals[i].start).call()
                 ).div(BASE24).toNumber();
       }
       powers.push({

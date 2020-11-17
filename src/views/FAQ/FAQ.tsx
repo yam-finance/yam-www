@@ -93,13 +93,19 @@ const FAQ: React.FC = () => {
               <span>In the Yam protocol, when a positive rebase occurs, 10% of the YAM rebase amount is minted and sold for ETH via the YAM/ETH Sushiswap pool. The ETH is subsequently deposited to the governance-controlled treasury.</span>
             </Question>
             <Question
+              active={activeSlug === "govlp"}
+              question="Can LPs participate in governance?"
+              slug="govlp"
+            >
+              <span>Only LPs that are staked in the Incentivizer contract can participate in governance. Voting power is determined by distributing the voting power of YAM held in the YAM/ETH Sushiswap pool, but distributed to only YAM Incentivizer stakers. This was done to mitigate flashloan threats in voting, so the Incentivizer contract keeps a record of the necessary values at needed block heights to facilitate those mitigations.</span>
+            </Question>
+            <Question
               active={activeSlug === "farming"}
               question="Can I farm YAM?"
               slug="farming"
             >
               <span>Currently check: <RouterLink to="/farm">Farm</RouterLink> to know if you are able to farm.</span>
             </Question>
-
             <Question
               active={activeSlug === "scaling-factor"}
               question="What is the scaling factor?"

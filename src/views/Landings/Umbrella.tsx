@@ -8,9 +8,11 @@ import Bar from "components/Bar";
 import DesignFlow from "assets/yampp.png"
 import styled from "styled-components";
 
+const Umbrella_Protocol_Lite_Paper = require("assets/documents/Umbrella_Protocol_Lite_Paper.pdf");
+
 const YCP: React.FC = () => {
   const { darkMode } = useTheme();
-  const progress = 25;
+  const progress = 35;
 
   return (
     <Page>
@@ -19,6 +21,7 @@ const YCP: React.FC = () => {
         title={"Coming Soon!"}
         titleSize={80}
         titleWeight={"900"}
+        subtitle={"Yam Protocol Protection"}
       />
       <Container size="sm">
         <Bar type={"buffer"} value={progress}></Bar>
@@ -37,12 +40,12 @@ const YCP: React.FC = () => {
         <h2>Links</h2>
         <Split>
           <div>
-            <b>Name:</b> <a href="https://snapshot.page/#/yam/proposal/QmYSsKSFSe7fbgEt2rwrKz9Pq4KxtRziPA4ajpuhRyiPgZ" target="_blank">TBD</a><br/>
-            <b>Website:</b> TBD<br/>
+            <b>Name: <a href="https://snapshot.page/#/yam/proposal/QmYSsKSFSe7fbgEt2rwrKz9Pq4KxtRziPA4ajpuhRyiPgZ" target="_blank">Umbrella</a></b><br/>
+            <b>Lightpaper: <a href={Umbrella_Protocol_Lite_Paper} target="_blank">PDF</a></b><br/>
           </div>
           <div>
-            <b>Token:</b> TBD<br/>
-            <b>Whitepaper:</b> TBD (Lightpaper: TBD)<br/>
+            <b>Website: TBD</b><br/>
+            <b>Whitepaper: TBD</b><br/>
           </div>
         </Split>
         {/* <Spacer />
