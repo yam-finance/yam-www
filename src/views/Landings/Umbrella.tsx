@@ -43,12 +43,12 @@ const YCP: React.FC = () => {
             <b>Name: <a href="https://snapshot.page/#/yam/proposal/QmYSsKSFSe7fbgEt2rwrKz9Pq4KxtRziPA4ajpuhRyiPgZ" target="_blank">Umbrella</a></b><br/>
             <b>Lightpaper: <a href={Umbrella_Protocol_Lite_Paper} target="_blank">PDF</a></b><br/>
             <b>Design Logic: <a href={DesignFlow} target="_blank">PNG</a></b><br/>
-            <b>Network: <a href="https://twitter.com/UmbrellaByYam" target="_blank">Twitter</a> | <a href="https://medium.com/@umbrellabyyam" target="_blank">Medium</a></b><br/>
+            <b>Announcement: <a href="https://medium.com/yam-finance/introducing-the-umbrella-protocol-by-yam-e89109548c6d" target="_blank">Post</a></b><br/>
           </div>
           <div>
             <b>Website: TBD</b><br/>
             <b>Whitepaper: TBD</b><br/>
-            <b>Announcement: <a href="https://medium.com/yam-finance/introducing-the-umbrella-protocol-by-yam-e89109548c6d" target="_blank">Post</a></b><br/>
+            <b>Network: <a href="https://twitter.com/UmbrellaByYam" target="_blank">Twitter</a> | <a href="https://medium.com/@umbrellabyyam" target="_blank">Medium</a></b><br/>
           </div>
         </Split>
         {/* <Spacer />
