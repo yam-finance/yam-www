@@ -199,7 +199,6 @@ const Charts: React.FC = () => {
       //   reserves.push(tmp);
       // } else {
       // }
-      // 11254648
       if(
         treasuryValues.blockNumbers[i] <= 11133885
         // && treasuryValues.blockNumbers[i] >= currentBlock
@@ -237,6 +236,7 @@ const Charts: React.FC = () => {
     // on ETH purchase
     reserves.push({
       x: 11244494,
+      // y: (totalYUsdValue * yusdPrice) + (totalWETHValue * wethPrice),
       y: (totalYUsdValue * yusdPrice),
     });
     // now
