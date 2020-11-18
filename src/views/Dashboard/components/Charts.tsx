@@ -201,7 +201,7 @@ const Charts: React.FC = () => {
       // }
       // 11254648
       if(
-        treasuryValues.blockNumbers[i] <= 11244494
+        treasuryValues.blockNumbers[i] <= 11133885
         // && treasuryValues.blockNumbers[i] >= currentBlock
       ){
         const tmp: TimeSeries = {
@@ -232,17 +232,17 @@ const Charts: React.FC = () => {
     // comps
     reserves.push({
       x: 11160087,
-      y: totalYUsdValue * yusdPrice,
+      y: (totalYUsdValue * yusdPrice) + (185500 * yusdPrice),
     })
     // on ETH purchase
     reserves.push({
       x: 11244494,
-      y: (totalYUsdValue * yusdPrice) - (totalWETHValue * wethPrice),
+      y: (totalYUsdValue * yusdPrice),
     });
     // now
     reserves.push({
       x: currentBlock,
-      y: (totalYUsdValue * yusdPrice) - (totalWETHValue * wethPrice),
+      y: (totalYUsdValue * yusdPrice),
     })
 
     // let reservesDPI: TimeSeries[] = [];
@@ -276,7 +276,7 @@ const Charts: React.FC = () => {
     reservesDPI.push({
       // x: 1603739830,
       x: 11133885,
-      y: DPIBalance * 75,
+      y: DPIBalance * dpiPrice,
     });
     // comps
     reservesDPI.push({
