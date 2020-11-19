@@ -15,6 +15,7 @@ const HowItWorks = () => {
                 </StyledOneBlock>
                 <StyledTwoBlock>
                     2. Stake LP tokens on Strain NFT.
+                        <StyledButtonTwo to="/pool" replace={false}>Pools</StyledButtonTwo>
                         <StyledButtonTwo to="/stake" replace={false}>Stake</StyledButtonTwo>
                 </StyledTwoBlock>
                 <StyledThreeBlock>3. Create your Strain</StyledThreeBlock>

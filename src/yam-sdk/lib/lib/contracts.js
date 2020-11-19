@@ -31,6 +31,7 @@ import IncOldJson from '../clean_build/contracts/YAMIncentivizerOld.json';
 import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
 import StrnEthIncJson from '../clean_build/contracts/STRNIncentivizer.json'
 import StrnXiotIncJson from '../clean_build/contracts/STRNXIOTIncentivizer.json'
+import StxpIncentivizer from '../clean_build/contracts/STXPIncentivizer.json'
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
@@ -67,7 +68,7 @@ export class Contracts {IncJson
     // new STRN incentivizer
     this.strneth_pool = new this.web3.eth.Contract(StrnEthIncJson.abi);
     this.strnxiot_pool = new this.web3.eth.Contract(StrnXiotIncJson.abi);
-
+    this.stxpInc_pool = new this.web3.eth.Contract(StxpIncentivizer.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
     this.link_pool = new this.web3.eth.Contract(LINKPoolJson.abi);
@@ -123,6 +124,7 @@ export class Contracts {IncJson
       { contract: this.yycrv_pool, json: IncJson },
       { contract: this.strneth_pool, json: StrnEthIncJson },
       { contract: this.strnxiot_pool, json: StrnXiotIncJson },
+      { contract: this.stxpInc_pool, json: StxpIncentivizer },
       { contract: this.eth_pool, json: WETHPoolJson },
       { contract: this.yfi_pool, json: YFIPoolJson },
       { contract: this.ampl_pool, json: AMPLPoolJson },

@@ -11,32 +11,22 @@ import {
 } from 'react-neu'
 
 import TokenInput from 'components/TokenInput'
-import useBalances from 'hooks/useBalances'
-import { getFullDisplayBalance } from 'utils'
 
-interface StakeModalProps extends ModalProps {
-  onStake: (amount: string) => void,
-  lpLabel: string,
-  poolId: string
+interface UnstakeModalProps extends ModalProps {
+  onUnstake: (amount: string) => void,
+  label: string,
+  fullBalance?: BigNumber,
 }
 
-const StakeModal: React.FC<StakeModalProps> = ({
+const UnstakeModal: React.FC<UnstakeModalProps> = ({
   isOpen,
   onDismiss,
-  onStake,
-  lpLabel,
-  poolId
+  onUnstake,
+  label,
+  fullBalance,
 }) => {
 
   const [val, setVal] = useState('')
-  const { strnEthLpBalance, strnXiotLpBalance } = useBalances()
-
-  const fullBalance = useMemo(() => {
-    // need better way to get specific pool balance
-    const balance = poolId === "0" ? strnEthLpBalance : strnXiotLpBalance
-    return balance || new BigNumber(0)
-  }, [strnEthLpBalance])
-
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
   }, [setVal])
@@ -45,20 +35,20 @@ const StakeModal: React.FC<StakeModalProps> = ({
     setVal(String(fullBalance))
   }, [fullBalance, setVal])
 
-  const handleStakeClick = useCallback(() => {
-    onStake(val)
-  }, [onStake, val])
+  const handleUnstakeClick = useCallback(() => {
+    onUnstake(val)
+  }, [onUnstake, val])
 
   return (
     <Modal isOpen={isOpen}>
-      <ModalTitle text="Stake" />
+      <ModalTitle text="Unstake" />
       <ModalContent>
         <TokenInput
           value={val}
           onSelectMax={handleSelectMax}
           onChange={handleChange}
           max={String(fullBalance)}
-          symbol={`${lpLabel} UNI-V2 LP`}
+          symbol={label}
         />
       </ModalContent>
       <ModalActions>
@@ -69,8 +59,8 @@ const StakeModal: React.FC<StakeModalProps> = ({
         />
         <Button
           disabled={!val || !Number(val)}
-          onClick={handleStakeClick}
-          text="Stake"
+          onClick={handleUnstakeClick}
+          text="Unstake"
           variant={!val || !Number(val) ? 'secondary' : 'default'}
         />
       </ModalActions>
@@ -78,4 +68,4 @@ const StakeModal: React.FC<StakeModalProps> = ({
   )
 }
 
-export default StakeModal
+export default UnstakeModal

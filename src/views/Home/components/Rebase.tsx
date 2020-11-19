@@ -20,7 +20,6 @@ import Label from 'components/Label'
 
 import useYam from 'hooks/useYam'
 
-import { getNextRebaseTimestamp } from 'yam-sdk/utils'
 
 const Rebase: React.FC = () => {
   const yam = useYam()
@@ -31,12 +30,7 @@ const Rebase: React.FC = () => {
   const { account } = useWallet()
   const fetchNextRebase = useCallback( async() => {
     if (!yam) return
-    const nextRebaseTimestamp = await getNextRebaseTimestamp(yam)
-    if (nextRebaseTimestamp) {
-      setNextRebase(Date.now() + nextRebaseTimestamp * 1000)
-    } else {
-      setNextRebase(0)
-    }
+    setNextRebase(0)
   }, [
     setNextRebase,
     yam

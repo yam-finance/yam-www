@@ -23,6 +23,7 @@ import Split from 'components/Split'
 import useBalances from 'hooks/useBalances'
 import useFarming from 'hooks/useFarming'
 import { bnToDec } from 'utils'
+import useStaking from 'hooks/useStaking'
 
 const WalletModal: React.FC<ModalProps> = ({
   isOpen,
@@ -35,12 +36,18 @@ const WalletModal: React.FC<ModalProps> = ({
     strnTokenBalance,
     strnXiotLpBalance,
     strnEthLpPoolBalance,
-    strnXiotLpPoolBalance
+    strnXiotLpPoolBalance,
+    stxpTokenBalance,
   } = useBalances()
 
   const {
     getEarnedBalances
   } = useFarming()
+
+  const {
+    totalStaked,
+    earnedStxpPoolBalance
+  } = useStaking()
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
@@ -65,6 +72,23 @@ const WalletModal: React.FC<ModalProps> = ({
       return '--'
     }
   }, [strnEthLpPoolBalance])
+
+  const formattedStxpPoolBalance = useMemo(() => {
+    if (earnedStxpPoolBalance) {
+      return numeral(bnToDec(earnedStxpPoolBalance)).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [earnedStxpPoolBalance])
+
+  const formattedTotalStakedStrnBalance = useMemo(() => {
+    if (totalStaked) {
+      return numeral(bnToDec(totalStaked)).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [totalStaked])
+
 
   const formattedStrnXiotLPBalance = useMemo(() => {
     if (strnXiotLpBalance) {
@@ -102,11 +126,17 @@ const WalletModal: React.FC<ModalProps> = ({
       <ModalTitle text="My Wallet" />
       <ModalContent>
         <Split>
-          <Box row>
+          <Box column>
             <FancyValue
               icon="🧬"
               label="STRN balance"
               value={getDisplayBalance(strnTokenBalance)}
+            />
+            <Spacer />
+            <FancyValue
+              icon="🍯"
+              label="STXP balance"
+              value={getDisplayBalance(stxpTokenBalance)}
             />
           </Box>
           <Box column>
@@ -127,7 +157,7 @@ const WalletModal: React.FC<ModalProps> = ({
         <Separator />
         <Spacer />
         <Split>
-          <Box row>
+          <Box column>
             <FancyValue
               icon="🧬"
               label="Claimable STRN"
@@ -149,6 +179,24 @@ const WalletModal: React.FC<ModalProps> = ({
           </Box>
         </Split>
         <Spacer />
+        <Separator />
+        <Spacer />
+        <Split>
+          <Box column>
+            <FancyValue
+              icon="🍯"
+              label="Claimable STXP"
+              value={formattedStxpPoolBalance}
+            />
+          </Box>
+          <Box column>
+            <FancyValue
+              icon="🧬"
+              label="Staked STRN Tokens"
+              value={formattedTotalStakedStrnBalance}
+            />
+          </Box>
+        </Split>
       </ModalContent>
       <Separator />
       <ModalActions>

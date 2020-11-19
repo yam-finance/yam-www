@@ -14,7 +14,6 @@ import useYam from 'hooks/useYam'
 
 import {
   getEarned,
-  getStaked,
   harvest,
   redeem,
   stake,

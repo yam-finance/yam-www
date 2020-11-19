@@ -5,6 +5,7 @@ import { provider } from 'web3-core'
 
 import {
   strn as strnTokenAddress,
+  stxp as stxpTokenAddress,
   strnEthLP as strnLPTokenAddress,
   strnIncentivizer as strnEthIncAddress,
   strnXiotLP as strnXiotLPTokenAddress,
@@ -22,6 +23,7 @@ const Provider: React.FC = ({ children }) => {
   const [strnXiotLpBalance, setStrnXiotLpBalance] = useState<BigNumber>()
   const [strnEthLpPoolBalance, setStrnEthLpPoolBalance] = useState<BigNumber>()
   const [strnXiotLpPoolBalance, setStrnXiotLpPoolBalance] = useState<BigNumber>()
+  const [stxpTokenBalance, setStxpTokenBalance] = useState<BigNumber>()
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -32,7 +34,8 @@ const Provider: React.FC = ({ children }) => {
       await getBalance(provider, strnEthIncAddress, userAddress),
       await getBalance(provider, strnXiotLPTokenAddress, userAddress),
       await getBalance(provider, strnEthPoolAddress, userAddress),
-      await getBalance(provider, strnXiotPoolAddress, userAddress)
+      await getBalance(provider, strnXiotPoolAddress, userAddress),
+      await getBalance(provider, stxpTokenAddress, userAddress)
     ])
     setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
     setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))
@@ -40,12 +43,14 @@ const Provider: React.FC = ({ children }) => {
     setStrnXiotLpBalance(new BigNumber(balances[3]).dividedBy(new BigNumber(10).pow(18)))
     setStrnEthLpPoolBalance(new BigNumber(balances[4]).dividedBy(new BigNumber(10).pow(18)))
     setStrnXiotLpPoolBalance(new BigNumber(balances[5]).dividedBy(new BigNumber(10).pow(18)))
+    setStxpTokenBalance(new BigNumber(balances[6]).dividedBy(new BigNumber(10).pow(18)))
   }, [
     setStrnEthLpBalance,
     setStrnTokenBalance,
     setStrnIncBalance,
     setStrnXiotLpBalance,
-    setStrnEthLpPoolBalance
+    setStrnEthLpPoolBalance,
+    setStxpTokenBalance
   ])
 
   useEffect(() => {
@@ -77,7 +82,8 @@ const Provider: React.FC = ({ children }) => {
       strnIncBalance,
       strnXiotLpBalance,
       strnEthLpPoolBalance,
-      strnXiotLpPoolBalance
+      strnXiotLpPoolBalance,
+      stxpTokenBalance
     }}>
       {children}
     </Context.Provider>

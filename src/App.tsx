@@ -20,7 +20,8 @@ import YamProvider from 'contexts/YamProvider'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
-import Farm from 'views/Farm'
+import Stake from 'views/Stake'
+import Pools from 'views/Farm'
 import FAQ from 'views/FAQ'
 import Home from 'views/Home'
 import Migrate from 'views/Migrate'
@@ -28,6 +29,7 @@ import Governance from 'views/Governance'
 
 import styled from 'styled-components'
 import { chainId } from 'constants/tokenAddresses'
+import { StakingProvider } from 'contexts/Staking'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -48,8 +50,11 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Home />
           </Route>
+          <Route exact path="/pool">
+            <Pools />
+          </Route>
           <Route exact path="/stake">
-            <Farm />
+            <Stake />
           </Route>
           {/*<Route path="/faq">
             <FAQ />
@@ -93,13 +98,15 @@ const Providers: React.FC = ({ children }) => {
           <PricesProvider>
             <BalancesProvider>
               <FarmingProvider>
-                <MigrationProvider>
-                  <VestingProvider>
-                    {/*<GovernanceProvider>*/}
+                <StakingProvider>
+                  <MigrationProvider>
+                    <VestingProvider>
+                      {/*<GovernanceProvider>*/}
                       {children}
-                    {/*</GovernanceProvider>*/}
-                  </VestingProvider>
-                </MigrationProvider>
+                      {/*</GovernanceProvider>*/}
+                    </VestingProvider>
+                  </MigrationProvider>
+                </StakingProvider>
               </FarmingProvider>
             </BalancesProvider>
           </PricesProvider>
