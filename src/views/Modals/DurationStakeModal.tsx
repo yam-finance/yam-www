@@ -106,6 +106,7 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
     text-decoration: underline;
     cursor: pointer;
   `
+
   return (
     <Modal isOpen={isOpen}>
       <ModalTitle text="Stake" />

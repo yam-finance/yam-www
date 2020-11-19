@@ -221,6 +221,17 @@ const SingleStake: React.FC = () => {
     }
   }, [])
 
+  const showDurationModal = useMemo(() => {
+    return stakeModalIsOpen ? <DurationStakeModal
+      isOpen={stakeModalIsOpen}
+      onDismiss={handleDismissStakeModal}
+      onStake={handleOnStake}
+      label={'STRN'}
+      fullBalance={strnTokenBalance}
+      maxTimestamp={endTime}
+    /> : null
+  }, [stakeModalIsOpen, strnTokenBalance, endTime])
+
   return (
     <>
       <Card>
@@ -268,14 +279,7 @@ const SingleStake: React.FC = () => {
           {StakeButton}
         </CardActions>
       </Card>
-      <DurationStakeModal
-        isOpen={stakeModalIsOpen}
-        onDismiss={handleDismissStakeModal}
-        onStake={handleOnStake}
-        label={'STRN'}
-        fullBalance={strnTokenBalance}
-        maxTimestamp={endTime}
-      />
+      {showDurationModal}
       <UnstakeModal
         isOpen={unstakeModalIsOpen}
         onDismiss={handleDismissUnstakeModal}
