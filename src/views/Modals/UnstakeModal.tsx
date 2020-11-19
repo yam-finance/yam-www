@@ -26,6 +26,7 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({
   fullBalance,
 }) => {
 
+  const [alreadyStaked, setAlreadyStaked] = useState(true)
   const [val, setVal] = useState('')
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
@@ -58,7 +59,7 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({
           variant="secondary"
         />
         <Button
-          disabled={!val || !Number(val)}
+          disabled={!val || !Number(val) || alreadyStaked}
           onClick={handleUnstakeClick}
           text="Unstake"
           variant={!val || !Number(val) ? 'secondary' : 'default'}
