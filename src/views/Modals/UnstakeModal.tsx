@@ -16,6 +16,7 @@ interface UnstakeModalProps extends ModalProps {
   onUnstake: (amount: string) => void,
   label: string,
   fullBalance?: BigNumber,
+  disableUnstaking?: boolean,
 }
 
 const UnstakeModal: React.FC<UnstakeModalProps> = ({
@@ -24,9 +25,10 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({
   onUnstake,
   label,
   fullBalance,
+  disableUnstaking
 }) => {
 
-  const [alreadyStaked, setAlreadyStaked] = useState(true)
+  const [alreadyStaked, setAlreadyStaked] = useState(disableUnstaking)
   const [val, setVal] = useState('')
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)

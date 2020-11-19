@@ -286,6 +286,7 @@ const SingleStake: React.FC = () => {
         onUnstake={handleOnUnstake}
         label={'STRN'}
         fullBalance={withdrawStakeAmount}
+        disableUnstaking={true}
       />
     </>
   )
