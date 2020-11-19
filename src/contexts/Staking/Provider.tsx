@@ -16,9 +16,9 @@ import {
   getSingleStakeBalances,
   getSingleStakingEndTime,
   singleExit,
-  stake,
   stxpSingleHarvest,
   stxpSingleRedeem,
+  stxpSingleStake,
 } from 'yam-sdk/utils'
 
 import Context from './Context'
@@ -130,7 +130,7 @@ const Provider: React.FC = ({ children }) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     setIsStaking(true)
-    await stake(yam.contracts.stxpInc_pool, yam.web3.eth, duration, amount, account, () => {
+    await stxpSingleStake(yam.contracts.stxpInc_pool, yam.web3.eth, duration, amount, account, () => {
       setConfirmTxModalIsOpen(false)
     }).catch(e => {
       console.error(e)
