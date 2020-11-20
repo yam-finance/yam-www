@@ -3,7 +3,9 @@ import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import request from "request";
 import {bnToDec} from 'utils';
-import { incentivizerContract } from 'constants/tokenAddresses';
+
+// temp
+import { ContractIndexStaking, ContractIncentivizer } from 'constants/tokenAddresses';
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -767,7 +769,7 @@ export const getTVL = async (yam) => {
   const BASE = new BigNumber(10).pow(18);
   const yamPrice = bnToDec(await getCurrentPrice(yam));
   const wethPrice = await getWETHPrice();
-  const totalIncentivizerValue = (await yam.contracts.masterchef.methods.userInfo(44, incentivizerContract).call()).amount;
+  const totalIncentivizerValue = (await yam.contracts.masterchef.methods.userInfo(44, ContractIncentivizer).call()).amount;
   const totalSLPSupply = await yam.contracts.slp.methods.totalSupply().call();
   const totalSLPReserves = await yam.contracts.slp.methods.getReserves().call();
   const Yamvalue = new BigNumber(totalSLPReserves._reserve0).dividedBy(BASE).toNumber();
@@ -778,7 +780,7 @@ export const getTVL = async (yam) => {
 export const getIndexCoopLP = async (yam) => {
   const BASE = new BigNumber(10).pow(18);
   try {
-    const lpBalance = await yam.contracts.IndexStakingRewards.methods.balanceOf("0xa940e0541f8b8a40551b28d4c7e37bd85de426ff").call();
+    const lpBalance = await yam.contracts.IndexStakingRewards.methods.balanceOf(ContractIndexStaking).call();
     return new BigNumber(lpBalance).dividedBy(BASE).toNumber()
   } catch (e) {
     console.log(e)
@@ -788,7 +790,7 @@ export const getIndexCoopLP = async (yam) => {
 export const getIndexCoopLPRewards = async (yam) => {
   const BASE = new BigNumber(10).pow(18);
   try {
-    const lpBalanceRewards = await yam.contracts.IndexStakingRewards.methods.earned("0xa940e0541f8b8a40551b28d4c7e37bd85de426ff").call();
+    const lpBalanceRewards = await yam.contracts.IndexStakingRewards.methods.earned(ContractIndexStaking).call();
     return new BigNumber(lpBalanceRewards).dividedBy(BASE).toNumber()
   } catch (e) {
     console.log(e)
