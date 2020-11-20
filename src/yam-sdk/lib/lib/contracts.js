@@ -41,6 +41,7 @@ import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
 import VotingIncJson from '../clean_build/contracts/YAMIncentivizerWithVoting.json';
 import MasterChefJson from '../clean_build/contracts/MasterChef.json';
 import SushiswapPoolJson from '../clean_build/contracts/SushiswapPool.json';
+import IndexStakingRewardsJson from '../clean_build/contracts/IndexStakingRewards.json';
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
@@ -77,6 +78,7 @@ export class Contracts {
     this.voting_eth_pool = new this.web3.eth.Contract(VotingIncJson.abi);
     this.masterchef = new this.web3.eth.Contract(MasterChefJson.abi);
     this.slp = new this.web3.eth.Contract(SushiswapPoolJson.abi);
+    this.IndexStakingRewards = new this.web3.eth.Contract(IndexStakingRewardsJson.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
     this.link_pool = new this.web3.eth.Contract(LINKPoolJson.abi);
@@ -151,6 +153,7 @@ export class Contracts {
       { contract: this.migrator, json: MigratorJson },
       { contract: this.masterchef, json: MasterChefJson },
       { contract: this.slp, json: SushiswapPoolJson },
+      { contract: this.IndexStakingRewards, json: IndexStakingRewardsJson },
     ]
 
     contracts.forEach(contract => this.setContractProvider(
@@ -182,6 +185,7 @@ export class Contracts {
     this.eth_rebaser.options.address = "0xD93f403b432d39aa0f736C2021bE6051d85a1D55";
     this.masterchef.options.address = "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd";
     this.slp.options.address = "0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c";
+    this.IndexStakingRewards.options.address = "0x8f06fba4684b5e0988f215a47775bb611af0f986";
 
     this.pools = [
       {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},
@@ -214,6 +218,7 @@ export class Contracts {
     this.names[this.voting_eth_pool.options.address] = "Voting ETH/YAM Incentivizer";
     this.names[this.masterchef.options.address] = "Master Chef";
     this.names[this.slp.options.address] = "Sushiswap LP";
+    this.names[this.IndexStakingRewards.options.address] = "INDEX Coop Staking Rewards";
   }
 
   setDefaultAccount(

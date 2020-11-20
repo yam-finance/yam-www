@@ -3,8 +3,7 @@ import useYam from "hooks/useYam";
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Box, Button, Card, CardActions, CardContent, CardTitle, Container, Spacer, useTheme } from "react-neu";
 import { useWallet } from "use-wallet";
-import { getNearestBlock, getTimestampDate } from "utils";
-import { treasuryEvents, getDPIPrices, scalingFactors, getDPIPrice, getCurrentBlock, getWETHPrice, getYUSDPrice } from "yam-sdk/utils";
+import { treasuryEvents, getDPIPrices, scalingFactors, getDPIPrice, getCurrentBlock, getWETHPrice, getYUSDPrice, getINDEXCOOPPrice, getIndexCoopLP, getIndexCoopLPRewards } from "yam-sdk/utils";
 import { OptionInterface, SeriesInterface, TimeSeries } from "types/Charts";
 import YamLoader from "components/YamLoader";
 import Chart from "react-apexcharts";
@@ -28,7 +27,7 @@ const Charts: React.FC = () => {
   const { totalYUsdValue, totalWETHValue, totalDPIValue } = useTreasury();
 
   const { status } = useWallet();
-  const defaultRebaseRange = (14 * 2);
+  const defaultRebaseRange = 14;
 
   const fetchTreasury = useCallback(async () => {
     if(!yam) {
@@ -79,7 +78,7 @@ const Charts: React.FC = () => {
     const series: SeriesInterface[] = [
       {
         name: "Scaling Factor",
-        data: data ? data.slice(factors.length - defaultRebaseRange) : [],
+        data: data ? data.slice(factors.length - (defaultRebaseRange * 2)) : [],
       },
     ];
     let theme;
@@ -181,10 +180,65 @@ const Charts: React.FC = () => {
     const wethPrice = await getWETHPrice();
     const yusdPrice = await getYUSDPrice();
     const dpiPrice = await getDPIPrice();
+    const indexPrice = await getINDEXCOOPPrice();
+    const DPIBalance = totalDPIValue;
+    // const indexCoopLP = await getIndexCoopLP(yam);
+    const indexCoopLPRewards = await getIndexCoopLPRewards(yam) || 0;
+
+    const reservesHistory = [
+      {
+        info: "DPI Purchase",
+        block: 11133885,
+        yUSD: 1.15 * (1896995 + 215518 + 184500),
+        DPI: 3351 * 75,
+        WETH: 0,
+        INDEXLP: 0,
+        INDEX: 0,
+      },
+      {
+        info: "Comps",
+        block: 11160087,
+        yUSD: 1.15 * (1896995 + 215518),
+        DPI: 3351 * 72,
+        WETH: 0,
+        INDEXLP: 0,
+        INDEX: 0,
+      },
+      {
+        info: "ETH Purchase",
+        block: 11244494,
+        yUSD: 1.18 * (1896995),
+        DPI: 3351 * 80,
+        WETH: 555 * 464,
+        INDEXLP: 0,
+        INDEX: 0,
+      },
+      {
+        info: "INDEX Pool",
+        block: 11289910,
+        yUSD: 1.19 * (1896995),
+        DPI: 434 * 104,
+        WETH: 201 * 475,
+        INDEXLP: (2929 * 102) + (640 * 464),
+        INDEX: 36 * 11.6,
+      },
+      {
+        info: "present",
+        block: currentBlock + 5000,
+        yUSD: yusdPrice * totalYUsdValue,
+        DPI: DPIBalance * dpiPrice,
+        WETH: totalWETHValue * wethPrice,
+        INDEXLP: (2929 * 102) + (640 * 464),
+        INDEX: indexCoopLPRewards * indexPrice,
+      },
+    ]
 
     let now = Math.floor(Date.now() / 1000);
     let reserves: TimeSeries[] = [];
-    // let reservesWETH: TimeSeries[] = [];
+    let reservesDPI: TimeSeries[] = [];
+    let reservesETH: TimeSeries[] = [];
+    let reservesINDEXLP: TimeSeries[] = [];
+    let reservesINDEX: TimeSeries[] = [];
     let running = 0;
     for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
       running += treasuryValues.reservesAdded[i];
@@ -198,138 +252,196 @@ const Charts: React.FC = () => {
       // } else {
       // }
       if(
-        treasuryValues.blockNumbers[i] !== 11254648
+        treasuryValues.blockNumbers[i] <= 11133885
+        // && treasuryValues.blockNumbers[i] >= currentBlock
       ){
         const tmp: TimeSeries = {
-          // x: treasuryValues.blockTimes[i],
           x: treasuryValues.blockNumbers[i],
           y: running * yusdPrice,
         };
         reserves.push(tmp);
+
+        const tmpDPI: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesDPI.push(tmpDPI);
+
+        const tmpETH: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesETH.push(tmpETH);
+        
+        const tmpINDEXLP: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesINDEXLP.push(tmpINDEXLP);
+
+        const tmpINDEX: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesINDEX.push(tmpINDEX);
       }
     }
-    // on DPI purchase
-    reserves.push({
-      // x: 1603739830,
-      x: 11133885,
-      y: (totalYUsdValue + 161304) * yusdPrice,
-    });
-    // comps
-    reserves.push({
-      x: 11160087,
-      y: totalYUsdValue * yusdPrice,
-    })
-    // on ETH purchase
-    reserves.push({
-      x: 11244494,
-      y: totalYUsdValue * yusdPrice,
-    });
-    // now
-    reserves.push({
-      x: currentBlock,
-      y: totalYUsdValue * yusdPrice,
-    })
+    
+    for (let i = 0; i < reservesHistory.length; i++) {
+      reserves.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].yUSD,
+      });
+      reservesDPI.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].DPI,
+      });
+      reservesETH.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].WETH,
+      });
+      reservesINDEXLP.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].INDEXLP,
+      });
+      reservesINDEX.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].INDEX,
+      });
+    }
 
-    let DPIBalance = totalDPIValue;
-    let reservesDPI: TimeSeries[] = [];
+    // // on DPI purchase
+    // reserves.push({
+    //   // x: 1603739830,
+    //   x: 11133885,
+    //   y: (totalYUsdValue * yusdPrice) + (DPIBalance * dpiPrice),
+    // });
+    // // comps
+    // reserves.push({
+    //   x: 11160087,
+    //   y: (totalYUsdValue * yusdPrice) + (185500 * yusdPrice),
+    // })
+    // // on ETH purchase
+    // reserves.push({
+    //   x: 11244494,
+    //   // y: (totalYUsdValue * yusdPrice) + (totalWETHValue * wethPrice),
+    //   y: (totalYUsdValue * yusdPrice),
+    // });
+    // // now
+    // reserves.push({
+    //   x: currentBlock,
+    //   y: (totalYUsdValue * yusdPrice),
+    // })
+
+    // let reservesDPI: TimeSeries[] = [];
     // let prices: any = await getDPIPrices("1603739830", now.toString());
     // let timeArray = [];
     // for (var prop in prices) {
     //   timeArray.push(prop);
     // }
-    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
-      // if (DPIBalance && treasuryValues.blockNumbers[i] > 11133885) { // live set 11133885 (test: 10946646)
-      //   const tmp: TimeSeries = {
-      //     // x: treasuryValues.blockNumbers[i],
-      //     x: treasuryValues.blockTimes[i],
-      //     y: DPIBalance * prices[getNearestBlock(timeArray, treasuryValues.blockTimes[i])],
-      //   };
-      //   reservesDPI.push(tmp);
-      // } else {
-      // }
-      if(
-        treasuryValues.blockNumbers[i] !== 11254648
-      ){
-        const tmp: TimeSeries = {
-          // x: treasuryValues.blockTimes[i],
-          x: treasuryValues.blockNumbers[i],
-          y: 0,
-        };
-        reservesDPI.push(tmp);
-      }
-    }
-    // DPI purchase
-    reservesDPI.push({
-      // x: 1603739830,
-      x: 11133885,
-      y: DPIBalance * 75,
-    });
-    // comps
-    reservesDPI.push({
-      x: 11160087,
-      y: DPIBalance * dpiPrice,
-    })
-    // on ETH purchase
-    reservesDPI.push({
-      x: 11244494,
-      y: DPIBalance * dpiPrice,
-    });
-    // now
-    reservesDPI.push({
-      x: currentBlock,
-      y: DPIBalance * dpiPrice,
-    });
+    // for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+    //   // if (DPIBalance && treasuryValues.blockNumbers[i] > 11133885) { // live set 11133885 (test: 10946646)
+    //   //   const tmp: TimeSeries = {
+    //   //     // x: treasuryValues.blockNumbers[i],
+    //   //     x: treasuryValues.blockTimes[i],
+    //   //     y: DPIBalance * prices[getNearestBlock(timeArray, treasuryValues.blockTimes[i])],
+    //   //   };
+    //   //   reservesDPI.push(tmp);
+    //   // } else {
+    //   // }
+    //   if(
+    //     treasuryValues.blockNumbers[i] !== 11254648
+    //   ){
+    //     const tmpDPI: TimeSeries = {
+    //       // x: treasuryValues.blockTimes[i],
+    //       x: treasuryValues.blockNumbers[i],
+    //       y: 0,
+    //     };
+    //     reservesDPI.push(tmpDPI);
+    //   }
+    // }
+    // // DPI purchase
+    // reservesDPI.push({
+    //   // x: 1603739830,
+    //   x: 11133885,
+    //   y: DPIBalance * dpiPrice,
+    // });
+    // // comps
+    // reservesDPI.push({
+    //   x: 11160087,
+    //   y: DPIBalance * dpiPrice,
+    // })
+    // // on ETH purchase
+    // reservesDPI.push({
+    //   x: 11244494,
+    //   y: DPIBalance * dpiPrice,
+    // });
+    // // now
+    // reservesDPI.push({
+    //   x: currentBlock,
+    //   y: DPIBalance * dpiPrice,
+    // });
 
-    let reservesETH: TimeSeries[] = [];
-    for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
-      if(
-        treasuryValues.blockNumbers[i] !== 11254648
-      ){
-        const tmp: TimeSeries = {
-          // x: treasuryValues.blockTimes[i],
-          x: treasuryValues.blockNumbers[i],
-          y: 0,
-        };
-        reservesETH.push(tmp);
-      }
-    }
-    // on DPI purchase
-    reservesETH.push({
-      // x: 1603739830,
-      x: 11133885,
-      y: 0,
-    });
-    // comps
-    reservesETH.push({
-      x: 11160087,
-      y: 0,
-    })
-    // on ETH purchase
-    reservesETH.push({
-      x: 11244494,
-      y: totalWETHValue * wethPrice,
-    });
-    // now
-    reservesETH.push({
-      x: currentBlock,
-      y: totalWETHValue * wethPrice,
-    })
-
-    reserves.sort((a, b) => (a.x > b.x) ? 1 : -1)
-    reservesDPI.sort((a, b) => (a.x > b.x) ? 1 : -1)
-    reservesETH.sort((a, b) => (a.x > b.x) ? 1 : -1)
+    // let reservesETH: TimeSeries[] = [];
+    // for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
+    //   if(
+    //     treasuryValues.blockNumbers[i] !== 11254648
+    //   ){
+    //     const tmpETH: TimeSeries = {
+    //       // x: treasuryValues.blockTimes[i],
+    //       x: treasuryValues.blockNumbers[i],
+    //       y: 0,
+    //     };
+    //     reservesETH.push(tmpETH);
+    //   }
+    // }
+    // // on DPI purchase
+    // reservesETH.push({
+    //   // x: 1603739830,
+    //   x: 11133885,
+    //   y: 0,
+    // });
+    // // comps
+    // reservesETH.push({
+    //   x: 11160087,
+    //   y: 0,
+    // })
+    // // on ETH purchase
+    // reservesETH.push({
+    //   x: 11244494,
+    //   y: totalWETHValue * wethPrice,
+    // });
+    // // now
+    // reservesETH.push({
+    //   x: currentBlock,
+    //   y: totalWETHValue * wethPrice,
+    // })
+    // console.log("reserves", reserves)
+    // console.log("reservesDPI", reservesDPI)
+    // console.log("reservesETH", reservesETH)
+    // reserves.sort((a, b) => (a.x > b.x) ? 1 : -1)
+    // reservesDPI.sort((a, b) => (a.x > b.x) ? 1 : -1)
+    // reservesETH.sort((a, b) => (a.x > b.x) ? 1 : -1)
     const series: SeriesInterface[] = [
       {
         name: "yUSD Reserves",
-        data: reserves ? reserves.slice(reserves.length - defaultRebaseRange) : [],
+        data: reserves ? reserves.slice(reserves.length - (defaultRebaseRange + 6)) : [],
       },
       {
         name: "DPI Reserves",
-        data: reservesDPI ? reservesDPI.slice(reservesDPI.length - defaultRebaseRange) : [],
+        data: reservesDPI ? reservesDPI.slice(reservesDPI.length - (defaultRebaseRange + 6)) : [],
       },
       {
         name: "ETH Reserves",
-        data: reservesETH ? reservesETH.slice(reservesETH.length - defaultRebaseRange) : [],
+        data: reservesETH ? reservesETH.slice(reservesETH.length - (defaultRebaseRange + 6)) : [],
+      },
+      {
+        name: "INDEX Coop LP",
+        data: reservesINDEXLP ? reservesINDEXLP.slice(reservesINDEXLP.length - (defaultRebaseRange + 6)) : [],
+      },
+      {
+        name: "INDEX Coop Rewards",
+        data: reservesINDEX ? reservesINDEX.slice(reservesINDEX.length - (defaultRebaseRange + 6)) : [],
       },
     ];
 
@@ -360,7 +472,7 @@ const Charts: React.FC = () => {
         enabled: false,
       },
       fill: {
-        colors: ["#C60C4D", "#8150E6", "#4777e0"],
+        colors: ["#C60C4D", "#8150E6", "#4777e0", "#838bfc", "#FFB900"],
       },
       legend: {
         position: "top",
@@ -374,7 +486,7 @@ const Charts: React.FC = () => {
           sizeOffset: 5,
         },
       },
-      colors: ["#C60C4D", "#8150E6", "#4777e0"],
+      colors: ["#C60C4D", "#8150E6", "#4777e0", "#838bfc", "#FFB900"],
       xaxis: {
         // type: "datetime",
         labels: {

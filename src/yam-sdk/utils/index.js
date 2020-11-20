@@ -775,6 +775,26 @@ export const getTVL = async (yam) => {
   return Math.round(totalIncentivizerValue / totalSLPSupply * ((ETHvalue * wethPrice) + (Yamvalue * yamPrice)) * 1e0 ) / 1e0;
 }
 
+export const getIndexCoopLP = async (yam) => {
+  const BASE = new BigNumber(10).pow(18);
+  try {
+    const lpBalance = await yam.contracts.IndexStakingRewards.methods.balanceOf("0xa940e0541f8b8a40551b28d4c7e37bd85de426ff").call();
+    return new BigNumber(lpBalance).dividedBy(BASE).toNumber()
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const getIndexCoopLPRewards = async (yam) => {
+  const BASE = new BigNumber(10).pow(18);
+  try {
+    const lpBalanceRewards = await yam.contracts.IndexStakingRewards.methods.earned("0xa940e0541f8b8a40551b28d4c7e37bd85de426ff").call();
+    return new BigNumber(lpBalanceRewards).dividedBy(BASE).toNumber()
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const getRebaseType = (rebaseValue) => {
   return Math.sign(rebaseValue) === 1;
 }
@@ -802,26 +822,10 @@ export const getCurrentBlock = async (yam) => {
   }
 }
 
-const requestDPIHistory = (from, to) => {
+const requestHttp = (url) => {
   return new Promise((resolve, reject) => {
     request({
-        url: "https://api.coingecko.com/api/v3/coins/defipulse-index/market_chart/range?vs_currency=usd&from=" + from + "&to=" + to,
-        json: true,
-      }, (error, response, body) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(body);
-        }
-      }
-    );
-  });
-};
-
-const requestWETH = () => {
-  return new Promise((resolve, reject) => {
-    request({
-        url: "https://api.coingecko.com/api/v3/coins/weth",
+        url: url,
         json: true,
       }, (error, response, body) => {
         if (error) {
@@ -835,54 +839,27 @@ const requestWETH = () => {
 };
 
 export const getWETHPrice = async () => {
-  const data = await requestWETH();
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/weth");
   return data.market_data.current_price.usd;
-};
-
-const requestYUSD = () => {
-  return new Promise((resolve, reject) => {
-    request({
-        url: "https://api.coingecko.com/api/v3/coins/yvault-lp-ycurve",
-        json: true,
-      }, (error, response, body) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(body);
-        }
-      }
-    );
-  });
 };
 
 export const getYUSDPrice = async () => {
-  const data = await requestYUSD();
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yvault-lp-ycurve");
   return data.market_data.current_price.usd;
 };
 
-const requestDPI = () => {
-  return new Promise((resolve, reject) => {
-    request({
-        url: "https://api.coingecko.com/api/v3/coins/defipulse-index",
-        json: true,
-      }, (error, response, body) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(body);
-        }
-      }
-    );
-  });
+export const getDPIPrice = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/defipulse-index");
+  return data.market_data.current_price.usd;
 };
 
-export const getDPIPrice = async () => {
-  const data = await requestDPI();
+export const getINDEXCOOPPrice = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/index-cooperative");
   return data.market_data.current_price.usd;
 };
 
 export const getDPIPrices = async (from, to) => {
-  const data = await requestDPIHistory(from, to);
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/defipulse-index/market_chart/range?vs_currency=usd&from=" + from + "&to=" + to);
   let newPrices = {};
   for (let i = 0; i < data.prices.length; i++) {
     newPrices[data.prices[i][0]] = data.prices[i][1];
@@ -891,37 +868,21 @@ export const getDPIPrices = async (from, to) => {
 };
 
 export const getDPIMarketCap = async (from, to) => {
-  const data = await requestDPIHistory(from, to);
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/defipulse-index/market_chart/range?vs_currency=usd&from=" + from + "&to=" + to);
   return data.market_caps;
 };
 
-const requestYam = () => {
-  return new Promise((resolve, reject) => {
-    request({
-        url: "https://api.coingecko.com/api/v3/coins/yam-2",
-        json: true,
-      }, (error, response, body) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(body);
-        }
-      }
-    );
-  });
-};
-
 export const getYam = async () => {
-  const data = await requestYam();
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data;
 };
 
 export const getMarketCap = async () => {
-  const data = await requestYam();
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.market_cap.usd;
 };
 
 export const getMaxSupply = async () => {
-  const data = await requestYam();
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.max_supply;
 };

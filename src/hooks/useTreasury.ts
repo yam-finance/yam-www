@@ -9,6 +9,7 @@ import {
 
 import usePrices from 'hooks/usePrices'
 import useTokenBalance from 'hooks/useTokenBalance'
+import { getIndexCoopLP } from 'yam-sdk/utils'
 
 const treasuryAddress = '0x97990b693835da58a281636296d2bf02787dea17'
 
