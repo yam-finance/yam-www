@@ -14,7 +14,8 @@ const Context = createContext<ContextValues>({
   totalStaked: new BigNumber(0),
   endTime: new BigNumber(0),
   withdrawStakeAmount: new BigNumber(0),
-  nextExpiringStake: { amount: new BigNumber(0), lockDate: 0, shares: new BigNumber(0) }
+  lastExpiringStake: undefined,
+  userStakes: []
 })
 
 export default Context

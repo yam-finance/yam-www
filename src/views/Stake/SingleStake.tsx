@@ -44,7 +44,8 @@ const SingleStake: React.FC = () => {
     totalStaked,
     endTime,
     withdrawStakeAmount,
-    nextExpiringStake
+    lastExpiringStake,
+    userStakes,
   } = useStaking()
 
   const {
@@ -52,6 +53,9 @@ const SingleStake: React.FC = () => {
   } = useBalances()
 
   const currentTime = useTimer()
+  const [disableStaking, setDisableStaking] = useState<boolean>(true)
+  const [disableUnstaking, setDisableUnstaking] = useState<boolean>(true)
+
 
   const { isApproved, isApproving, onApprove } = useApproval(
     strnTokenAddress,
@@ -68,25 +72,37 @@ const SingleStake: React.FC = () => {
   ])
 
   useEffect(() => {
-    if (nextExpiringStake && nextExpiringStake.lockDate && currentTime) {
-      const daysRemaining = getDaysRemaining(nextExpiringStake.lockDate, currentTime);
+    if (lastExpiringStake && lastExpiringStake.lockDate && currentTime) {
+      const daysRemaining = getDaysRemaining(lastExpiringStake.lockDate, currentTime);
       const hoursRemaining = getHoursMinusDaysRemaining(
-        nextExpiringStake.lockDate,
+        lastExpiringStake.lockDate,
         currentTime
       );
       const minutesRemaining = getMinutesMinusHoursRemaining(
-        nextExpiringStake.lockDate,
+        lastExpiringStake.lockDate,
         currentTime
       );
       const secondsRemaining = getSecondsMinusMinutesRemaining(
-        nextExpiringStake.lockDate,
+        lastExpiringStake.lockDate,
         currentTime
       );
       setUnlockTimer(`${daysRemaining}d ${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`)
     } else {
       setUnlockTimer(undefined)
     }
-  }, [nextExpiringStake, currentTime])
+  }, [lastExpiringStake, currentTime])
+
+  useEffect(() => {
+    if (userStakes) {
+      // 1. if any stake with amount == 0 and lockDate > 0 disable stake button
+      const disableStakeButton = userStakes.filter(s => new BigNumber(s.amount).gt(0) && new BigNumber(s.lockDate).gt(0))
+      const hasUnstaked = userStakes.filter(s => new BigNumber(s.amount).eq(0))
+      setDisableStaking(disableStakeButton.length > 0 || hasUnstaked.length > 0);
+      // 2. if any stake lockDate > currentTime disable unstake button. 
+      const disableUnstakButton = userStakes.filter(s => new BigNumber(s.lockDate).gt(new BigNumber(currentTime)))
+      setDisableUnstaking(disableUnstakButton.length > 0)
+    }
+  }, [userStakes])
 
   const handleDismissStakeModal = useCallback(() => {
     setStakeModalIsOpen(false)
@@ -118,7 +134,7 @@ const SingleStake: React.FC = () => {
   }, [setUnstakeModalIsOpen])
 
   const StakeButton = useMemo(() => {
-    if (status !== 'connected') {
+    if (status !== 'connected' || disableStaking) {
       return (
         <Button
           disabled
@@ -168,7 +184,7 @@ const SingleStake: React.FC = () => {
   ])
 
   const UnstakeButton = useMemo(() => {
-    if (status !== 'connected' || (withdrawStakeAmount && withdrawStakeAmount.eq(0))) {
+    if (status !== 'connected' || disableUnstaking || (withdrawStakeAmount && withdrawStakeAmount.eq(0))) {
       return (
         <Button
           disabled
@@ -263,7 +279,7 @@ const SingleStake: React.FC = () => {
             <SplitRow>
               <>
                 <Value value={unlockTimer ? unlockTimer : '--'} />
-                <Label text={`next stake unlock`} />
+                <Label text={`unstake after last stake unlocks`} />
               </>
             </SplitRow>
           </Box>

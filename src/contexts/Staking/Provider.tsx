@@ -35,7 +35,7 @@ const Provider: React.FC = ({ children }) => {
   const [userStakes, setUserStakes] = useState<SingleStake[]>([])
   const [withdrawStakeAmount, setWithdrawStakeAmount] = useState<BigNumber>()
   const [endTime, setEndTime] = useState<BigNumber>()
-  const [nextExpiringStake, setNextExpiringStake] = useState<SingleStake>()
+  const [lastExpiringStake, setLastExpiringStake] = useState<SingleStake>()
 
   const yam = useYam()
   const { account } = useWallet()
@@ -54,15 +54,17 @@ const Provider: React.FC = ({ children }) => {
     setTotakStaked(totalStaked)
     setUserStakes(stakes)
 
+    console.log('user stakes', stakes)
+
     if (stakes && stakes.length > 0) {
       const current = (new Date().getTime() / 1000);
-      const nextExpiringStake = stakes.filter(s => s.lockDate > current)
-        .sort((a, b) => Number(a.lockDate) > Number(b.lockDate) ? 1 : -1)
-      if (nextExpiringStake && nextExpiringStake.length > 0) {
-        setNextExpiringStake(nextExpiringStake[0])
+      const lastExpiringStake = stakes.filter(s => s.lockDate > current)
+        .sort((a, b) => Number(a.lockDate) < Number(b.lockDate) ? 1 : -1)
+      if (lastExpiringStake && lastExpiringStake.length > 0) {
+        setLastExpiringStake(lastExpiringStake[0])
       }
       else {
-        setNextExpiringStake(undefined)
+        setLastExpiringStake(undefined)
       }
     }
   }, [
@@ -188,7 +190,8 @@ const Provider: React.FC = ({ children }) => {
       strnTokenAddress,
       endTime,
       withdrawStakeAmount,
-      nextExpiringStake,
+      lastExpiringStake,
+      userStakes
     }}>
       {children}
       <ConfirmTransactionModal isOpen={confirmTxModalIsOpen} />

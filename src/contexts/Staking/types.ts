@@ -17,5 +17,6 @@ export interface ContextValues {
   strnTokenAddress: string,
   endTime?: BigNumber,
   withdrawStakeAmount?: BigNumber
-  nextExpiringStake?: SingleStake
+  lastExpiringStake?: SingleStake
+  userStakes?: SingleStake[]
 }
