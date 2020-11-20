@@ -19,6 +19,7 @@ const useTreasury = () => {
   const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress)
   const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress)
   const totalWETHValue = useTokenBalance(treasuryAddress, WETH)
+  const totalIndexLPValue = (2929 * 102) + (640 * 464)
 
   const totalYUsdValue = useMemo(() => {
     const yamYUsdValue = yamTwap && yamBalance ? yamTwap * yamBalance : 0
@@ -33,6 +34,7 @@ const useTreasury = () => {
     totalYUsdValue,
     totalDPIValue,
     totalWETHValue,
+    totalIndexLPValue,
     yamBalance,
     yUsdBalance,
   }
