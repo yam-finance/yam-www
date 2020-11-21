@@ -9,6 +9,7 @@ import DesignFlow from "assets/yampp.png"
 import styled from "styled-components";
 
 const Umbrella_Protocol_Lite_Paper = require("assets/documents/Umbrella_Protocol_Lite_Paper.pdf");
+const Umbrella_Protocol_Lite_Paper_CN = require("assets/documents/Umbrella_Protocol_Lite_Paper_CN.pdf");
 
 const YCP: React.FC = () => {
   const { darkMode } = useTheme();
@@ -41,7 +42,7 @@ const YCP: React.FC = () => {
         <Split>
           <div>
             <b>Name: <a href="https://snapshot.page/#/yam/proposal/QmYSsKSFSe7fbgEt2rwrKz9Pq4KxtRziPA4ajpuhRyiPgZ" target="_blank">Umbrella</a></b><br/>
-            <b>Lightpaper: <a href={Umbrella_Protocol_Lite_Paper} target="_blank">PDF</a></b><br/>
+            <b>Lightpaper PDF: <a href={Umbrella_Protocol_Lite_Paper} target="_blank">EN</a>, <a href={Umbrella_Protocol_Lite_Paper_CN} target="_blank">CN</a></b><br/>
             <b>Design Logic: <a href={DesignFlow} target="_blank">PNG</a></b><br/>
             <b>Announcement: <a href="https://medium.com/yam-finance/introducing-the-umbrella-protocol-by-yam-e89109548c6d" target="_blank">Post</a></b><br/>
           </div>
