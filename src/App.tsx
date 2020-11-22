@@ -6,7 +6,7 @@ import {
   Switch,
 } from 'react-router-dom'
 import { UseWalletProvider } from 'use-wallet'
-
+import "tailwindcss/tailwind.css"
 import MobileMenu from 'components/MobileMenu'
 import TopBar from 'components/TopBar'
 
