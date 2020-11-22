@@ -24,6 +24,9 @@ import Stake from 'views/Stake'
 import Pools from 'views/Farm'
 import FAQ from 'views/FAQ'
 import Home from 'views/Home'
+import Apothecary from 'views/Apothecary'
+import Dispensary from 'views/Dispensary'
+import Greenhouse from 'views/Greenhouse'
 import Migrate from 'views/Migrate'
 import Governance from 'views/Governance'
 
@@ -55,6 +58,15 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/stake">
             <Stake />
+          </Route>
+          <Route exact path="/apothecary">
+            <Apothecary />
+          </Route>
+          <Route exact path="/dispensary">
+            <Dispensary />
+          </Route>
+          <Route exact path="/greenhouse">
+            <Greenhouse />
           </Route>
           {/*<Route path="/faq">
             <FAQ />
