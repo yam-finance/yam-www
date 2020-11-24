@@ -13,6 +13,7 @@ BigNumber.config({
 });
 
 const GAS_LIMIT = {
+  GENERAL: 410000,
   STAKING: {
     DEFAULT: 410000,
     SNX: 850000,
@@ -66,7 +67,7 @@ export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw((new BigNumber(amount).times(new BigNumber(10).pow(18))).toString())
-      .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      .send({ from: account, gas: GAS_LIMIT.GENERAL }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Unstaking error", error)
@@ -90,7 +91,7 @@ export const harvest = async (yam, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .getReward()
-      .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      .send({ from: account, gas: GAS_LIMIT.GENERAL }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Harvest error", error)
@@ -114,7 +115,7 @@ export const redeem = async (yam, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .exit()
-      .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      .send({ from: account, gas: GAS_LIMIT.GENERAL }, async (error, txHash) => {
         if (error) {
             onTxHash && onTxHash('')
             console.log("Redeem error", error)
