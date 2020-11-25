@@ -90,7 +90,7 @@ const FAQ: React.FC = () => {
               question="How does YAM have a treasury?"
               slug="treasury"
             >
-              <span>In the Yam protocol, when a positive rebase occurs, 10% of the YAM rebase amount is minted and sold for ETH via the YAM/ETH Sushiswap pool. The ETH is subsequently deposited to the governance-controlled treasury.</span>
+              <span>In the Yam protocol, when a positive rebase occurs, 5% of the YAM rebase amount is minted and sold for ETH via the YAM/ETH Sushiswap pool. The ETH is subsequently deposited to the governance-controlled treasury.</span>
             </Question>
             <Question
               active={activeSlug === "govlp"}
