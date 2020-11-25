@@ -5,8 +5,7 @@ import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
 import {
-  strn as strnTokenAddress,
-  singleStrnPool as strnStxnPoolAddress
+  getAddresses
 } from 'constants/tokenAddresses'
 import useYam from 'hooks/useYam'
 
@@ -23,6 +22,9 @@ import {
 
 import Context from './Context'
 import { SingleStake } from 'constants/poolValues'
+
+
+const addresses = getAddresses()
 
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
@@ -41,7 +43,7 @@ const Provider: React.FC = ({ children }) => {
   const { account } = useWallet()
 
   const getIncentivizerAddress = () => {
-    return strnStxnPoolAddress
+    return addresses.strnEthIncAddress
   }
 
   const fetchStakedBalance = useCallback(async () => {
@@ -53,8 +55,6 @@ const Provider: React.FC = ({ children }) => {
     const totalStaked = stakes.reduce((p, s) => p.plus(s.amount), new BigNumber(0))
     setTotakStaked(totalStaked)
     setUserStakes(stakes)
-
-    console.log('user stakes', stakes)
 
     if (stakes && stakes.length > 0) {
       const current = (new Date().getTime() / 1000);
@@ -187,7 +187,7 @@ const Provider: React.FC = ({ children }) => {
       onUnstake: handleUnstake,
       getIncentivizerAddress,
       totalStaked,
-      strnTokenAddress,
+      strnTokenAddress: addresses.strnTokenAddress,
       endTime,
       withdrawStakeAmount,
       lastExpiringStake,

@@ -4,17 +4,13 @@ import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 
 import {
-  strn as strnTokenAddress,
-  stxp as stxpTokenAddress,
-  strnEthLP as strnLPTokenAddress,
-  strnIncentivizer as strnEthIncAddress,
-  strnXiotLP as strnXiotLPTokenAddress,
-  strnIncentivizer as strnEthPoolAddress,
-  strnXiotIncentivizer as strnXiotPoolAddress,
+  getAddresses,
 } from 'constants/tokenAddresses'
 import { getBalance } from 'utils'
 
 import Context from './Context'
+
+const addresses = getAddresses()
 
 const Provider: React.FC = ({ children }) => {
   const [strnEthLpBalance, setStrnEthLpBalance] = useState<BigNumber>()
@@ -29,13 +25,13 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchBalances = useCallback(async (userAddress: string, provider: provider) => {
     const balances = await Promise.all([
-      await getBalance(provider, strnLPTokenAddress, userAddress),
-      await getBalance(provider, strnTokenAddress, userAddress),
-      await getBalance(provider, strnEthIncAddress, userAddress),
-      await getBalance(provider, strnXiotLPTokenAddress, userAddress),
-      await getBalance(provider, strnEthPoolAddress, userAddress),
-      await getBalance(provider, strnXiotPoolAddress, userAddress),
-      await getBalance(provider, stxpTokenAddress, userAddress)
+      await getBalance(provider, addresses.strnLPTokenAddress, userAddress),
+      await getBalance(provider, addresses.strnTokenAddress, userAddress),
+      await getBalance(provider, addresses.strnEthIncAddress, userAddress),
+      await getBalance(provider, addresses.strnXiotLPTokenAddress, userAddress),
+      await getBalance(provider, addresses.strnEthIncAddress, userAddress),
+      await getBalance(provider, addresses.strnXiotPoolAddress, userAddress),
+      await getBalance(provider, addresses.stxpTokenAddress, userAddress)
     ])
     setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
     setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))

@@ -5,10 +5,7 @@ import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
 import {
-  strnEthLP as strnEthLPAddress,
-  strnIncentivizer,
-  strnXiotLP as strnXiotLPAddress,
-  strnXiotIncentivizer
+  getAddresses
 } from 'constants/tokenAddresses'
 import useYam from 'hooks/useYam'
 
@@ -23,6 +20,8 @@ import {
 import Context from './Context'
 import { getItemValue, setItemValue } from 'utils'
 
+const addresses = getAddresses()
+
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [isHarvesting, setIsHarvesting] = useState([false, false])
@@ -36,12 +35,12 @@ const Provider: React.FC = ({ children }) => {
   const yam = useYam()
   const { account } = useWallet()
 
-  const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
+  const lpAddresses = [addresses.strnLPTokenAddress, addresses.strnXiotLPTokenAddress]
   const getPoolLPAddress = (poolId: string) => {
     return lpAddresses[Number(poolId)]
   }
   
-  const incentivizerAddresses = [strnIncentivizer, strnXiotIncentivizer]
+  const incentivizerAddresses = [addresses.strnEthIncAddress, addresses.strnXiotPoolAddress]
   const getIncentivizerAddress = (poolId: string) => {
     return incentivizerAddresses[Number(poolId)]
   }
