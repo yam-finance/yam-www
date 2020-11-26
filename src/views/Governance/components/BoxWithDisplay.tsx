@@ -1,38 +1,37 @@
-
-import React, { useContext, useMemo } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React, { useContext, useMemo } from "react";
+import styled, { ThemeContext } from "styled-components";
 
 export interface BoxProps {
-  alignItems?: 'baseline' | 'center' | 'flex-end' | 'flex-start',
-  children?: React.ReactNode,
-  column?: boolean,
-  flex?: number | string,
-  height?: number | string,
-  justifyContent?: 'center' | 'flex-end' | 'flex-start' | 'space-around' | 'space-between',
-  margin?: number,
-  marginBottom?: number,
-  marginHorizontal?: number,
-  marginLeft?: number,
-  marginRight?: number,
-  marginTop?: number,
-  marginVertical?: number,
-  maxHeight?: number | string,
-  maxWidth?: number | string,
-  minHeight?: number,
-  minWidth?: number,
-  overflow?: string,
-  padding?: number,
-  paddingBottom?: number,
-  paddingHorizontal?: number,
-  paddingLeft?: number,
-  paddingRight?: number,
-  paddingTop?: number,
-  paddingVertical?: number,
-  position?: 'relative' | 'absolute',
-  reverse?: boolean,
-  row?: boolean,
-  width?: number | string,
-  display?: string
+  alignItems?: "baseline" | "center" | "flex-end" | "flex-start";
+  children?: React.ReactNode;
+  column?: boolean;
+  flex?: number | string;
+  height?: number | string;
+  justifyContent?: "center" | "flex-end" | "flex-start" | "space-around" | "space-between";
+  margin?: number;
+  marginBottom?: number;
+  marginHorizontal?: number;
+  marginLeft?: number;
+  marginRight?: number;
+  marginTop?: number;
+  marginVertical?: number;
+  maxHeight?: number | string;
+  maxWidth?: number | string;
+  minHeight?: number;
+  minWidth?: number;
+  overflow?: string;
+  padding?: number;
+  paddingBottom?: number;
+  paddingHorizontal?: number;
+  paddingLeft?: number;
+  paddingRight?: number;
+  paddingTop?: number;
+  paddingVertical?: number;
+  position?: "relative" | "absolute";
+  reverse?: boolean;
+  row?: boolean;
+  width?: number | string;
+  display?: string;
 }
 
 const Box: React.FC<BoxProps> = ({
@@ -65,54 +64,55 @@ const Box: React.FC<BoxProps> = ({
   display,
   ...props
 }) => {
-  const { spacing } = useContext(ThemeContext)
+  const { spacing } = useContext(ThemeContext);
 
   if (!display) {
     if (row || column) {
-      display = 'flex'
+      display = "flex";
     } else {
-      display = 'block'
+      display = "block";
     }
   }
 
   const flexDirection = useMemo(() => {
     if (row && reverse) {
-      return 'row-reverse'
-    } if (column && reverse) {
-      return 'column-reverse'
-    } else if (column) {
-      return 'column'
+      return "row-reverse";
     }
-    return undefined
-  }, [column])
+    if (column && reverse) {
+      return "column-reverse";
+    } else if (column) {
+      return "column";
+    }
+    return undefined;
+  }, [column]);
 
   const boxHeight = useMemo(() => {
     if (height) {
-      return typeof height === 'string' ? height : height + 'px'
+      return typeof height === "string" ? height : height + "px";
     }
-    return undefined
-  }, [height])
+    return undefined;
+  }, [height]);
 
   const boxWidth = useMemo(() => {
     if (width) {
-      return typeof width === 'string' ? width : width + 'px'
+      return typeof width === "string" ? width : width + "px";
     }
-    return undefined
-  }, [width])
+    return undefined;
+  }, [width]);
 
   const maxBoxHeight = useMemo(() => {
     if (maxHeight) {
-      return typeof maxHeight === 'string' ? maxHeight : maxHeight + 'px'
+      return typeof maxHeight === "string" ? maxHeight : maxHeight + "px";
     }
-    return undefined
-  }, [maxHeight])
+    return undefined;
+  }, [maxHeight]);
 
   const maxBoxWidth = useMemo(() => {
     if (maxWidth) {
-      return typeof maxWidth === 'string' ? maxWidth : maxWidth + 'px'
+      return typeof maxWidth === "string" ? maxWidth : maxWidth + "px";
     }
-    return undefined
-  }, [maxWidth])
+    return undefined;
+  }, [maxWidth]);
 
   return (
     <StyledBox
@@ -140,38 +140,38 @@ const Box: React.FC<BoxProps> = ({
     >
       {children}
     </StyledBox>
-  )
-}
+  );
+};
 
 interface StyledBoxProps extends BoxProps {
-  display: string,
-  flexDirection?: string,
+  display: string;
+  flexDirection?: string;
 }
 
 const StyledBox = styled.div<StyledBoxProps>`
-  align-items: ${props => props.alignItems};
-  display: ${props => props.display};
-  flex: ${props => props.flex};
-  flex-direction: ${props => props.flexDirection};
-  height: ${props => props.height};
-  justify-content: ${props => props.justifyContent};
-  margin: ${props => props.margin ? props.margin + 'px' : undefined};
-  margin-bottom: ${props => props.marginBottom ? props.marginBottom + 'px' : undefined};
-  margin-left: ${props => props.marginLeft ? props.marginLeft + 'px' : undefined};
-  margin-right: ${props => props.marginRight ? props.marginRight + 'px' : undefined};
-  margin-top: ${props => props.marginTop ? props.marginTop + 'px' : undefined};
-  max-height: ${props => props.maxHeight};
-  max-width: ${props => props.maxWidth};
-  min-height: ${props => props.minHeight ? props.minHeight + 'px' : undefined};
-  min-width: ${props => props.minWidth ? props.minWidth + 'px' : undefined};
-  overflow: ${props => props.overflow};
-  padding: ${props => props.padding ? props.padding + 'px' : undefined};
-  padding-bottom: ${props => props.paddingBottom ? props.paddingBottom + 'px' : undefined};
-  padding-left: ${props => props.paddingLeft ? props.paddingLeft + 'px' : undefined};
-  padding-right: ${props => props.paddingRight ? props.paddingRight + 'px' : undefined};
-  padding-top: ${props => props.paddingTop ? props.paddingTop + 'px' : undefined};
-  position: ${props => props.position};
-  width: ${props => props.width};
-`
+  align-items: ${(props) => props.alignItems};
+  display: ${(props) => props.display};
+  flex: ${(props) => props.flex};
+  flex-direction: ${(props) => props.flexDirection};
+  height: ${(props) => props.height};
+  justify-content: ${(props) => props.justifyContent};
+  margin: ${(props) => (props.margin ? props.margin + "px" : undefined)};
+  margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom + "px" : undefined)};
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft + "px" : undefined)};
+  margin-right: ${(props) => (props.marginRight ? props.marginRight + "px" : undefined)};
+  margin-top: ${(props) => (props.marginTop ? props.marginTop + "px" : undefined)};
+  max-height: ${(props) => props.maxHeight};
+  max-width: ${(props) => props.maxWidth};
+  min-height: ${(props) => (props.minHeight ? props.minHeight + "px" : undefined)};
+  min-width: ${(props) => (props.minWidth ? props.minWidth + "px" : undefined)};
+  overflow: ${(props) => props.overflow};
+  padding: ${(props) => (props.padding ? props.padding + "px" : undefined)};
+  padding-bottom: ${(props) => (props.paddingBottom ? props.paddingBottom + "px" : undefined)};
+  padding-left: ${(props) => (props.paddingLeft ? props.paddingLeft + "px" : undefined)};
+  padding-right: ${(props) => (props.paddingRight ? props.paddingRight + "px" : undefined)};
+  padding-top: ${(props) => (props.paddingTop ? props.paddingTop + "px" : undefined)};
+  position: ${(props) => props.position};
+  width: ${(props) => props.width};
+`;
 
-export default Box
+export default Box;

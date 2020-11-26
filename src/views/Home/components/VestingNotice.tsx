@@ -1,14 +1,7 @@
-import React from 'react'
+import React from "react";
 
-import {
-  Box,
-  Button,
-  Notice,
-  NoticeContent,
-  NoticeIcon,
-  Spacer,
-} from 'react-neu'
-import styled from 'styled-components'
+import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import styled from "styled-components";
 
 const VestingNotice: React.FC = () => {
   return (
@@ -23,8 +16,8 @@ const VestingNotice: React.FC = () => {
         </StyledNoticeContentInner>
       </NoticeContent>
     </Notice>
-  )
-}
+  );
+};
 
 const StyledNoticeContentInner = styled.div`
   align-items: center;
@@ -33,6 +26,6 @@ const StyledNoticeContentInner = styled.div`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-`
+`;
 
-export default VestingNotice
+export default VestingNotice;

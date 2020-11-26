@@ -1,44 +1,40 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { createTheme, ThemeProvider } from 'react-neu'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-} from 'react-router-dom'
-import { UseWalletProvider } from 'use-wallet'
+import React, { useCallback, useMemo, useState } from "react";
+import { createTheme, ThemeProvider } from "react-neu";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { UseWalletProvider } from "use-wallet";
 
-import MobileMenu from 'components/MobileMenu'
-import TopBar from 'components/TopBar'
+import MobileMenu from "components/MobileMenu";
+import TopBar from "components/TopBar";
 
-import { BalancesProvider } from 'contexts/Balances'
-import { FarmingProvider } from 'contexts/Farming'
-import { MigrationProvider } from 'contexts/Migration'
-import { PricesProvider } from 'contexts/Prices'
-import { VestingProvider } from 'contexts/Vesting'
-import { GovernanceProvider } from 'contexts/Governance'
-import YamProvider from 'contexts/YamProvider'
-import useLocalStorage from 'hooks/useLocalStorage'
-import styled from 'styled-components'
+import { BalancesProvider } from "contexts/Balances";
+import { FarmingProvider } from "contexts/Farming";
+import { MigrationProvider } from "contexts/Migration";
+import { PricesProvider } from "contexts/Prices";
+import { VestingProvider } from "contexts/Vesting";
+import { GovernanceProvider } from "contexts/Governance";
+import YamProvider from "contexts/YamProvider";
+import useLocalStorage from "hooks/useLocalStorage";
+import styled from "styled-components";
 
-import Farm from 'views/Farm'
-import FAQ from 'views/FAQ'
-import Home from 'views/Home'
-import Migrate from 'views/Migrate'
-import Dashboard from 'views/Dashboard'
-import Governance from 'views/Governance'
-import Addresses from 'views/Addresses'
-import Umbrella from 'views/Landings/Umbrella'
+import Farm from "views/Farm";
+import FAQ from "views/FAQ";
+import Home from "views/Home";
+import Migrate from "views/Migrate";
+import Dashboard from "views/Dashboard";
+import Governance from "views/Governance";
+import Addresses from "views/Addresses";
+import Umbrella from "views/Landings/Umbrella";
 
 const App: React.FC = () => {
-  const [mobileMenu, setMobileMenu] = useState(false)
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   const handleDismissMobileMenu = useCallback(() => {
-    setMobileMenu(false)
-  }, [setMobileMenu])
+    setMobileMenu(false);
+  }, [setMobileMenu]);
 
   const handlePresentMobileMenu = useCallback(() => {
-    setMobileMenu(true)
-  }, [setMobileMenu])
+    setMobileMenu(true);
+  }, [setMobileMenu]);
 
   return (
     <Router>
@@ -70,32 +66,30 @@ const App: React.FC = () => {
           <Route exact path="/umbrella">
             <Umbrella />
           </Route>
-          <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">Docs</StyledLink>
+          <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">
+            Docs
+          </StyledLink>
         </Switch>
       </Providers>
     </Router>
-  )
-}
+  );
+};
 
 const Providers: React.FC = ({ children }) => {
-  const [darkModeSetting] = useLocalStorage('darkMode', false)
+  const [darkModeSetting] = useLocalStorage("darkMode", false);
   const { dark: darkTheme, light: lightTheme } = useMemo(() => {
     return createTheme({
       baseColor: { h: 338, s: 100, l: 41 },
       baseColorDark: { h: 339, s: 89, l: 49 },
       borderRadius: 28,
-    })
-  }, [])
+    });
+  }, []);
   return (
-    <ThemeProvider
-      darkModeEnabled={darkModeSetting}
-      darkTheme={darkTheme}
-      lightTheme={lightTheme}
-    >
+    <ThemeProvider darkModeEnabled={darkModeSetting} darkTheme={darkTheme} lightTheme={lightTheme}>
       <UseWalletProvider
         chainId={1}
         connectors={{
-          walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
+          walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
         }}
       >
         <YamProvider>
@@ -104,9 +98,7 @@ const Providers: React.FC = ({ children }) => {
               <FarmingProvider>
                 <MigrationProvider>
                   <VestingProvider>
-                    <GovernanceProvider>
-                      {children}
-                    </GovernanceProvider>
+                    <GovernanceProvider>{children}</GovernanceProvider>
                   </VestingProvider>
                 </MigrationProvider>
               </FarmingProvider>
@@ -115,17 +107,17 @@ const Providers: React.FC = ({ children }) => {
         </YamProvider>
       </UseWalletProvider>
     </ThemeProvider>
-  )
-}
+  );
+};
 
 const StyledLink = styled.a`
-  color: ${props => props.theme.colors.grey[500]};
-  padding-left: ${props => props.theme.spacing[3]}px;
-  padding-right: ${props => props.theme.spacing[3]}px;
+  color: ${(props) => props.theme.colors.grey[500]};
+  padding-left: ${(props) => props.theme.spacing[3]}px;
+  padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
   &:hover {
-    color: ${props => props.theme.colors.grey[600]};
+    color: ${(props) => props.theme.colors.grey[600]};
   }
-`
+`;
 
-export default App
+export default App;

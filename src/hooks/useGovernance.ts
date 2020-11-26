@@ -1,9 +1,9 @@
-import { useContext } from 'react'
+import { useContext } from "react";
 
-import { GovernanceContext } from 'contexts/Governance'
+import { GovernanceContext } from "contexts/Governance";
 
 const useGovernance = () => {
-  return { ...useContext(GovernanceContext) }
-}
+  return { ...useContext(GovernanceContext) };
+};
 
-export default useGovernance
+export default useGovernance;

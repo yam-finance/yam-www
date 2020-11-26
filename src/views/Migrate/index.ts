@@ -1,1 +1,1 @@
-export { default } from './Migrate'
+export { default } from "./Migrate";

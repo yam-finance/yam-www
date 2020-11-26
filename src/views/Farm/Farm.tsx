@@ -1,78 +1,39 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from "react";
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Separator,
-  Spacer,
-  useTheme,
-} from 'react-neu'
+import { Box, Button, Card, CardContent, Container, Separator, Spacer, useTheme } from "react-neu";
 
-import numeral from 'numeral'
-import Page from 'components/Page'
-import PageHeader from 'components/PageHeader'
-import Split from 'components/Split'
-import useFarming from 'hooks/useFarming'
-import HarvestCard from './components/Harvest'
-import StakeCard from './components/Stake'
-import PausedLPsNotice from './components/PausedLPsNotice'
-import ResumedLPsNotice from './components/ResumedLPsNotice'
-import HarvestLPsNoticeYAMYUSD from './components/HarvestLPsNoticeYAMYUSD'
-import { useWallet } from 'use-wallet'
-import FancyValue from 'components/FancyValue'
+import numeral from "numeral";
+import Page from "components/Page";
+import PageHeader from "components/PageHeader";
+import Split from "components/Split";
+import useFarming from "hooks/useFarming";
+import HarvestCard from "./components/Harvest";
+import StakeCard from "./components/Stake";
+import PausedLPsNotice from "./components/PausedLPsNotice";
+import ResumedLPsNotice from "./components/ResumedLPsNotice";
+import HarvestLPsNoticeYAMYUSD from "./components/HarvestLPsNoticeYAMYUSD";
+import { useWallet } from "use-wallet";
+import FancyValue from "components/FancyValue";
 
 const Farm: React.FC = () => {
   const { colors } = useTheme();
   const { status } = useWallet();
 
-  const {
-    tvl,
-    apr,
-    isRedeeming,
-    onRedeemYAMETH,
-  } = useFarming()
+  const { tvl, apr, isRedeeming, onRedeemYAMETH } = useFarming();
 
   const RedeemButton = useMemo(() => {
-    if (status !== 'connected') {
-      return (
-        <Button
-          disabled
-          text="Harvest &amp; Unstake YAM/ETH"
-          variant="secondary"
-        />
-      )
+    if (status !== "connected") {
+      return <Button disabled text="Harvest &amp; Unstake YAM/ETH" variant="secondary" />;
     }
     if (!isRedeeming) {
-      return (
-        <Button
-          onClick={onRedeemYAMETH}
-          text="Harvest &amp; Unstake YAM/ETH"
-          variant="secondary"
-        />
-      )
+      return <Button onClick={onRedeemYAMETH} text="Harvest &amp; Unstake YAM/ETH" variant="secondary" />;
     }
-    return (
-      <Button
-        disabled
-        text="Redeeming..."
-        variant="secondary"
-      />
-    )
-  }, [
-    isRedeeming,
-    onRedeemYAMETH,
-  ])
+    return <Button disabled text="Redeeming..." variant="secondary" />;
+  }, [isRedeeming, onRedeemYAMETH]);
 
   return (
     <Page>
-      <PageHeader
-        icon="🌾🍠"
-        subtitle="Stake YAM/ETH Sushiswap LP tokens and grow YAMs"
-        title="Farm"
-      />
+      <PageHeader icon="🌾🍠" subtitle="Stake YAM/ETH Sushiswap LP tokens and grow YAMs" title="Farm" />
       <Container>
         <HarvestLPsNoticeYAMYUSD />
         <ResumedLPsNotice />
@@ -81,11 +42,11 @@ const Farm: React.FC = () => {
           <CardContent>
             <FancyValue
               wrap
-              value={(tvl ? `TVL $${numeral(tvl).format("000,000,000")}` : "Loading TVL...")}
+              value={tvl ? `TVL $${numeral(tvl).format("000,000,000")}` : "Loading TVL..."}
               valueSize="54px"
               valueColor={colors.primary.main}
               valueBold="800"
-              label={(apr ? `APR ${numeral(apr).format("0.00a")}%` : "Loading APR...")}
+              label={apr ? `APR ${numeral(apr).format("0.00a")}%` : "Loading APR..."}
             />
           </CardContent>
         </Card>
@@ -102,12 +63,7 @@ const Farm: React.FC = () => {
         <Separator />
         <Spacer size="lg" />
         <Split>
-          <Button
-            full
-            text="Addresses"
-            to="/addresses"
-            variant="secondary"
-          />
+          <Button full text="Addresses" to="/addresses" variant="secondary" />
           <Button
             full
             text="Get YAM/ETH LP tokens"
@@ -117,7 +73,7 @@ const Farm: React.FC = () => {
         </Split>
       </Container>
     </Page>
-  )
-}
+  );
+};
 
-export default Farm
+export default Farm;

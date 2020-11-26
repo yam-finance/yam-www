@@ -1,22 +1,20 @@
-import React from 'react'
-import { Spacer } from 'react-neu'
-import styled from 'styled-components'
+import React from "react";
+import { Spacer } from "react-neu";
+import styled from "styled-components";
 
 const Split: React.FC = ({ children }) => {
-  const l = React.Children.toArray(children).length
+  const l = React.Children.toArray(children).length;
   return (
     <StyledSplit>
       {React.Children.map(children, (child, i) => (
         <>
-          <StyledSplitColumn>
-            {child}
-          </StyledSplitColumn>
+          <StyledSplitColumn>{child}</StyledSplitColumn>
           {i < l - 1 && <Spacer />}
         </>
       ))}
     </StyledSplit>
-  )
-}
+  );
+};
 
 const StyledSplit = styled.div`
   display: flex;
@@ -25,7 +23,7 @@ const StyledSplit = styled.div`
     flex-flow: column nowrap;
     align-items: center;
   }
-`
+`;
 
 const StyledSplitColumn = styled.div`
   flex: 1;
@@ -33,6 +31,6 @@ const StyledSplitColumn = styled.div`
     flex: none;
     width: 100%;
   }
-`
+`;
 
-export default Split
+export default Split;

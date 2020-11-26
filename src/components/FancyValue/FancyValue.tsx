@@ -1,21 +1,21 @@
-import React, { useMemo } from 'react'
-import { Box, Spacer, useTheme } from 'react-neu'
-import styled from 'styled-components'
-import ReactTooltip from 'react-tooltip';
+import React, { useMemo } from "react";
+import { Box, Spacer, useTheme } from "react-neu";
+import styled from "styled-components";
+import ReactTooltip from "react-tooltip";
 
-import Label from 'components/Label'
-import Value from 'components/Value'
+import Label from "components/Label";
+import Value from "components/Value";
 
 interface FancyValueProps {
-  icon?: React.ReactNode,
-  label?: string,
-  value: string,
-  valueSize?: string,
-  valueColor?: string,
-  valueBold?: string,
-  wrap?: boolean,
-  hint?: string,
-  tooltip?: string,
+  icon?: React.ReactNode;
+  label?: string;
+  value: string;
+  valueSize?: string;
+  valueColor?: string;
+  valueBold?: string;
+  wrap?: boolean;
+  hint?: string;
+  tooltip?: string;
 }
 
 const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip }) => {
@@ -54,11 +54,8 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
         </>
       );
     }
-  }, [
-    hint,
-    darkMode,
-  ]);
-  
+  }, [hint, darkMode]);
+
   const FancyLabelDisplay = useMemo(() => {
     if (wrap) {
       return (
@@ -77,13 +74,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
         </>
       );
     }
-  }, [
-    darkMode,
-    icon,
-    label,
-    value,
-    hint,
-  ]);
+  }, [darkMode, icon, label, value, hint]);
 
   const IconDisplay = useMemo(() => {
     if (icon) {
@@ -96,9 +87,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
         </>
       );
     }
-  }, [
-    icon,
-  ]);
+  }, [icon]);
 
   return (
     <>

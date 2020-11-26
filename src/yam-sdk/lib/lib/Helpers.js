@@ -1,6 +1,5 @@
-import BigNumber from 'bignumber.js/bignumber';
-import { INTEGERS } from './constants.js';
-
+import BigNumber from "bignumber.js/bignumber";
+import { INTEGERS } from "./constants.js";
 
 export function stringToDecimal(s) {
   return new BigNumber(s).div(INTEGERS.INTEREST_RATE_BASE);
@@ -21,9 +20,7 @@ export function integerToValue(i) {
   };
 }
 
-export function valueToInteger(
-  { value, sign },
-) {
+export function valueToInteger({ value, sign }) {
   let result = new BigNumber(value);
   if (!result.isZero() && !sign) {
     result = result.times(-1);
@@ -31,9 +28,7 @@ export function valueToInteger(
   return result;
 }
 
-export function coefficientsToString(
-  coefficients,
-) {
+export function coefficientsToString(coefficients) {
   let m = new BigNumber(1);
   let result = new BigNumber(0);
   for (let i = 0; i < coefficients.length; i += 1) {
@@ -47,11 +42,6 @@ export function toNumber(input) {
   return new BigNumber(input).toNumber();
 }
 
-
-function partial(
-  target,
-  numerator,
-  denominator,
-){
+function partial(target, numerator, denominator) {
   return target.times(numerator).div(denominator).integerValue(BigNumber.ROUND_DOWN);
 }

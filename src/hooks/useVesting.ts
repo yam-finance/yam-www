@@ -1,9 +1,9 @@
-import { useContext } from 'react'
+import { useContext } from "react";
 
-import { VestingContext } from 'contexts/Vesting'
+import { VestingContext } from "contexts/Vesting";
 
 const useVesting = () => {
-  return { ...useContext(VestingContext) }
-}
+  return { ...useContext(VestingContext) };
+};
 
-export default useVesting
+export default useVesting;

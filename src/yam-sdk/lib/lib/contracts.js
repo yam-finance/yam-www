@@ -1,59 +1,53 @@
-import BigNumber from 'bignumber.js/bignumber';
-import Web3 from 'web3';
+import BigNumber from "bignumber.js/bignumber";
+import Web3 from "web3";
 import * as Types from "./types.js";
-import { SUBTRACT_GAS_LIMIT, addressMap } from './constants.js';
+import { SUBTRACT_GAS_LIMIT, addressMap } from "./constants.js";
 
-import ERC20Json from '../clean_build/contracts/IERC20.json';
-import YAMv2Json from '../clean_build/contracts/YAMv2.json';
-import YAMv2MigrationJson from '../clean_build/contracts/YAMv2Migration.json';
-import YAMJson from '../clean_build/contracts/YAMDelegator.json';
+import ERC20Json from "../clean_build/contracts/IERC20.json";
+import YAMv2Json from "../clean_build/contracts/YAMv2.json";
+import YAMv2MigrationJson from "../clean_build/contracts/YAMv2Migration.json";
+import YAMJson from "../clean_build/contracts/YAMDelegator.json";
 
-import YAMRebaserJson from '../clean_build/contracts/YAMRebaser.json';
-import YAMRebaser2Json from '../clean_build/contracts/YAMRebaser2.json';
+import YAMRebaserJson from "../clean_build/contracts/YAMRebaser.json";
+import YAMRebaser2Json from "../clean_build/contracts/YAMRebaser2.json";
 
-import YAMReservesJson from '../clean_build/contracts/YAMReserves.json';
-import YAMReserves2Json from '../clean_build/contracts/YAMReserves2.json';
+import YAMReservesJson from "../clean_build/contracts/YAMReserves.json";
+import YAMReserves2Json from "../clean_build/contracts/YAMReserves2.json";
 
-import OTCJson from '../clean_build/contracts/OTC.json';
+import OTCJson from "../clean_build/contracts/OTC.json";
 
-import YAMGovJson from '../clean_build/contracts/GovernorAlpha.json';
-import DualGovJson from '../clean_build/contracts/DualGovernorAlpha.json';
+import YAMGovJson from "../clean_build/contracts/GovernorAlpha.json";
+import DualGovJson from "../clean_build/contracts/DualGovernorAlpha.json";
 
-import YAMTimelockJson from '../clean_build/contracts/Timelock.json';
-import WETHJson from './weth.json';
-import SNXJson from './snx.json';
-import UNIFactJson from './unifact2.json';
-import UNIPairJson from './uni2.json';
-import UNIRouterJson from './uniR.json';
+import YAMTimelockJson from "../clean_build/contracts/Timelock.json";
+import WETHJson from "./weth.json";
+import SNXJson from "./snx.json";
+import UNIFactJson from "./unifact2.json";
+import UNIPairJson from "./uni2.json";
+import UNIRouterJson from "./uniR.json";
 
+import WETHPoolJson from "../clean_build/contracts/YAMETHPool.json";
+import AMPLPoolJson from "../clean_build/contracts/YAMAMPLPool.json";
+import YFIPoolJson from "../clean_build/contracts/YAMYFIPool.json";
+import MKRPoolJson from "../clean_build/contracts/YAMMKRPool.json";
+import LENDPoolJson from "../clean_build/contracts/YAMLENDPool.json";
+import COMPPoolJson from "../clean_build/contracts/YAMCOMPPool.json";
+import SNXPoolJson from "../clean_build/contracts/YAMSNXPool.json";
+import LINKPoolJson from "../clean_build/contracts/YAMLINKPool.json";
 
-import WETHPoolJson from '../clean_build/contracts/YAMETHPool.json';
-import AMPLPoolJson from '../clean_build/contracts/YAMAMPLPool.json';
-import YFIPoolJson from '../clean_build/contracts/YAMYFIPool.json';
-import MKRPoolJson from '../clean_build/contracts/YAMMKRPool.json';
-import LENDPoolJson from '../clean_build/contracts/YAMLENDPool.json';
-import COMPPoolJson from '../clean_build/contracts/YAMCOMPPool.json';
-import SNXPoolJson from '../clean_build/contracts/YAMSNXPool.json';
-import LINKPoolJson from '../clean_build/contracts/YAMLINKPool.json';
+import IncOldJson from "../clean_build/contracts/YAMIncentivizerOld.json";
+import IncJson from "../clean_build/contracts/YAMIncentivizer.json";
+import VotingIncJson from "../clean_build/contracts/YAMIncentivizerWithVoting.json";
+import MasterChefJson from "../clean_build/contracts/MasterChef.json";
+import SushiswapPoolJson from "../clean_build/contracts/SushiswapPool.json";
+import IndexStakingRewardsJson from "../clean_build/contracts/IndexStakingRewards.json";
 
-import IncOldJson from '../clean_build/contracts/YAMIncentivizerOld.json';
-import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
-import VotingIncJson from '../clean_build/contracts/YAMIncentivizerWithVoting.json';
-import MasterChefJson from '../clean_build/contracts/MasterChef.json';
-import SushiswapPoolJson from '../clean_build/contracts/SushiswapPool.json';
-import IndexStakingRewardsJson from '../clean_build/contracts/IndexStakingRewards.json';
-
-import MigratorJson from "../clean_build/contracts/Migrator.json"
-import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
-import YAMLogic2Json from "../clean_build/contracts/YAMDelegate2.json"
+import MigratorJson from "../clean_build/contracts/Migrator.json";
+import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json";
+import YAMLogic2Json from "../clean_build/contracts/YAMDelegate2.json";
 
 export class Contracts {
-  constructor(
-    provider,
-    networkId,
-    web3,
-    options
-  ) {
+  constructor(provider, networkId, web3, options) {
     this.web3 = web3;
     this.defaultConfirmations = options.defaultConfirmations;
     this.autoGasMultiplier = options.autoGasMultiplier || 1.5;
@@ -97,7 +91,6 @@ export class Contracts {
     this.erc20 = new this.web3.eth.Contract(ERC20Json.abi);
     this.pool = new this.web3.eth.Contract(LENDPoolJson.abi);
 
-
     this.yamV2 = new this.web3.eth.Contract(YAMv2Json.abi);
     this.yamV2migration = new this.web3.eth.Contract(YAMv2MigrationJson.abi);
 
@@ -118,11 +111,7 @@ export class Contracts {
     this.setDefaultAccount(this.web3.eth.defaultAccount);
   }
 
-
-  setProvider(
-    provider,
-    networkId
-  ) {
+  setProvider(provider, networkId) {
     this.yam.setProvider(provider);
     this.rebaser.setProvider(provider);
     this.reserves.setProvider(provider);
@@ -154,15 +143,9 @@ export class Contracts {
       { contract: this.masterchef, json: MasterChefJson },
       { contract: this.slp, json: SushiswapPoolJson },
       { contract: this.IndexStakingRewards, json: IndexStakingRewardsJson },
-    ]
+    ];
 
-    contracts.forEach(contract => this.setContractProvider(
-        contract.contract,
-        contract.json,
-        provider,
-        networkId,
-      ),
-    );
+    contracts.forEach((contract) => this.setContractProvider(contract.contract, contract.json, provider, networkId));
     this.yfi.options.address = addressMap["YFI"];
     this.ycrv.options.address = addressMap["YCRV"];
     this.yycrv.options.address = addressMap["YYCRV"];
@@ -188,15 +171,39 @@ export class Contracts {
     this.IndexStakingRewards.options.address = "0x8f06fba4684b5e0988f215a47775bb611af0f986";
 
     this.pools = [
-      {"tokenAddr": this.yfi.options.address, "poolAddr": this.yfi_pool.options.address},
-      {"tokenAddr": this.snx.options.address, "poolAddr": this.snx_pool.options.address},
-      {"tokenAddr": this.weth.options.address, "poolAddr": this.eth_pool.options.address},
-      {"tokenAddr": this.comp.options.address, "poolAddr": this.comp_pool.options.address},
-      {"tokenAddr": this.link.options.address, "poolAddr": this.link_pool.options.address},
-      {"tokenAddr": this.lend.options.address, "poolAddr": this.lend_pool.options.address},
-      {"tokenAddr": this.mkr.options.address, "poolAddr": this.mkr_pool.options.address},
-      {"tokenAddr": this.UNIAmpl.options.address, "poolAddr": this.ampl_pool.options.address},
-    ]
+      {
+        tokenAddr: this.yfi.options.address,
+        poolAddr: this.yfi_pool.options.address,
+      },
+      {
+        tokenAddr: this.snx.options.address,
+        poolAddr: this.snx_pool.options.address,
+      },
+      {
+        tokenAddr: this.weth.options.address,
+        poolAddr: this.eth_pool.options.address,
+      },
+      {
+        tokenAddr: this.comp.options.address,
+        poolAddr: this.comp_pool.options.address,
+      },
+      {
+        tokenAddr: this.link.options.address,
+        poolAddr: this.link_pool.options.address,
+      },
+      {
+        tokenAddr: this.lend.options.address,
+        poolAddr: this.lend_pool.options.address,
+      },
+      {
+        tokenAddr: this.mkr.options.address,
+        poolAddr: this.mkr_pool.options.address,
+      },
+      {
+        tokenAddr: this.UNIAmpl.options.address,
+        poolAddr: this.ampl_pool.options.address,
+      },
+    ];
 
     this.names = {};
     this.names[this.yam.options.address] = "YAMv1";
@@ -221,19 +228,14 @@ export class Contracts {
     this.names[this.IndexStakingRewards.options.address] = "INDEX Coop Staking Rewards";
   }
 
-  setDefaultAccount(
-    account
-  ) {
+  setDefaultAccount(account) {
     this.yfi.options.from = account;
     this.ycrv.options.from = account;
     this.yam.options.from = account;
     this.weth.options.from = account;
   }
 
-  async callContractFunction(
-    method,
-    options
-  ) {
+  async callContractFunction(method, options) {
     const { confirmations, confirmationType, autoGasMultiplier, ...txOptions } = options;
 
     if (!this.blockGasLimit) {
@@ -274,7 +276,7 @@ export class Contracts {
     if (txOptions.value) {
       txOptions.value = new BigNumber(txOptions.value).toFixed(0);
     } else {
-      txOptions.value = '0';
+      txOptions.value = "0";
     }
 
     const promi = method.send(txOptions);
@@ -298,74 +300,67 @@ export class Contracts {
     let confirmationPromise;
 
     if (t === Types.ConfirmationType.Hash || t === Types.ConfirmationType.Both) {
-      hashPromise = new Promise(
-        (resolve, reject) => {
-          promi.on('error', (error) => {
-            if (hashOutcome === OUTCOMES.INITIAL) {
-              hashOutcome = OUTCOMES.REJECTED;
-              reject(error);
-              const anyPromi = promi ;
+      hashPromise = new Promise((resolve, reject) => {
+        promi.on("error", (error) => {
+          if (hashOutcome === OUTCOMES.INITIAL) {
+            hashOutcome = OUTCOMES.REJECTED;
+            reject(error);
+            const anyPromi = promi;
+            anyPromi.off();
+          }
+        });
+
+        promi.on("transactionHash", (txHash) => {
+          if (hashOutcome === OUTCOMES.INITIAL) {
+            hashOutcome = OUTCOMES.RESOLVED;
+            resolve(txHash);
+            if (t !== Types.ConfirmationType.Both) {
+              const anyPromi = promi;
               anyPromi.off();
             }
-          });
+          }
+        });
+      });
+    }
 
-          promi.on('transactionHash', (txHash) => {
-            if (hashOutcome === OUTCOMES.INITIAL) {
-              hashOutcome = OUTCOMES.RESOLVED;
-              resolve(txHash);
-              if (t !== Types.ConfirmationType.Both) {
-                const anyPromi = promi ;
+    if (t === Types.ConfirmationType.Confirmed || t === Types.ConfirmationType.Both) {
+      confirmationPromise = new Promise((resolve, reject) => {
+        promi.on("error", (error) => {
+          if ((t === Types.ConfirmationType.Confirmed || hashOutcome === OUTCOMES.RESOLVED) && confirmationOutcome === OUTCOMES.INITIAL) {
+            confirmationOutcome = OUTCOMES.REJECTED;
+            reject(error);
+            const anyPromi = promi;
+            anyPromi.off();
+          }
+        });
+
+        const desiredConf = confirmations || this.defaultConfirmations;
+        if (desiredConf) {
+          promi.on("confirmation", (confNumber, receipt) => {
+            if (confNumber >= desiredConf) {
+              if (confirmationOutcome === OUTCOMES.INITIAL) {
+                confirmationOutcome = OUTCOMES.RESOLVED;
+                resolve(receipt);
+                const anyPromi = promi;
                 anyPromi.off();
               }
             }
           });
-        },
-      );
-    }
-
-    if (t === Types.ConfirmationType.Confirmed || t === Types.ConfirmationType.Both) {
-      confirmationPromise = new Promise(
-        (resolve, reject) => {
-          promi.on('error', (error) => {
-            if (
-              (t === Types.ConfirmationType.Confirmed || hashOutcome === OUTCOMES.RESOLVED)
-              && confirmationOutcome === OUTCOMES.INITIAL
-            ) {
-              confirmationOutcome = OUTCOMES.REJECTED;
-              reject(error);
-              const anyPromi = promi ;
-              anyPromi.off();
-            }
+        } else {
+          promi.on("receipt", (receipt) => {
+            confirmationOutcome = OUTCOMES.RESOLVED;
+            resolve(receipt);
+            const anyPromi = promi;
+            anyPromi.off();
           });
-
-          const desiredConf = confirmations || this.defaultConfirmations;
-          if (desiredConf) {
-            promi.on('confirmation', (confNumber, receipt) => {
-              if (confNumber >= desiredConf) {
-                if (confirmationOutcome === OUTCOMES.INITIAL) {
-                  confirmationOutcome = OUTCOMES.RESOLVED;
-                  resolve(receipt);
-                  const anyPromi = promi ;
-                  anyPromi.off();
-                }
-              }
-            });
-          } else {
-            promi.on('receipt', (receipt) => {
-              confirmationOutcome = OUTCOMES.RESOLVED;
-              resolve(receipt);
-              const anyPromi = promi ;
-              anyPromi.off();
-            });
-          }
-        },
-      );
+        }
+      });
     }
 
     if (t === Types.ConfirmationType.Hash) {
       const transactionHash = await hashPromise;
       if (this.notifier) {
-          this.notifier.hash(transactionHash)
+        this.notifier.hash(transactionHash);
       }
       return { transactionHash };
     }
@@ -376,7 +371,7 @@ export class Contracts {
 
     const transactionHash = await hashPromise;
     if (this.notifier) {
-        this.notifier.hash(transactionHash)
+      this.notifier.hash(transactionHash);
     }
     return {
       transactionHash,
@@ -384,30 +379,21 @@ export class Contracts {
     };
   }
 
-  async callConstantContractFunction(
-    method,
-    options
-  ) {
+  async callConstantContractFunction(method, options) {
     const m2 = method;
     const { blockNumber, ...txOptions } = options;
     return m2.call(txOptions, blockNumber);
   }
 
   async setGasLimit() {
-    const block = await this.web3.eth.getBlock('latest');
+    const block = await this.web3.eth.getBlock("latest");
     this.blockGasLimit = block.gasLimit - SUBTRACT_GAS_LIMIT;
   }
 
-  setContractProvider(
-    contract,
-    contractJson,
-    provider,
-    networkId,
-  ){
+  setContractProvider(contract, contractJson, provider, networkId) {
     contract.setProvider(provider);
     try {
-      contract.options.address = contractJson.networks[networkId]
-        && contractJson.networks[networkId].address;
+      contract.options.address = contractJson.networks[networkId] && contractJson.networks[networkId].address;
     } catch (error) {
       // console.log(error)
     }
