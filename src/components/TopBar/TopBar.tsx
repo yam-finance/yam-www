@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
-import { Container, Spacer, useTheme } from 'react-neu'
-import styled from 'styled-components'
+import { Container, Spacer, useTheme } from "react-neu";
+import styled from "styled-components";
 
-import Logo from 'components/Logo'
-import MenuIcon from 'components/icons/Menu'
+import Logo from "components/Logo";
+import MenuIcon from "components/icons/Menu";
 
-import DarkModeSwitch from '../DarkModeSwitch'
-import Nav from './components/Nav'
-import WalletButton from './components/WalletButton'
+import DarkModeSwitch from "../DarkModeSwitch";
+import Nav from "./components/Nav";
+import WalletButton from "./components/WalletButton";
 
 interface TopBarProps {
-  onPresentMobileMenu: () => void
+  onPresentMobileMenu: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
@@ -38,26 +38,26 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         </StyledTopBarInner>
       </Container>
     </StyledTopBar>
-  )
-}
+  );
+};
 
 const StyledLogoWrapper = styled.div`
   width: 156px;
   @media (max-width: 400px) {
     width: auto;
   }
-`
+`;
 
-const StyledTopBar = styled.div``
+const StyledTopBar = styled.div``;
 
 const StyledTopBarInner = styled.div`
   align-items: center;
   display: flex;
   height: 72px;
   justify-content: space-between;
-  max-width: ${props => props.theme.siteWidth}px;
+  max-width: ${(props) => props.theme.siteWidth}px;
   width: 100%;
-`
+`;
 
 const StyledNavWrapper = styled.div`
   display: flex;
@@ -66,7 +66,7 @@ const StyledNavWrapper = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
-`
+`;
 
 const StyledAccountButtonWrapper = styled.div`
   align-items: center;
@@ -77,7 +77,7 @@ const StyledAccountButtonWrapper = styled.div`
     justify-content: center;
     width: auto;
   }
-`
+`;
 
 const StyledMenuButton = styled.button`
   background: none;
@@ -93,12 +93,12 @@ const StyledMenuButton = styled.button`
     justify-content: center;
     width: 44px;
   }
-`
+`;
 
 const StyledTopBarDarkModeSwitch = styled.div`
   @media (max-width: 1130px) {
     display: none;
   }
-`
+`;
 
-export default TopBar
+export default TopBar;

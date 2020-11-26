@@ -1,97 +1,65 @@
-import React, { useCallback, useMemo, useState, Fragment } from 'react'
+import React, { useCallback, useMemo, useState, Fragment } from "react";
 
-import BigNumber from 'bignumber.js'
-import {
-  Button,
-  Notice,
-  NoticeContent,
-  NoticeIcon,
-  Spacer,
-  Surface
-} from 'react-neu'
+import BigNumber from "bignumber.js";
+import { Button, Notice, NoticeContent, NoticeIcon, Spacer, Surface } from "react-neu";
 
-import SeparatorGrid from "./SeparatorWithCSS"
-import Box from "./BoxWithDisplay"
+import SeparatorGrid from "./SeparatorWithCSS";
+import Box from "./BoxWithDisplay";
 
-import useGovernance from 'hooks/useGovernance'
+import useGovernance from "hooks/useGovernance";
 
-import styled from 'styled-components'
-import { Proposal, ProposalVotingPower } from "../../../contexts/Governance/types"
-import VoteModal from './VoteModal'
+import styled from "styled-components";
+import { Proposal, ProposalVotingPower } from "../../../contexts/Governance/types";
+import VoteModal from "./VoteModal";
 
 interface ProposalProps {
-  prop: Proposal,
-  onVote: (proposal: number, side: boolean) => void,
-  onRegister: () => void,
+  prop: Proposal;
+  onVote: (proposal: number, side: boolean) => void;
+  onRegister: () => void;
 }
 
-export const ProposalEntry: React.FC<ProposalProps> = ({
-  prop,
-  onVote,
-  onRegister
-}) => {
+export const ProposalEntry: React.FC<ProposalProps> = ({ prop, onVote, onRegister }) => {
   const { isRegistered, isRegistering, isVoting, votingPowers, currentPower } = useGovernance();
 
-  const [voteModalIsOpen, setVoteModalIsOpen] = useState(false)
+  const [voteModalIsOpen, setVoteModalIsOpen] = useState(false);
 
   const handleDismissVoteModal = useCallback(() => {
-    setVoteModalIsOpen(false)
-  }, [setVoteModalIsOpen])
+    setVoteModalIsOpen(false);
+  }, [setVoteModalIsOpen]);
 
-  const handleOnVote = useCallback((proposal: number, side: boolean, ) => {
-    onVote(proposal, side)
-  }, [onVote])
+  const handleOnVote = useCallback(
+    (proposal: number, side: boolean) => {
+      onVote(proposal, side);
+    },
+    [onVote]
+  );
 
   const handleOnRegister = useCallback(() => {
-    onRegister()
-  }, [onRegister])
+    onRegister();
+  }, [onRegister]);
 
   const handleVoteClick = useCallback(() => {
-    setVoteModalIsOpen(true)
-  }, [setVoteModalIsOpen])
+    setVoteModalIsOpen(true);
+  }, [setVoteModalIsOpen]);
 
   return (
     <Fragment>
-         <Box
-           display="grid"
-           alignItems="center"
-           padding={4}
-           row
-         >
-          <StyledProposalContentInner>
-            <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause") : ""}</StyledDescription>
-            <SeparatorGrid orientation={'vertical'} stretch={true} gridArea={'spacer1'}/>
-            <StyledState>{prop.state}</StyledState>
-            <SeparatorGrid orientation={'vertical'} stretch={true} gridArea={'spacer2'}/>
-            <StyledButton>
-              { (  prop.state != "Active" ) && (<Button
-                size="sm"
-                onClick={handleVoteClick}
-                text="View"
-                variant="tertiary"
-               />)
-               || (prop.state == "Active") && (
-                   <Button
-                   size="sm"
-                   text="Vote"
-                   onClick={handleVoteClick}
-                  />
-                )
-              }
-            </StyledButton>
-          </StyledProposalContentInner>
-         </Box>
-         <VoteModal
-            key={prop.id.toString()}
-            prop={prop}
-            isOpen={voteModalIsOpen}
-            onDismiss={handleDismissVoteModal}
-            onVote={handleOnVote}
-          />
-   </Fragment>
-  )
-}
-
+      <Box display="grid" alignItems="center" padding={4} row>
+        <StyledProposalContentInner>
+          <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause") : ""}</StyledDescription>
+          <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
+          <StyledState>{prop.state}</StyledState>
+          <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+          <StyledButton>
+            {(prop.state != "Active" && <Button size="sm" onClick={handleVoteClick} text="View" variant="tertiary" />) ||
+              (prop.state == "Active" && <Button size="sm" text="Vote" onClick={handleVoteClick} />)}
+          </StyledButton>
+        </StyledProposalContentInner>
+      </Box>
+      <VoteModal key={prop.id.toString()} prop={prop} isOpen={voteModalIsOpen} onDismiss={handleDismissVoteModal} onVote={handleOnVote} />
+    </Fragment>
+  );
+};
 
 export const StyledButton = styled.div`
   display: grid;
@@ -102,7 +70,7 @@ export const StyledButton = styled.div`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-`
+`;
 
 export const StyledDescription = styled.span`
   display: grid;
@@ -111,7 +79,7 @@ export const StyledDescription = styled.span`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-`
+`;
 
 export const StyledState = styled.span`
   margin-left: 5px;
@@ -124,7 +92,7 @@ export const StyledState = styled.span`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-`
+`;
 
 export const StyledProposalContentInner = styled.div`
   align-items: center;
@@ -135,4 +103,4 @@ export const StyledProposalContentInner = styled.div`
   @media (max-width: 768px) {
     flex-flow: column nowrap;
   }
-`
+`;

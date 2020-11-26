@@ -1,1 +1,1 @@
-export { default } from './Governance'
+export { default } from "./Governance";

@@ -1,14 +1,14 @@
-const REQUIRE_MSG = 'Returned error: VM Exception while processing transaction: revert';
-const ASSERT_MSG = 'Returned error: VM Exception while processing transaction: invalid opcode';
+const REQUIRE_MSG = "Returned error: VM Exception while processing transaction: revert";
+const ASSERT_MSG = "Returned error: VM Exception while processing transaction: invalid opcode";
 
 // For solidity function calls that violate require()
 export async function expectThrow(promise, reason) {
   try {
     await promise;
-    throw new Error('Did not throw');
+    throw new Error("Did not throw");
   } catch (e) {
     assertCertainError(e, REQUIRE_MSG);
-    if (reason && process.env.COVERAGE !== 'true') {
+    if (reason && process.env.COVERAGE !== "true") {
       assertCertainError(e, `${REQUIRE_MSG} ${reason}`);
     }
   }
@@ -18,7 +18,7 @@ export async function expectThrow(promise, reason) {
 export async function expectAssertFailure(promise) {
   try {
     await promise;
-    throw new Error('Did not throw');
+    throw new Error("Did not throw");
   } catch (e) {
     assertCertainError(e, ASSERT_MSG);
   }

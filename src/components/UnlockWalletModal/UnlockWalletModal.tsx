@@ -1,44 +1,32 @@
-import React, { useCallback, useEffect } from 'react'
-import {
-  Box,
-  Button,
-  Modal,
-  ModalActions,
-  ModalContent,
-  ModalProps,
-  ModalTitle,
-  Spacer,
-} from 'react-neu'
-import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import React, { useCallback, useEffect } from "react";
+import { Box, Button, Modal, ModalActions, ModalContent, ModalProps, ModalTitle, Spacer } from "react-neu";
+import styled from "styled-components";
+import { useWallet } from "use-wallet";
 
-import metamaskLogo from 'assets/metamask-fox.svg'
-import walletConnectLogo from 'assets/wallet-connect.svg'
+import metamaskLogo from "assets/metamask-fox.svg";
+import walletConnectLogo from "assets/wallet-connect.svg";
 
-import WalletProviderCard from './components/WalletProviderCard'
+import WalletProviderCard from "./components/WalletProviderCard";
 
-const UnlockWalletModal: React.FC<ModalProps> = ({
-  isOpen,
-  onDismiss,
-}) => {
-  const { account, connector, connect } = useWallet()
+const UnlockWalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
+  const { account, connector, connect } = useWallet();
 
   const handleConnectMetamask = useCallback(() => {
-    connect('injected')
-  }, [connect])
+    connect("injected");
+  }, [connect]);
 
   const handleConnectWalletConnect = useCallback(() => {
-    connect('walletconnect')
-  }, [connect])
+    connect("walletconnect");
+  }, [connect]);
 
   useEffect(() => {
     if (account) {
-      onDismiss && onDismiss()
+      onDismiss && onDismiss();
     }
-    if(connector) {
+    if (connector) {
       localStorage.setItem("walletProvider", connector);
     }
-  }, [account, onDismiss])
+  }, [account, onDismiss]);
 
   return (
     <Modal isOpen={isOpen}>
@@ -46,11 +34,7 @@ const UnlockWalletModal: React.FC<ModalProps> = ({
       <ModalContent>
         <StyledWalletsWrapper>
           <Box flex={1}>
-            <WalletProviderCard
-              icon={<img src={metamaskLogo} style={{ height: 32 }} />}
-              name="Metamask"
-              onSelect={handleConnectMetamask}
-            />
+            <WalletProviderCard icon={<img src={metamaskLogo} style={{ height: 32 }} />} name="Metamask" onSelect={handleConnectMetamask} />
           </Box>
           <Spacer />
           <Box flex={1}>
@@ -68,8 +52,8 @@ const UnlockWalletModal: React.FC<ModalProps> = ({
         </Box>
       </ModalActions>
     </Modal>
-  )
-}
+  );
+};
 
 const StyledWalletsWrapper = styled.div`
   display: flex;
@@ -78,6 +62,6 @@ const StyledWalletsWrapper = styled.div`
     flex-direction: column;
     flex-wrap: none;
   }
-`
+`;
 
-export default UnlockWalletModal
+export default UnlockWalletModal;

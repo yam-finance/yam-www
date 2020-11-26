@@ -1,9 +1,9 @@
-import { createContext } from 'react'
+import { createContext } from "react";
 
 interface PricesContextValues {
-  yamTwap?: number
+  yamTwap?: number;
 }
 
-const PricesContext = createContext<PricesContextValues>({})
+const PricesContext = createContext<PricesContextValues>({});
 
-export default PricesContext
+export default PricesContext;

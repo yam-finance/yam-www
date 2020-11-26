@@ -1,30 +1,25 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from "react";
 
-import { Box, Emoji, Spacer, useTheme } from 'react-neu'
-import styled from 'styled-components'
+import { Box, Emoji, Spacer, useTheme } from "react-neu";
+import styled from "styled-components";
 
 interface QuestionProps {
-  active?: boolean,
-  question: string,
-  slug: string,
+  active?: boolean;
+  question: string;
+  slug: string;
 }
 
-const Question: React.FC<QuestionProps> = ({
-  active,
-  children,
-  question,
-  slug,
-}) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const l = React.Children.toArray(children).length
+const Question: React.FC<QuestionProps> = ({ active, children, question, slug }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const l = React.Children.toArray(children).length;
 
   useEffect(() => {
     if (active) {
       if (ref.current !== null) {
-        ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
-  }, [active])
+  }, [active]);
 
   return (
     <div ref={ref}>
@@ -47,17 +42,17 @@ const Question: React.FC<QuestionProps> = ({
         ))}
       </Box>
     </div>
-  )
-}
+  );
+};
 
 interface StyledQuestionLinkProps {
-  active?: boolean
+  active?: boolean;
 }
 const StyledQuestionLink = styled.a<StyledQuestionLinkProps>`
-  color: ${props => props.active ? props.theme.colors.primary.main : props.theme.textColor};
+  color: ${(props) => (props.active ? props.theme.colors.primary.main : props.theme.textColor)};
   display: block;
   font-size: 24px;
   font-weight: 700;
-`
+`;
 
-export default Question
+export default Question;

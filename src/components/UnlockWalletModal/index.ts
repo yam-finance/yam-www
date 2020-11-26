@@ -1,1 +1,1 @@
-export { default } from './UnlockWalletModal'
+export { default } from "./UnlockWalletModal";

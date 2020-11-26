@@ -1,9 +1,9 @@
-import { createContext } from 'react'
+import { createContext } from "react";
 
-import { ContextValues } from './types'
+import { ContextValues } from "./types";
 
 const Context = createContext<ContextValues>({
   onClaim: () => {},
-})
+});
 
-export default Context
+export default Context;

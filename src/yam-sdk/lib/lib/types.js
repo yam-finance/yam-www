@@ -3,4 +3,4 @@ export const ConfirmationType = {
   Confirmed: 1,
   Both: 2,
   Simulate: 3,
-}
+};

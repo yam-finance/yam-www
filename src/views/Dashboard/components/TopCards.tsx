@@ -92,10 +92,7 @@ const TopCards: React.FC = () => {
   const assetIndexLP = totalIndexLPValue ? totalIndexLPValue : 0;
 
   const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP;
-  const treasuryValue =
-    typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0
-      ? "~$" + numeral(treasuryAssets).format("0.00a")
-      : "--";
+  const treasuryValue = typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--";
 
   const col = [
     [

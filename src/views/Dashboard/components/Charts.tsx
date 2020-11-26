@@ -3,7 +3,18 @@ import useYam from "hooks/useYam";
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Box, Button, Card, CardActions, CardContent, CardTitle, Container, Spacer, useTheme } from "react-neu";
 import { useWallet } from "use-wallet";
-import { treasuryEvents, getDPIPrices, scalingFactors, getDPIPrice, getCurrentBlock, getWETHPrice, getYUSDPrice, getINDEXCOOPPrice, getIndexCoopLP, getIndexCoopLPRewards } from "yam-sdk/utils";
+import {
+  treasuryEvents,
+  getDPIPrices,
+  scalingFactors,
+  getDPIPrice,
+  getCurrentBlock,
+  getWETHPrice,
+  getYUSDPrice,
+  getINDEXCOOPPrice,
+  getIndexCoopLP,
+  getIndexCoopLPRewards,
+} from "yam-sdk/utils";
 import { OptionInterface, SeriesInterface, TimeSeries } from "types/Charts";
 import YamLoader from "components/YamLoader";
 import Chart from "react-apexcharts";
@@ -30,17 +41,10 @@ const Charts: React.FC = () => {
   const defaultRebaseRange = 14;
 
   const fetchTreasury = useCallback(async () => {
-    if(!yam) {
-      return
+    if (!yam) {
+      return;
     }
-    const {
-      reservesAdded,
-      yamsSold,
-      yamsFromReserves,
-      yamsToReserves,
-      blockNumbers,
-      blockTimes,
-    } = await treasuryEvents(yam);
+    const { reservesAdded, yamsSold, yamsFromReserves, yamsToReserves, blockNumbers, blockTimes } = await treasuryEvents(yam);
     setTreasuryValues({
       reservesAdded,
       yamsSold,
@@ -53,7 +57,7 @@ const Charts: React.FC = () => {
 
   useEffect(() => {
     if (status !== "connected" || !yam || !treasuryValues) {
-      return
+      return;
     }
     fetchScaling();
     fetchReserves();
@@ -78,7 +82,7 @@ const Charts: React.FC = () => {
     const series: SeriesInterface[] = [
       {
         name: "Scaling Factor",
-        data: data ? data.slice(factors.length - (defaultRebaseRange * 2)) : [],
+        data: data ? data.slice(factors.length - defaultRebaseRange * 2) : [],
       },
     ];
     let theme;
@@ -183,7 +187,7 @@ const Charts: React.FC = () => {
     const indexPrice = await getINDEXCOOPPrice();
     const DPIBalance = totalDPIValue;
     // const indexCoopLP = await getIndexCoopLP(yam);
-    const indexCoopLPRewards = await getIndexCoopLPRewards(yam) || 0;
+    const indexCoopLPRewards = (await getIndexCoopLPRewards(yam)) || 0;
 
     const reservesHistory = [
       {
@@ -207,7 +211,7 @@ const Charts: React.FC = () => {
       {
         info: "ETH Purchase",
         block: 11244494,
-        yUSD: 1.18 * (1896995),
+        yUSD: 1.18 * 1896995,
         DPI: 3351 * 80,
         WETH: 555 * 464,
         INDEXLP: 0,
@@ -216,10 +220,10 @@ const Charts: React.FC = () => {
       {
         info: "INDEX Pool",
         block: 11289910,
-        yUSD: 1.19 * (1896995),
+        yUSD: 1.19 * 1896995,
         DPI: 434 * 104,
         WETH: 201 * 475,
-        INDEXLP: (2929 * 102) + (640 * 464),
+        INDEXLP: 2929 * 102 + 640 * 464,
         INDEX: 36 * 11.6,
       },
       {
@@ -228,10 +232,10 @@ const Charts: React.FC = () => {
         yUSD: yusdPrice * totalYUsdValue,
         DPI: DPIBalance * dpiPrice,
         WETH: totalWETHValue * wethPrice,
-        INDEXLP: (2929 * 102) + (640 * 464),
+        INDEXLP: 2929 * 102 + 640 * 464,
         INDEX: indexCoopLPRewards * indexPrice,
       },
-    ]
+    ];
 
     let now = Math.floor(Date.now() / 1000);
     let reserves: TimeSeries[] = [];
@@ -251,10 +255,10 @@ const Charts: React.FC = () => {
       //   reserves.push(tmp);
       // } else {
       // }
-      if(
+      if (
         treasuryValues.blockNumbers[i] <= 11133885
         // && treasuryValues.blockNumbers[i] >= currentBlock
-      ){
+      ) {
         const tmp: TimeSeries = {
           x: treasuryValues.blockNumbers[i],
           y: running * yusdPrice,
@@ -272,7 +276,7 @@ const Charts: React.FC = () => {
           y: 0,
         };
         reservesETH.push(tmpETH);
-        
+
         const tmpINDEXLP: TimeSeries = {
           x: treasuryValues.blockNumbers[i],
           y: 0,
@@ -286,7 +290,7 @@ const Charts: React.FC = () => {
         reservesINDEX.push(tmpINDEX);
       }
     }
-    
+
     for (let i = 0; i < reservesHistory.length; i++) {
       reserves.push({
         x: reservesHistory[i].block,
@@ -770,41 +774,37 @@ const Charts: React.FC = () => {
   }, [setOptsMinted, setSeriesMinted, darkMode, status, yam, treasuryValues]);
 
   useEffect(() => {
-    fetchTreasury()
-    let refreshInterval = setInterval(() => fetchTreasury(), 100000)
+    fetchTreasury();
+    let refreshInterval = setInterval(() => fetchTreasury(), 100000);
     // console.log("treasuryValues", treasuryValues);
-    return () => clearInterval(refreshInterval)
-  }, [fetchTreasury])
+    return () => clearInterval(refreshInterval);
+  }, [fetchTreasury]);
 
   const handleDismissUnlockModal = useCallback(() => {
-    setUnlockModalIsOpen(false)
-  }, [setUnlockModalIsOpen])
+    setUnlockModalIsOpen(false);
+  }, [setUnlockModalIsOpen]);
 
   const handleUnlockWalletClick = useCallback(() => {
-    setUnlockModalIsOpen(true)
-  }, [setUnlockModalIsOpen])
+    setUnlockModalIsOpen(true);
+  }, [setUnlockModalIsOpen]);
 
   const DisplayChartScaling = useMemo(() => {
     if (seriesScaling) {
       return (
         <>
           <CardContent>
-            <Chart
-              options={optsScaling ? optsScaling : {}}
-              series={seriesScaling ? seriesScaling : []}
-              type="line"
-              height={300}
-            />
+            <Chart options={optsScaling ? optsScaling : {}} series={seriesScaling ? seriesScaling : []} type="line" height={300} />
           </CardContent>
         </>
       );
     } else {
-      return <><YamLoader space={320}></YamLoader></>;
+      return (
+        <>
+          <YamLoader space={320}></YamLoader>
+        </>
+      );
     }
-  }, [
-    optsScaling,
-    optsScaling,
-  ]);
+  }, [optsScaling, optsScaling]);
 
   const DisplayChartReserves = useMemo(() => {
     if (seriesReserves) {
@@ -812,23 +812,19 @@ const Charts: React.FC = () => {
         <>
           <CardContent>
             <Split>
-              <Chart
-                options={optsReserves ? optsReserves : {}}
-                series={seriesReserves ? seriesReserves : []}
-                type="area"
-                height={300}
-              />
+              <Chart options={optsReserves ? optsReserves : {}} series={seriesReserves ? seriesReserves : []} type="area" height={300} />
             </Split>
           </CardContent>
         </>
       );
     } else {
-      return <><YamLoader space={320}></YamLoader></>;
+      return (
+        <>
+          <YamLoader space={320}></YamLoader>
+        </>
+      );
     }
-  }, [
-    optsReserves,
-    seriesReserves,
-  ]);
+  }, [optsReserves, seriesReserves]);
 
   const DisplayChartSold = useMemo(() => {
     if (seriesSold) {
@@ -842,12 +838,13 @@ const Charts: React.FC = () => {
         </>
       );
     } else {
-      return <><YamLoader space={200}></YamLoader></>;
+      return (
+        <>
+          <YamLoader space={200}></YamLoader>
+        </>
+      );
     }
-  }, [
-    optsSold,
-    seriesSold,
-  ]);
+  }, [optsSold, seriesSold]);
 
   const DisplayChartMint = useMemo(() => {
     if (seriesMinted) {
@@ -855,23 +852,19 @@ const Charts: React.FC = () => {
         <>
           <CardContent>
             <Split>
-              <Chart
-                options={optsMinted ? optsMinted : {}}
-                series={seriesMinted ? seriesMinted : []}
-                type="bar"
-                height={200}
-              />
+              <Chart options={optsMinted ? optsMinted : {}} series={seriesMinted ? seriesMinted : []} type="bar" height={200} />
             </Split>
           </CardContent>
         </>
       );
     } else {
-      return <><YamLoader space={200}></YamLoader></>;
+      return (
+        <>
+          <YamLoader space={200}></YamLoader>
+        </>
+      );
     }
-  }, [
-    optsMinted,
-    seriesMinted,
-  ]);
+  }, [optsMinted, seriesMinted]);
 
   const DisplayCharts = useMemo(() => {
     if (status === "connected") {

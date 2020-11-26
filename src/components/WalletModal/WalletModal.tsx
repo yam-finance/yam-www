@@ -1,48 +1,32 @@
-import React, { useCallback, useState, useEffect } from "react"
+import React, { useCallback, useState, useEffect } from "react";
 
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import BigNumber from "bignumber.js";
+import styled from "styled-components";
+import { useWallet } from "use-wallet";
 
-import numeral from 'numeral'
-import {
-  Box,
-  Button,
-  Modal,
-  ModalActions,
-  ModalContent,
-  ModalProps,
-  ModalTitle,
-  Separator,
-  Spacer
-} from 'react-neu'
+import numeral from "numeral";
+import { Box, Button, Modal, ModalActions, ModalContent, ModalProps, ModalTitle, Separator, Spacer } from "react-neu";
 
-import FancyValue from 'components/FancyValue'
-import Split from 'components/Split'
+import FancyValue from "components/FancyValue";
+import Split from "components/Split";
 
-import useBalances from 'hooks/useBalances'
-import useVesting from 'hooks/useVesting'
+import useBalances from "hooks/useBalances";
+import useVesting from "hooks/useVesting";
 
 const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
   const [walletModalIsOpen, setWalletModalIsOpen] = useState(false);
   const { reset } = useWallet();
-  const {
-    yamV2Balance,
-    yamV3Balance
-  } = useBalances()
+  const { yamV2Balance, yamV3Balance } = useBalances();
 
-  const {
-    vestedDelegatorRewardBalance,
-    vestedMigratedBalance,
-  } = useVesting()
+  const { vestedDelegatorRewardBalance, vestedMigratedBalance } = useVesting();
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
-      return numeral(value).format('0.00a')
+      return numeral(value).format("0.00a");
     } else {
-      return '--'
+      return "--";
     }
-  }, [])
+  }, []);
 
   const handleSignOut = useCallback(() => {
     localStorage.removeItem("account");
@@ -64,15 +48,15 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
       <ModalContent>
         <Split>
           <Box row>
-            <FancyValue
-              icon="🍠"
-              label="YAM balance"
-              value={getDisplayBalance(yamV3Balance)}
-            />
+            <FancyValue icon="🍠" label="YAM balance" value={getDisplayBalance(yamV3Balance)} />
           </Box>
           <Box row>
             <FancyValue
-              icon={<span role="img" style={{ opacity: 0.5 }} >🍠</span>}
+              icon={
+                <span role="img" style={{ opacity: 0.5 }}>
+                  🍠
+                </span>
+              }
               label="YAMV2 balance"
               value={getDisplayBalance(yamV2Balance)}
             />
@@ -83,18 +67,10 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
         <Spacer />
         <Split>
           <Box row>
-            <FancyValue
-              icon="🎁"
-              label="Vested YAM (Delegator)"
-              value={getDisplayBalance(vestedDelegatorRewardBalance)}
-            />
+            <FancyValue icon="🎁" label="Vested YAM (Delegator)" value={getDisplayBalance(vestedDelegatorRewardBalance)} />
           </Box>
           <Box row>
-            <FancyValue
-              icon="🦋"
-              label="Vested YAM (Migrated)"
-              value={getDisplayBalance(vestedMigratedBalance)}
-            />
+            <FancyValue icon="🦋" label="Vested YAM (Migrated)" value={getDisplayBalance(vestedMigratedBalance)} />
           </Box>
         </Split>
         <Spacer />
@@ -105,7 +81,7 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
         <Button onClick={handleSignOut} text="Sign Out" />
       </ModalActions>
     </Modal>
-  )
-}
+  );
+};
 
-export default WalletModal
+export default WalletModal;

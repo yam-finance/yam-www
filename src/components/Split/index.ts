@@ -1,1 +1,1 @@
-export { default } from './Split'
+export { default } from "./Split";

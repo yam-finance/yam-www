@@ -1,18 +1,18 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from "react";
 
-import { Container, Spacer, useTheme } from 'react-neu'
-import styled from 'styled-components'
+import { Container, Spacer, useTheme } from "react-neu";
+import styled from "styled-components";
 
 interface PageHeaderProps {
-  icon: React.ReactNode,
-  title?: string,
-  titleSize?: number,
-  titleColor?: string,
-  titleWeight?: string,
-  className?: string,
-  subtitle?: string,
-  subtitleWeight?: string,
-  subtitleOpacity?: string,
+  icon: React.ReactNode;
+  title?: string;
+  titleSize?: number;
+  titleColor?: string;
+  titleWeight?: string;
+  className?: string;
+  subtitle?: string;
+  subtitleWeight?: string;
+  subtitleOpacity?: string;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
@@ -26,13 +26,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   subtitleWeight,
   subtitleOpacity,
 }) => {
-
   const { darkMode } = useTheme();
 
   const DisplaySubtitle = useMemo(() => {
     if (subtitle) {
       return (
-        <StyledSubtitle subtitleWeight={subtitleWeight} subtitleOpacity={subtitleOpacity}>{subtitle}</StyledSubtitle>
+        <StyledSubtitle subtitleWeight={subtitleWeight} subtitleOpacity={subtitleOpacity}>
+          {subtitle}
+        </StyledSubtitle>
       );
     }
   }, [subtitle]);
@@ -74,37 +75,38 @@ const StyledPageHeader = styled.div<StyledPageHeaderProps>`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding-bottom: ${props => (props.subtitle ? props.theme.spacing[6] : "20")}px;
+  padding-bottom: ${(props) => (props.subtitle ? props.theme.spacing[6] : "20")}px;
   margin: 0 auto;
-`
+`;
 
 const StyledIcon = styled.span.attrs({
-  role: 'img'
+  role: "img",
 })`
   font-size: 96px;
   height: 96px;
   line-height: 96px;
   text-align: center;
   min-width: 96px;
-`
+`;
 
 const StyledTitle = styled.h1<StyledTitleProps>`
-  color: ${props => (props.titleColor ? props.titleColor : (!props.darkMode && (props.titleSize && props.titleSize > 60) ? "hsl(339deg 20% 70%)" : props.theme.textColor))};
-  font-size: ${props => (props.titleSize ? props.titleSize.toString() : "36")}px;
-  font-weight: ${props => (props.titleWeight ? props.titleWeight : "700")};
+  color: ${(props) =>
+    props.titleColor ? props.titleColor : !props.darkMode && props.titleSize && props.titleSize > 60 ? "hsl(339deg 20% 70%)" : props.theme.textColor};
+  font-size: ${(props) => (props.titleSize ? props.titleSize.toString() : "36")}px;
+  font-weight: ${(props) => (props.titleWeight ? props.titleWeight : "700")};
   margin: 0;
   padding: 0;
   text-align: center;
-`
+`;
 
 const StyledSubtitle = styled.h3<StyledSubtitleProps>`
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
   font-size: 18px;
-  font-weight: ${props => (props.subtitleWeight ? props.subtitleWeight : "400")};
+  font-weight: ${(props) => (props.subtitleWeight ? props.subtitleWeight : "400")};
   margin: 0;
-  opacity: ${props => (props.subtitleOpacity ? props.subtitleOpacity : "0.66")};
+  opacity: ${(props) => (props.subtitleOpacity ? props.subtitleOpacity : "0.66")};
   padding: 0;
   text-align: center;
-`
+`;
 
-export default PageHeader
+export default PageHeader;

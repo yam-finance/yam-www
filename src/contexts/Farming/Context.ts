@@ -1,6 +1,6 @@
-import { createContext } from 'react'
+import { createContext } from "react";
 
-import { ContextValues } from './types'
+import { ContextValues } from "./types";
 
 const Context = createContext<ContextValues>({
   farmingStartTime: 1600545500000,
@@ -13,6 +13,6 @@ const Context = createContext<ContextValues>({
   onRedeemYAMETH: () => {},
   onStakeYAMETH: () => {},
   onUnstakeYAMETH: () => {},
-})
+});
 
-export default Context
+export default Context;
