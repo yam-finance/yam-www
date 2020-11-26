@@ -1,9 +1,9 @@
-import { useContext } from 'react'
+import { useContext } from "react";
 
-import { MigrationContext } from 'contexts/Migration'
+import { MigrationContext } from "contexts/Migration";
 
 const useMigration = () => {
-  return { ...useContext(MigrationContext) }
-}
+  return { ...useContext(MigrationContext) };
+};
 
-export default useMigration
+export default useMigration;

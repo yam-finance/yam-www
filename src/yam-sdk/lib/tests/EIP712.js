@@ -4,15 +4,15 @@
  *
  * @module sign.signer
  */
-const ethAbi = require('ethereumjs-abi');
-const ethUtil = require('ethereumjs-util');
-const AbiCoder = require('web3-eth-abi');
-const { keccak256 } = require('web3-utils');
+const ethAbi = require("ethereumjs-abi");
+const ethUtil = require("ethereumjs-util");
+const AbiCoder = require("web3-eth-abi");
+const { keccak256 } = require("web3-utils");
 
 const signer = {};
 
 function sliceKeccak256(data) {
-    return keccak256(data).slice(2);
+  return keccak256(data).slice(2);
 }
 
 /**
@@ -27,19 +27,19 @@ function sliceKeccak256(data) {
  * @returns {string} encoded message data string
  */
 signer.encodeMessageData = function encodeMessageData(types, primaryType, message) {
-    return types[primaryType].reduce((acc, { name, type }) => {
-        if (types[type]) {
-            return `${acc}${sliceKeccak256(`0x${encodeMessageData(types, type, message[name])}`)}`;
-        }
-        if (type === 'string' || type === 'bytes') {
-            return `${acc}${sliceKeccak256(message[name])}`;
-        }
-        if (type.includes('[')) {
-            const arrayRawEncoding = signer.encodeArray(type, message[name]);
-            return `${acc}${arrayRawEncoding}`;
-        }
-        return `${acc}${AbiCoder.encodeParameters([type], [message[name]]).slice(2)}`;
-    }, sliceKeccak256(signer.encodeStruct(primaryType, types)));
+  return types[primaryType].reduce((acc, { name, type }) => {
+    if (types[type]) {
+      return `${acc}${sliceKeccak256(`0x${encodeMessageData(types, type, message[name])}`)}`;
+    }
+    if (type === "string" || type === "bytes") {
+      return `${acc}${sliceKeccak256(message[name])}`;
+    }
+    if (type.includes("[")) {
+      const arrayRawEncoding = signer.encodeArray(type, message[name]);
+      return `${acc}${arrayRawEncoding}`;
+    }
+    return `${acc}${AbiCoder.encodeParameters([type], [message[name]]).slice(2)}`;
+  }, sliceKeccak256(signer.encodeStruct(primaryType, types)));
 };
 
 /**
@@ -51,13 +51,13 @@ signer.encodeMessageData = function encodeMessageData(types, primaryType, messag
  * @param {Array} data - array data to be encoded
  */
 signer.encodeArray = function encodeArray(type, data) {
-    const arrayElementAtomicType = type.slice(0, type.lastIndexOf('['));
-    const typeValuePairs = data.map((item) => [arrayElementAtomicType, item]);
+  const arrayElementAtomicType = type.slice(0, type.lastIndexOf("["));
+  const typeValuePairs = data.map((item) => [arrayElementAtomicType, item]);
 
-    const arrayElementTypes = typeValuePairs.map(([individualType]) => individualType);
-    const arrayValueTypes = typeValuePairs.map(([, value]) => value);
+  const arrayElementTypes = typeValuePairs.map(([individualType]) => individualType);
+  const arrayValueTypes = typeValuePairs.map(([, value]) => value);
 
-    return ethUtil.sha3(ethAbi.rawEncode(arrayElementTypes, arrayValueTypes)).toString('hex');
+  return ethUtil.sha3(ethAbi.rawEncode(arrayElementTypes, arrayValueTypes)).toString("hex");
 };
 
 /**
@@ -71,26 +71,22 @@ signer.encodeArray = function encodeArray(type, data) {
  * @returns {string} encoded type string
  */
 signer.encodeStruct = (primaryType, types) => {
-    const findTypes = (type) =>
-        [type].concat(
-            types[type].reduce((acc, { type: typeKey }) => {
-                if (types[typeKey] && acc.indexOf(typeKey) === -1) {
-                    return [...acc, ...findTypes(typeKey)];
-                }
-                return acc;
-            }, []),
-        );
-    return [primaryType]
-        .concat(
-            findTypes(primaryType)
-                .sort((a, b) => a.localeCompare(b))
-                .filter((a) => a !== primaryType),
-        )
-        .reduce(
-            (acc, key) =>
-                `${acc}${key}(${types[key].reduce((iacc, { name, type }) => `${iacc}${type} ${name},`, '').slice(0, -1)})`,
-            '',
-        );
+  const findTypes = (type) =>
+    [type].concat(
+      types[type].reduce((acc, { type: typeKey }) => {
+        if (types[typeKey] && acc.indexOf(typeKey) === -1) {
+          return [...acc, ...findTypes(typeKey)];
+        }
+        return acc;
+      }, [])
+    );
+  return [primaryType]
+    .concat(
+      findTypes(primaryType)
+        .sort((a, b) => a.localeCompare(b))
+        .filter((a) => a !== primaryType)
+    )
+    .reduce((acc, key) => `${acc}${key}(${types[key].reduce((iacc, { name, type }) => `${iacc}${type} ${name},`, "").slice(0, -1)})`, "");
 };
 
 /**
@@ -102,9 +98,9 @@ signer.encodeStruct = (primaryType, types) => {
  * @returns {string} encoded message string
  */
 signer.encodeTypedData = (typedData) => {
-    const domainHash = sliceKeccak256(`0x${signer.encodeMessageData(typedData.types, 'EIP712Domain', typedData.domain)}`);
-    const structHash = sliceKeccak256(`0x${signer.encodeMessageData(typedData.types, typedData.primaryType, typedData.message)}`);
-    return keccak256(`0x1901${domainHash}${structHash}`);
+  const domainHash = sliceKeccak256(`0x${signer.encodeMessageData(typedData.types, "EIP712Domain", typedData.domain)}`);
+  const structHash = sliceKeccak256(`0x${signer.encodeMessageData(typedData.types, typedData.primaryType, typedData.message)}`);
+  return keccak256(`0x1901${domainHash}${structHash}`);
 };
 
 module.exports = signer;

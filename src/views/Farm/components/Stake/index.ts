@@ -1,1 +1,1 @@
-export { default } from './Stake'
+export { default } from "./Stake";

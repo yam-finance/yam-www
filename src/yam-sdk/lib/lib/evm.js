@@ -16,20 +16,15 @@
 
 */
 
-
-const REQUIRE_MSG = 'Returned error: VM Exception while processing transaction: revert';
-const ASSERT_MSG = 'Returned error: VM Exception while processing transaction: invalid opcode';
+const REQUIRE_MSG = "Returned error: VM Exception while processing transaction: revert";
+const ASSERT_MSG = "Returned error: VM Exception while processing transaction: invalid opcode";
 
 export class EVM {
-  constructor(
-    provider,
-  ) {
+  constructor(provider) {
     this.provider = provider;
   }
 
-  setProvider(
-    provider,
-  ){
+  setProvider(provider) {
     this.provider = provider;
   }
 
@@ -39,7 +34,7 @@ export class EVM {
    * @param provider a valid web3 provider
    * @returns null
    */
-   async resetEVM(resetSnapshotId = '0x1') {
+  async resetEVM(resetSnapshotId = "0x1") {
     const id = await this.snapshot();
 
     if (id !== resetSnapshotId) {
@@ -47,45 +42,45 @@ export class EVM {
     }
   }
 
-   async reset(id) {
+  async reset(id) {
     if (!id) {
-      throw new Error('id must be set');
+      throw new Error("id must be set");
     }
 
-    await this.callJsonrpcMethod('evm_revert', [id]);
+    await this.callJsonrpcMethod("evm_revert", [id]);
 
     return this.snapshot();
   }
 
-   async snapshot() {
-    return this.callJsonrpcMethod('evm_snapshot');
+  async snapshot() {
+    return this.callJsonrpcMethod("evm_snapshot");
   }
 
-   async evmRevert(id) {
-    return this.callJsonrpcMethod('evm_revert', [id]);
+  async evmRevert(id) {
+    return this.callJsonrpcMethod("evm_revert", [id]);
   }
 
-   async stopMining() {
-    return this.callJsonrpcMethod('miner_stop');
+  async stopMining() {
+    return this.callJsonrpcMethod("miner_stop");
   }
 
-   async startMining() {
-    return this.callJsonrpcMethod('miner_start');
+  async startMining() {
+    return this.callJsonrpcMethod("miner_start");
   }
 
-   async mineBlock() {
-    return this.callJsonrpcMethod('evm_mine');
+  async mineBlock() {
+    return this.callJsonrpcMethod("evm_mine");
   }
 
-   async increaseTime(duration) {
-    return this.callJsonrpcMethod('evm_increaseTime', [duration]);
+  async increaseTime(duration) {
+    return this.callJsonrpcMethod("evm_increaseTime", [duration]);
   }
 
-   async callJsonrpcMethod(method, params) {
-    const args= {
+  async callJsonrpcMethod(method, params) {
+    const args = {
       method,
       params,
-      jsonrpc: '2.0',
+      jsonrpc: "2.0",
       id: new Date().getTime(),
     };
 
@@ -94,9 +89,9 @@ export class EVM {
     return response.result;
   }
 
-   async send(args) {
+  async send(args) {
     return new Promise((resolve, reject) => {
-      const callback = (error, val)=> {
+      const callback = (error, val) => {
         if (error) {
           reject(error);
         } else {
@@ -104,10 +99,7 @@ export class EVM {
         }
       };
 
-      this.provider.send(
-        args,
-        callback,
-      );
+      this.provider.send(args, callback);
     });
   }
 
@@ -127,10 +119,10 @@ export class EVM {
   async expectThrow(promise, reason) {
     try {
       await promise;
-      throw new Error('Did not throw');
+      throw new Error("Did not throw");
     } catch (e) {
       this.assertCertainError(e, REQUIRE_MSG);
-      if (reason && process.env.COVERAGE !== 'true') {
+      if (reason && process.env.COVERAGE !== "true") {
         this.assertCertainError(e, `${REQUIRE_MSG} ${reason}`);
       }
     }
@@ -140,12 +132,9 @@ export class EVM {
   async expectAssertFailure(promise) {
     try {
       await promise;
-      throw new Error('Did not throw');
+      throw new Error("Did not throw");
     } catch (e) {
       this.assertCertainError(e, ASSERT_MSG);
     }
   }
-
-
-
 }

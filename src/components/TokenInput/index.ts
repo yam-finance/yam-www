@@ -1,1 +1,1 @@
-export { default } from './TokenInput'
+export { default } from "./TokenInput";

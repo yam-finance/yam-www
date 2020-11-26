@@ -1,64 +1,33 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from "react";
 
-import numeral from 'numeral'
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardIcon
-} from 'react-neu'
+import numeral from "numeral";
+import { Box, Button, Card, CardActions, CardContent, CardIcon } from "react-neu";
 
-import Label from 'components/Label'
-import Value from 'components/Value'
+import Label from "components/Label";
+import Value from "components/Value";
 
-import useVesting from 'hooks/useVesting'
+import useVesting from "hooks/useVesting";
 
 const ClaimCard: React.FC = () => {
-  const { isClaiming, onClaim, vestedBalance } = useVesting()
+  const { isClaiming, onClaim, vestedBalance } = useVesting();
 
   const vestingBalanceDisplayValue = useMemo(() => {
     if (vestedBalance) {
-      return numeral(vestedBalance).format('0.00a')
+      return numeral(vestedBalance).format("0.00a");
     }
-    return '--'
-  }, [vestedBalance])
+    return "--";
+  }, [vestedBalance]);
 
   const ClaimButton = useMemo(() => {
-    const hasVestedYams = vestedBalance && vestedBalance.toNumber() > 0
+    const hasVestedYams = vestedBalance && vestedBalance.toNumber() > 0;
     if (isClaiming) {
-      return (
-        <Button
-          disabled
-          full
-          text="Claiming..."
-          variant="secondary"
-        />
-      )
+      return <Button disabled full text="Claiming..." variant="secondary" />;
     }
     if (hasVestedYams) {
-      return (
-        <Button
-          full
-          onClick={onClaim}
-          text="Claim YAMs"
-        />
-      )
+      return <Button full onClick={onClaim} text="Claim YAMs" />;
     }
-    return (
-      <Button
-        disabled
-        full
-        text="Claim"
-        variant="secondary"
-      />
-    )
-  }, [
-    isClaiming,
-    onClaim,
-    vestedBalance,
-  ])
+    return <Button disabled full text="Claim" variant="secondary" />;
+  }, [isClaiming, onClaim, vestedBalance]);
 
   return (
     <Card>
@@ -69,11 +38,9 @@ const ClaimCard: React.FC = () => {
           <Label text="Vested YAMs" />
         </Box>
       </CardContent>
-      <CardActions>
-        {ClaimButton}
-      </CardActions>
+      <CardActions>{ClaimButton}</CardActions>
     </Card>
-  )
-}
+  );
+};
 
-export default ClaimCard
+export default ClaimCard;

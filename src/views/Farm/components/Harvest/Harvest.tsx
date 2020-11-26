@@ -1,38 +1,29 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import numeral from 'numeral'
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardIcon,
-  Spacer,
-} from 'react-neu'
-import { useWallet } from 'use-wallet'
+import numeral from "numeral";
+import { Box, Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
+import { useWallet } from "use-wallet";
 
-import Label from 'components/Label'
-import Value from 'components/Value'
+import Label from "components/Label";
+import Value from "components/Value";
 
-import useFarming from 'hooks/useFarming'
+import useFarming from "hooks/useFarming";
 
-import { bnToDec } from 'utils'
+import { bnToDec } from "utils";
 
 const Harvest: React.FC = () => {
   const [earnedBalance, setEarnedBalance] = useState<number>(0);
   const { status } = useWallet();
   const { earnedBalanceYAMETH, isHarvesting, isRedeeming, onHarvestYAMETH } = useFarming();
 
-
   const formattedEarnedBalance = useCallback(async () => {
     if (earnedBalanceYAMETH && bnToDec(earnedBalanceYAMETH) > 0) {
-      setEarnedBalance(bnToDec(earnedBalanceYAMETH))
+      setEarnedBalance(bnToDec(earnedBalanceYAMETH));
     } else {
-      setEarnedBalance(0)
+      setEarnedBalance(0);
     }
-  }, [earnedBalanceYAMETH])
-  
+  }, [earnedBalanceYAMETH]);
+
   useEffect(() => {
     formattedEarnedBalance();
     let refreshInterval = setInterval(formattedEarnedBalance, 10000);
@@ -40,43 +31,16 @@ const Harvest: React.FC = () => {
   }, [formattedEarnedBalance]);
 
   const HarvestAction = useMemo(() => {
-    if (status !== 'connected') {
-      return (
-        <Button
-          disabled
-          full
-          text="Harvest"
-          variant="secondary"
-        />
-      )
+    if (status !== "connected") {
+      return <Button disabled full text="Harvest" variant="secondary" />;
     }
     if (!isHarvesting) {
-      return (
-        <Button
-          disabled={earnedBalance <= 0}
-          full
-          onClick={onHarvestYAMETH}
-          text="Harvest"
-          variant="secondary"
-        />
-      )
+      return <Button disabled={earnedBalance <= 0} full onClick={onHarvestYAMETH} text="Harvest" variant="secondary" />;
     }
     if (isHarvesting) {
-      return (
-        <Button
-          disabled
-          full
-          text="Harvesting..."
-          variant="secondary"
-        />
-      )
+      return <Button disabled full text="Harvesting..." variant="secondary" />;
     }
-  }, [
-    isHarvesting,
-    isRedeeming,
-    earnedBalance,
-    onHarvestYAMETH,
-  ])
+  }, [isHarvesting, isRedeeming, earnedBalance, onHarvestYAMETH]);
 
   return (
     <>
@@ -84,16 +48,14 @@ const Harvest: React.FC = () => {
         <CardIcon>🍠</CardIcon>
         <CardContent>
           <Box alignItems="center" column>
-            <Value value={(earnedBalance > 0 ? earnedBalance.toString() : "--")} />
+            <Value value={earnedBalance > 0 ? earnedBalance.toString() : "--"} />
             <Label text="Unharvested YAMs" />
           </Box>
         </CardContent>
-        <CardActions>
-          {HarvestAction}
-        </CardActions>
+        <CardActions>{HarvestAction}</CardActions>
       </Card>
     </>
   );
-}
+};
 
-export default Harvest
+export default Harvest;

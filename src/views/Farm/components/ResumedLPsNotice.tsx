@@ -1,13 +1,6 @@
-import React from 'react'
-import {
-  Box,
-  Button,
-  Notice,
-  NoticeContent,
-  NoticeIcon,
-  Spacer,
-} from 'react-neu'
-import styled from 'styled-components'
+import React from "react";
+import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import styled from "styled-components";
 
 const ResumedLPsNotice: React.FC = () => (
   <>
@@ -38,6 +31,6 @@ const StyledNoticeContentInner = styled.div`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-`
+`;
 
-export default ResumedLPsNotice
+export default ResumedLPsNotice;

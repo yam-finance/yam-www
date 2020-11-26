@@ -39,11 +39,21 @@ const HarvestLPsNoticeYAMYUSD: React.FC = () => {
             <NoticeIcon>❗</NoticeIcon>
             <NoticeContent>
               <StyledNoticeContentInner>
-                <span>You was farming on the old pool with {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "") + (stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : "") + (earnedBalanceYUSDLP ? earnedBalanceYUSDLP.toFixed(2) + " Yam!" : "")} </span>
+                <span>
+                  You was farming on the old pool with{" "}
+                  {(stakedBalanceYUSDLP ? stakedBalanceYUSDLP + " LP tokens" : "") +
+                    (stakedBalanceYUSDLP && earnedBalanceYUSDLP ? " and you have " : "") +
+                    (earnedBalanceYUSDLP ? earnedBalanceYUSDLP.toFixed(2) + " Yam!" : "")}{" "}
+                </span>
                 <Box flex={1} />
                 <Spacer size="sm" />
                 <span>
-                  <Button size="sm" text={(earnedBalanceYUSDLP ? "Harvest YAM from Old LP" : "Harvest & Unstake YAM/yUSD")} onClick={(!stakedBalanceYUSDLP && earnedBalanceYUSDLP ? onHarvestYAMYUSD : onRedeemYAMYUSD)} variant="secondary" />
+                  <Button
+                    size="sm"
+                    text={earnedBalanceYUSDLP ? "Harvest YAM from Old LP" : "Harvest & Unstake YAM/yUSD"}
+                    onClick={!stakedBalanceYUSDLP && earnedBalanceYUSDLP ? onHarvestYAMYUSD : onRedeemYAMYUSD}
+                    variant="secondary"
+                  />
                 </span>
               </StyledNoticeContentInner>
             </NoticeContent>

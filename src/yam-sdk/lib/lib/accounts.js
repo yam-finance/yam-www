@@ -1,10 +1,7 @@
-import * as Types from './types.js';
+import * as Types from "./types.js";
 
 export class Account {
-  constructor(
-    contracts,
-    address
-  ) {
+  constructor(contracts, address) {
     this.contracts = contracts;
     this.accountInfo = address;
     this.type = "";
@@ -17,31 +14,31 @@ export class Account {
 
   async getYAMWalletBalance() {
     this.walletInfo["DAI"] = await this.contracts.yam.methods.balanceOf(this.accountInfo).call();
-    return this.walletInfo["DAI"]
+    return this.walletInfo["DAI"];
   }
 
   async getYCRVWalletBalance() {
     this.walletInfo["YCRV"] = await this.contracts.ycrv.methods.balanceOf(this.accountInfo).call();
-    return this.walletInfo["YCRV"]
+    return this.walletInfo["YCRV"];
   }
 
   async getYFIWalletBalance() {
     this.walletInfo["YFI"] = await this.contracts.yfi.methods.balanceOf(this.accountInfo).call();
-    return this.walletInfo["YFI"]
+    return this.walletInfo["YFI"];
   }
 
   async getUNIAmplWalletBalance() {
     this.walletInfo["UNIAmpl"] = await this.contracts.UNIAmpl.methods.balanceOf(this.accountInfo).call();
-    return this.walletInfo["UNIAmpl"]
+    return this.walletInfo["UNIAmpl"];
   }
 
   async getWETHWalletBalance() {
     this.walletInfo["WETH"] = await this.contracts.weth.methods.balanceOf(this.accountInfo).call();
-    return this.walletInfo["WETH"]
+    return this.walletInfo["WETH"];
   }
 
   async getETHWalletBalance() {
     this.walletInfo["ETH"] = await this.contracts.web3.eth.getBalance(this.accountInfo);
-    return this.walletInfo["ETH"]
+    return this.walletInfo["ETH"];
   }
 }

@@ -1,1 +1,1 @@
-export { default } from './FancyValue'
+export { default } from "./FancyValue";

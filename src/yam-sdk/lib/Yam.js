@@ -1,37 +1,20 @@
-import Web3 from 'web3';
-import BigNumber from 'bignumber.js'
-import {
-  Contracts
-} from './lib/contracts.js';
-import {
-  Account
-} from './lib/accounts.js';
-import {
-  EVM
-} from "./lib/evm.js";
+import Web3 from "web3";
+import BigNumber from "bignumber.js";
+import { Contracts } from "./lib/contracts.js";
+import { Account } from "./lib/accounts.js";
+import { EVM } from "./lib/evm.js";
 
 const oneEther = 1000000000000000000;
 
 export class Yam {
-  constructor(
-    provider,
-    networkId,
-    testing,
-    options
-  ) {
+  constructor(provider, networkId, testing, options) {
     var realProvider;
 
-    if (typeof provider === 'string') {
+    if (typeof provider === "string") {
       if (provider.includes("wss")) {
-        realProvider = new Web3.providers.WebsocketProvider(
-          provider,
-          options.ethereumNodeTimeout || 10000,
-        );
+        realProvider = new Web3.providers.WebsocketProvider(provider, options.ethereumNodeTimeout || 10000);
       } else {
-        realProvider = new Web3.providers.HttpProvider(
-          provider,
-          options.ethereumNodeTimeout || 10000,
-        );
+        realProvider = new Web3.providers.HttpProvider(provider, options.ethereumNodeTimeout || 10000);
       }
     } else {
       realProvider = provider;
@@ -41,7 +24,7 @@ export class Yam {
 
     if (testing) {
       this.testing = new EVM(realProvider);
-      this.snapshot = this.testing.snapshot()
+      this.snapshot = this.testing.snapshot();
     }
 
     if (options.defaultAccount) {
@@ -66,18 +49,13 @@ export class Yam {
     this.accounts.push(new Account(this.contracts, address, number));
   }
 
-  setProvider(
-    provider,
-    networkId
-  ) {
+  setProvider(provider, networkId) {
     this.web3.setProvider(provider);
     this.contracts.setProvider(provider, networkId);
     this.operation.setNetworkId(networkId);
   }
 
-  setDefaultAccount(
-    account
-  ) {
+  setDefaultAccount(account) {
     this.web3.eth.defaultAccount = account;
     this.contracts.setDefaultAccount(account);
   }
@@ -87,17 +65,9 @@ export class Yam {
   }
 
   loadAccount(account) {
-    const newAccount = this.web3.eth.accounts.wallet.add(
-      account.privateKey,
-    );
+    const newAccount = this.web3.eth.accounts.wallet.add(account.privateKey);
 
-    if (
-      !newAccount ||
-      (
-        account.address &&
-        account.address.toLowerCase() !== newAccount.address.toLowerCase()
-      )
-    ) {
+    if (!newAccount || (account.address && account.address.toLowerCase() !== newAccount.address.toLowerCase())) {
       throw new Error(`Loaded account address mismatch.
         Expected ${account.address}, got ${newAccount ? newAccount.address : null}`);
     }

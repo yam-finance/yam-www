@@ -2,24 +2,53 @@
   "abi": [
     {
       "inputs": [
-        { "internalType": "address", "name": "_rewardsDistribution", "type": "address" },
-        { "internalType": "address", "name": "_rewardsToken", "type": "address" },
-        { "internalType": "address", "name": "_stakingToken", "type": "address" }
+        {
+          "internalType": "address",
+          "name": "_rewardsDistribution",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_rewardsToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_stakingToken",
+          "type": "address"
+        }
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
     },
     {
       "anonymous": false,
-      "inputs": [{ "indexed": false, "internalType": "uint256", "name": "reward", "type": "uint256" }],
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "reward",
+          "type": "uint256"
+        }
+      ],
       "name": "RewardAdded",
       "type": "event"
     },
     {
       "anonymous": false,
       "inputs": [
-        { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-        { "indexed": false, "internalType": "uint256", "name": "reward", "type": "uint256" }
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "reward",
+          "type": "uint256"
+        }
       ],
       "name": "RewardPaid",
       "type": "event"
@@ -27,8 +56,18 @@
     {
       "anonymous": false,
       "inputs": [
-        { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
       ],
       "name": "Staked",
       "type": "event"
@@ -36,8 +75,18 @@
     {
       "anonymous": false,
       "inputs": [
-        { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
       ],
       "name": "Withdrawn",
       "type": "event"
@@ -56,8 +105,20 @@
       "stateMutability": "view",
       "type": "function"
     },
-    { "inputs": [], "name": "exit", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-    { "inputs": [], "name": "getReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+      "inputs": [],
+      "name": "exit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getReward",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
     {
       "inputs": [],
       "name": "getRewardForDuration",

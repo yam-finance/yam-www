@@ -23,13 +23,14 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
           <Spacer />
           <StyledLink
             darkMode={darkMode}
-            href={(unilink ? unilink + address : "https://uniswap.exchange/swap?inputCurrency=" + address) }
+            href={unilink ? unilink + address : "https://uniswap.exchange/swap?inputCurrency=" + address}
             target="_blank"
             color="white"
-            overflow={true}>
+            overflow={true}
+          >
             <StyledUniswapButton darkMode={darkMode}>
               <StyledSpan>
-                <span>{(unitext ? unitext : "Buy at Uniswap")}</span>
+                <span>{unitext ? unitext : "Buy at Uniswap"}</span>
               </StyledSpan>
             </StyledUniswapButton>
           </StyledLink>
@@ -65,11 +66,7 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
             <StyledName darkMode={darkMode} uniswap={uniswap}>
               {name ? name + " " : ""}
             </StyledName>
-            <StyledLink
-              darkMode={darkMode}
-              color="hsl(339deg 89% 49% / 100%)"
-              href={"https://etherscan.io/address/" + address}
-              target="_blank">
+            <StyledLink darkMode={darkMode} color="hsl(339deg 89% 49% / 100%)" href={"https://etherscan.io/address/" + address} target="_blank">
               {DisplayAddress}
             </StyledLink>
             <StyledCopy
@@ -77,7 +74,8 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
               uniswap={uniswap}
               onClick={() => {
                 navigator.clipboard.writeText(address ? address : "");
-              }}></StyledCopy>
+              }}
+            ></StyledCopy>
           </StyledSpan>
         </StyledButton>
         {DisplayUniswap}
