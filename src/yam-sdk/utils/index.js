@@ -237,6 +237,48 @@ export const stxpSingleStake = async (poolContract, provider, duration, amount, 
     });
 };
 
+export const generateNft = async (poolContract, provider, poolId, amount, name, fee, account, onTxHash) => {
+  console.log('amount to send', amount)
+  const value = String(new BigNumber(fee).times(new BigNumber(10).pow(18)))
+  return poolContract.methods
+    .craftStrainNFT(String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))))
+    .send({ from: account, gas: 600000, value }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("create NFT error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Creating NFT transaction failed.");
+        return false;
+      }
+      return true;
+    });
+};
+
+export const burnNft = async (poolContract, provider, nftId, poolId, account, onTxHash) => {
+  return poolContract.methods
+    .burn(String(nftId), String(poolId))
+    .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("burn NFT error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Destroying NFT transaction failed.");
+        return false;
+      }
+      return true;
+    });
+};
+
+
+
 export const getSingleEarned = async (yam, pool, account) => {
   return yam.toBigN(await pool.methods.withdrawableRewards(account).call());
 };

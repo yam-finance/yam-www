@@ -5,6 +5,8 @@ import { provider, TransactionReceipt } from 'web3-core'
 import { AbiItem } from 'web3-utils'
 
 import ERC20ABI from 'constants/abi/ERC20.json'
+import ERC1155 from 'constants/abi/ERC1155.json'
+import { NftInstance } from 'constants/poolValues'
 
 const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -34,9 +36,9 @@ export const approve = async (
       .approve(spenderAddress, ethers.constants.MaxUint256)
       .send({ from: userAddress, gas: 80000 }, async (error: any, txHash: string) => {
         if (error) {
-            console.log("ERC20 could not be approved", error)
-            onTxHash && onTxHash('')
-            return false
+          console.log("ERC20 could not be approved", error)
+          onTxHash && onTxHash('')
+          return false
         }
         if (onTxHash) {
           onTxHash(txHash)
@@ -50,6 +52,54 @@ export const approve = async (
       })
   } catch (e) {
     console.log('here')
+    return false
+  }
+}
+
+export const setApprovalForAll = async (
+  userAddress: string,
+  spenderAddress: string,
+  tokenAddress: string,
+  provider: provider,
+  onTxHash?: (txHash: string) => void
+): Promise<boolean> => {
+  try {
+    const tokenContract = getERC1155Contract(provider, tokenAddress)
+    return tokenContract.methods
+      .setApprovalForAll(spenderAddress, true)
+      .send({ from: userAddress, gas: 80000 }, async (error: any, txHash: string) => {
+        if (error) {
+          console.log("ERC1155 could not be approved", error)
+          onTxHash && onTxHash('')
+          return false
+        }
+        if (onTxHash) {
+          onTxHash(txHash)
+        }
+        const status = await waitTransaction(provider, txHash)
+        if (!status) {
+          console.log("Approval for all transaction failed.")
+          return false
+        }
+        return true
+      })
+  } catch (e) {
+    console.log('set approval for all ', e)
+    return false
+  }
+}
+
+export const isApprovalForAll = async (
+  userAddress: string,
+  spenderAddress: string,
+  tokenAddress: string,
+  provider: provider,
+): Promise<boolean> => {
+  try {
+    const tokenContract = getERC1155Contract(provider, tokenAddress)
+    return tokenContract.methods.isApprovedForAll(userAddress, spenderAddress)
+  } catch (e) {
+    console.log('set approval for all ', e)
     return false
   }
 }
@@ -79,9 +129,40 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
   }
 }
 
+export const getUserNfts = async (provider: provider, nftAddress: string, crafterAddress: string, userAddress: string): Promise<NftInstance[]> => {
+  const nftContract = getERC1155Contract(provider, nftAddress)
+  try {
+    const length = await nftContract.methods.getItemIDsLength().call();
+    const userItems: NftInstance[] = []
+    for (let i = 0; i < length; i++) {
+      const nftId = await nftContract.methods.itemIDs(i).call();
+      const owner = await nftContract.methods.nfOwners(nftId).call();
+      if (owner == userAddress) {
+        const dataUrla = await nftContract.methods.uri(nftId).call();
+        // TODO: when json service is up remove this
+        const dataUrl = "https://nft-image-service.herokuapp.com/tester";
+        const nft = {
+          nftId,
+          dataUrl
+        }
+        userItems.push(nft)
+      }
+    }
+    return userItems
+  } catch (e) {
+    return []
+  }
+}
+
 export const getERC20Contract = (provider: provider, address: string) => {
   const web3 = new Web3(provider)
   const contract = new web3.eth.Contract(ERC20ABI.abi as unknown as AbiItem, address)
+  return contract
+}
+
+export const getERC1155Contract = (provider: provider, address: string) => {
+  const web3 = new Web3(provider)
+  const contract = new web3.eth.Contract(ERC1155.abi as unknown as AbiItem, address)
   return contract
 }
 

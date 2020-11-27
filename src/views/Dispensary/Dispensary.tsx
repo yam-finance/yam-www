@@ -7,17 +7,7 @@ import {
 
 import styled from 'styled-components'
 import Page from 'components/Page'
-
-const StyledNotice = styled.div`
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 600;
-  width: 100%
-  color: ${props => props.theme.colors.primary.main};
-`
+import StyledNotice from 'views/Common/StyledNotice'
 
 const Stake: React.FC = () => {
 
@@ -28,14 +18,13 @@ const Stake: React.FC = () => {
         <Spacer size="lg" />
         <Spacer />
         <Spacer size="md" />
-        <StyledNotice>
-          <span>Dispensary</span>
-          <span>It's in the works</span>
-        </StyledNotice>
+        <StyledNotice
+          messages={["Dispensary", "It's in the works"]}
+        />
         <Spacer size="md" />
-        <StyledNotice>
-          <span>For more information visit our Discord</span>
-          </StyledNotice>
+        <StyledNotice
+          messages={["For more information visit our Discord"]}
+        />
       </Container>
     </Page>
   )

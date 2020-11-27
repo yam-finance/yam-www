@@ -33,6 +33,7 @@ import Governance from 'views/Governance'
 import styled from 'styled-components'
 import { chainId } from 'constants/tokenAddresses'
 import { StakingProvider } from 'contexts/Staking'
+import { StrainNftsProvider } from 'contexts/StrainNfts'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -111,13 +112,15 @@ const Providers: React.FC = ({ children }) => {
             <BalancesProvider>
               <FarmingProvider>
                 <StakingProvider>
-                  <MigrationProvider>
-                    <VestingProvider>
-                      {/*<GovernanceProvider>*/}
-                      {children}
-                      {/*</GovernanceProvider>*/}
-                    </VestingProvider>
-                  </MigrationProvider>
+                  <StrainNftsProvider>
+                    <MigrationProvider>
+                      <VestingProvider>
+                        {/*<GovernanceProvider>*/}
+                        {children}
+                        {/*</GovernanceProvider>*/}
+                      </VestingProvider>
+                    </MigrationProvider>
+                  </StrainNftsProvider>
                 </StakingProvider>
               </FarmingProvider>
             </BalancesProvider>
