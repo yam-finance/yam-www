@@ -15,9 +15,6 @@ const Apothecary: React.FC = () => {
   return (
     <Page>
       <Container>
-        <StyledNotice
-          messages={["Apothecary"]}
-        />
 
           <NFTCard>
             <h3>Alien Cookies</h3>
