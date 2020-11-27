@@ -39,7 +39,7 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
           <Button
             onClick={handleUnlockWalletClick}
             size="sm"
-            text="Unlock Wallet"
+            text="Connect Wallet"
           />
         ) : (
           <Button
@@ -62,6 +62,14 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
   )
 }
 
-const StyledWalletButton = styled.div``
+const StyledWalletButton = styled.div`
+
+border-radius: 0px !important;
+ button {
+   background-color: #00AC69 !important;
+   border-radius: 5px;
+   text-color: #1C2129 !important;;
+ }
+`
 
 export default WalletButton

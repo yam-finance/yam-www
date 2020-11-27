@@ -48,7 +48,8 @@ const StyledLogoWrapper = styled.div`
   }
 `
 
-const StyledTopBar = styled.div``
+const StyledTopBar = styled.div`
+background-color: #08182E;`
 
 const StyledTopBarInner = styled.div`
   align-items: center;

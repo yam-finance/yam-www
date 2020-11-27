@@ -13,6 +13,9 @@ import HowItWorks from 'components/HowItWorks';
 import useVesting from 'hooks/useVesting'
 import twoStrains from '../../assets/two-strains.png'
 import plant from '../../assets/eth-flower.png'
+import strain from '../../assets/randomStrainNFT.png'
+import twoStrainsNew from '../../assets/two-strains-new.png'
+
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme()
@@ -23,11 +26,11 @@ const Home: React.FC = () => {
         imgSrc={twoStrains}
         subtitle="Upgrade and breed yield generating NFTs"
         title="Fun, DeFi-staked NFT Collectibles"
-        imgSrc2={plant}
+        imgSrc2={strain}
       />
-      <HowItWorks></HowItWorks>
     </Page>
   )
 }
+
 
 export default Home

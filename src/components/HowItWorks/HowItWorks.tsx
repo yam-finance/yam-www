@@ -32,7 +32,7 @@ const HowItWorks = () => {
 };
 
 const StyledTitle = styled.h2`
-  color: #0CF5A5;
+  color: #00AC69;
   font-size: 36px;
   font-weight: 700;
   margin: 0;
@@ -54,7 +54,7 @@ const StyledHowItWorksContainer = styled.div`
 
 const StyledHr = styled.div`
     border-top: 4px solid;
-    border-color: #86CfF8;
+    border-color: #00AC69;
     width: 100%;
     height: 5px;
     margin: 0;
@@ -138,6 +138,7 @@ const StyledButtonOne = styled.a`
     text-align: center;
     height: 30px;
     background-color: #8D87FB;
+    color: #1C2129;
     cursor:pointer;
     font-weight: bold;
     margin: auto;
@@ -155,6 +156,7 @@ const StyledButtonTwo = styled(Link)`
     text-align: center;
     height: 30px;
     background-color: #00AC69;
+    color: #1C2129;
     cursor:pointer;
     font-weight: bold;
     margin: auto;

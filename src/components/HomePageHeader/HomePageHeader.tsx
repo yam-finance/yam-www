@@ -18,6 +18,7 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ imgSrc, subtitle, title
                     <StyledTitle>{title}</StyledTitle>
                     <StyledSubtitle>{subtitle}</StyledSubtitle>
                     <StyledStrnButton href="https://uniswap.exchange/swap?inputCurrency=ETH&outputCurrency=0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f" target="_blank">Buy STRN</StyledStrnButton>
+                    <StyledStrnButton href="https://app.uniswap.org/#/add/0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f/ETH" target="_blank">Provide LP</StyledStrnButton>
                 </StyledHomePageContainer>
                 <StyledHomePageContainer2>
                     <img src={imgSrc2} height={384}/>
@@ -29,8 +30,8 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ imgSrc, subtitle, title
 const StyledHomePageHeader = styled.div`
   align-items: center;
   box-sizing: border-box;
-  max-width: 1200px;
   margin: 0 auto;
+  width: 80% !important;
 `;
 
 const StyledHomePageContainer = styled.div`
@@ -65,41 +66,45 @@ const StyledHomePageContainer2 = styled.div`
 `;
 
 const StyledTitle = styled.h1`
-  color: #6C63FF;
-  font-size: 36px;
+  color: #61B5FD;
+  font-family: gopher, sans-serif;
   font-weight: 700;
-  margin: 0;
+  margin: 15px 0;
   padding: 0;
   text-align: left;
-  width: 65%;
+  width: 80%;
 `;
 
 const StyledSubtitle = styled.h3`
-  color: ${props => props.theme.textColor};
-  font-size: 14px;
+  color: #FFFFFF ;
+  font-size: 16px;
   font-weight: 400;
-  margin: 0;
-  opacity: 0.66;
-  padding: 0;
+  margin: 0px 0;
+  padding: 10px 0;
   margin: auto;
   text-align: left;
 `;
 
 const StyledStrnButton = styled.a`
     display: block;
-    width: 100px;
-    height: 40px;
-    border: solid 1px #6C63FF;
-    border-radius: 5px;
+    width: 140px;
+    height: 50px;
+    border: solid 1px #00AC69;
+    border-radius: 3px;
     text-align: center;
-    line-height: 40px;
+    line-height: 50px;
     text-decoration: none;
-    color: #6C63FF;
+    color: #00AC69;
     background-color: Transparent;
     background-repeat:no-repeat;
     cursor:pointer;
     margin-top: 15px;
     font-weight: bold;
+    
+    :hover {
+      background-color: #00AC69;
+      color: #08182E;
+    } 
 `;
 
 export default HomePageHeader

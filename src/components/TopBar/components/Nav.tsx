@@ -25,16 +25,17 @@ const StyledNav = styled.nav`
 `
 
 const StyledRouterLink = styled(NavLink)`
-  color: ${props => props.theme.colors.grey[500]};
+  color: white;
   font-weight: 700;
-  padding-left: ${props => props.theme.spacing[3]}px;
-  padding-right: ${props => props.theme.spacing[3]}px;
+  margin-left: ${props => props.theme.spacing[3]}px;
+  margin-right: ${props => props.theme.spacing[3]}px;
+  padding-bottom: 4px;
   text-decoration: none;
   &:hover {
-    color: ${props => props.theme.colors.grey[600]};
+    color: ##0CF5A5;
   }
   &.active {
-    color: ${props => props.theme.colors.primary.main};
+    border-bottom: 4px solid #61B5FD;
   }
 `
 
