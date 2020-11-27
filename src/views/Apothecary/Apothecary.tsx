@@ -15,18 +15,19 @@ const Apothecary: React.FC = () => {
   return (
     <Page>
       <Container>
-        <StyledNotice>
-          <h1>Apothecary</h1>
-          <NFTCard> 
+        <StyledNotice
+          messages={["Apothecary"]}
+        />
+
+          <NFTCard>
             <h3>Alien Cookies</h3>
             <h4>Indica</h4>
-            <img src={strain} height={120}/>
+            <img src={strain} height={120} />
             <RarityButton>earthy</RarityButton>
-            </NFTCard>
-        </StyledNotice>
+          </NFTCard>
+
         <Spacer size="md" />
-        <StyledNotice>
-          </StyledNotice>
+
       </Container>
     </Page>
   )
