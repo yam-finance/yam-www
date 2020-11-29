@@ -237,12 +237,10 @@ export const stxpSingleStake = async (poolContract, provider, duration, amount, 
     });
 };
 
-export const generateNft = async (poolContract, provider, poolId, amount, name, fee, account, onTxHash) => {
-  console.log('amount to send', amount)
-  const value = String(new BigNumber(fee).times(new BigNumber(10).pow(18)))
+export const generateNft = async (poolContract, provider, poolId, amount, name, account, onTxHash) => {
   return poolContract.methods
-    .craftStrainNFT(String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))))
-    .send({ from: account, gas: 600000, value }, async (error, txHash) => {
+    .craftStrainNFT(String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))), name)
+    .send({ from: account, gas: 800000 }, async (error, txHash) => {
       if (error) {
         onTxHash && onTxHash("");
         console.log("create NFT error", error);

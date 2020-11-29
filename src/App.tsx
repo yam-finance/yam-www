@@ -63,13 +63,13 @@ const App: React.FC = () => {
           <Route exact path="/apothecary">
             <Apothecary />
           </Route>
-          <Route exact path="/dispensary">
+          {/*<Route exact path="/dispensary">
             <Dispensary />
           </Route>
           <Route exact path="/greenhouse">
             <Greenhouse />
           </Route>
-          {/*<Route path="/faq">
+          <Route path="/faq">
             <FAQ />
           </Route>
           <Route exact path="/migrate">

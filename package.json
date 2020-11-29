@@ -9,6 +9,7 @@
     "@types/numeral": "^0.0.28",
     "@types/react-datepicker": "^3.1.1",
     "autoprefixer": "^10.0.2",
+    "axios": "^0.21.0",
     "bignumber.js": "^9.0.0",
     "numeral": "^2.0.6",
     "postcss": "^8.1.9",

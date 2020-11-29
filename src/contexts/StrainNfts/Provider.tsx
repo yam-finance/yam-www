@@ -12,6 +12,7 @@ import { NftInstance } from 'constants/poolValues'
 import useYam from 'hooks/useYam'
 import { burnNft, generateNft } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
+import Axios from 'axios'
 
 // StrainNFT.uri(_nftid) returns the nft uri address
 // StrainNFTCrafter.craftStrainNFT sending it 0.03 ether (for rng)
@@ -33,6 +34,7 @@ const Provider: React.FC = ({ children }) => {
       return
     }
     setIsLoading(true)
+
     getUserNfts(provider, getAddresses().strainNFTAddress, getAddresses().strainNFTCrafterAddress, userAddress)
       .then(nftinstances => {
         nftinstances.map(n => console.log('Nfts in provider', n))
@@ -58,14 +60,14 @@ const Provider: React.FC = ({ children }) => {
     yam,
   ])
 
-  const handleCreateNft = useCallback(async (poolId: string, amount: string, name: string, fee: string) => {
+  const handleCreateNft = useCallback(async (poolId: string, amount: string, name: string) => {
     if (yam === undefined) {
       console.log('yam is undefined')
       return
     }
     setConfirmTxModalIsOpen(true)
     setIsCreating(true)
-    await generateNft(yam.contracts.strain_nft_crafter, yam.web3.eth, poolId, amount, name, fee, account, () => {
+    await generateNft(yam.contracts.strain_nft_crafter, yam.web3.eth, poolId, amount, name, account, () => {
       setConfirmTxModalIsOpen(false)
     }).catch(e => {
       console.error(e)
@@ -97,6 +99,15 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
+  const handleNftRetrive = useCallback(async (nft: NftInstance): Promise<NftInstance> => {
+    console.log('handleNftRetrive called', nft)
+    if (!nft?.dataUrl) return nft;
+
+    Axios.get(nft.dataUrl)
+    const promise = Axios.get(nft.dataUrl)
+    return promise.then(response => ({...nft, attribs: response.data}));
+  }, [])
+
   return (
     <Context.Provider value={{
       setConfirmTxModalIsOpen,
@@ -106,6 +117,7 @@ const Provider: React.FC = ({ children }) => {
       isLoading,
       onCreateNft: handleCreateNft,
       onDestroyNft: handleDestroyNft,
+      onRetrieve: handleNftRetrive,
     }}>
       {children}
     </Context.Provider>

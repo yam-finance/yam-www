@@ -18,8 +18,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledLink exact activeClassName="active" to="/pool" onClick={onDismiss}>Pools</StyledLink>
           <StyledLink exact activeClassName="active" to="/stake" onClick={onDismiss}>Stake</StyledLink>
           <StyledLink exact activeClassName="active" to="/apothecary" onClick={onDismiss}>Apothecary</StyledLink>
-          <StyledLink exact activeClassName="active" to="/dispensary" onClick={onDismiss}>Dispensary</StyledLink>
-          <StyledLink exact activeClassName="active" to="/greenhouse" onClick={onDismiss}>Greenhouse</StyledLink>
+          {/*<StyledLink exact activeClassName="active" to="/dispensary" onClick={onDismiss}>Dispensary</StyledLink>*/}
+          {/*<StyledLink exact activeClassName="active" to="/greenhouse" onClick={onDismiss}>Greenhouse</StyledLink>*/}
           {/*<StyledLink exact activeClassName="active" to="/migrate" onClick={onDismiss}>Migrate</StyledLink>*/}
           {/*<StyledLink exact activeClassName="active" to="/governance" onClick={onDismiss}>Govern</StyledLink>*/}
           {/*<StyledLink activeClassName="active" to="/faq" onClick={onDismiss}>FAQ</StyledLink>*/}

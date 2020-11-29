@@ -1,6 +1,7 @@
 import React from 'react'
 import blankStrainNFT from '../../assets/shadyStrainNFT.png'
 import styled from 'styled-components'
+import { DEFAULT_NFT_SIZE } from 'constants/poolValues'
 
 const StyledImage = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const StyledBlankNFT = () => {
 
     return (
         <StyledImage>
-            <img src={blankStrainNFT} alt="Blank Strain NFT" />
+            <img src={blankStrainNFT} alt="Blank Strain NFT" height={DEFAULT_NFT_SIZE} />
         </StyledImage>
     )
 }

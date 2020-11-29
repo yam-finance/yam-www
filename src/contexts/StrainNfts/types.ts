@@ -7,6 +7,7 @@ export interface ContextValues {
   isCreating: boolean,
   isDestroying: boolean,
   isLoading: boolean,
-  onCreateNft: (poolId: string, amount: string, name: string, fee: string) => void,
+  onCreateNft: (poolId: string, amount: string, name: string) => void,
   onDestroyNft: (poolId: string, nftId: string) => void,  
+  onRetrieve: (nft: NftInstance) => Promise<NftInstance>,
 }

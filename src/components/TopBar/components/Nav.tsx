@@ -9,8 +9,8 @@ const Nav: React.FC = () => {
       <StyledRouterLink exact activeClassName="active" to="/pool">Pools</StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/stake">Stake</StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/apothecary">Apothecary</StyledRouterLink>
-      <StyledRouterLink exact activeClassName="active" to="/dispensary">Dispensary</StyledRouterLink>
-      <StyledRouterLink exact activeClassName="active" to="/greenhouse">Greenhouse</StyledRouterLink>
+      {/*<StyledRouterLink exact activeClassName="active" to="/dispensary">Dispensary</StyledRouterLink>*/}
+      {/*<StyledRouterLink exact activeClassName="active" to="/greenhouse">Greenhouse</StyledRouterLink>*/}
       {/*<StyledRouterLink exact activeClassName="active" to="/migrate">Migrate</StyledRouterLink>*/}
       {/*<StyledRouterLink exact activeClassName="active" to="/governance">Govern</StyledRouterLink>*/}
       {/*<StyledRouterLink activeClassName="active" to="/faq">FAQ</StyledRouterLink>*/}

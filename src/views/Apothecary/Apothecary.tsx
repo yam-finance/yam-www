@@ -1,53 +1,63 @@
 import React from 'react'
 
-import {
-  Container,
-  Spacer,
-} from 'react-neu'
-
 import styled from 'styled-components'
 import Page from 'components/Page'
-import strain from '../../assets/randomStrainNFT.png'
-import StyledNotice from 'views/Common/StyledNotice'
+import useStrainNfts from 'hooks/useStrainNfts'
+import StyledNft from 'views/Common/StyledNft'
+import GenerateNFT from './GenerateNFT'
 
 const Apothecary: React.FC = () => {
 
+  const {
+    strainNftCollection
+  } = useStrainNfts()
+
+
   return (
     <Page>
-      <Container>
-
-          <NFTCard>
-            <h3>Alien Cookies</h3>
-            <h4>Indica</h4>
-            <img src={strain} height={120} />
-            <RarityButton>earthy</RarityButton>
-          </NFTCard>
-
-        <Spacer size="md" />
-
-      </Container>
+      <StyledPageLayout>
+        <StyledGenerationForm>
+          <GenerateNFT />
+        </StyledGenerationForm>
+        <StyledNftSection>
+          {strainNftCollection && strainNftCollection.map(nft => (
+            <StyledNft
+              nft={nft}
+            />
+          ))}
+        </StyledNftSection>
+      </StyledPageLayout>
     </Page>
   )
 }
 
+const StyledPageLayout = styled.div`
+  display: grid;
+  grid-template-columns: 1.5fr 3fr ;
 
-const NFTCard = styled.div`
-width: 200px; 
-height: 250px;
-background-color: #0E2B52;
-border-radius: 20px;
-color: white;
-text-align: center;
-display: inline-block !important;
-margin: 0 20px;
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `
-const RarityButton = styled.button`
-width: 100px;
-height: 26px;
-background-color: #7AF7B6;
-border: 0;
-border-radius: 6px;
-font-family: Gopher;
+
+const StyledGenerationForm = styled.div`
+  margin: 1rem;
+  padding: 1rem;
+  min-width: 300px;
+
+  @media (max-width: 600px) {
+    border-bottom: 1px solid #00AC69;
+  }
+`
+
+const StyledNftSection = styled.div`
+  border-left: 1px solid #00AC69;
+  display: flex;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    border-left: unset;
+  }
 `
 
 export default Apothecary

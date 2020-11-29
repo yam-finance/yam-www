@@ -138,12 +138,15 @@ export const getUserNfts = async (provider: provider, nftAddress: string, crafte
       const nftId = await nftContract.methods.itemIDs(i).call();
       const owner = await nftContract.methods.nfOwners(nftId).call();
       if (owner == userAddress) {
-        const dataUrla = await nftContract.methods.uri(nftId).call();
+        const dataUrls = await nftContract.methods.uri(nftId).call();
+        const nftName = await nftContract.methods.nameMap(nftId).call();
+        console.log("contract dataUrl:", dataUrls)
         // TODO: when json service is up remove this
         const dataUrl = "https://nft-image-service.herokuapp.com/tester";
         const nft = {
           nftId,
-          dataUrl
+          dataUrl,
+          nftName
         }
         userItems.push(nft)
       }

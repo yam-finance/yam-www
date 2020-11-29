@@ -5,22 +5,22 @@ import {
   Spacer,
 } from 'react-neu'
 
-import styled from 'styled-components'
 import Page from 'components/Page'
-import PageHeader from 'components/PageHeader'
-import GenerateNFT from './GenerateNFT'
+import StyledNotice from 'views/Common/StyledNotice'
 
 
 const Greenhouse: React.FC = () => {
 
-
   return (
     <Page>
       <Container>
-        <GenerateNFT />
-        <Spacer size="lg" />
-        <Spacer />
+      <StyledNotice
+          messages={["Greenhouse", "It's in the works"]}
+        />
         <Spacer size="md" />
+        <StyledNotice
+          messages={["For more information visit our Discord"]}
+        />
       </Container>
     </Page>
   )

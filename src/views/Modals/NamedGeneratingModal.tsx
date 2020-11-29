@@ -13,8 +13,6 @@ import {
 
 import TokenInput from 'components/TokenInput'
 import styled from 'styled-components'
-import { RNG_ETH_FEE } from 'constants/poolValues'
-import StyledNotice from 'views/Common/StyledNotice'
 
 interface NamedGeneratingModalProps extends ModalProps {
   onGenerate: (amount: string, name: string) => void,
@@ -53,22 +51,19 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
     <Modal isOpen={isOpen}>
       <ModalTitle text="Generate NFT" />
       <ModalContent>
-      {/*<StyledDivContainer>
-        <Input
-          endAdornment={(
-            <StyledTokenAdornmentWrapper>
-              <StyledTokenSymbol>{}</StyledTokenSymbol>
-              <StyledSpacer />
-            </StyledTokenAdornmentWrapper>
-          )}
-          onChange={handleNameChange}
-          placeholder="Name your NFT"
-          value={name}
-          /></StyledDivContainer>*/}
-        <StyledNotice
-          messages={[`${RNG_ETH_FEE} ETH is needed to generation the NFT genome`, 'If your ETH balance is below this, NFT generation will fail']}
-        />
-
+        <StyledDivContainer>
+          <Input
+            endAdornment={(
+              <StyledTokenAdornmentWrapper>
+                <StyledTokenSymbol>{ }</StyledTokenSymbol>
+                <StyledSpacer />
+              </StyledTokenAdornmentWrapper>
+            )}
+            onChange={handleNameChange}
+            placeholder="Name your NFT"
+            value={name}
+          />
+        </StyledDivContainer>
         <TokenInput
           value={val}
           onSelectMax={handleSelectMax}

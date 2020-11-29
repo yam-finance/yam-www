@@ -7,9 +7,10 @@ const Context = createContext<ContextValues>({
     isCreating: false,
     isDestroying: false,
     isLoading: false,
-    onCreateNft: () => {},
-    onDestroyNft: () => {},
-    setConfirmTxModalIsOpen: () => {},
+    onCreateNft: () => { },
+    onDestroyNft: () => { },
+    onRetrieve: () => Promise.resolve({ nftId: '' }),
+    setConfirmTxModalIsOpen: () => { },
 })
 
 export default Context
