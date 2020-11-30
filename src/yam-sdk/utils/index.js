@@ -13,9 +13,9 @@ BigNumber.config({
 });
 
 const GAS_LIMIT = {
-  GENERAL: 410000,
+  GENERAL: 510000,
   STAKING: {
-    DEFAULT: 410000,
+    DEFAULT: 510000,
     SNX: 850000,
   },
 };
