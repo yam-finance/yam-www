@@ -15,6 +15,11 @@ export const MIN_LP_AMOUNTS = {
   [PoolIds.STRN_XIOT]: MIN_STRN_XIOT_LP_VALUE
 }
 
+export const POOL_NAMES = [
+  "STRN/ETH",
+  "STRN/XIOT"
+]
+
 export interface SingleStake {
   amount: BigNumber;
   lockDate: number;
@@ -25,8 +30,10 @@ export interface NftInstance {
   nftId: string;
   nftName?: string;
   dataUrl?: string;
-  lpBalance?: BigNumber,
-  attribs?: AttribCollection
+  lpBalance?: BigNumber;
+  attribs?: AttribCollection;
+  poolId?: string;
+  isDestroying?: boolean;
 }
 
 export interface AttribCollection {

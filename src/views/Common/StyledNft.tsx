@@ -1,29 +1,21 @@
-import FancyValue from 'components/FancyValue'
-import Label from 'components/Label'
-import { attributeNames, TerpsIndexValues, NftInstance, RarityIndexValues, VibeIndexValues, DEFAULT_NFT_SIZE } from 'constants/poolValues'
+import { attributeNames, NftInstance, RarityIndexValues, VibeIndexValues, DEFAULT_NFT_SIZE, POOL_NAMES, PoolIds } from 'constants/poolValues'
 import useStrainNfts from 'hooks/useStrainNfts'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import {
     Button,
-    CardActions,
     Spacer,
 } from 'react-neu'
-
+import numeral from 'numeral'
 import styled from 'styled-components'
 
 const StyledNft = ({ nft }: { nft: NftInstance }) => {
     const [isNftLoading, setIsNftLoading] = useState(false)
     const [updatedNft, setUpdatedNft] = useState<NftInstance>()
 
-    //TODO: get nft LP balance
-    const lpAmount = "22.00";
-    const poolName = "STRN/XIOT LP";
-
     const {
         onRetrieve,
         onDestroyNft,
-        isDestroying,
     } = useStrainNfts();
 
 
@@ -58,9 +50,28 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     }
 
     const handelUnstake = () => {
-        // TODO: get NFTs poolId
-        onDestroyNft("0", nft.nftId)
+        if (!nft?.poolId) {
+            console.error("for some reason the nft doesn't have a pool id")
+            return;
+        }
+        onDestroyNft(nft.poolId, nft)
     }
+
+    const getPoolName = () => {
+        if (!updatedNft || updatedNft.poolId === undefined) return "-"
+        return POOL_NAMES[Number(updatedNft.poolId)]
+    }
+
+    const formattedLPBalance = useMemo(() => {
+        if (nft && nft?.lpBalance) {
+            if (PoolIds.STRN_ETH === nft.poolId)
+                return numeral(nft.lpBalance).format('0.00a')
+            else
+                return nft.lpBalance.toFixed(8)
+        } else {
+            return '--'
+        }
+    }, [nft])
 
     return (
         <>
@@ -76,13 +87,13 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                         <StyledInfo>
                             <Button
                                 onClick={handelUnstake}
-                                disabled={isDestroying}
-                                text={isDestroying ? "Burning ..." : "Burn"}
+                                disabled={nft.isDestroying}
+                                text={nft.isDestroying ? "Burning ..." : "Burn"}
                                 size="sm"
                             />
                             <StyledLabels>
-                                <div>{poolName}</div>
-                                <StyledValue>{lpAmount}</StyledValue>
+                                <div>{getPoolName()}</div>
+                                <StyledValue>{nft?.lpBalance ? formattedLPBalance : "-"}</StyledValue>
                             </StyledLabels>
                         </StyledInfo>
                     </>

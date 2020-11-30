@@ -22,13 +22,11 @@ const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [nftcollection, setNftCollection] = useState<NftInstance[]>([])
   const [isCreating, setIsCreating] = useState(false)
-  const [isDestroying, setIsDestroying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
   const yam = useYam()
 
-  console.log('strain nft, is yam undefined', yam === undefined);
   const fetchUsersNfts = useCallback(async (yam: any, userAddress: string, provider: provider) => {
     if (account === undefined || yam === undefined) {
       console.log('account, yam', account !== undefined, yam !== undefined)
@@ -36,7 +34,7 @@ const Provider: React.FC = ({ children }) => {
     }
     setIsLoading(true)
 
-    getUserNfts(provider, getAddresses().strainNFTAddress, getAddresses().strainNFTCrafterAddress, userAddress)
+    getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter)
       .then(nftinstances => {
         nftinstances.map(n => console.log('Nfts in provider', n))
         setNftCollection(nftinstances)
@@ -62,7 +60,6 @@ const Provider: React.FC = ({ children }) => {
   ])
 
   const handleCreateNft = useCallback(async (poolId: string, amount: string, name: string) => {
-    console.log('strain nft, create, is yam undefined', yam === undefined);
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     setIsCreating(true)
@@ -80,21 +77,20 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleDestroyNft = useCallback(async (poolId: string, nftId: string) => {
+  const handleDestroyNft = useCallback(async (poolId: string, nft: NftInstance) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    setIsDestroying(true)
-    await burnNft(yam.contracts.strain_nft_crafter, yam.web3.eth, nftId, poolId, account, () => {
+    nft.isDestroying = true;
+    await burnNft(yam.contracts.strain_nft_crafter, yam.web3.eth, nft.nftId, poolId, account, () => {
       setConfirmTxModalIsOpen(false)
     }).catch(e => {
       console.error(e)
-      setIsDestroying(false)
+      nft.isDestroying = false;
     })
-    setIsDestroying(false)
+    nft.isDestroying = false;
   }, [
     account,
     setConfirmTxModalIsOpen,
-    setIsDestroying,
     yam
   ])
 
@@ -115,7 +111,6 @@ const Provider: React.FC = ({ children }) => {
       onRetrieve: handleNftRetrive,
       onCreateNft: handleCreateNft,      
       isCreating,
-      isDestroying,
       isLoading,      
     }}>
       {children}

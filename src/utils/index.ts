@@ -129,7 +129,7 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
   }
 }
 
-export const getUserNfts = async (provider: provider, nftAddress: string, crafterAddress: string, userAddress: string): Promise<NftInstance[]> => {
+export const getUserNfts = async (provider: provider, nftAddress: string, userAddress: string, crafterContract: any): Promise<NftInstance[]> => {
   const nftContract = getERC1155Contract(provider, nftAddress)
   try {
     const length = await nftContract.methods.getItemIDsLength().call();
@@ -140,13 +140,16 @@ export const getUserNfts = async (provider: provider, nftAddress: string, crafte
       if (owner == userAddress) {
         const dataUrls = await nftContract.methods.uri(nftId).call();
         const nftName = await nftContract.methods.nameMap(nftId).call();
+        const { poolId, lpBalance } = await getNftPoolIdBalance(crafterContract, nftId, userAddress);
         console.log("contract dataUrl:", dataUrls)
         // TODO: when json service is up remove this
         const dataUrl = "https://nft-image-service.herokuapp.com/tester";
         const nft = {
           nftId,
           dataUrl,
-          nftName
+          nftName,
+          lpBalance,
+          poolId
         }
         userItems.push(nft)
       }
@@ -155,6 +158,19 @@ export const getUserNfts = async (provider: provider, nftAddress: string, crafte
   } catch (e) {
     return []
   }
+}
+
+export const getNftPoolIdBalance = async(contract: any, nftId: string, userAddress: string) => {
+  let poolId = "0"; // set default
+  poolId = await contract.methods.nftPool(nftId).call().catch((e: Error) => {
+    console.error("Could not get NFT's pool Id, defaulting to `0`", e);
+  })
+
+  const lpBalance = await contract.methods.balanceOf(nftId).call().catch((e: Error) => {
+    console.error("Could not get NFT's balance", e);
+  })
+
+  return { poolId, lpBalance: new BigNumber(lpBalance).dividedBy(new BigNumber(10).pow(18)) };
 }
 
 export const getERC20Contract = (provider: provider, address: string) => {

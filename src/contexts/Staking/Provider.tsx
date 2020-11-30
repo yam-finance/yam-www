@@ -42,7 +42,6 @@ const Provider: React.FC = ({ children }) => {
   const yam = useYam()
   const { account } = useWallet()
 
-  console.log('staking, is yam undefined', yam === undefined);
   const getIncentivizerAddress = () => {
     return addresses.strnEthIncAddress
   }
