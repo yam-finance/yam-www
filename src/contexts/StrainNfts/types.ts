@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js'
 import { NftInstance } from 'constants/poolValues';
 
 export interface ContextValues {

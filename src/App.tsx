@@ -111,8 +111,8 @@ const Providers: React.FC = ({ children }) => {
           <PricesProvider>
             <BalancesProvider>
               <FarmingProvider>
-                <StakingProvider>
-                  <StrainNftsProvider>
+                <StrainNftsProvider>
+                  <StakingProvider>
                     <MigrationProvider>
                       <VestingProvider>
                         {/*<GovernanceProvider>*/}
@@ -120,8 +120,8 @@ const Providers: React.FC = ({ children }) => {
                         {/*</GovernanceProvider>*/}
                       </VestingProvider>
                     </MigrationProvider>
-                  </StrainNftsProvider>
-                </StakingProvider>
+                  </StakingProvider>
+                </StrainNftsProvider>
               </FarmingProvider>
             </BalancesProvider>
           </PricesProvider>

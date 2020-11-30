@@ -18,6 +18,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
 
     //TODO: get nft LP balance
     const lpAmount = "22.00";
+    const poolName = "STRN/XIOT LP";
 
     const {
         onRetrieve,
@@ -80,7 +81,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                                 size="sm"
                             />
                             <StyledLabels>
-                                <div>{"STRN/XIOT LP:"}</div>
+                                <div>{poolName}</div>
                                 <StyledValue>{lpAmount}</StyledValue>
                             </StyledLabels>
                         </StyledInfo>

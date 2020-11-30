@@ -28,6 +28,7 @@ const Provider: React.FC = ({ children }) => {
 
   const yam = useYam()
 
+  console.log('strain nft, is yam undefined', yam === undefined);
   const fetchUsersNfts = useCallback(async (yam: any, userAddress: string, provider: provider) => {
     if (account === undefined || yam === undefined) {
       console.log('account, yam', account !== undefined, yam !== undefined)
@@ -44,7 +45,7 @@ const Provider: React.FC = ({ children }) => {
         setIsLoading(false);
       })
 
-  }, [])
+  }, [yam])
 
 
   useEffect(() => {
@@ -61,10 +62,8 @@ const Provider: React.FC = ({ children }) => {
   ])
 
   const handleCreateNft = useCallback(async (poolId: string, amount: string, name: string) => {
-    if (yam === undefined) {
-      console.log('yam is undefined')
-      return
-    }
+    console.log('strain nft, create, is yam undefined', yam === undefined);
+    if (!yam) return
     setConfirmTxModalIsOpen(true)
     setIsCreating(true)
     await generateNft(yam.contracts.strain_nft_crafter, yam.web3.eth, poolId, amount, name, account, () => {
@@ -112,12 +111,12 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       setConfirmTxModalIsOpen,
       strainNftCollection: nftcollection,
-      isCreating,
-      isDestroying,
-      isLoading,
-      onCreateNft: handleCreateNft,
       onDestroyNft: handleDestroyNft,
       onRetrieve: handleNftRetrive,
+      onCreateNft: handleCreateNft,      
+      isCreating,
+      isDestroying,
+      isLoading,      
     }}>
       {children}
     </Context.Provider>

@@ -16,7 +16,6 @@ import { useWallet } from 'use-wallet'
 import { MIN_STRN_ETH_LP_VALUE, MIN_STRN_XIOT_LP_VALUE, PoolIds } from 'constants/poolValues'
 import NamedGeneratingModal from 'views/Modals/NamedGeneratingModal'
 import BigNumber from 'bignumber.js'
-import FancyValue from 'components/FancyValue'
 import numeral from 'numeral'
 import Label from 'components/Label'
 
@@ -56,10 +55,10 @@ const GenerateNFT = () => {
         setGenerateModalIsOpen(true)
     }, [setGenerateModalIsOpen])
 
-    const handleOnGenerate = useCallback((amount: string, name: string) => {
+    const handleOnGenerate = (amount: string, name: string) => {
         onCreateNft(poolId, amount, name)
         handleDismissGenerateModal()
-    }, [setGenerateModalIsOpen])
+    }
 
     const handleDismissGenerateModal = useCallback(() => {
         setGenerateModalIsOpen(false)

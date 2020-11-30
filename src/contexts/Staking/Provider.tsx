@@ -42,6 +42,7 @@ const Provider: React.FC = ({ children }) => {
   const yam = useYam()
   const { account } = useWallet()
 
+  console.log('staking, is yam undefined', yam === undefined);
   const getIncentivizerAddress = () => {
     return addresses.strnEthIncAddress
   }
@@ -129,6 +130,7 @@ const Provider: React.FC = ({ children }) => {
   ])
 
   const handleStake = useCallback(async (duration: string, amount: string) => {
+    console.log('staking, stake, is yam undefined', yam === undefined);
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     setIsStaking(true)
