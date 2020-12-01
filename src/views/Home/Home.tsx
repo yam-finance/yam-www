@@ -24,7 +24,7 @@ const Home: React.FC = () => {
     <Page>
       <HomePageHeader
         imgSrc={twoStrains}
-        subtitle="Upgrade and breed yield generating NFTs"
+        subtitle="DeFi Staked NFT Ecosystem"
         title="Fun, DeFi-staked NFT Collectibles"
         imgSrc2={strain}
       />
