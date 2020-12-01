@@ -5,6 +5,7 @@ import Page from 'components/Page'
 import useStrainNfts from 'hooks/useStrainNfts'
 import StyledNft from 'views/Common/StyledNft'
 import GenerateNFT from './GenerateNFT'
+import Harvest from './Harvest'
 
 const Apothecary: React.FC = () => {
 
@@ -18,6 +19,7 @@ const Apothecary: React.FC = () => {
       <StyledPageLayout>
         <StyledGenerationForm>
           <GenerateNFT />
+          <Harvest />
         </StyledGenerationForm>
         <StyledNftSection>
           {strainNftCollection && strainNftCollection.map(nft => (

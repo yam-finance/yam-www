@@ -148,13 +148,13 @@ const GenerateNFT = () => {
         if (isCreating) {
             return (
                 <>
-                <Spacer size={"lg"} />
-                <Button
-                    disabled
-                    full
-                    text="Generating..."
-                    variant="secondary"
-                />
+                    <Spacer size={"lg"} />
+                    <Button
+                        disabled
+                        full
+                        text="Generating..."
+                        variant="secondary"
+                    />
                 </>
             )
         }
@@ -217,15 +217,12 @@ const GenerateNFT = () => {
 
     return (
         <>
-            <Container>
-                <StyledTitle>Generate NFT</StyledTitle>
-                <Spacer size={"sm"} />
-                <StyledBlankNFT />
+            <StyledTitle>Generate NFT</StyledTitle>
+            <Spacer size={"sm"} />
+            <StyledBlankNFT />
 
-                {status !== 'connected' && <Spacer size="sm" />}
-                {GenerateButton}
-
-            </Container>
+            {status !== 'connected' && <Spacer size="sm" />}
+            {GenerateButton}
 
             <NamedGeneratingModal
                 isOpen={generateModalIsOpen}

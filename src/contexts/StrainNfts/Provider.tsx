@@ -10,7 +10,7 @@ import {
 import Context from './Context'
 import { NftInstance } from 'constants/poolValues'
 import useYam from 'hooks/useYam'
-import { burnNft, generateNft } from 'yam-sdk/utils'
+import { burnNft, generateNft, getEarned, harvest } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
 import Axios from 'axios'
 
@@ -23,6 +23,8 @@ const Provider: React.FC = ({ children }) => {
   const [nftcollection, setNftCollection] = useState<NftInstance[]>([])
   const [isCreating, setIsCreating] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [earnedStrnBalance, setEarnedStrnBalance] = useState<BigNumber>()
+  const [isHarvesting, setIsHarvesting] = useState(false)
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
   const yam = useYam()
@@ -45,11 +47,24 @@ const Provider: React.FC = ({ children }) => {
 
   }, [yam])
 
+  const fetchEarnedBalance = useCallback(async (yam, account) => {
+    if (!account || !yam) return
+    // todo: get new pool incentivizer
+    const balance = await getEarned(yam, yam.contracts.strain_nft_crafter, account)
+    setEarnedStrnBalance(balance)
+  }, [
+    account,
+    setEarnedStrnBalance,
+    yam
+  ])
 
   useEffect(() => {
     if (account && ethereum && yam) {
       fetchUsersNfts(yam, account, ethereum)
-      let refreshInterval = setInterval(() => fetchUsersNfts(yam, account, ethereum), 10000)
+      let refreshInterval = setInterval(() => {
+        fetchUsersNfts(yam, account, ethereum);
+        fetchEarnedBalance(yam, account);
+      }, 10000)
       return () => clearInterval(refreshInterval)
     }
   }, [
@@ -95,13 +110,28 @@ const Provider: React.FC = ({ children }) => {
   ])
 
   const handleNftRetrive = useCallback(async (nft: NftInstance): Promise<NftInstance> => {
-    console.log('handleNftRetrive called', nft)
     if (!nft?.dataUrl) return nft;
-
     Axios.get(nft.dataUrl)
     const promise = Axios.get(nft.dataUrl)
-    return promise.then(response => ({...nft, attribs: response.data}));
+    return promise.then(response => ({ ...nft, attribs: response.data }));
   }, [])
+
+  const handleHarvest = useCallback(async () => {
+    if (!yam) return
+    setConfirmTxModalIsOpen(true)
+    setIsHarvesting(true)
+    await harvest(yam.contracts.strain_nft_crafter, yam.web3.eth, account, () => {
+      setConfirmTxModalIsOpen(false)
+    }).catch(e => {
+      console.error(e)
+    })
+    setIsHarvesting(false)
+  }, [
+    account,
+    setConfirmTxModalIsOpen,
+    setIsHarvesting,
+    yam
+  ])
 
   return (
     <Context.Provider value={{
@@ -109,9 +139,12 @@ const Provider: React.FC = ({ children }) => {
       strainNftCollection: nftcollection,
       onDestroyNft: handleDestroyNft,
       onRetrieve: handleNftRetrive,
-      onCreateNft: handleCreateNft,      
+      onCreateNft: handleCreateNft,
+      onHarvest: handleHarvest,
+      earnedStrnBalance,
       isCreating,
-      isLoading,      
+      isLoading,
+      isHarvesting
     }}>
       {children}
     </Context.Provider>
