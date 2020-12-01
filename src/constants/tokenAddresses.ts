@@ -64,23 +64,23 @@ const addresses = {
         // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     },
     4: {
-        strnTokenAddress: '0x32C1446E7542BbB3810e65CbFfb94a2aF396d27e',
-        strnLPTokenAddress: '0x32C1446E7542BbB3810e65CbFfb94a2aF396d27e',
+        strnTokenAddress: '0xf0855E08DBBCB7563a196c5613C18690aAc738fe',
+        strnLPTokenAddress: '0x6cd98d3909035f779eaa7c98f940daa0173a48e2',
         strnEthIncAddress: '0x25d766A7e469741BE43C1dAD8439AF74a8344613',
 
         // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
         // src/yam-sdk/lib/clean_build/contracts/STRNXIOTIncentivizer.json
-        strnXiotLPTokenAddress: '0x42b230455c2bcaf3e4a02a5aa34e810b1dc56fba',
+        strnXiotLPTokenAddress: '0x19a73ec9d54a6e0ffc0f4378266cf5c51492fb74',
         strnXiotPoolAddress: '0xF70dE70202F326EA79f85C90e635F0abE338d73d',
 
         // -- single staking
-        stxpTokenAddress: '0xdCF1d98F100445e1D74c3aedD0a90c565a8Da772',
+        stxpTokenAddress: '0x13d0DE15e45460bd69F58AE3f0E7dE8ba53AC162',
         // src/yam-sdk/lib/clean_build/contracts/STXPIncentivizer.json
         singleStrnPool: '0x69dc085C3C51F5ef74C737E817DD2A271e772B17',
-
-        strainNFTAddress: '0x0E624fb1f1fb305Ef90C13DF1E958122fDcB6a7C',
+        // xiot: "0x5deb4627202cD666cE025F78956A14418345f508"
+        strainNFTAddress: '0xCB89BD0E7c71Eed45e52286fD1851a283BE3eACa',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
-        strainNFTCrafterAddress: '0xAa8E243AD2D50961D75105B1FAbF0f19cABfC0e8',
+        strainNFTCrafterAddress: '0xe21f6F3D56d048076FEc241048e06aC8c0C3aa11',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     }
 }
