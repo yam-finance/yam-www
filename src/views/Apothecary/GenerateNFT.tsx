@@ -13,7 +13,7 @@ import { getAddresses } from 'constants/tokenAddresses'
 import useStrainNfts from 'hooks/useStrainNfts'
 import useBalances from 'hooks/useBalances'
 import { useWallet } from 'use-wallet'
-import { MIN_STRN_ETH_LP_VALUE, MIN_STRN_XIOT_LP_VALUE, PoolIds } from 'constants/poolValues'
+import { MIN_LP_AMOUNTS, MIN_STRN_ETH_LP_VALUE, MIN_STRN_XIOT_LP_VALUE, PoolIds } from 'constants/poolValues'
 import NamedGeneratingModal from 'views/Modals/NamedGeneratingModal'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -23,7 +23,7 @@ const GenerateNFT = () => {
     const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false)
     const [canStrnLpGenerate, setCanStrnLpGenerate] = useState(false)
     const [canXiotLpGenerate, setCanXiotLpGenerate] = useState(false)
-    const [poolId, setPoolid] = useState(PoolIds.STRN_ETH)
+    const [poolId, setPoolid] = useState(String(PoolIds.STRN_ETH))
     const {
         setConfirmTxModalIsOpen,
         isCreating,
@@ -51,7 +51,8 @@ const GenerateNFT = () => {
         setConfirmTxModalIsOpen,
     ])
 
-    const handleGenerateClick = useCallback(() => {
+    const handleGenerateClick = useCallback((poolId: string) => {
+        setPoolid(poolId)
         setGenerateModalIsOpen(true)
     }, [setGenerateModalIsOpen])
 
@@ -184,7 +185,7 @@ const GenerateNFT = () => {
                             <Spacer size="sm" />
                             <Button
                                 full
-                                onClick={handleGenerateClick}
+                                onClick={() => handleGenerateClick(PoolIds.STRN_ETH)}
                                 text="wrap [STRN/ETH] LP"
                             />
                         </>)
@@ -199,7 +200,7 @@ const GenerateNFT = () => {
                             <Spacer size="sm" />
                             <Button
                                 full
-                                onClick={handleGenerateClick}
+                                onClick={() => handleGenerateClick(PoolIds.STRN_XIOT)}
                                 text="wrap [STRN/XIOT] LP"
                             />
                         </>)}
@@ -230,6 +231,7 @@ const GenerateNFT = () => {
                 onGenerate={handleOnGenerate}
                 label={`Generate NFT`}
                 fullBalance={walletBalance}
+                minAmount={MIN_LP_AMOUNTS[Number(poolId)]}
             />
         </>
     )

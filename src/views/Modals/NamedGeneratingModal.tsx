@@ -13,11 +13,13 @@ import {
 
 import TokenInput from 'components/TokenInput'
 import styled from 'styled-components'
+import Label from 'components/Label'
 
 interface NamedGeneratingModalProps extends ModalProps {
   onGenerate: (amount: string, name: string) => void,
   label: string,
-  fullBalance?: BigNumber
+  fullBalance?: BigNumber,
+  minAmount: number,
 }
 
 const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
@@ -25,11 +27,13 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
   onDismiss,
   onGenerate,
   label,
-  fullBalance
+  fullBalance,
+  minAmount
 }) => {
 
   const [val, setVal] = useState('')
   const [name, setName] = useState('')
+  const [hasError, setHasError] = useState(false)
 
   const handleNameChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value)
@@ -37,10 +41,12 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
+    setHasError(new BigNumber(e.currentTarget.value || 0).lt(new BigNumber(minAmount)))
   }, [setVal])
 
   const handleSelectMax = useCallback(() => {
     setVal(String(fullBalance || 0))
+    setHasError(new BigNumber(fullBalance || 0).lt(new BigNumber(minAmount)))
   }, [fullBalance, setVal])
 
   const handleGenerateClick = useCallback(() => {
@@ -71,6 +77,11 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
           max={String(fullBalance || 0)}
           symbol={label}
         />
+        {hasError &&
+          <ErrorLabel>
+            {`Min required balance is ${minAmount}`}
+          </ErrorLabel>
+        }
       </ModalContent>
       <ModalActions>
         <Button
@@ -79,7 +90,7 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
           variant="secondary"
         />
         <Button
-          disabled={!val || !Number(val)}
+          disabled={!val || !Number(val) || hasError}
           onClick={handleGenerateClick}
           text="Generate"
           variant={!val || !Number(val) ? 'secondary' : 'default'}
@@ -107,6 +118,10 @@ const StyledTokenSymbol = styled.span`
 
 const StyledSpacer = styled.div`
   width: ${props => props.theme.spacing[3]}px;
+`
+
+const ErrorLabel = styled.div`
+  color: #ff0000;
 `
 
 export default NamedGeneratingModal
