@@ -14,10 +14,6 @@ import { burnNft, generateNft, getEarned, harvest } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
 import Axios from 'axios'
 
-// StrainNFT.uri(_nftid) returns the nft uri address
-// StrainNFTCrafter.craftStrainNFT sending it 0.03 ether (for rng)
-// StrainNFT.setApprovalForAll(address _operator, bool _approved)
-
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [nftcollection, setNftCollection] = useState<NftInstance[]>([])
