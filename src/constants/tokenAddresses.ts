@@ -70,7 +70,7 @@ const addresses = {
 
         // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
         // src/yam-sdk/lib/clean_build/contracts/STRNXIOTIncentivizer.json
-        strnXiotLPTokenAddress: '0x32C1446E7542BbB3810e65CbFfb94a2aF396d27e', //'0x42b230455c2bcaf3e4a02a5aa34e810b1dc56fba',
+        strnXiotLPTokenAddress: '0x42b230455c2bcaf3e4a02a5aa34e810b1dc56fba',
         strnXiotPoolAddress: '0xF70dE70202F326EA79f85C90e635F0abE338d73d',
 
         // -- single staking
