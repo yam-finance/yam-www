@@ -80,7 +80,7 @@ const addresses = {
 
         strainNFTAddress: '0x0E624fb1f1fb305Ef90C13DF1E958122fDcB6a7C',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
-        strainNFTCrafterAddress: '0xDdfcB2Ef0Ed082AE5558fd54c4EB30C910c0167e',
+        strainNFTCrafterAddress: '0xAa8E243AD2D50961D75105B1FAbF0f19cABfC0e8',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     }
 }
