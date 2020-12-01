@@ -1,6 +1,7 @@
+import { getAddresses } from 'constants/tokenAddresses';
 import React from 'react'
 
-import { Container, Spacer } from 'react-neu'
+import { Spacer } from 'react-neu'
 import styled from 'styled-components'
 
 interface HomePageHeaderProps {
@@ -17,8 +18,8 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ imgSrc, subtitle, title
                     <Spacer size="sm" />
                     <StyledTitle>{title}</StyledTitle>
                     <StyledSubtitle>{subtitle}</StyledSubtitle>
-                    <StyledStrnButton href="https://uniswap.exchange/swap?inputCurrency=ETH&outputCurrency=0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f" target="_blank">Buy STRN</StyledStrnButton>
-                    <StyledStrnButton href="https://app.uniswap.org/#/add/0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f/ETH" target="_blank">Provide LP</StyledStrnButton>
+                    <StyledStrnButton href={`https://uniswap.exchange/swap?inputCurrency=ETH&outputCurrency=${getAddresses().strnTokenAddress}`} target="_blank">Buy STRN</StyledStrnButton>
+                    <StyledStrnButton href={`https://app.uniswap.org/#/add/${getAddresses().strnTokenAddress}/ETH`} target="_blank">Provide LP</StyledStrnButton>
                 </StyledHomePageContainer>
                 <StyledHomePageContainer2>
                     <img src={imgSrc2} height={384}/>
