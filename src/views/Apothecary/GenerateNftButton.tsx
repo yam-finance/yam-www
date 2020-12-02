@@ -19,7 +19,6 @@ import Label from 'components/Label'
 const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBalance?: BigNumber }) => {
     const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false)
     const [canGenerate, setCanGenerate] = useState(false)
-    const [minAmount, setMinAmount] = useState<Number>();
 
     const {
         setConfirmTxModalIsOpen,
@@ -28,6 +27,9 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
     } = useStrainNfts();
 
     const { status } = useWallet()
+
+    const poolName = useMemo(() => POOL_NAMES[Number(poolId)], [poolId])
+    const minAmountLpTokens = useMemo(() => MIN_LP_AMOUNTS[Number(poolId)], [poolId])
 
     const getLpTokenAddress = () => {
         if (poolId === PoolIds.STRN_ETH) return getAddresses().strnLPTokenAddress
@@ -62,13 +64,10 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
     }, [setGenerateModalIsOpen])
 
     useEffect(() => {
-        const minAllowedAmount = MIN_LP_AMOUNTS[Number(poolId)];
-        setMinAmount(minAllowedAmount);
-
-        if (!minAllowedAmount && !walletBalance) {
+        if (!minAmountLpTokens && !walletBalance) {
             setCanGenerate(false);
         }
-        if (walletBalance && new BigNumber(walletBalance).gte(new BigNumber(minAllowedAmount))) {
+        if (walletBalance && new BigNumber(walletBalance).gte(new BigNumber(minAmountLpTokens))) {
             setCanGenerate(true)
         }
     }, [walletBalance, poolId])
@@ -112,7 +111,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                 <>
                     <Label text={'Minimum balance needed to Generate NFT'} />
                     <Spacer size={"md"} />
-                    <Label text={`${String(minAmount)} ${POOL_NAMES[Number(poolId)]} LP`} />
+                    <Label text={`${String(minAmountLpTokens)} ${poolName} LP`} />
                     <Spacer size={"sm"} />
                     <Button
                         disabled
@@ -159,7 +158,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                             <Button
                                 full
                                 onClick={handleGenerateClick}
-                                text={`wrap ${POOL_NAMES[Number(poolId)]} LP`}
+                                text={`wrap ${poolName} LP`}
                             />
                         </>)
                     }
@@ -177,8 +176,8 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
     return (
         <>
             {status !== 'connected' && <Spacer size="sm" />}
-            <div>{POOL_NAMES[Number(poolId)]} LP: <StyledValue>{formattedLPBalance}</StyledValue></div>
-            <Label text={`Min: ${String(MIN_LP_AMOUNTS[Number(poolId)])} ${POOL_NAMES[Number(poolId)]} LP`} />
+            <div>{poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue></div>
+            <Label text={`Min: ${String(minAmountLpTokens)} ${poolName} LP`} />
             <Spacer size="sm" />
             {GenerateButton}
 
@@ -186,9 +185,9 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                 isOpen={generateModalIsOpen}
                 onDismiss={handleDismissGenerateModal}
                 onGenerate={handleOnGenerate}
-                label={POOL_NAMES[Number(PoolIds)]}
+                label={poolName}
                 fullBalance={walletBalance}
-                minAmount={MIN_LP_AMOUNTS[Number(poolId)]}
+                minAmount={minAmountLpTokens}
             />
         </>
     )

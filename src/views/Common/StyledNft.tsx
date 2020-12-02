@@ -19,6 +19,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     } = useStrainNfts();
 
     const imageUrl = useMemo(() => nft?.imageUrl, [nft?.imageUrl])
+    const poolName = useMemo(() => POOL_NAMES[Number(nft?.poolId)], [nft?.poolId])
 
     useEffect(() => {
         if (nft && !updatedNft) {
@@ -58,11 +59,6 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
         onDestroyNft(nft.poolId, nft)
     }
 
-    const getPoolName = () => {
-        if (!updatedNft || updatedNft.poolId === undefined) return "-"
-        return POOL_NAMES[Number(updatedNft.poolId)]
-    }
-
     const formattedLPBalance = useMemo(() => {
         if (nft && nft?.lpBalance) {
             if (PoolIds.STRN_ETH === nft.poolId)
@@ -94,7 +90,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                                 size="sm"
                             />
                             <StyledLabels>
-                                <div>{getPoolName()}</div>
+                                <div>{poolName}</div>
                                 <StyledValue>{nft?.lpBalance ? formattedLPBalance : "-"}</StyledValue>
                             </StyledLabels>
                         </StyledInfo>
@@ -121,7 +117,7 @@ const NFTCard = styled.div`
     color: white;
     text-align: center;
     display: inline-block !important;
-    margin: 0 20px;
+    margin: 1rem;
 `
 const RarityPill = styled.button`
     width: 100px;

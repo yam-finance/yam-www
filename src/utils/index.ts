@@ -146,8 +146,8 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
         //console.log("contract dataUrl:", dataUrls)
         // TODO: when json service is up remove this
         //const dataUrl = "https://nft-image-service.herokuapp.com/tester";
-        const value = genome >>> (14*4);
-        console.log('genome', value , genome)
+        const value = genome.toString('hex') >>> (14*4);
+        console.log('value', value, genome.toString('hex'))
         //const imageUrl = `${base_image_url}/${genome}`;
         const imageUrl = "https://nft-image-service.herokuapp.com/genome/11223344"
         const nft = {
@@ -159,6 +159,7 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
           genome,
           imageUrl
         }
+        console.log('NFT', JSON.stringify(nft));
         userItems.push(nft)
       }
     }

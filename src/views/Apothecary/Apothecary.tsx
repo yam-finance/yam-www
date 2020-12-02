@@ -55,6 +55,7 @@ const StyledGenerationForm = styled.div`
 const StyledNftSection = styled.div`
   border-left: 1px solid #00AC69;
   display: flex;
+  flex-flow: row wrap;
   width: 100%;
 
   @media (max-width: 600px) {

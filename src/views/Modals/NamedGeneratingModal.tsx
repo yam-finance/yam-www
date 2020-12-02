@@ -13,7 +13,6 @@ import {
 
 import TokenInput from 'components/TokenInput'
 import styled from 'styled-components'
-import Label from 'components/Label'
 
 interface NamedGeneratingModalProps extends ModalProps {
   onGenerate: (amount: string, name: string) => void,

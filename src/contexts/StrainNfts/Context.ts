@@ -14,6 +14,8 @@ const Context = createContext<ContextValues>({
     onHarvest: () => { },
     setConfirmTxModalIsOpen: () => { },
     earnedStrnBalance: new BigNumber(0),
+    strnEthLpPoolBalance: new BigNumber(0),
+    strnXiotLpPoolBalance: new BigNumber(0),
 })
 
 export default Context

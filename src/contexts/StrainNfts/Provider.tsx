@@ -8,7 +8,7 @@ import {
 } from 'constants/tokenAddresses'
 
 import Context from './Context'
-import { NftInstance } from 'constants/poolValues'
+import { NftInstance, PoolIds } from 'constants/poolValues'
 import useYam from 'hooks/useYam'
 import { burnNft, generateNft, getEarned, harvest } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
@@ -20,6 +20,8 @@ const Provider: React.FC = ({ children }) => {
   const [isCreating, setIsCreating] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [earnedStrnBalance, setEarnedStrnBalance] = useState<BigNumber>()
+  const [strnEthLpPoolBalance, setStrnEthLpPoolBalance] = useState<BigNumber>()
+  const [strnXiotLpPoolBalance, setStrnXiotLpPoolBalance] = useState<BigNumber>()
   const [isHarvesting, setIsHarvesting] = useState(false)
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -34,8 +36,13 @@ const Provider: React.FC = ({ children }) => {
 
     getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter)
       .then(nftinstances => {
-        nftinstances.map(n => console.log('Nfts in provider', n))
         setNftCollection(nftinstances)
+
+        // sum up LPs in each pool
+        const strnEthNfts = nftinstances.filter(n => n.poolId === PoolIds.STRN_ETH).reduce((p, n) => p.plus(n.lpBalance || 0), new BigNumber(0));
+        const strnXiotNfts = nftinstances.filter(n => n.poolId === PoolIds.STRN_XIOT).reduce((p, n) => p.plus(n.lpBalance || 0), new BigNumber(0));
+        setStrnEthLpPoolBalance(strnEthNfts);
+        setStrnXiotLpPoolBalance(strnXiotNfts);
       })
       .catch(e => {
         setIsLoading(false);
@@ -140,7 +147,9 @@ const Provider: React.FC = ({ children }) => {
       earnedStrnBalance,
       isCreating,
       isLoading,
-      isHarvesting
+      isHarvesting,
+      strnEthLpPoolBalance,
+      strnXiotLpPoolBalance,
     }}>
       {children}
     </Context.Provider>
