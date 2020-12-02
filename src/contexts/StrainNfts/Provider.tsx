@@ -36,7 +36,7 @@ const Provider: React.FC = ({ children }) => {
 
     getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter)
       .then(nftinstances => {
-        setNftCollection(nftinstances)
+          setNftCollection(nftinstances)
 
         // sum up LPs in each pool
         const strnEthNfts = nftinstances.filter(n => n.poolId === PoolIds.STRN_ETH).reduce((p, n) => p.plus(n.lpBalance || 0), new BigNumber(0));

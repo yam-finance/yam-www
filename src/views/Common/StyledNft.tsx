@@ -34,7 +34,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                     setIsNftLoading(false);
                 })
         }
-    }, [nft, updatedNft])
+    }, [nft.nftId, updatedNft])
 
     const getAttribute = (name: string, collection: string[]): string => {
         if (!updatedNft) return '-';
@@ -78,7 +78,6 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                         <h3>{getName()}</h3>
                         <h4>{getAttribute(attributeNames.VIBES, VibeIndexValues)}</h4>
                         <Spacer size="sm" />
-                        {/*<img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />*/}
                         <img src={imageUrl} height={DEFAULT_NFT_SIZE} />
                         <Spacer size="sm" />
                         <RarityPill>{getAttribute(attributeNames.RARITY, RarityIndexValues)}</RarityPill>

@@ -13,7 +13,6 @@ const Apothecary: React.FC = () => {
     strainNftCollection
   } = useStrainNfts()
 
-
   return (
     <Page>
       <StyledPageLayout>
