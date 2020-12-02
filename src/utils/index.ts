@@ -147,9 +147,11 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
         // TODO: when json service is up remove this
         //const dataUrl = "https://nft-image-service.herokuapp.com/tester";
         const value = genome.toString('hex') >>> (14*4);
-        console.log('value', value, genome.toString('hex'))
+        const value2 = `${Buffer.from(genome, 'utf8').toString('hex')}`;
+        console.log('value', value2, value, genome.toString('hex'))
+        
         //const imageUrl = `${base_image_url}/${genome}`;
-        const imageUrl = "https://nft-image-service.herokuapp.com/genome/11223344"
+        const imageUrl = `https://nft-image-service.herokuapp.com/genome/11223344`
         const nft = {
           nftId,
           dataUrl,

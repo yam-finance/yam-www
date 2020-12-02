@@ -10,7 +10,7 @@ import useApproval from 'hooks/useApproval'
 import { getAddresses } from 'constants/tokenAddresses'
 import useStrainNfts from 'hooks/useStrainNfts'
 import { useWallet } from 'use-wallet'
-import { MIN_LP_AMOUNTS, PoolIds, POOL_NAMES } from 'constants/poolValues'
+import { MIN_LP_AMOUNTS, MIN_LP_AMOUNTS_DISPLAY, PoolIds, POOL_NAMES } from 'constants/poolValues'
 import NamedGeneratingModal from 'views/Modals/NamedGeneratingModal'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -24,6 +24,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         setConfirmTxModalIsOpen,
         isCreating,
         onCreateNft,
+        isLoading,
     } = useStrainNfts();
 
     const { status } = useWallet()
@@ -87,7 +88,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                     <Button
                         disabled
                         full
-                        text="Not Connected"
+                        text={'Not Connected'}
                         variant="secondary"
                     />
                 </>
@@ -177,7 +178,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         <>
             {status !== 'connected' && <Spacer size="sm" />}
             <div>{poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue></div>
-            <Label text={`Min: ${String(minAmountLpTokens)} ${poolName} LP`} />
+            <Label text={`Min: ${String(MIN_LP_AMOUNTS_DISPLAY[Number(poolId)])} ${poolName} LP`} />
             <Spacer size="sm" />
             {GenerateButton}
 

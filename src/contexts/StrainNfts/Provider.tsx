@@ -47,7 +47,7 @@ const Provider: React.FC = ({ children }) => {
       .catch(e => {
         setIsLoading(false);
       })
-
+      setIsLoading(false);
   }, [yam])
 
   const fetchEarnedBalance = useCallback(async (yam, account) => {

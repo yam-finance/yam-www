@@ -15,6 +15,12 @@ export const MIN_LP_AMOUNTS = [
   MIN_STRN_XIOT_LP_VALUE
 ]
 
+export const MIN_LP_AMOUNTS_DISPLAY = [
+  "4.20",
+  "0.000000542"
+]
+
+
 export const POOL_NAMES = [
   "STRN/ETH",
   "STRN/XIOT"

@@ -46,8 +46,8 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     }
 
     const getName = () => {
-        if (!updatedNft) return '-';
-        if (updatedNft?.nftName) return updatedNft?.nftName;
+        if (!nft) return '-';
+        if (nft?.nftName) return nft?.nftName;
         return updatedNft?.attribs?.name;
     }
 
