@@ -6,24 +6,21 @@ import {
 } from 'react-neu'
 
 import styled from 'styled-components'
-import StyledBlankNFT from 'views/Common/StyledBlankNFT'
 import useApproval from 'hooks/useApproval'
 import { getAddresses } from 'constants/tokenAddresses'
 import useStrainNfts from 'hooks/useStrainNfts'
-import useBalances from 'hooks/useBalances'
 import { useWallet } from 'use-wallet'
-import { MIN_LP_AMOUNTS, MIN_STRN_ETH_LP_VALUE, MIN_STRN_XIOT_LP_VALUE, PoolIds } from 'constants/poolValues'
+import { MIN_LP_AMOUNTS, PoolIds, POOL_NAMES } from 'constants/poolValues'
 import NamedGeneratingModal from 'views/Modals/NamedGeneratingModal'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import Label from 'components/Label'
-import GenerateNftButton from './GenerateNftButton'
 
-const GenerateNFT = () => {
+const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBalance?: BigNumber }) => {
     const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false)
-    const [canStrnLpGenerate, setCanStrnLpGenerate] = useState(false)
-    const [canXiotLpGenerate, setCanXiotLpGenerate] = useState(false)
-    const [poolId, setPoolid] = useState(String(PoolIds.STRN_ETH))
+    const [canGenerate, setCanGenerate] = useState(false)
+    const [minAmount, setMinAmount] = useState<Number>();
+
     const {
         setConfirmTxModalIsOpen,
         isCreating,
@@ -32,13 +29,13 @@ const GenerateNFT = () => {
 
     const { status } = useWallet()
 
-    const {
-        strnEthLpBalance,
-        strnXiotLpBalance,
-    } = useBalances()
+    const getLpTokenAddress = () => {
+        if (poolId === PoolIds.STRN_ETH) return getAddresses().strnLPTokenAddress
+        return getAddresses().strnXiotLPTokenAddress
+    }
 
     const { isApproved, isApproving, onApprove } = useApproval(
-        getAddresses().strnLPTokenAddress,
+        getLpTokenAddress(),
         getAddresses().strainNFTCrafterAddress,
         () => setConfirmTxModalIsOpen(false)
     )
@@ -51,8 +48,7 @@ const GenerateNFT = () => {
         setConfirmTxModalIsOpen,
     ])
 
-    const handleGenerateClick = useCallback((poolId: string) => {
-        setPoolid(poolId)
+    const handleGenerateClick = useCallback(() => {
         setGenerateModalIsOpen(true)
     }, [setGenerateModalIsOpen])
 
@@ -65,45 +61,30 @@ const GenerateNFT = () => {
         setGenerateModalIsOpen(false)
     }, [setGenerateModalIsOpen])
 
-    const walletBalance = useMemo(() => {
-        // need better way to get specific pool balance
-        return poolId === "0" ? strnEthLpBalance : strnXiotLpBalance
-    }, [strnEthLpBalance, strnXiotLpBalance])
-
     useEffect(() => {
-        if (!strnEthLpBalance && !strnXiotLpBalance) {
-            setCanStrnLpGenerate(false);
-            setCanXiotLpGenerate(false);
-        }
-        if (strnEthLpBalance && new BigNumber(strnEthLpBalance).gte(new BigNumber(MIN_STRN_ETH_LP_VALUE))) {
-            setCanStrnLpGenerate(true)
-        }
-        if (strnXiotLpBalance && new BigNumber(strnXiotLpBalance).gte(new BigNumber(MIN_STRN_XIOT_LP_VALUE))) {
-            setCanXiotLpGenerate(true)
-        }
-    }, [strnEthLpBalance, strnXiotLpBalance])
+        const minAllowedAmount = MIN_LP_AMOUNTS[Number(poolId)];
+        setMinAmount(minAllowedAmount);
 
-    const formattedStrnLPBalance = useMemo(() => {
-        if (strnEthLpBalance) {
-            return numeral(strnEthLpBalance).format('0.00a')
+        if (!minAllowedAmount && !walletBalance) {
+            setCanGenerate(false);
+        }
+        if (walletBalance && new BigNumber(walletBalance).gte(new BigNumber(minAllowedAmount))) {
+            setCanGenerate(true)
+        }
+    }, [walletBalance, poolId])
+
+    const formattedLPBalance = useMemo(() => {
+        if (walletBalance) {
+            return poolId === PoolIds.STRN_ETH ? numeral(walletBalance).format('0.00a') : walletBalance.toFixed(8)
         } else {
             return '--'
         }
-    }, [strnXiotLpBalance])
-
-    const formattedStrnXiotLPBalance = useMemo(() => {
-        if (strnXiotLpBalance) {
-            return strnXiotLpBalance.toFixed(8)
-        } else {
-            return '--'
-        }
-    }, [strnXiotLpBalance])
+    }, [walletBalance, poolId])
 
     const GenerateButton = useMemo(() => {
         if (status !== 'connected') {
             return (
                 <>
-                    <Spacer size="lg" />
                     <Button
                         disabled
                         full
@@ -113,10 +94,9 @@ const GenerateNFT = () => {
                 </>
             )
         }
-        if (strnEthLpBalance === undefined && strnXiotLpBalance === undefined) {
+        if (walletBalance === undefined) {
             return (
                 <>
-                    <Spacer size="lg" />
                     <Button
                         disabled
                         full
@@ -127,14 +107,12 @@ const GenerateNFT = () => {
             )
         }
 
-        if (!canStrnLpGenerate && !canXiotLpGenerate) {
+        if (!canGenerate) {
             return (
                 <>
-                    <Spacer size={"sm"} />
                     <Label text={'Minimum balance needed to Generate NFT'} />
                     <Spacer size={"md"} />
-                    <Label text={`${String(MIN_STRN_ETH_LP_VALUE)} STRN/ETH LP`} />
-                    <Label text={`${String(MIN_STRN_XIOT_LP_VALUE.toFixed(8))} STRN/XIOT LP`} />
+                    <Label text={`${String(minAmount)} ${POOL_NAMES[Number(poolId)]} LP`} />
                     <Spacer size={"sm"} />
                     <Button
                         disabled
@@ -149,7 +127,6 @@ const GenerateNFT = () => {
         if (isCreating) {
             return (
                 <>
-                    <Spacer size={"lg"} />
                     <Button
                         disabled
                         full
@@ -164,7 +141,6 @@ const GenerateNFT = () => {
             // disable generation
             return (
                 <>
-                    <Spacer size={"lg"} />
                     <Button
                         full
                         onClick={handleApprove}
@@ -178,27 +154,15 @@ const GenerateNFT = () => {
         if (isApproved) {
             return (
                 <>
-                    {canStrnLpGenerate && (
+                    {canGenerate && (
                         <>
-                            <Spacer size="sm" />
-                            <GenerateNftButton
-                                poolId={PoolIds.STRN_ETH}
-                                walletBalance={strnEthLpBalance}
+                            <Button
+                                full
+                                onClick={handleGenerateClick}
+                                text={`wrap ${POOL_NAMES[Number(poolId)]} LP`}
                             />
                         </>)
                     }
-                    {canStrnLpGenerate && canXiotLpGenerate && (
-                        <Spacer size="md" />
-                    )}
-                    {canXiotLpGenerate && (
-                        <>
-                            <Spacer size="sm" />
-                            <GenerateNftButton
-                                poolId={PoolIds.STRN_XIOT}
-                                walletBalance={strnXiotLpBalance}
-                            />
-                        </>)}
-
                 </>)
         }
 
@@ -212,18 +176,17 @@ const GenerateNFT = () => {
 
     return (
         <>
-            <StyledTitle>Generate NFT</StyledTitle>
-            <Spacer size={"sm"} />
-            <StyledBlankNFT />
-
             {status !== 'connected' && <Spacer size="sm" />}
+            <div>{POOL_NAMES[Number(poolId)]} LP: <StyledValue>{formattedLPBalance}</StyledValue></div>
+            <Label text={`Min: ${String(MIN_LP_AMOUNTS[Number(poolId)])} ${POOL_NAMES[Number(poolId)]} LP`} />
+            <Spacer size="sm" />
             {GenerateButton}
 
             <NamedGeneratingModal
                 isOpen={generateModalIsOpen}
                 onDismiss={handleDismissGenerateModal}
                 onGenerate={handleOnGenerate}
-                label={`Generate NFT`}
+                label={POOL_NAMES[Number(PoolIds)]}
                 fullBalance={walletBalance}
                 minAmount={MIN_LP_AMOUNTS[Number(poolId)]}
             />
@@ -231,12 +194,9 @@ const GenerateNFT = () => {
     )
 }
 
-const StyledTitle = styled.h3`
-    text-align: center;
-`
 const StyledValue = styled.span`
     font-size: 18px;
     font-weight: 600;
 `
 
-export default GenerateNFT
+export default GenerateNftButton

@@ -34,6 +34,8 @@ export interface NftInstance {
   attribs?: AttribCollection;
   poolId?: string;
   isDestroying?: boolean;
+  genome?: string;
+  imageUrl?: string;
 }
 
 export interface AttribCollection {

@@ -7,6 +7,7 @@ import { AbiItem } from 'web3-utils'
 import ERC20ABI from 'constants/abi/ERC20.json'
 import ERC1155 from 'constants/abi/ERC1155.json'
 import { NftInstance } from 'constants/poolValues'
+import { base_image_url } from 'constants/tokenAddresses'
 
 const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -140,16 +141,23 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       if (owner == userAddress) {
         const dataUrl = await nftContract.methods.uri(nftId).call();
         const nftName = await nftContract.methods.nameMap(nftId).call();
+        const genome = await nftContract.methods.gnomeMap(nftId).call();
         const { poolId, lpBalance } = await getNftPoolIdBalance(crafterContract, nftId, userAddress);
         //console.log("contract dataUrl:", dataUrls)
         // TODO: when json service is up remove this
         //const dataUrl = "https://nft-image-service.herokuapp.com/tester";
+        const value = genome >>> (14*4);
+        console.log('genome', value , genome)
+        //const imageUrl = `${base_image_url}/${genome}`;
+        const imageUrl = "https://nft-image-service.herokuapp.com/genome/11223344"
         const nft = {
           nftId,
           dataUrl,
           nftName,
           lpBalance,
-          poolId
+          poolId,
+          genome,
+          imageUrl
         }
         userItems.push(nft)
       }
