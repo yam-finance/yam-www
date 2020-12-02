@@ -37,7 +37,7 @@ const Pools: React.FC = () => {
           title=""
         />
         <StyledNotice
-          messages={['Retired Pools!!, unstake and generate a yielding NFT in Greenhouse', 'Staking has been disabled']}
+          messages={['Retired Pools!!, Unstake and generate a yielding NFT in the Apothecary.', 'Staking has been disabled here, and rewards are no longer being distributed.']}
         />
         <Spacer size="lg" />
         <Split>
