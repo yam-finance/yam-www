@@ -140,12 +140,12 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const nftId = await nftContract.methods.itemIDs(i).call();
       const owner = await nftContract.methods.nfOwners(nftId).call();
       if (owner == userAddress) {
-        const dataUrls = await nftContract.methods.uri(nftId).call();
+        const dataUrl = await nftContract.methods.uri(nftId).call();
         const nftName = await nftContract.methods.nameMap(nftId).call();
         const genome = await nftContract.methods.gnomeMap(nftId).call();
-
+        
         const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nftId, userAddress);
-        const dataUrl = `https://nft-image-service.herokuapp.com/${nftId}`
+        //const dataUrl = `https://nft-image-service.herokuapp.com/${nftId}`
         const nft = {
           nftId,
           dataUrl,
