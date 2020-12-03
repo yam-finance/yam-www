@@ -40,7 +40,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
 
     useEffect(() => {
         if (earnedStrnBalance === undefined) return setCanBurn(false);
-        setCanBurn(earnedStrnBalance.lte(new BigNumber(1)))
+        setCanBurn(earnedStrnBalance.lte(new BigNumber(10)))
     }, [earnedStrnBalance])
 
 
