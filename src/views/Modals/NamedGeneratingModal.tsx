@@ -13,12 +13,14 @@ import {
 
 import TokenInput from 'components/TokenInput'
 import styled from 'styled-components'
+import { MIN_LP_AMOUNTS_DISPLAY } from 'constants/poolValues'
 
 interface NamedGeneratingModalProps extends ModalProps {
   onGenerate: (amount: string, name: string) => void,
   label: string,
   fullBalance?: BigNumber,
   minAmount: number,
+  poolId: string,
 }
 
 const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
@@ -27,7 +29,8 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
   onGenerate,
   label,
   fullBalance,
-  minAmount
+  minAmount,
+  poolId
 }) => {
 
   const [val, setVal] = useState('')
@@ -78,7 +81,7 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
         />
         {hasError &&
           <ErrorLabel>
-            {`Min required balance is ${minAmount}`}
+            {`Min required balance is ${MIN_LP_AMOUNTS_DISPLAY[Number(poolId)]}`}
           </ErrorLabel>
         }
       </ModalContent>

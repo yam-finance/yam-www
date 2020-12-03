@@ -7,6 +7,7 @@ import { AbiItem } from 'web3-utils'
 import ERC20ABI from 'constants/abi/ERC20.json'
 import ERC1155 from 'constants/abi/ERC1155.json'
 import { NftInstance } from 'constants/poolValues'
+import StrainNFTLPTokenWrapper from '../yam-sdk/lib/clean_build/contracts/StrainNFTLPTokenWrapper.json'
 import { base_image_url } from 'constants/tokenAddresses'
 
 const sleep = (ms: number) => {
@@ -142,14 +143,16 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
         const dataUrl = await nftContract.methods.uri(nftId).call();
         const nftName = await nftContract.methods.nameMap(nftId).call();
         const genome = await nftContract.methods.gnomeMap(nftId).call();
-        const { poolId, lpBalance } = await getNftPoolIdBalance(crafterContract, nftId, userAddress);
+
+        console.log('user has NFT', dataUrl, nftName)
+        const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nftId, userAddress);
         //console.log("contract dataUrl:", dataUrls)
         // TODO: when json service is up remove this
         //const dataUrl = "https://nft-image-service.herokuapp.com/tester";
-        const value = genome.toString('hex') >>> (14*4);
+        const value = genome.toString('hex') >>> (14 * 4);
         const value2 = `${Buffer.from(genome, 'utf8').toString('hex')}`;
         console.log('value', value2, value, genome.toString('hex'))
-        
+
         //const imageUrl = `${base_image_url}/${genome}`;
         const imageUrl = `https://nft-image-service.herokuapp.com/genome/11223344`
         const nft = {
@@ -171,15 +174,23 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
   }
 }
 
-export const getNftPoolIdBalance = async(contract: any, nftId: string, userAddress: string) => {
+export const getNftPoolIdBalance = async (provider: provider, contract: any, nftId: string, userAddress: string) => {
   let poolId = "0"; // set default
   poolId = await contract.methods.nftPool(nftId).call().catch((e: Error) => {
     console.error("Could not get NFT's pool Id, defaulting to `0`", e);
   })
-
-  const lpBalance = await contract.methods.balanceOf(nftId).call().catch((e: Error) => {
+  const poolContactAddress = await contract.methods.pools(poolId).call().catch((e: Error) => {
     console.error("Could not get NFT's balance", e);
   })
+  const lpWrapperContract = getLPTokenWrapperContract(provider, poolContactAddress)
+  const lpBalance = await lpWrapperContract.methods.originalBalanceOf(nftId).call().catch((e: Error) => {
+    console.error("Could not get NFT's balance", e);
+  })
+  /*
+    lpBalance = await contract.methods.balanceOf(nftId).call().catch((e: Error) => {
+      console.error("Could not get NFT's balance", e);
+    })
+  */
 
   return { poolId, lpBalance: new BigNumber(lpBalance).dividedBy(new BigNumber(10).pow(18)) };
 }
@@ -193,6 +204,12 @@ export const getERC20Contract = (provider: provider, address: string) => {
 export const getERC1155Contract = (provider: provider, address: string) => {
   const web3 = new Web3(provider)
   const contract = new web3.eth.Contract(ERC1155.abi as unknown as AbiItem, address)
+  return contract
+}
+
+export const getLPTokenWrapperContract = (provider: provider, address: string) => {
+  const web3 = new Web3(provider)
+  const contract = new web3.eth.Contract(StrainNFTLPTokenWrapper.abi as unknown as AbiItem, address)
   return contract
 }
 

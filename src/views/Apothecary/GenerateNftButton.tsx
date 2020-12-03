@@ -189,6 +189,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                 label={poolName}
                 fullBalance={walletBalance}
                 minAmount={minAmountLpTokens}
+                poolId={poolId}
             />
         </>
     )
