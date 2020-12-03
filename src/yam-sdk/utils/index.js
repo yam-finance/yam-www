@@ -78,25 +78,20 @@ export const unstake = async (poolContract, provider, poolId, amount, account, o
 };
 
 export const harvest = async (poolContract, provider, account, onTxHash) => {
-  let now = new Date().getTime() / 1000;
-  if (now >= 1597172400) {
-    return poolContract.methods.getReward().send({ from: account, gas: 400000 }, async (error, txHash) => {
-      if (error) {
-        onTxHash && onTxHash("");
-        console.log("Claim error", error);
-        return false;
-      }
-      onTxHash && onTxHash(txHash);
-      const status = await waitTransaction(provider, txHash);
-      if (!status) {
-        console.log("Claim transaction failed.");
-        return false;
-      }
-      return true;
-    });
-  } else {
-    alert("pool not active");
-  }
+  return poolContract.methods.getReward().send({ from: account, gas: 800000 }, async (error, txHash) => {
+    if (error) {
+      onTxHash && onTxHash("");
+      console.log("Claim error", error);
+      return false;
+    }
+    onTxHash && onTxHash(txHash);
+    const status = await waitTransaction(provider, txHash);
+    if (!status) {
+      console.log("Claim transaction failed.");
+      return false;
+    }
+    return true;
+  });
 };
 
 export const redeem = async (poolContract, provider, poolId, account, onTxHash) => {

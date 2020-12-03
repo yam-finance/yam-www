@@ -8,14 +8,17 @@ import {
 } from 'react-neu'
 import numeral from 'numeral'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 
 const StyledNft = ({ nft }: { nft: NftInstance }) => {
     const [isNftLoading, setIsNftLoading] = useState(false)
     const [updatedNft, setUpdatedNft] = useState<NftInstance>()
+    const [canBurn, setCanBurn] = useState<boolean>(false)
 
     const {
         onRetrieve,
         onDestroyNft,
+        earnedStrnBalance
     } = useStrainNfts();
 
     const poolName = useMemo(() => POOL_NAMES[Number(nft?.poolId)], [nft?.poolId])
@@ -34,6 +37,12 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                 })
         }
     }, [nft.nftId, updatedNft])
+
+    useEffect(() => {
+        if (earnedStrnBalance === undefined) return setCanBurn(false);
+        setCanBurn(earnedStrnBalance.lte(new BigNumber(1)))
+    }, [earnedStrnBalance])
+
 
     const getAttribute = (name: string, collection: string[]): string => {
         if (!updatedNft) return '-';
@@ -83,8 +92,8 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                         <StyledInfo>
                             <Button
                                 onClick={handelUnstake}
-                                disabled={nft.isDestroying}
-                                text={nft.isDestroying ? "Burning ..." : "Burn"}
+                                disabled={nft.isDestroying || !canBurn}
+                                text={!canBurn ? "Claim first" : nft.isDestroying ? "Burning ..." : "Burn"}
                                 size="sm"
                             />
                             <StyledLabels>
