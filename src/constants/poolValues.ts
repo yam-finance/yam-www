@@ -50,7 +50,7 @@ export interface AttribCollection {
   description?: string;
   external_url?: string;
   background_color?: string;
-  attributes?: { trait_type: string; value: number }[]
+  attributes?: { trait_type: string; value: string }[]
 }
 
 export enum attributeNames {

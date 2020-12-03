@@ -44,13 +44,13 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     }, [earnedStrnBalance])
 
 
-    const getAttribute = (name: string, collection: string[]): string => {
+    const getAttribute = (name: string): string => {
         if (!updatedNft) return '-';
         const attributes = updatedNft?.attribs?.attributes;
         if (!attributes) return '-';
         const found = attributes.find(a => a.trait_type === name)
         if (!found) return '-';
-        return collection[found.value]
+        return found.value
     }
 
     const getName = () => {
@@ -84,11 +84,11 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                 {!isNftLoading && (
                     <>
                         <h3>{getName()}</h3>
-                        <h4>{getAttribute(attributeNames.VIBES, VibeIndexValues)}</h4>
+                        <h4>{getAttribute(attributeNames.VIBES)}</h4>
                         <Spacer size="sm" />
                         <img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />
                         <Spacer size="sm" />
-                        <RarityPill>{getAttribute(attributeNames.RARITY, RarityIndexValues)}</RarityPill>
+                        <RarityPill>{getAttribute(attributeNames.RARITY)}</RarityPill>
                         <StyledInfo>
                             <Button
                                 onClick={handelUnstake}
