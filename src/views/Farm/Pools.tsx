@@ -36,9 +36,8 @@ const Pools: React.FC = () => {
           subtitle="STRN/ETH LP pool to earn STRN"
           title=""
         />
-        <StyledNotice
-          messages={['Retired Pools! Unstake and generate an NFT in the Apothecary to continue earning rewards.', 'Staking has been disabled here. Rewards are no longer being distributed.']}
-        />
+        <h3>Retired Pools! Unstake and generate an NFT in the Apothecary to continue earning rewards.</h3>
+        <h3> Staking has been disabled here. Rewards are no longer being distributed.</h3>
         <Spacer size="lg" />
         <Split>
           <StakeCard poolId={PoolIds.STRN_ETH} lpEmoji={'🔒'} lpLabel={'STRN/ETH'} />
@@ -70,4 +69,7 @@ const Pools: React.FC = () => {
   )
 }
 
+const h3 = styled.h3`
+text-align: center;
+`
 export default Pools
