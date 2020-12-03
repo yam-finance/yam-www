@@ -36,7 +36,7 @@ const Pools: React.FC = () => {
           subtitle="STRN/ETH LP pool to earn STRN"
           title=""
         />
-        <h3>Retired Pools! Unstake and generate an NFT in the Apothecary to continue earning rewards.</h3>
+        <h3>Retired Pools! Unstake &amp; generate an NFT in the Apothecary to continue earning rewards.</h3>
         <h3> Staking has been disabled here. Rewards are no longer being distributed.</h3>
         <Spacer size="lg" />
         <Split>
