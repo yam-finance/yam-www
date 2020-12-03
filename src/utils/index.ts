@@ -140,21 +140,13 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const nftId = await nftContract.methods.itemIDs(i).call();
       const owner = await nftContract.methods.nfOwners(nftId).call();
       if (owner == userAddress) {
-        const dataUrl = await nftContract.methods.uri(nftId).call();
+        const dataUrls = await nftContract.methods.uri(nftId).call();
         const nftName = await nftContract.methods.nameMap(nftId).call();
         const genome = await nftContract.methods.gnomeMap(nftId).call();
 
-        console.log('user has NFT', dataUrl, nftName)
+        console.log('user has NFT', dataUrls, nftName)
         const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nftId, userAddress);
-        //console.log("contract dataUrl:", dataUrls)
-        // TODO: when json service is up remove this
-        //const dataUrl = "https://nft-image-service.herokuapp.com/tester";
-        const value = genome.toString('hex') >>> (14 * 4);
-        const value2 = `${Buffer.from(genome, 'utf8').toString('hex')}`;
-        console.log('value', value2, value, genome.toString('hex'))
-
-        //const imageUrl = `${base_image_url}/${genome}`;
-        const imageUrl = `https://nft-image-service.herokuapp.com/genome/11223344`
+        const dataUrl = `https://nft-image-service.herokuapp.com/${nftId}`
         const nft = {
           nftId,
           dataUrl,
@@ -162,7 +154,6 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
           lpBalance,
           poolId,
           genome,
-          imageUrl
         }
         console.log('NFT', JSON.stringify(nft));
         userItems.push(nft)

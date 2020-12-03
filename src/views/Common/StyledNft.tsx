@@ -18,7 +18,6 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
         onDestroyNft,
     } = useStrainNfts();
 
-    const imageUrl = useMemo(() => nft?.imageUrl, [nft?.imageUrl])
     const poolName = useMemo(() => POOL_NAMES[Number(nft?.poolId)], [nft?.poolId])
 
     useEffect(() => {
@@ -78,7 +77,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                         <h3>{getName()}</h3>
                         <h4>{getAttribute(attributeNames.VIBES, VibeIndexValues)}</h4>
                         <Spacer size="sm" />
-                        <img src={imageUrl} height={DEFAULT_NFT_SIZE} />
+                        <img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />
                         <Spacer size="sm" />
                         <RarityPill>{getAttribute(attributeNames.RARITY, RarityIndexValues)}</RarityPill>
                         <StyledInfo>

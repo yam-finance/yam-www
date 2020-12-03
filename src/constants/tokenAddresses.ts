@@ -7,7 +7,7 @@ export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 
 // harcode chainId for wallet provider lib
 export const chainId = 4;
-export const base_image_url = 'https://nft-image-service.herokuapp.com/genome'
+export const base_image_url = 'https://nft-image-service.herokuapp.com/'
 
 // mainnet
 const strn = '0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f'
