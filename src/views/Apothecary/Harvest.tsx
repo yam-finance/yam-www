@@ -2,21 +2,10 @@ import React, { useMemo } from 'react'
 
 import numeral from 'numeral'
 import {
-    Box,
     Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardIcon,
-    Container,
     Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
-
-import Label from 'components/Label'
-import Value from 'components/Value'
-
-import useFarming from 'hooks/useFarming'
 
 import { bnToDec } from 'utils'
 import useStrainNfts from 'hooks/useStrainNfts'

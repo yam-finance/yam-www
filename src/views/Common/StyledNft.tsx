@@ -1,4 +1,4 @@
-import { attributeNames, NftInstance, RarityIndexValues, VibeIndexValues, DEFAULT_NFT_SIZE, POOL_NAMES, PoolIds } from 'constants/poolValues'
+import { attributeNames, NftInstance, RarityIndexValues, VibeIndexValues, DEFAULT_NFT_SIZE, POOL_NAMES, PoolIds, ENABLE_BURN_REWARDS_AMOUNT } from 'constants/poolValues'
 import useStrainNfts from 'hooks/useStrainNfts'
 import React, { useEffect, useMemo, useState } from 'react'
 
@@ -40,7 +40,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
 
     useEffect(() => {
         if (earnedStrnBalance === undefined) return setCanBurn(false);
-        setCanBurn(earnedStrnBalance.lte(new BigNumber(10)))
+        setCanBurn(earnedStrnBalance.lte(ENABLE_BURN_REWARDS_AMOUNT))
     }, [earnedStrnBalance])
 
 
