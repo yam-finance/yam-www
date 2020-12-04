@@ -236,7 +236,7 @@ export const generateNft = async (poolContract, provider, poolId, amount, name, 
   console.log('create NFT', String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))), name)
   return poolContract.methods
     .craftStrainNFT(String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))), name)
-    .send({ from: account, gas: 1000000 }, async (error, txHash) => {
+    .send({ from: account, gas: 1300000 }, async (error, txHash) => {
       if (error) {
         onTxHash && onTxHash("");
         console.log("create NFT error", error);
