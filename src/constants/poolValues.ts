@@ -61,6 +61,7 @@ export enum attributeNames {
   MOUTH = "mouth",
   RIGHT_ARM = "Right arm",
   RIGHT_EYE = "Right eye",
+  MINTED = "Minted",
 }
 
 export const TerpsIndexValues = [

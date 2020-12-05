@@ -86,7 +86,10 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                         <h3>{getName()}</h3>
                         <h4>{getAttribute(attributeNames.VIBES)}</h4>
                         <Spacer size="sm" />
-                        <img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />
+                        <ImageContainer>
+                            <img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />
+                            <MintNumber>{getAttribute(attributeNames.MINTED)}</MintNumber>
+                        </ImageContainer>
                         <Spacer size="sm" />
                         <RarityPill>{getAttribute(attributeNames.RARITY)}</RarityPill>
                         <StyledInfo>
@@ -113,6 +116,17 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     )
 }
 
+const ImageContainer = styled.div`
+  position: relative;
+  text-align: center;
+  color: #000000;
+  font-weight: 600;
+`
+const MintNumber = styled.div`
+  position: absolute;
+  top: 8px;
+  left: 36px;
+`
 
 const NFTCard = styled.div`
     display: flex;
