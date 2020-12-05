@@ -8,7 +8,12 @@ import ERC20ABI from 'constants/abi/ERC20.json'
 import ERC1155 from 'constants/abi/ERC1155.json'
 import { NftInstance } from 'constants/poolValues'
 import StrainNFTLPTokenWrapper from '../yam-sdk/lib/clean_build/contracts/StrainNFTLPTokenWrapper.json'
-import { base_image_url } from 'constants/tokenAddresses'
+import {
+  Multicall,
+  ContractCallResults,
+  ContractCallContext,
+} from 'ethereum-multicall';
+import { infura_key } from 'constants/tokenAddresses'
 
 const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -131,32 +136,109 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
   }
 }
 
+const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number, userAddress: string): Promise<string[]> => {
+  let provider = new ethers.providers.JsonRpcProvider(infura_key);
+  const multicall = new Multicall({ ethersProvider: provider });
+  console.log('nft count:', nftCount)
+  let items: number[] = [];
+  for (let i = 0; i < nftCount; i++) { items.push(i) }
+
+  const contractGetNftIdsCall: ContractCallContext[] = items.map(i =>
+    ({
+      reference: `nftContract${i}`,
+      contractAddress: nftAddress,
+      abi: ERC1155.abi,
+      calls: [{ reference: `nftContract${i}`, methodName: 'itemIDs', methodParameters: [i] }]
+    })
+  );
+  let nftIds: string[] = []
+  const nftResults: ContractCallResults = await multicall.call(contractGetNftIdsCall);
+  Object.keys(nftResults.results).map(key => {
+    // lame issue with typing and this array of calls
+    const nftId = String(new BigNumber(JSON.parse(JSON.stringify(nftResults.results[key].callsReturnContext[0].returnValues)).hex))
+    nftIds.push(nftId);
+  })
+
+  const contractGetNftOwnerCall: ContractCallContext[] = nftIds.map(i =>
+    ({
+      reference: `nftContract${i}`,
+      contractAddress: nftAddress,
+      abi: ERC1155.abi,
+      calls: [{ reference: `nftContract${i}`, methodName: 'nfOwners', methodParameters: [i] }]
+    })
+  );
+
+  // ----- get NFT owner ----- //
+  let usersNfts: string[] = []
+  const ownerResults: ContractCallResults = await multicall.call(contractGetNftOwnerCall);
+  Object.keys(ownerResults.results).map(key => {
+    // lame issue with typing and this array of calls
+    const owner = String(ownerResults.results[key].callsReturnContext[0].returnValues)
+    if (owner.toLowerCase() === userAddress.toLowerCase()) {
+      const nftId = String(ownerResults.results[key].originalContractCallContext.calls[0].methodParameters[0])
+      usersNfts.push(nftId);
+    }
+  })
+
+  return usersNfts
+}
+
+
+const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]): Promise<NftInstance[]> => {
+  let provider = new ethers.providers.JsonRpcProvider(infura_key);
+  const multicall = new Multicall({ ethersProvider: provider });
+  const nftDetails: { [key: string]: NftInstance } = nftIds.reduce((p, n) => ({ ...p, [n]: { nftId: n, dataUrl: '', nftName: '' } }), {});
+
+  const contractGetNftDetailCalls: ContractCallContext[] = []
+  for (let i = 0; i < nftIds.length; i++) {
+    const nftId = nftIds[i];
+    contractGetNftDetailCalls.push({
+      reference: `nftContract${nftId}Uri`,
+      contractAddress: nftAddress,
+      abi: ERC1155.abi,
+      calls: [{ reference: `nftContract${nftId}Uri`, methodName: 'uri', methodParameters: [nftId] }]
+    });
+    contractGetNftDetailCalls.push({
+      reference: `nftContract${nftId}Name`,
+      contractAddress: nftAddress,
+      abi: ERC1155.abi,
+      calls: [{ reference: `nftContract${nftId}Name`, methodName: 'nameMap', methodParameters: [nftId] }]
+    });
+  }
+
+  // ----- get NFT details ----- //
+  const ownerResults: ContractCallResults = await multicall.call(contractGetNftDetailCalls);
+  Object.keys(ownerResults.results).map(key => {
+    const method = String(ownerResults.results[key].originalContractCallContext.calls[0].methodName)
+    const nftId = String(ownerResults.results[key].originalContractCallContext.calls[0].methodParameters[0])
+    const value = String(ownerResults.results[key].callsReturnContext[0].returnValues)
+
+    if (method === 'uri') {
+      nftDetails[nftId].dataUrl = value;
+    } else if (method === 'nameMap') {
+      nftDetails[nftId].nftName = value;
+    }
+  })
+
+  return Object.values(nftDetails)
+}
+
 export const getUserNfts = async (provider: provider, nftAddress: string, userAddress: string, crafterContract: any): Promise<NftInstance[]> => {
   const nftContract = getERC1155Contract(provider, nftAddress)
   try {
     const length = await nftContract.methods.getItemIDsLength().call();
+    const usersNfts = await getUsersNftsMulticalResults(nftAddress, length, userAddress);
+    const nfts = await getNftDetailsMulticalResults(nftAddress, usersNfts)
+
     const userItems: NftInstance[] = []
-    for (let i = 0; i < length; i++) {
-      const nftId = await nftContract.methods.itemIDs(i).call();
-      const owner = await nftContract.methods.nfOwners(nftId).call();
-      if (owner == userAddress) {
-        const dataUrl = await nftContract.methods.uri(nftId).call();
-        const nftName = await nftContract.methods.nameMap(nftId).call();
-        const genome = await nftContract.methods.gnomeMap(nftId).call();
-        
-        const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nftId, userAddress);
-        //const dataUrl = `https://nft-image-service.herokuapp.com/${nftId}`
-        const nft = {
-          nftId,
-          dataUrl,
-          nftName,
-          lpBalance,
-          poolId,
-          genome,
-        }
-        console.log('NFT', JSON.stringify(nft));
-        userItems.push(nft)
-      }
+
+    for (let i = 0; i < nfts.length; i++) {
+      const nft = nfts[i]
+      const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nft.nftId, userAddress);
+      nft.lpBalance = lpBalance;
+      nft.poolId = poolId
+      console.log('NFT', JSON.stringify(nft));
+      userItems.push(nft)
     }
     return userItems
   } catch (e) {
