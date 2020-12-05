@@ -121,6 +121,7 @@ const ImageContainer = styled.div`
   text-align: center;
   color: #000000;
   font-weight: 600;
+  font-size: 24px;
 `
 const MintNumber = styled.div`
   position: absolute;
