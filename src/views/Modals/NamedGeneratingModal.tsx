@@ -35,7 +35,7 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
 
   const [val, setVal] = useState('')
   const [name, setName] = useState('')
-  const [hasError, setHasError] = useState(false)
+  const [hasBalanceError, setHasBalanceError] = useState(false)
 
   const handleNameChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value)
@@ -43,12 +43,12 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
-    setHasError(new BigNumber(e.currentTarget.value || 0).lt(new BigNumber(minAmount)))
+    setHasBalanceError(new BigNumber(e.currentTarget.value || 0).lt(new BigNumber(minAmount)))
   }, [setVal])
 
   const handleSelectMax = useCallback(() => {
     setVal(String(fullBalance || 0))
-    setHasError(new BigNumber(fullBalance || 0).lt(new BigNumber(minAmount)))
+    setHasBalanceError(new BigNumber(fullBalance || 0).lt(new BigNumber(minAmount)))
   }, [fullBalance, setVal])
 
   const handleGenerateClick = useCallback(() => {
@@ -68,7 +68,7 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
               </StyledTokenAdornmentWrapper>
             )}
             onChange={handleNameChange}
-            placeholder="Name your NFT"
+            placeholder="Name your NFT (Required)"
             value={name}
           />
         </StyledDivContainer>
@@ -79,7 +79,7 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
           max={String(fullBalance || 0)}
           symbol={label}
         />
-        {hasError &&
+        {hasBalanceError &&
           <ErrorLabel>
             {`Min required balance is ${MIN_LP_AMOUNTS_DISPLAY[Number(poolId)]}`}
           </ErrorLabel>
@@ -92,7 +92,7 @@ const NamedGeneratingModal: React.FC<NamedGeneratingModalProps> = ({
           variant="secondary"
         />
         <Button
-          disabled={!val || !Number(val) || hasError}
+          disabled={!val || !Number(val) || hasBalanceError || name === ''}
           onClick={handleGenerateClick}
           text="Generate"
           variant={!val || !Number(val) ? 'secondary' : 'default'}
