@@ -119,13 +119,13 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
 const ImageContainer = styled.div`
   position: relative;
   text-align: center;
-  color: #000000;
-  font-weight: 600;
-  font-size: 24px;
 `
-const MintNumber = styled.div`
+
+const MintNumber = styled.h3`
+  font-weight: 800;
+  color: #000000;
   position: absolute;
-  top: 8px;
+  top: 0;
   left: 36px;
 `
 

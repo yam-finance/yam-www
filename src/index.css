@@ -49,10 +49,11 @@ h1 {
   font-size: 32px !important;
 }
 
- h2, h3,  {
+ h2, h3  {
   font-family: 'colored-crayons';
   letter-spacing: 3px;
 }
+
 h4 {
   font-family: 'colored-crayons';
   font-size: 14px;
