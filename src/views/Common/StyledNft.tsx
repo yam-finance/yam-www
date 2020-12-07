@@ -1,4 +1,4 @@
-import { attributeNames, NftInstance, RarityIndexValues, VibeIndexValues, DEFAULT_NFT_SIZE, POOL_NAMES, PoolIds, ENABLE_BURN_REWARDS_AMOUNT } from 'constants/poolValues'
+import { attributeNames, NftInstance, DEFAULT_NFT_SIZE, POOL_NAMES, PoolIds, ENABLE_BURN_REWARDS_AMOUNT } from 'constants/poolValues'
 import useStrainNfts from 'hooks/useStrainNfts'
 import React, { useEffect, useMemo, useState } from 'react'
 
@@ -8,7 +8,7 @@ import {
 } from 'react-neu'
 import numeral from 'numeral'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { Tooltip } from 'react-lightweight-tooltip';
 
 const StyledNft = ({ nft }: { nft: NftInstance }) => {
     const [isNftLoading, setIsNftLoading] = useState(false)
@@ -78,27 +78,48 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
         }
     }, [nft])
 
+    const greenRoundedStyle = {
+        content: {
+            backgroundColor: 'hsl(215deg 70.4% 33.1% / 100%)',
+            color: '#FFFFFF',
+            fontWeight: 600,
+        },
+        wrapper: {},
+        gap: {},
+        tooltip: {
+            backgroundColor: 'hsl(215deg 70.4% 33.1% / 100%)',
+            borderRadius: '10px',
+        },
+        arrow: {
+            borderTop: 'solid hsl(215deg 70.4% 33.1% / 100%) 5px',
+        },
+    };
+
     return (
         <>
             <NFTCard>
                 {!isNftLoading && (
                     <>
-                        <h3>{getName()}</h3>
+                        <StyledHeader>
+                            <StyledTitle>{getName()}</StyledTitle>
+                            <h3>#{getAttribute(attributeNames.MINTED)}</h3>
+                        </StyledHeader>
                         <h4>{getAttribute(attributeNames.VIBES)}</h4>
                         <Spacer size="sm" />
-                        <ImageContainer>
-                            <img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />
-                            <MintNumber>{getAttribute(attributeNames.MINTED)}</MintNumber>
-                        </ImageContainer>
+                         <img src={updatedNft?.attribs?.image} height={DEFAULT_NFT_SIZE} />
                         <Spacer size="sm" />
                         <RarityPill>{getAttribute(attributeNames.RARITY)}</RarityPill>
                         <StyledInfo>
-                            <Button
-                                onClick={handelUnstake}
-                                disabled={nft.isDestroying || !canBurn}
-                                text={!canBurn ? "Claim first" : nft.isDestroying ? "Burning ..." : "Burn"}
-                                size="sm"
-                            />
+                            <Tooltip
+                                styles={greenRoundedStyle}
+                                content={!canBurn ? "In order to burn your NFT, you must first claim your rewards." : "Burning will release your LP tokens"}>
+                                <Button
+                                    onClick={handelUnstake}
+                                    disabled={nft.isDestroying || !canBurn}
+                                    text={!canBurn ? "Claim first (i)" : nft.isDestroying ? "Burning ..." : "Burn"}
+                                    size="sm"
+                                />
+                            </Tooltip>
                             <StyledLabels>
                                 <div>{poolName}</div>
                                 <StyledValue>{nft?.lpBalance ? formattedLPBalance : "-"}</StyledValue>
@@ -121,18 +142,23 @@ const ImageContainer = styled.div`
   text-align: center;
 `
 
-const MintNumber = styled.h3`
-  font-weight: 800;
-  color: #000000;
-  position: absolute;
-  top: 0;
-  left: 36px;
+const StyledHeader = styled.div`
+    margin: 0 1rem;
+    display: flex;
+    justify-content: space-between;
 `
+
+const StyledTitle = styled.h3`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`
+
 
 const NFTCard = styled.div`
     display: flex;
     flex-flow: column;
-    min-width: 300px;
+    width: 300px;
     max-height: 450px;
     background-color: #0E2B52;
     border-radius: 20px;
