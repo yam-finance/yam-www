@@ -8,7 +8,8 @@ export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 // harcode chainId for wallet provider lib
 export const chainId = 4;
 export const base_image_url = 'https://nft-image-service.herokuapp.com/'
-export const infura_key = 'https://rinkeby.infura.io/v3/1b38871d05fa4d3298a3096c6e863c97';
+//export const infura_key = 'https://rinkeby.infura.io/v3/1b38871d05fa4d3298a3096c6e863c97';
+export const infura_key = 'https://rinkeby.infura.io/v3/b939aead2bdf44ad89eecac113a4e143';
 
 // mainnet
 const strn = '0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f'

@@ -34,8 +34,10 @@ const Provider: React.FC = ({ children }) => {
     }
     setIsLoading(true)
 
+    console.log('getUserNfts', new Date().getTime())
     getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter)
       .then(nftinstances => {
+          console.log('got nftinstances', new Date().getTime())
           setNftCollection(nftinstances)
 
         // sum up LPs in each pool
@@ -67,7 +69,7 @@ const Provider: React.FC = ({ children }) => {
       let refreshInterval = setInterval(() => {
         fetchUsersNfts(yam, account, ethereum);
         fetchEarnedBalance(yam, account);
-      }, 10000)
+      }, 20000)
       return () => clearInterval(refreshInterval)
     }
   }, [
