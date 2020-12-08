@@ -137,7 +137,7 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
 }
 
 const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number, userAddress: string): Promise<string[]> => {
-  let provider = new ethers.providers.JsonRpcProvider(infura_key);
+  let provider = new ethers.providers.StaticJsonRpcProvider(infura_key);
   const multicall = new Multicall({ ethersProvider: provider });
   console.log('nft count:', nftCount)
   let items: number[] = [];
@@ -185,7 +185,7 @@ const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number,
 
 
 const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]): Promise<NftInstance[]> => {
-  let provider = new ethers.providers.JsonRpcProvider(infura_key);
+  let provider = new ethers.providers.StaticJsonRpcProvider(infura_key);
   const multicall = new Multicall({ ethersProvider: provider });
   const nftDetails: { [key: string]: NftInstance } = nftIds.reduce((p, n) => ({ ...p, [n]: { nftId: n, dataUrl: '', nftName: '' } }), {});
 
