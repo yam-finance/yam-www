@@ -14,6 +14,8 @@ import {
   getINDEXCOOPPrice,
   getIndexCoopLP,
   getIndexCoopLPRewards,
+  getSushiRewards,
+  getSUSHIPrice,
 } from "yam-sdk/utils";
 import { OptionInterface, SeriesInterface, TimeSeries } from "types/Charts";
 import YamLoader from "components/YamLoader";
@@ -185,9 +187,11 @@ const Charts: React.FC = () => {
     const yusdPrice = await getYUSDPrice();
     const dpiPrice = await getDPIPrice();
     const indexPrice = await getINDEXCOOPPrice();
+    const sushiPrice = await getSUSHIPrice();
     const DPIBalance = totalDPIValue;
     // const indexCoopLP = await getIndexCoopLP(yam);
     const indexCoopLPRewards = (await getIndexCoopLPRewards(yam)) || 0;
+    const SushiRewards = (await getSushiRewards(yam)) || 0;
 
     const reservesHistory = [
       {
@@ -198,6 +202,7 @@ const Charts: React.FC = () => {
         WETH: 0,
         INDEXLP: 0,
         INDEX: 0,
+        Sushi: 0,
       },
       {
         info: "Comps",
@@ -207,6 +212,17 @@ const Charts: React.FC = () => {
         WETH: 0,
         INDEXLP: 0,
         INDEX: 0,
+        Sushi: 0,
+      },
+      {
+        info: "Sushi",
+        block: 11243912,
+        yUSD: 1.18 * 1896995,
+        DPI: 434 * 90,
+        WETH: 201 * 468,
+        INDEXLP: 0,
+        INDEX: 0,
+        Sushi: SushiRewards * sushiPrice,
       },
       {
         info: "ETH Purchase",
@@ -216,15 +232,27 @@ const Charts: React.FC = () => {
         WETH: 555 * 464,
         INDEXLP: 0,
         INDEX: 0,
+        Sushi: SushiRewards * sushiPrice,
+      },
+      {
+        info: "INDEXLP Pool",
+        block: 11289910,
+        yUSD: 1.19 * 1896995,
+        DPI: 434 * 104,
+        WETH: 201 * 480,
+        INDEXLP: 2929 * 104 + 640 * 480,
+        INDEX: 36 * 11.6,
+        Sushi: SushiRewards * sushiPrice,
       },
       {
         info: "INDEX Pool",
         block: 11289910,
         yUSD: 1.19 * 1896995,
         DPI: 434 * 104,
-        WETH: 201 * 475,
-        INDEXLP: 2929 * 102 + 640 * 464,
+        WETH: 201 * 480,
+        INDEXLP: 2929 * 104 + 640 * 480,
         INDEX: 36 * 11.6,
+        Sushi: SushiRewards * sushiPrice,
       },
       {
         info: "present",
@@ -232,8 +260,9 @@ const Charts: React.FC = () => {
         yUSD: yusdPrice * totalYUsdValue,
         DPI: DPIBalance * dpiPrice,
         WETH: totalWETHValue * wethPrice,
-        INDEXLP: 2929 * 102 + 640 * 464,
+        INDEXLP: 2929 * dpiPrice + 640 * wethPrice,
         INDEX: indexCoopLPRewards * indexPrice,
+        Sushi: SushiRewards * sushiPrice,
       },
     ];
 
@@ -243,6 +272,7 @@ const Charts: React.FC = () => {
     let reservesETH: TimeSeries[] = [];
     let reservesINDEXLP: TimeSeries[] = [];
     let reservesINDEX: TimeSeries[] = [];
+    let reservesSushi: TimeSeries[] = [];
     let running = 0;
     for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
       running += treasuryValues.reservesAdded[i];
@@ -288,6 +318,12 @@ const Charts: React.FC = () => {
           y: 0,
         };
         reservesINDEX.push(tmpINDEX);
+
+        const tmpXSushi: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesSushi.push(tmpXSushi);
       }
     }
 
@@ -311,6 +347,10 @@ const Charts: React.FC = () => {
       reservesINDEX.push({
         x: reservesHistory[i].block,
         y: reservesHistory[i].INDEX,
+      });
+      reservesSushi.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].Sushi,
       });
     }
 
@@ -440,11 +480,15 @@ const Charts: React.FC = () => {
         data: reservesETH ? reservesETH.slice(reservesETH.length - (defaultRebaseRange + 6)) : [],
       },
       {
+        name: "Sushi Gains",
+        data: reservesSushi ? reservesSushi.slice(reservesSushi.length - (defaultRebaseRange + 6)) : [],
+      },
+      {
         name: "INDEX Coop LP",
         data: reservesINDEXLP ? reservesINDEXLP.slice(reservesINDEXLP.length - (defaultRebaseRange + 6)) : [],
       },
       {
-        name: "INDEX Coop Rewards",
+        name: "INDEX Coop Gains",
         data: reservesINDEX ? reservesINDEX.slice(reservesINDEX.length - (defaultRebaseRange + 6)) : [],
       },
     ];
@@ -476,7 +520,7 @@ const Charts: React.FC = () => {
         enabled: false,
       },
       fill: {
-        colors: ["#C60C4D", "#8150E6", "#4777e0", "#838bfc", "#FFB900"],
+        colors: ["#C60C4D", "#8150E6", "#4777e0", "#D16C00", "#838bfc", "#FFB900"],
       },
       legend: {
         position: "top",
@@ -490,7 +534,7 @@ const Charts: React.FC = () => {
           sizeOffset: 5,
         },
       },
-      colors: ["#C60C4D", "#8150E6", "#4777e0", "#838bfc", "#FFB900"],
+      colors: ["#C60C4D", "#8150E6", "#4777e0", "#D16C00", "#838bfc", "#FFB900"],
       xaxis: {
         // type: "datetime",
         labels: {
@@ -523,7 +567,7 @@ const Charts: React.FC = () => {
             colors: labelColor,
           },
           formatter: (value: any) => {
-            return "$" + numeral(value).format("0.00a");
+            return "~$" + numeral(value).format("0.00a");
           },
         },
         axisBorder: {
