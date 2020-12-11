@@ -21,4 +21,3 @@ export const ContractContribtorTimelock = "0xd40a03e520d49339e91bc58c2c9b8966ee7
 export const ContractIndexStaking = "0xA940e0541F8b8A40551B28D4C7e37bD85DE426fF";
 export const ContractVestingPool = "0xDCf613db29E4d0B35e7e15e93BF6cc6315eB0b82";
 export const ContractMonthlyAllowance = "0x03A882495Bc616D3a1508211312765904Fb062d1";
-
