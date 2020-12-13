@@ -232,9 +232,9 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "nftid",
+          "type": "uint256"
         }
       ],
       "name": "balanceOf",
@@ -253,9 +253,14 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "nftid",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_nfts",
+          "type": "uint256[]"
         }
       ],
       "name": "balanceOf",
@@ -292,6 +297,11 @@
           "internalType": "uint256",
           "name": "_stxpBurnedAmount",
           "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
         },
         {
           "internalType": "uint256",
@@ -368,6 +378,11 @@
           "internalType": "address",
           "name": "account",
           "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_nfts",
+          "type": "uint256[]"
         }
       ],
       "name": "earned",
@@ -384,7 +399,13 @@
     },
     {
       "constant": false,
-      "inputs": [],
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "_nfts",
+          "type": "uint256[]"
+        }
+      ],
       "name": "getReward",
       "outputs": [],
       "payable": false,
@@ -690,6 +711,36 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_poolid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nftid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_stxpAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "stake",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "starttime",
@@ -801,6 +852,11 @@
           "internalType": "address",
           "name": "account",
           "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_nfts",
+          "type": "uint256[]"
         }
       ],
       "name": "updateReward",

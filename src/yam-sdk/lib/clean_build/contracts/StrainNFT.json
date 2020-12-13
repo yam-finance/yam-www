@@ -336,6 +336,48 @@
     },
     {
       "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBreedCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getGnome",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [],
       "name": "getItemIDsLength",
       "outputs": [
@@ -343,6 +385,48 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getLastBreedTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getName",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
         }
       ],
       "payable": false,
@@ -396,15 +480,20 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "_id",
           "type": "uint256"
         }
       ],
-      "name": "gnomeMap",
+      "name": "getParents",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "_parent1ID",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_parent2ID",
           "type": "uint256"
         }
       ],
@@ -548,6 +637,32 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "_nft1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nft2",
+          "type": "uint256"
+        }
+      ],
+      "name": "isParent",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
@@ -670,12 +785,12 @@
           "type": "uint256"
         }
       ],
-      "name": "nameMap",
+      "name": "nfOwners",
       "outputs": [
         {
-          "internalType": "string",
+          "internalType": "address",
           "name": "",
-          "type": "string"
+          "type": "address"
         }
       ],
       "payable": false,
@@ -691,12 +806,37 @@
           "type": "uint256"
         }
       ],
-      "name": "nfOwners",
+      "name": "nftInfo",
       "outputs": [
         {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "gnome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "breedCount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastBreedTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "parent1ID",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "parent2ID",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -833,6 +973,26 @@
       "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_breedCount",
+          "type": "uint256"
+        }
+      ],
+      "name": "setBreedCount",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "internalType": "string",
           "name": "_contracturi",
           "type": "string"
@@ -903,6 +1063,26 @@
       "constant": false,
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_lastBreedTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "setLastBreedTime",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "internalType": "address",
           "name": "minter",
           "type": "address"
@@ -949,6 +1129,31 @@
         }
       ],
       "name": "setOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_parent1ID",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_parent2ID",
+          "type": "uint256"
+        }
+      ],
+      "name": "setParents",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",

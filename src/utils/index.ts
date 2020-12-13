@@ -6,8 +6,9 @@ import { AbiItem } from 'web3-utils'
 
 import ERC20ABI from 'constants/abi/ERC20.json'
 import ERC1155 from 'constants/abi/ERC1155.json'
-import { NftInstance } from 'constants/poolValues'
+import { NftInfo, NftInstance } from 'constants/poolValues'
 import StrainNFTLPTokenWrapper from '../yam-sdk/lib/clean_build/contracts/StrainNFTLPTokenWrapper.json'
+import StrainNft from '../yam-sdk/lib/clean_build/contracts/StrainNFT.json'
 import {
   Multicall,
   ContractCallResults,
@@ -180,7 +181,6 @@ const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number,
     }
   })
 
-  console.log('users NFTs', nftIds)
   return usersNfts
 }
 
@@ -190,6 +190,7 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
   const multicall = new Multicall({ ethersProvider: provider });
   const nftDetails: { [key: string]: NftInstance } = nftIds.reduce((p, n) => ({ ...p, [n]: { nftId: n, dataUrl: '', nftName: '' } }), {});
 
+  console.log('getNftDetailsMulticalResults called')
   const contractGetNftDetailCalls: ContractCallContext[] = []
   for (let i = 0; i < nftIds.length; i++) {
     const nftId = nftIds[i];
@@ -199,25 +200,37 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
       abi: ERC1155.abi,
       calls: [{ reference: `nftContract${nftId}Uri`, methodName: 'uri', methodParameters: [nftId] }]
     });
+
     contractGetNftDetailCalls.push({
       reference: `nftContract${nftId}Name`,
       contractAddress: nftAddress,
-      abi: ERC1155.abi,
-      calls: [{ reference: `nftContract${nftId}Name`, methodName: 'nameMap', methodParameters: [nftId] }]
+      abi: StrainNft.abi,
+      calls: [{ reference: `nftContract${nftId}Name`, methodName: 'nftInfo', methodParameters: [nftId] }]
     });
+
+    contractGetNftDetailCalls.push({
+      reference: `nftContract${nftId}Name`,
+      contractAddress: nftAddress,
+      abi: StrainNft.abi,
+      calls: [{ reference: `nftContract${nftId}Name`, methodName: 'getName', methodParameters: [nftId] }]
+    });
+
   }
 
   // ----- get NFT details ----- //
   const ownerResults: ContractCallResults = await multicall.call(contractGetNftDetailCalls);
+  console.log('ownerResults', ownerResults)
   Object.keys(ownerResults.results).map(key => {
     const method = String(ownerResults.results[key].originalContractCallContext.calls[0].methodName)
     const nftId = String(ownerResults.results[key].originalContractCallContext.calls[0].methodParameters[0])
-    const value = String(ownerResults.results[key].callsReturnContext[0].returnValues)
+    const value = ownerResults.results[key].callsReturnContext[0].returnValues as any;
 
     if (method === 'uri') {
-      nftDetails[nftId].dataUrl = value;
-    } else if (method === 'nameMap') {
-      nftDetails[nftId].nftName = value;
+      nftDetails[nftId].dataUrl = String(value);
+    } else if (method === 'nftInfo') {
+      nftDetails[nftId].nftInfo = value as NftInfo;
+    } else if (method === 'getName') {
+      nftDetails[nftId].nftName = String(value);
     }
   })
 
@@ -230,7 +243,9 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
   try {
     const length = await nftContract.methods.getItemIDsLength().call();
     const usersNfts = await getUsersNftsMulticalResults(nftAddress, length, userAddress);
+    console.log('users NFTs', usersNfts)
     const nfts = await getNftDetailsMulticalResults(nftAddress, usersNfts)
+    console.log('nfts', nfts)
 
     const userItems: NftInstance[] = []
 
@@ -253,6 +268,7 @@ export const getNftPoolIdBalance = async (provider: provider, contract: any, nft
   poolId = await contract.methods.nftPool(nftId).call().catch((e: Error) => {
     console.error("Could not get NFT's pool Id, defaulting to `0`", e);
   })
+
   const poolContactAddress = await contract.methods.pools(poolId).call().catch((e: Error) => {
     console.error("Could not get NFT's balance", e);
   })

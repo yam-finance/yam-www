@@ -94,6 +94,23 @@ export const harvest = async (poolContract, provider, account, onTxHash) => {
   });
 };
 
+export const harvestNfts = async (poolContract, provider, account, nftids, onTxHash) => {
+  return poolContract.methods.getReward(nftids).send({ from: account, gas: 800000 }, async (error, txHash) => {
+    if (error) {
+      onTxHash && onTxHash("");
+      console.log("Claim error", error);
+      return false;
+    }
+    onTxHash && onTxHash(txHash);
+    const status = await waitTransaction(provider, txHash);
+    if (!status) {
+      console.log("Claim transaction failed.");
+      return false;
+    }
+    return true;
+  });
+};
+
 export const redeem = async (poolContract, provider, poolId, account, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
@@ -279,6 +296,10 @@ export const getSingleEarned = async (yam, pool, account) => {
 
 export const getEarned = async (yam, pool, account) => {
   return yam.toBigN(await pool.methods.earned(account).call());
+};
+
+export const getNftEarned = async (yam, pool, account, nftids) => {
+  return yam.toBigN(await pool.methods.earned(account, nftids).call());
 };
 
 export const getStaked = async (yam, pool, account) => {

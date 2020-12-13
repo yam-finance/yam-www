@@ -54,6 +54,7 @@ const GenFee = styled.div`
 const StyledSection = styled.div`
     border-top: 1px solid #00AC69;
     margin-top: 1rem;
+    padding-top: 1rem;
 `
 
 export default GenerateNFT

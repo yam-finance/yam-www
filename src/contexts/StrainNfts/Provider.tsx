@@ -10,7 +10,7 @@ import {
 import Context from './Context'
 import { NftInstance, PoolIds } from 'constants/poolValues'
 import useYam from 'hooks/useYam'
-import { burnNft, generateNft, getEarned, harvest } from 'yam-sdk/utils'
+import { burnNft, generateNft, getNftEarned, harvestNfts } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
 import Axios from 'axios'
 
@@ -59,8 +59,8 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchEarnedBalance = useCallback(async (yam, account) => {
     if (!account || !yam) return
-    // todo: get new pool incentivizer
-    const balance = await getEarned(yam, yam.contracts.strain_nft_crafter, account)
+    const nftids = nftcollection.map(nft => nft.nftId);
+    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftids)
     setEarnedStrnBalance(balance)
   }, [
     account,
@@ -132,7 +132,8 @@ const Provider: React.FC = ({ children }) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     setIsHarvesting(true)
-    await harvest(yam.contracts.strain_nft_crafter, yam.web3.eth, account, () => {
+    const nftids = nftcollection.map(nft => nft.nftId);
+    await harvestNfts(yam.contracts.strain_nft_crafter, yam.web3.eth, account, nftids, () => {
       setConfirmTxModalIsOpen(false)
     }).catch(e => {
       console.error(e)

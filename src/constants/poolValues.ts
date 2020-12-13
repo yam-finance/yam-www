@@ -33,6 +33,15 @@ export interface SingleStake {
   shares: BigNumber;
 }
 
+export interface NftInfo {
+  gnome?: string;
+  name?: string;
+  breedCount?: string;
+  lastBreedTime?: string;
+  parent1ID?: string;
+  parent2ID?: string;
+}
+
 export interface NftInstance {
   nftId: string;
   nftName?: string;
@@ -41,6 +50,7 @@ export interface NftInstance {
   attribs?: AttribCollection;
   poolId?: string;
   isDestroying?: boolean;
+  nftInfo?: NftInfo
 }
 
 export interface AttribCollection {
