@@ -6,6 +6,7 @@ export enum PoolIds {
   STRN_SINGLE = "2"
 }
 
+export const MIN_STRN_GEN_VALUE = new BigNumber(420);
 export const MIN_STRN_ETH_LP_VALUE = 4.20;
 export const MIN_STRN_XIOT_LP_VALUE = 0.000000542;
 export const DEFAULT_NFT_SIZE = 250;

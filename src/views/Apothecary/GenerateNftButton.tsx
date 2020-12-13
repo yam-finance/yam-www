@@ -9,12 +9,13 @@ import useApproval from 'hooks/useApproval'
 import { getAddresses } from 'constants/tokenAddresses'
 import useStrainNfts from 'hooks/useStrainNfts'
 import { useWallet } from 'use-wallet'
-import { MIN_LP_AMOUNTS, MIN_LP_AMOUNTS_DISPLAY, PoolIds, POOL_NAMES } from 'constants/poolValues'
+import { MIN_LP_AMOUNTS, MIN_LP_AMOUNTS_DISPLAY, MIN_STRN_GEN_VALUE, PoolIds, POOL_NAMES } from 'constants/poolValues'
 import NamedGeneratingModal from 'views/Modals/NamedGeneratingModal'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import Label from 'components/Label'
 import StyledPrimaryButton from 'views/Common/StyledButton'
+import useBalances from 'hooks/useBalances'
 
 const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBalance?: BigNumber }) => {
     const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false)
@@ -26,6 +27,10 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         onCreateNft,
         isLoading,
     } = useStrainNfts();
+
+    const {
+        strnTokenBalance,
+      } = useBalances()
 
     const { status } = useWallet()
 
@@ -65,13 +70,13 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
     }, [setGenerateModalIsOpen])
 
     useEffect(() => {
-        if (!minAmountLpTokens && !walletBalance) {
+        const hasEnoughStrn = strnTokenBalance ? strnTokenBalance?.gte(MIN_STRN_GEN_VALUE) : false;
+        if (!minAmountLpTokens || !walletBalance || !hasEnoughStrn) {
             setCanGenerate(false);
-        }
-        if (walletBalance && new BigNumber(walletBalance).gte(new BigNumber(minAmountLpTokens))) {
+        } else if (walletBalance && new BigNumber(walletBalance).gte(new BigNumber(minAmountLpTokens))) {
             setCanGenerate(true)
         }
-    }, [walletBalance, poolId])
+    }, [walletBalance, poolId, strnTokenBalance])
 
     const formattedLPBalance = useMemo(() => {
         if (walletBalance) {
@@ -114,7 +119,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                     <StyledPrimaryButton
                         disabled
                         full
-                        text="Insufficient LP balance"
+                        text="Insufficient LP or STRN balance"
                         variant="secondary"
                     />
                 </>

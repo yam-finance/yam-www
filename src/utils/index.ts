@@ -236,7 +236,6 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
 }
 
 export const getUserNfts = async (provider: provider, nftAddress: string, userAddress: string, crafterContract: any): Promise<NftInstance[]> => {
-  console.log('nftAddress', nftAddress)
   const nftContract = getERC1155Contract(provider, nftAddress)
   try {
     const length = await nftContract.methods.getItemIDsLength().call();
@@ -250,7 +249,6 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nft.nftId, userAddress);
       nft.lpBalance = lpBalance;
       nft.poolId = poolId
-      console.log('Your NFT', nft);
       userItems.push(nft)
     }
     return userItems
