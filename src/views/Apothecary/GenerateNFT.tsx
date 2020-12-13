@@ -22,7 +22,7 @@ const GenerateNFT = () => {
             <StyledTitle>Generate NFT</StyledTitle>
             <Spacer size={"sm"} />
             <StyledBlankNFT />
-            <GenFee>420 STRN Fee to Generate each NFT</GenFee>
+            <GenFee>420 STRN Fee to Generate Each NFT</GenFee>
             <StyledSection>
                 <Spacer size="sm" />
                 <GenerateNftButton
