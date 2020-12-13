@@ -190,7 +190,6 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
   const multicall = new Multicall({ ethersProvider: provider });
   const nftDetails: { [key: string]: NftInstance } = nftIds.reduce((p, n) => ({ ...p, [n]: { nftId: n, dataUrl: '', nftName: '' } }), {});
 
-  console.log('getNftDetailsMulticalResults called')
   const contractGetNftDetailCalls: ContractCallContext[] = []
   for (let i = 0; i < nftIds.length; i++) {
     const nftId = nftIds[i];
@@ -219,7 +218,6 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
 
   // ----- get NFT details ----- //
   const ownerResults: ContractCallResults = await multicall.call(contractGetNftDetailCalls);
-  console.log('ownerResults', ownerResults)
   Object.keys(ownerResults.results).map(key => {
     const method = String(ownerResults.results[key].originalContractCallContext.calls[0].methodName)
     const nftId = String(ownerResults.results[key].originalContractCallContext.calls[0].methodParameters[0])
@@ -243,9 +241,7 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
   try {
     const length = await nftContract.methods.getItemIDsLength().call();
     const usersNfts = await getUsersNftsMulticalResults(nftAddress, length, userAddress);
-    console.log('users NFTs', usersNfts)
     const nfts = await getNftDetailsMulticalResults(nftAddress, usersNfts)
-    console.log('nfts', nfts)
 
     const userItems: NftInstance[] = []
 
@@ -254,7 +250,7 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nft.nftId, userAddress);
       nft.lpBalance = lpBalance;
       nft.poolId = poolId
-      console.log('NFT', JSON.stringify(nft));
+      console.log('Your NFT', nft);
       userItems.push(nft)
     }
     return userItems

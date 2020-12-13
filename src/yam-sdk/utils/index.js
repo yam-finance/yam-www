@@ -95,6 +95,7 @@ export const harvest = async (poolContract, provider, account, onTxHash) => {
 };
 
 export const harvestNfts = async (poolContract, provider, account, nftids, onTxHash) => {
+  console.log('getRewards nftids', nftids)
   return poolContract.methods.getReward(nftids).send({ from: account, gas: 800000 }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
@@ -267,6 +268,28 @@ export const generateNft = async (poolContract, provider, poolId, amount, name, 
       }
       return true;
     });
+};
+
+export const addNftStake = async (poolContract, provider, poolId, nftId, amount, stxpTokens, account, onTxHash) => {
+  console.log('add stake to NFT', String(poolId), amount, stxpTokens)
+  const lpAmount = String(new BigNumber(amount).times(new BigNumber(10).pow(18)));
+  const stxpAmount = String(new BigNumber(stxpTokens).times(new BigNumber(10).pow(18)))
+  return poolContract.methods
+    .stake(String(poolId), nftId, lpAmount, stxpAmount)
+    .send({ from: account, gas: 1300000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("create NFT error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Creating NFT transaction failed.");
+        return false;
+      }
+      return true;
+    })
 };
 
 export const burnNft = async (poolContract, provider, nftId, poolId, account, onTxHash) => {

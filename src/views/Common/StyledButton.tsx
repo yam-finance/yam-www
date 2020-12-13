@@ -7,13 +7,14 @@ import { ButtonProps } from 'react-neu/dist/components/Button';
 import styled from 'styled-components'
 
 
-const StyledPrimaryButton = ({ full, onClick, text, variant }: ButtonProps) =>
+const StyledPrimaryButton = ({ full, onClick, text, variant, size }: ButtonProps) =>
     <StyledButtonContainer>
         <Button
             full={full}
             onClick={onClick}
             text={text}
             variant={variant}
+            size={size}
         />
     </StyledButtonContainer>
 

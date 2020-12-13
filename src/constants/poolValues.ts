@@ -72,6 +72,7 @@ export enum attributeNames {
   RIGHT_ARM = "Right arm",
   RIGHT_EYE = "Right eye",
   MINTED = "Minted",
+  LP_TYPE = "LP Type"
 }
 
 export const TerpsIndexValues = [
