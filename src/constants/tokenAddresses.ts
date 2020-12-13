@@ -48,26 +48,39 @@ const addresses = {
         // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     },
     4: {
-        strnTokenAddress: '0xf0855E08DBBCB7563a196c5613C18690aAc738fe',
-        strnLPTokenAddress: '0x6cd98d3909035f779eaa7c98f940daa0173a48e2',
+        strnTokenAddress: '0x60C60185505965f4cFfdc9DcE3aE0F72E140D94E',
+        strnLPTokenAddress: '0x478b1c77e7679ff65c8931d268f1d9c420280133',
         strnEthIncAddress: '0x25d766A7e469741BE43C1dAD8439AF74a8344613',
 
         // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
         // src/yam-sdk/lib/clean_build/contracts/STRNXIOTIncentivizer.json
-        strnXiotLPTokenAddress: '0x19a73ec9d54a6e0ffc0f4378266cf5c51492fb74',
+        strnXiotLPTokenAddress: '0xc7cfa8c19c64506ef31280850a8224c75b32f71b',
         strnXiotPoolAddress: '0xF70dE70202F326EA79f85C90e635F0abE338d73d',
 
         // -- single staking
-        stxpTokenAddress: '0x13d0DE15e45460bd69F58AE3f0E7dE8ba53AC162',
+        stxpTokenAddress: '0xa88b38138152EE83C81aF124FC2948Fc00c26CE5',
         // src/yam-sdk/lib/clean_build/contracts/STXPIncentivizer.json
         singleStrnPool: '0x69dc085C3C51F5ef74C737E817DD2A271e772B17',
         // xiot: "0x5deb4627202cD666cE025F78956A14418345f508"
-        strainNFTAddress: '0xCB89BD0E7c71Eed45e52286fD1851a283BE3eACa',
+        strainNFTAddress: '0x7C69E81b4d597f30cB594d96E07C0c4e5adaac4c',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
-        strainNFTCrafterAddress: '0x03333bEd1E0B95EDCb6cE89f242dB8FE6f7712a2',
+        strainNFTCrafterAddress: '0xEFE3c439C60F575c41f84951741553D6aa2036c2',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     }
 }
+
+/*
+STRN: 0x60C60185505965f4cFfdc9DcE3aE0F72E140D94E
+StrainNFT: 0x7C69E81b4d597f30cB594d96E07C0c4e5adaac4c
+StrainCrafter: 0xEFE3c439C60F575c41f84951741553D6aa2036c2
+
+
+STXP: 0xa88b38138152EE83C81aF124FC2948Fc00c26CE5
+XIOT: 0x82D51e59c243462d69761979d478bd17e2B7fF30
+
+STRN LP: 0x478b1c77e7679ff65c8931d268f1d9c420280133
+XIOT LP: 0xc7cfa8c19c64506ef31280850a8224c75b32f71b
+*/
 
 export function getAddresses(): { [name: string]: string } {
     return addresses[chainId]

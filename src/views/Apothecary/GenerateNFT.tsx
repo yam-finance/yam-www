@@ -22,7 +22,8 @@ const GenerateNFT = () => {
             <StyledTitle>Generate NFT</StyledTitle>
             <Spacer size={"sm"} />
             <StyledBlankNFT />
-            <>
+            <GenFee>420 STRN Fee to Generate each NFT</GenFee>
+            <StyledSection>
                 <Spacer size="sm" />
                 <GenerateNftButton
                     poolId={PoolIds.STRN_ETH}
@@ -34,7 +35,7 @@ const GenerateNFT = () => {
                     poolId={PoolIds.STRN_XIOT}
                     walletBalance={strnXiotLpBalance}
                 />
-            </>
+            </StyledSection>
         </>
     )
 }
@@ -42,4 +43,17 @@ const GenerateNFT = () => {
 const StyledTitle = styled.h3`
     text-align: center;
 `
+
+const GenFee = styled.div`
+    color: #00AC69;
+    text-align: center;
+    font-weight: 600;
+    padding: 1rem;
+`
+
+const StyledSection = styled.div`
+    border-top: 1px solid #00AC69;
+    margin-top: 1rem;
+`
+
 export default GenerateNFT

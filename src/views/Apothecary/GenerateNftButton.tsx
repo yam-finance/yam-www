@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
-    Button,
     Spacer,
 } from 'react-neu'
 
@@ -15,6 +14,7 @@ import NamedGeneratingModal from 'views/Modals/NamedGeneratingModal'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import Label from 'components/Label'
+import StyledPrimaryButton from 'views/Common/StyledButton'
 
 const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBalance?: BigNumber }) => {
     const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false)
@@ -85,7 +85,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         if (status !== 'connected') {
             return (
                 <>
-                    <Button
+                    <StyledPrimaryButton
                         disabled
                         full
                         text={'Not Connected'}
@@ -97,7 +97,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         if (walletBalance === undefined) {
             return (
                 <>
-                    <Button
+                    <StyledPrimaryButton
                         disabled
                         full
                         text="Loading ..."
@@ -110,11 +110,8 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         if (!canGenerate) {
             return (
                 <>
-                    <Label text={'Minimum balance needed to Generate NFT'} />
-                    <Spacer size={"md"} />
-                    <Label text={`${String(minAmountLpTokens)} ${poolName} LP`} />
                     <Spacer size={"sm"} />
-                    <Button
+                    <StyledPrimaryButton
                         disabled
                         full
                         text="Insufficient LP balance"
@@ -127,7 +124,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         if (isCreating) {
             return (
                 <>
-                    <Button
+                    <StyledPrimaryButton
                         disabled
                         full
                         text="Generating..."
@@ -141,7 +138,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
             // disable generation
             return (
                 <>
-                    <Button
+                    <StyledPrimaryButton
                         full
                         onClick={handleApprove}
                         text={!isApproving ? "Approve Generating" : "Approving Generating..."}
@@ -156,7 +153,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                 <>
                     {canGenerate && (
                         <>
-                            <Button
+                            <StyledPrimaryButton
                                 full
                                 onClick={handleGenerateClick}
                                 text={`wrap ${poolName} LP`}
@@ -180,7 +177,9 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
             <div>{poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue></div>
             <Label text={`Min: ${String(MIN_LP_AMOUNTS_DISPLAY[Number(poolId)])} ${poolName} LP`} />
             <Spacer size="sm" />
-            {GenerateButton}
+
+                {GenerateButton}
+
 
             <NamedGeneratingModal
                 isOpen={generateModalIsOpen}
@@ -199,5 +198,6 @@ const StyledValue = styled.span`
     font-size: 18px;
     font-weight: 600;
 `
+
 
 export default GenerateNftButton

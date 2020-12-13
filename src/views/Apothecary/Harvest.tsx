@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 
 import numeral from 'numeral'
 import {
-    Button,
     Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
@@ -10,6 +9,7 @@ import { useWallet } from 'use-wallet'
 import { bnToDec } from 'utils'
 import useStrainNfts from 'hooks/useStrainNfts'
 import styled from 'styled-components'
+import StyledPrimaryButton from 'views/Common/StyledButton'
 
 const Harvest: React.FC = () => {
     const {
@@ -23,7 +23,7 @@ const Harvest: React.FC = () => {
     const HarvestAction = useMemo(() => {
         if (status !== 'connected' || earnedStrnBalance === undefined) {
             return (
-                <Button
+                <StyledPrimaryButton
                     disabled
                     full
                     text="Claim Rewards"
@@ -33,7 +33,7 @@ const Harvest: React.FC = () => {
         }
         if (!isHarvesting) {
             return (
-                <Button
+                <StyledPrimaryButton
                     full
                     onClick={() => onHarvest()}
                     text="Claim Rewards"
@@ -42,7 +42,7 @@ const Harvest: React.FC = () => {
         }
         if (isHarvesting) {
             return (
-                <Button
+                <StyledPrimaryButton
                     disabled
                     full
                     text="Claiming..."
@@ -82,5 +82,7 @@ const StyledValue = styled.span`
     font-size: 18px;
     font-weight: 600;
 `
+
+
 
 export default Harvest

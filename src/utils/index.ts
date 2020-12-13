@@ -40,7 +40,7 @@ export const approve = async (
   try {
     const tokenContract = getERC20Contract(provider, tokenAddress)
     return tokenContract.methods
-      .approve(spenderAddress, ethers.constants.MaxUint256)
+      .approve(spenderAddress, String(ethers.constants.MaxUint256))
       .send({ from: userAddress, gas: 80000 }, async (error: any, txHash: string) => {
         if (error) {
           console.log("ERC20 could not be approved", error)
@@ -58,7 +58,7 @@ export const approve = async (
         return true
       })
   } catch (e) {
-    console.log('here')
+    console.error('approve', e)
     return false
   }
 }
@@ -180,6 +180,7 @@ const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number,
     }
   })
 
+  console.log('users NFTs', nftIds)
   return usersNfts
 }
 
@@ -224,6 +225,7 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
 }
 
 export const getUserNfts = async (provider: provider, nftAddress: string, userAddress: string, crafterContract: any): Promise<NftInstance[]> => {
+  console.log('nftAddress', nftAddress)
   const nftContract = getERC1155Contract(provider, nftAddress)
   try {
     const length = await nftContract.methods.getItemIDsLength().call();

@@ -139,7 +139,7 @@ export const singleExit = async (poolContract, provider, amount, account, onTxHa
 
 export const approve = async (tokenContract, poolContract, account) => {
   return tokenContract.methods
-    .approve(poolContract.options.address, ethers.constants.MaxUint256)
+    .approve(poolContract.options.address, String(ethers.constants.MaxUint256))
     .send({ from: account, gas: 80000 });
 };
 
