@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
-    Button,
     Spacer,
 } from 'react-neu'
 
@@ -15,14 +14,17 @@ const GenerateNFT = () => {
     const {
         strnEthLpBalance,
         strnXiotLpBalance,
+        strnTokenBalance
     } = useBalances()
 
+    const strnBalance = useMemo(() => strnTokenBalance ? String(Number(strnTokenBalance).toFixed(6)) : '--', [strnTokenBalance])
     return (
         <>
             <StyledTitle>Generate NFT</StyledTitle>
             <Spacer size={"sm"} />
             <StyledBlankNFT />
             <GenFee>420 STRN Fee to Generate Each NFT</GenFee>
+            <StyledUserBalance>STRN Balance: {strnBalance}</StyledUserBalance>
             <StyledSection>
                 <Spacer size="sm" />
                 <GenerateNftButton
@@ -55,6 +57,14 @@ const StyledSection = styled.div`
     border-top: 1px solid #00AC69;
     margin-top: 1rem;
     padding-top: 1rem;
+`
+
+const StyledUserBalance = styled.div`
+    font-size: 16px;
+    color: #61B5FD;
+    font-family: gopher,sans-serif;
+    font-weight: 700;
+    text-align: center;
 `
 
 export default GenerateNFT
