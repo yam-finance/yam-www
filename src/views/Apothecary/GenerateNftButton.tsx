@@ -25,12 +25,11 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         setConfirmTxModalIsOpen,
         isCreating,
         onCreateNft,
-        isLoading,
     } = useStrainNfts();
 
     const {
         strnTokenBalance,
-      } = useBalances()
+    } = useBalances()
 
     const { status } = useWallet()
 
@@ -48,6 +47,12 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         () => setConfirmTxModalIsOpen(false)
     )
 
+    const { isApproved: isApprovedStrn, isApproving: isApprovingStrn, onApprove: onApproveStrn } = useApproval(
+        getAddresses().strnTokenAddress,
+        getAddresses().strainNFTCrafterAddress,
+        () => setConfirmTxModalIsOpen(false)
+    )
+
     const handleApprove = useCallback(() => {
         setConfirmTxModalIsOpen(true)
         onApprove()
@@ -56,6 +61,13 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
         setConfirmTxModalIsOpen,
     ])
 
+    const handleApproveStrn = useCallback(() => {
+        setConfirmTxModalIsOpen(true)
+        onApproveStrn()
+    }, [
+        onApprove,
+        setConfirmTxModalIsOpen,
+    ])
     const handleGenerateClick = useCallback(() => {
         setGenerateModalIsOpen(true)
     }, [setGenerateModalIsOpen])
@@ -139,21 +151,31 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
             )
         }
 
-        if (!isApproved) {
+        if (!isApproved || !isApprovedStrn) {
             // disable generation
             return (
-                <>
+                <StyledButtonRow>
                     <StyledPrimaryButton
-                        full
                         onClick={handleApprove}
-                        text={!isApproving ? "Approve Generating" : "Approving Generating..."}
+                        disabled={isApproved}
+                        full
+                        size={'sm'}
+                        text={isApproving ? "Approving ..." : !isApproved ? "Approve Generating" : "Approved"}
                         variant={isApproving || status !== 'connected' ? 'secondary' : 'default'}
                     />
-                </>
+                    <StyledPrimaryButton
+                        onClick={handleApproveStrn}
+                        disabled={isApprovedStrn}
+                        full
+                        size={'sm'}
+                        text={isApprovingStrn ? "Approving ..." : !isApprovedStrn ? "Approve STRN Fee" : "Approved"}
+                        variant={isApprovingStrn || status !== 'connected' ? 'secondary' : 'default'}
+                    />
+                </StyledButtonRow>
             )
         }
 
-        if (isApproved) {
+        if (isApproved && isApprovedStrn) {
             return (
                 <>
                     {canGenerate && (
@@ -170,7 +192,11 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
 
     }, [
         handleGenerateClick,
+        isApproved,
         isApproving,
+        isApprovedStrn,
+        isApprovingStrn,
+        isApprovedStrn,
         isCreating,
         handleApprove,
         status,
@@ -183,7 +209,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
             <Label text={`Min: ${String(MIN_LP_AMOUNTS_DISPLAY[Number(poolId)])} ${poolName} LP`} />
             <Spacer size="sm" />
 
-                {GenerateButton}
+            {GenerateButton}
 
 
             <NamedGeneratingModal
@@ -202,7 +228,15 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
 const StyledValue = styled.span`
     font-size: 18px;
     font-weight: 600;
-`
+`;
 
+const StyledButtonRow = styled.div`
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    > div {
+        margin: 0 0.25rem
+    }
+`;
 
 export default GenerateNftButton

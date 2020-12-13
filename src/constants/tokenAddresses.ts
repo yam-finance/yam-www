@@ -64,7 +64,7 @@ const addresses = {
         // xiot: "0x5deb4627202cD666cE025F78956A14418345f508"
         strainNFTAddress: '0x7C69E81b4d597f30cB594d96E07C0c4e5adaac4c',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
-        strainNFTCrafterAddress: '0xEFE3c439C60F575c41f84951741553D6aa2036c2',
+        strainNFTCrafterAddress: '0x7Dc128baaa3D9c839c7E92d6899207bD6BfDF4dB',
         // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     }
 }
@@ -72,7 +72,7 @@ const addresses = {
 /*
 STRN: 0x60C60185505965f4cFfdc9DcE3aE0F72E140D94E
 StrainNFT: 0x7C69E81b4d597f30cB594d96E07C0c4e5adaac4c
-StrainCrafter: 0xEFE3c439C60F575c41f84951741553D6aa2036c2
+StrainCrafter: 0x7Dc128baaa3D9c839c7E92d6899207bD6BfDF4dB
 
 
 STXP: 0xa88b38138152EE83C81aF124FC2948Fc00c26CE5

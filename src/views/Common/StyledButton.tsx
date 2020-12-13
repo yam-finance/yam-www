@@ -7,7 +7,7 @@ import { ButtonProps } from 'react-neu/dist/components/Button';
 import styled from 'styled-components'
 
 
-const StyledPrimaryButton = ({ full, onClick, text, variant, size }: ButtonProps) =>
+const StyledPrimaryButton = ({ full, onClick, text, variant, size, disabled }: ButtonProps) =>
     <StyledButtonContainer>
         <Button
             full={full}
@@ -15,22 +15,23 @@ const StyledPrimaryButton = ({ full, onClick, text, variant, size }: ButtonProps
             text={text}
             variant={variant}
             size={size}
+            disabled={disabled}
         />
     </StyledButtonContainer>
 
 
 
 const StyledButtonContainer = styled.div`
+    width: 100%;
+    button {
+        background: #00AC69 !important;
+        border-radius: 5px;
+        color: #1C2129 !important;
 
-button {
-    background: #00AC69 !important;
-    border-radius: 5px;
-    color: #1C2129 !important;
-
-    > span {
-        color: #ffffff !important;
+        > span {
+            color: #ffffff !important;
+        }
     }
-}
 `
 
 export default StyledPrimaryButton;

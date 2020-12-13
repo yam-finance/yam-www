@@ -239,6 +239,10 @@ const StyledLabels = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
+
+    > div {
+        width: unset;
+    }
 `
 
 const StyledValue = styled.span`
