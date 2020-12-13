@@ -160,6 +160,7 @@ const Provider: React.FC = ({ children }) => {
     setConfirmTxModalIsOpen(true)
     setIsHarvesting(true)
     const nftids = nftcollection.map(nft => nft.nftId);
+    if (nftids.length === 0) return;
     await harvestNfts(yam.contracts.strain_nft_crafter, yam.web3.eth, account, nftids, () => {
       setConfirmTxModalIsOpen(false)
     }).catch(e => {
@@ -170,7 +171,8 @@ const Provider: React.FC = ({ children }) => {
     account,
     setConfirmTxModalIsOpen,
     setIsHarvesting,
-    yam
+    yam,
+    nftcollection
   ])
 
   const checkTxHashRefreshUserNfts = async (provider: any, txHash: string, setTxHash: Function) => {
