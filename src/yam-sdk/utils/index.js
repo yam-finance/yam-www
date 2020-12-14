@@ -787,11 +787,15 @@ export const getIndexCoopLPRewards = async (yam) => {
 
 export const getSushiRewards = async (yam) => {
   const BASE = new BigNumber(10).pow(18);
-  const incentivizerBalance = new BigNumber(await yam.contracts.SushibarXSushi.methods.balanceOf(ContractIncentivizer).call()).dividedBy(BASE).toNumber();
+  const incentivizerBalance = new BigNumber(await yam.contracts.SushibarXSushi.methods.balanceOf(ContractIncentivizer).call())
+    .dividedBy(BASE)
+    .toNumber();
   const xSushiTotalSupply = new BigNumber(await yam.contracts.SushibarXSushi.methods.totalSupply().call()).dividedBy(BASE).toNumber();
-  const sushiXSushiBalance = new BigNumber(await yam.contracts.SushiToken.methods.balanceOf(yam.contracts.SushibarXSushi.options.address).call()).dividedBy(BASE).toNumber();
+  const sushiXSushiBalance = new BigNumber(await yam.contracts.SushiToken.methods.balanceOf(yam.contracts.SushibarXSushi.options.address).call())
+    .dividedBy(BASE)
+    .toNumber();
   const SushiBalance = new BigNumber(await yam.contracts.SushiToken.methods.balanceOf(ContractIncentivizer).call()).dividedBy(BASE).toNumber();
-  return (incentivizerBalance * sushiXSushiBalance / xSushiTotalSupply) + SushiBalance;
+  return (incentivizerBalance * sushiXSushiBalance) / xSushiTotalSupply + SushiBalance;
 };
 
 export const getRebaseType = (rebaseValue) => {

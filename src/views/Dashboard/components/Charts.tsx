@@ -261,7 +261,7 @@ const Charts: React.FC = () => {
         DPI: DPIBalance * dpiPrice,
         WETH: totalWETHValue * wethPrice,
         INDEXLP: 2929 * dpiPrice + 640 * wethPrice,
-        INDEX: (indexCoopLPRewards * indexPrice) + ((totalBalanceINDEX || 0) * indexPrice),
+        INDEX: indexCoopLPRewards * indexPrice + (totalBalanceINDEX || 0) * indexPrice,
         Sushi: SushiRewards * sushiPrice,
       },
     ];
