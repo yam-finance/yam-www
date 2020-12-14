@@ -15,7 +15,7 @@ const Treasury: React.FC = () => {
   const [yusdPrice, setYUSDPrice] = useState<number>();
   const [dpiPrice, setDPIPrice] = useState<number>();
   const [wethPrice, setWETHPrice] = useState<number>();
-  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, yamBalance, yUsdBalance } = useTreasury();
+  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, totalBalanceValueINDEX, yamBalance, yUsdBalance } = useTreasury();
 
   const fetchOnce = useCallback(async () => {
     const yusdPrice = await getYUSDPrice();
@@ -35,13 +35,11 @@ const Treasury: React.FC = () => {
   const assetYUSD = (totalYUsdValue ? totalYUsdValue : 0) * (yusdPrice ? yusdPrice : 0);
   const assetDPI = (totalDPIValue ? totalDPIValue : 0) * (dpiPrice ? dpiPrice : 0);
   const assetWETH = (totalWETHValue ? totalWETHValue : 0) * (wethPrice ? wethPrice : 0);
+  const assetIndex = totalBalanceValueINDEX ? totalBalanceValueINDEX : 0;
   const assetIndexLP = totalIndexLPValue ? totalIndexLPValue : 0;
-
-  const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP;
+  const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP + assetIndex;
   const treasuryValue = typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--";
-
   const yamValue = typeof yamBalance !== "undefined" ? numeral(yamBalance).format("0.00a") : "--";
-
   const yUsdValue = typeof yUsdBalance !== "undefined" ? numeral(yUsdBalance).format("0.00a") : "--";
 
   return (
