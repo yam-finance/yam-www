@@ -176,7 +176,7 @@ export class Contracts {
     this.slp.options.address = "0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c";
     this.SushibarXSushi.options.address = "0x8798249c2e607446efb7ad49ec89dd1865ff4272";
     this.SushiToken.options.address = "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2";
-    this.IndexStakingRewards.options.address = "0x8f06fba4684b5e0988f215a47775bb611af0f986";
+    this.IndexStakingRewards.options.address = "0xb93b505ed567982e2b6756177ddd23ab5745f309";
 
     this.pools = [
       {
