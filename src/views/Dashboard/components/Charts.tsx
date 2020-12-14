@@ -37,7 +37,7 @@ const Charts: React.FC = () => {
   const [seriesMinted, setSeriesMinted] = useState<SeriesInterface[]>();
   const [treasuryValues, setTreasuryValues] = useState<any>();
   const { darkMode, colors } = useTheme();
-  const { totalYUsdValue, totalWETHValue, totalDPIValue } = useTreasury();
+  const { totalYUsdValue, totalWETHValue, totalDPIValue, totalBalanceINDEX } = useTreasury();
 
   const { status } = useWallet();
   const defaultRebaseRange = 14;
@@ -261,7 +261,7 @@ const Charts: React.FC = () => {
         DPI: DPIBalance * dpiPrice,
         WETH: totalWETHValue * wethPrice,
         INDEXLP: 2929 * dpiPrice + 640 * wethPrice,
-        INDEX: indexCoopLPRewards * indexPrice,
+        INDEX: indexCoopLPRewards * indexPrice + (totalBalanceINDEX || 0) * indexPrice,
         Sushi: SushiRewards * sushiPrice,
       },
     ];
