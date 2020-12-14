@@ -58,7 +58,7 @@ export const unstake = async (poolContract, provider, poolId, amount, account, o
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(poolId)))
-      .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      .send({ from: account, gas: 600000 }, async (error, txHash) => {
         if (error) {
           onTxHash && onTxHash("");
           console.log("Unstaking error", error);
