@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   const { darkMode } = useTheme()
   const { vestedBalance } = useVesting()
   const [timeRemaining, setTimeRemaining] = useState<string | undefined>(undefined)
-  const endTime = 1607990355
+  const endTime = 1608163117
   const currentTime = useTimer()
   
   useEffect(() => {

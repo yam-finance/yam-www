@@ -34,6 +34,7 @@ import styled from 'styled-components'
 import { chainId } from 'constants/tokenAddresses'
 import { StakingProvider } from 'contexts/Staking'
 import { StrainNftsProvider } from 'contexts/StrainNfts'
+import Gallery from 'views/Gallery'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -63,6 +64,9 @@ const App: React.FC = () => {
           <Route exact path="/apothecary">
             <Apothecary />
           </Route>
+          <Route exact path="/gallery">
+            <Gallery />
+          </Route>          
           {/*<Route exact path="/dispensary">
             <Dispensary />
           </Route>

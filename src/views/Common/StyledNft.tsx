@@ -3,7 +3,6 @@ import useStrainNfts from 'hooks/useStrainNfts'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
-    Button,
     Spacer,
 } from 'react-neu'
 import numeral from 'numeral'
