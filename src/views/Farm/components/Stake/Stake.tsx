@@ -127,7 +127,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     if (!isApproved) {
       return (
         <Button
-          disabled={isApproving}
+          disabled //={isApproving}
           full
           onClick={handleApprove}
           text={!isApproving ? "Approve staking" : "Approving staking..."}
@@ -140,6 +140,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
       return (
         <Button
           full
+          disabled
           onClick={handleStakeClick}
           text="Stake"
         />
