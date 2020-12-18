@@ -184,6 +184,7 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                         <>
                             <StyledPrimaryButton
                                 full
+                                disabled
                                 onClick={handleGenerateClick}
                                 text={`wrap ${poolName} LP`}
                             />
