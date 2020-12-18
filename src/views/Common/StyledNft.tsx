@@ -15,7 +15,7 @@ import useBalances from 'hooks/useBalances'
 const StyledNft = ({ nft }: { nft: NftInstance }) => {
     const [isNftLoading, setIsNftLoading] = useState(false)
     const [updatedNft, setUpdatedNft] = useState<NftInstance>()
-    const [canBurn, setCanBurn] = useState<boolean>(false)
+    const [canBurn, setCanBurn] = useState<boolean>(true)
     const [addStakeModalIsOpen, setAddStakeModalIsOpen] = useState<boolean>(false)
 
     const {
@@ -49,8 +49,9 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     }, [nft.nftId, updatedNft])
 
     useEffect(() => {
-        if (earnedStrnBalance === undefined) return setCanBurn(false);
-        setCanBurn(earnedStrnBalance.lte(ENABLE_BURN_REWARDS_AMOUNT))
+        // TODO: allow users to burn
+        //if (earnedStrnBalance === undefined) return setCanBurn(false);
+        //setCanBurn(earnedStrnBalance.lte(ENABLE_BURN_REWARDS_AMOUNT))
     }, [earnedStrnBalance])
 
     const getAttribute = (name: string): string => {
