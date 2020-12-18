@@ -12,7 +12,8 @@ const Page: React.FC = ({ children }) => (
   </StyledPage>
 )
 
-const StyledPage = styled.div``
+const StyledPage = styled.div`
+background-color: #08182E !important;`
 
 const StyledMain = styled.div`
   align-items: center;

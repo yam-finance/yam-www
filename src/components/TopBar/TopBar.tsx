@@ -48,7 +48,8 @@ const StyledLogoWrapper = styled.div`
   }
 `
 
-const StyledTopBar = styled.div``
+const StyledTopBar = styled.div`
+background-color: #08182E;`
 
 const StyledTopBarInner = styled.div`
   align-items: center;
@@ -86,7 +87,7 @@ const StyledMenuButton = styled.button`
   outline: 0;
   padding: 0;
   display: none;
-  @media (max-width: 400px) {
+  @media (max-width: 415px) {
     align-items: center;
     display: flex;
     height: 44px;

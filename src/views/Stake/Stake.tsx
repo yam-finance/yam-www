@@ -44,7 +44,6 @@ const Stake: React.FC = () => {
       // 3. if there is stake with amount ==0 followed by any stake with amount > 0 then have them contact us for help
       const hasUnstaked = userStakes.filter(s => new BigNumber(s.amount).eq(0))
       setShowHasUnstaked(hasUnstaked.length > 0)
-      console.log('hasUnstaked', hasUnstaked)
       if (hasUnstaked.length > 0) {
         const contactMessage = userStakes.filter(s => new BigNumber(s.amount).gt(0))
         setShowContactMessage(contactMessage.length > 0)

@@ -6,7 +6,7 @@ import {
   Switch,
 } from 'react-router-dom'
 import { UseWalletProvider } from 'use-wallet'
-
+import "tailwindcss/tailwind.css"
 import MobileMenu from 'components/MobileMenu'
 import TopBar from 'components/TopBar'
 
@@ -24,12 +24,17 @@ import Stake from 'views/Stake'
 import Pools from 'views/Farm'
 import FAQ from 'views/FAQ'
 import Home from 'views/Home'
+import Apothecary from 'views/Apothecary'
+import Dispensary from 'views/Dispensary'
+import Greenhouse from 'views/Greenhouse'
 import Migrate from 'views/Migrate'
 import Governance from 'views/Governance'
 
 import styled from 'styled-components'
 import { chainId } from 'constants/tokenAddresses'
 import { StakingProvider } from 'contexts/Staking'
+import { StrainNftsProvider } from 'contexts/StrainNfts'
+import Gallery from 'views/Gallery'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -56,7 +61,19 @@ const App: React.FC = () => {
           <Route exact path="/stake">
             <Stake />
           </Route>
-          {/*<Route path="/faq">
+          <Route exact path="/apothecary">
+            <Apothecary />
+          </Route>
+          <Route exact path="/gallery">
+            <Gallery />
+          </Route>          
+          {/*<Route exact path="/dispensary">
+            <Dispensary />
+          </Route>
+          <Route exact path="/greenhouse">
+            <Greenhouse />
+          </Route>
+          <Route path="/faq">
             <FAQ />
           </Route>
           <Route exact path="/migrate">
@@ -98,15 +115,17 @@ const Providers: React.FC = ({ children }) => {
           <PricesProvider>
             <BalancesProvider>
               <FarmingProvider>
-                <StakingProvider>
-                  <MigrationProvider>
-                    <VestingProvider>
-                      {/*<GovernanceProvider>*/}
-                      {children}
-                      {/*</GovernanceProvider>*/}
-                    </VestingProvider>
-                  </MigrationProvider>
-                </StakingProvider>
+                <StrainNftsProvider>
+                  <StakingProvider>
+                    <MigrationProvider>
+                      <VestingProvider>
+                        {/*<GovernanceProvider>*/}
+                        {children}
+                        {/*</GovernanceProvider>*/}
+                      </VestingProvider>
+                    </MigrationProvider>
+                  </StakingProvider>
+                </StrainNftsProvider>
               </FarmingProvider>
             </BalancesProvider>
           </PricesProvider>

@@ -125,9 +125,11 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
       )
     }
     if (!isApproved) {
+      // disable staking
       return (
         <Button
-          disabled //={isApproving}
+          disabled
+
           full
           onClick={handleApprove}
           text={!isApproving ? "Approve staking" : "Approving staking..."}
@@ -139,8 +141,8 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     if (isApproved) {
       return (
         <Button
-          full
           disabled
+          full
           onClick={handleStakeClick}
           text="Stake"
         />
@@ -179,6 +181,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     return (
       <Button
         full
+        disabled
         onClick={handleUnstakeClick}
         text="Unstake"
         variant="secondary"
@@ -260,5 +263,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     </>
   )
 }
+
+
 
 export default Stake

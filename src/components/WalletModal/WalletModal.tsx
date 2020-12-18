@@ -21,9 +21,9 @@ import FancyValue from 'components/FancyValue'
 import Split from 'components/Split'
 
 import useBalances from 'hooks/useBalances'
-import useFarming from 'hooks/useFarming'
 import { bnToDec } from 'utils'
 import useStaking from 'hooks/useStaking'
+import useStrainNfts from 'hooks/useStrainNfts'
 
 const WalletModal: React.FC<ModalProps> = ({
   isOpen,
@@ -35,19 +35,19 @@ const WalletModal: React.FC<ModalProps> = ({
     strnEthLpBalance,
     strnTokenBalance,
     strnXiotLpBalance,
-    strnEthLpPoolBalance,
-    strnXiotLpPoolBalance,
     stxpTokenBalance,
   } = useBalances()
-
-  const {
-    getEarnedBalances
-  } = useFarming()
 
   const {
     totalStaked,
     earnedStxpPoolBalance
   } = useStaking()
+
+  const {
+    earnedStrnBalance,
+    strnEthLpPoolBalance,
+    strnXiotLpPoolBalance,
+  } = useStrainNfts()
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
@@ -107,15 +107,13 @@ const WalletModal: React.FC<ModalProps> = ({
   }, [strnXiotLpPoolBalance])
 
   const formattedEarnedBalance = useMemo(() => {
-    if (getEarnedBalances) {
-      const strnPoolBalance = getEarnedBalances("0")
-      const xiotPoolBalance = getEarnedBalances("1")
-      const total = strnPoolBalance.plus(xiotPoolBalance)
+    if (earnedStrnBalance) {
+      const total = earnedStrnBalance
       return numeral(bnToDec(total)).format('0.00a')
     } else {
       return '--'
     }
-  }, [getEarnedBalances])
+  }, [earnedStrnBalance])
 
   const handleSignOut = useCallback(() => {
     reset()
@@ -167,13 +165,13 @@ const WalletModal: React.FC<ModalProps> = ({
           <Box column>
             <FancyValue
               icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
-              label="Staked STRN/ETH Tokens"
+              label="NFT'd STRN/ETH Tokens"
               value={formattedStrnEthPoolBalance}
             />
             <Spacer />
             <FancyValue
               icon={<span role="img" style={{ opacity: 0.5 }} >LP</span>}
-              label="Staked STRN/XIOT Tokens"
+              label="NFT'd STRN/XIOT Tokens"
               value={formattedStrnXiotPoolBalance}
             />
           </Box>

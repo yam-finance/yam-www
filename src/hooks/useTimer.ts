@@ -72,26 +72,31 @@ function getSecondsRemaining(
 export function getHoursMinusDaysRemaining(
     endUnixTimestamp: number,
     startUnixTimestamp: number
-): number {
+): string {
     const getDays = getDaysRemaining(endUnixTimestamp, startUnixTimestamp);
     const hours = getDays * 24;
-    return getHoursRemaining(endUnixTimestamp, startUnixTimestamp) - hours;
+    return normalizeValue(getHoursRemaining(endUnixTimestamp, startUnixTimestamp) - hours);
 }
 
 export function getMinutesMinusHoursRemaining(
     endUnixTimestamp: number,
     startUnixTimestamp: number
-): number {
+): string {
     const getHours = getHoursRemaining(endUnixTimestamp, startUnixTimestamp);
     const hours = getHours * 60;
-    return getMinutesRemaining(endUnixTimestamp, startUnixTimestamp) - hours;
+    return normalizeValue(getMinutesRemaining(endUnixTimestamp, startUnixTimestamp) - hours);
 }
 
 export function getSecondsMinusMinutesRemaining(
     endUnixTimestamp: number,
     startUnixTimestamp: number
-): number {
+): string {
     const getMinutes = getMinutesRemaining(endUnixTimestamp, startUnixTimestamp);
     const minutes = getMinutes * 60;
-    return getSecondsRemaining(endUnixTimestamp, startUnixTimestamp) - minutes;
+    return normalizeValue(getSecondsRemaining(endUnixTimestamp, startUnixTimestamp) - minutes);
+}
+
+function normalizeValue(value: number): string {
+    const normalized = `0${value}`;
+    return normalized.substr(normalized.length -2, 2)
 }

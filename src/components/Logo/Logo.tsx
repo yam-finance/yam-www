@@ -13,7 +13,7 @@ const Logo: React.FC = () => {
 
     return (
         <StyledImage>
-            <img src={strainLogo} alt="Logo" height={48} onClick={() => imageClick()} />
+            <img src={strainLogo} alt="Logo" height={58} onClick={() => imageClick()} />
         </StyledImage>
     )
 };

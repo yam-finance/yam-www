@@ -32,6 +32,8 @@ import IncJson from '../clean_build/contracts/YAMIncentivizer.json';
 import StrnEthIncJson from '../clean_build/contracts/STRNIncentivizer.json'
 import StrnXiotIncJson from '../clean_build/contracts/STRNXIOTIncentivizer.json'
 import StxpIncentivizer from '../clean_build/contracts/STXPIncentivizer.json'
+import StrainNFT from '../clean_build/contracts/StrainNFT.json'
+import StrainNFTCrafter from '../clean_build/contracts/StrainNFTCrafter.json'
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json"
@@ -69,6 +71,10 @@ export class Contracts {IncJson
     this.strneth_pool = new this.web3.eth.Contract(StrnEthIncJson.abi);
     this.strnxiot_pool = new this.web3.eth.Contract(StrnXiotIncJson.abi);
     this.stxpInc_pool = new this.web3.eth.Contract(StxpIncentivizer.abi);
+
+    // NFT 
+    this.strain_nft = new this.web3.eth.Contract(StrainNFT.abi);
+    this.strain_nft_crafter = new this.web3.eth.Contract(StrainNFTCrafter.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
     this.link_pool = new this.web3.eth.Contract(LINKPoolJson.abi);
@@ -123,6 +129,8 @@ export class Contracts {IncJson
       { contract: this.ycrv_pool, json: IncOldJson },
       { contract: this.yycrv_pool, json: IncJson },
       { contract: this.strneth_pool, json: StrnEthIncJson },
+      { contract: this.strain_nft, json: StrainNFT },
+      { contract: this.strain_nft_crafter, json: StrainNFTCrafter },
       { contract: this.strnxiot_pool, json: StrnXiotIncJson },
       { contract: this.stxpInc_pool, json: StxpIncentivizer },
       { contract: this.eth_pool, json: WETHPoolJson },

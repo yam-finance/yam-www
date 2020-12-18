@@ -2,8 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import roadmap from '../../assets/roadmap.png'
 import { Link } from 'react-router-dom'
+import { getAddresses } from "constants/tokenAddresses";
 
 const HowItWorks = () => {
+
+
+
     return (
         <StyledHowItWorksContainer>
             <StyledTitle>How it works</StyledTitle>
@@ -11,7 +15,7 @@ const HowItWorks = () => {
             <StyledHowItWorksTable>
                 <StyledOneBlock>
                     1. Pool STRN/ETH on Uniswap.
-                        <StyledButtonOne href="https://app.uniswap.org/#/add/ETH/0x90b426067bE0b0FF5De257BC4dd6a4815Ea03b5f" target="_blank">Provide LP STRN/ETH</StyledButtonOne>
+                        <StyledButtonOne href={`https://app.uniswap.org/#/add/ETH/${getAddresses().strnLPTokenAddress}`} target="_blank">Provide LP STRN/ETH</StyledButtonOne>
                 </StyledOneBlock>
                 <StyledTwoBlock>
                     2. Stake LP tokens on Strain NFT.
@@ -32,7 +36,7 @@ const HowItWorks = () => {
 };
 
 const StyledTitle = styled.h2`
-  color: #0CF5A5;
+  color: #00AC69;
   font-size: 36px;
   font-weight: 700;
   margin: 0;
@@ -54,7 +58,7 @@ const StyledHowItWorksContainer = styled.div`
 
 const StyledHr = styled.div`
     border-top: 4px solid;
-    border-color: #86CfF8;
+    border-color: #00AC69;
     width: 100%;
     height: 5px;
     margin: 0;
@@ -138,6 +142,7 @@ const StyledButtonOne = styled.a`
     text-align: center;
     height: 30px;
     background-color: #8D87FB;
+    color: #1C2129;
     cursor:pointer;
     font-weight: bold;
     margin: auto;
@@ -155,6 +160,7 @@ const StyledButtonTwo = styled(Link)`
     text-align: center;
     height: 30px;
     background-color: #00AC69;
+    color: #1C2129;
     cursor:pointer;
     font-weight: bold;
     margin: auto;
