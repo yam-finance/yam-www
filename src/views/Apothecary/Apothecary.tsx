@@ -15,6 +15,9 @@ const Apothecary: React.FC = () => {
 
   return (
     <Page>
+        <StyledMessage>
+        <h3>Temporarily disabled NFT generation, yields for NFT are inconsistent, we are looking into the issue. Join discord to get up to the current information</h3>
+        </StyledMessage>
       <StyledPageLayout>
         <StyledGenerationForm>
           <GenerateNFT />
@@ -32,6 +35,13 @@ const Apothecary: React.FC = () => {
     </Page>
   )
 }
+
+const StyledMessage = styled.div`
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  align-content: center;
+`
 
 const StyledPageLayout = styled.div`
   display: grid;

@@ -157,7 +157,8 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                 <StyledButtonRow>
                     <StyledPrimaryButton
                         onClick={handleApprove}
-                        disabled={isApproved}
+                        // temporary disable because of contract issue
+                        disabled//={isApproved}
                         full
                         size={'sm'}
                         text={isApproving ? "Approving ..." : !isApproved ? "Approve Generating" : "Approved"}
@@ -165,7 +166,8 @@ const GenerateNftButton = ({ poolId, walletBalance }: { poolId: string, walletBa
                     />
                     <StyledPrimaryButton
                         onClick={handleApproveStrn}
-                        disabled={isApprovedStrn}
+                        // temporary disable
+                        disabled//={isApprovedStrn}
                         full
                         size={'sm'}
                         text={isApprovingStrn ? "Approving ..." : !isApprovedStrn ? "Approve STRN Fee" : "Approved"}
