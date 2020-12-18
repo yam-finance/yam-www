@@ -16,7 +16,7 @@ const Apothecary: React.FC = () => {
   return (
     <Page>
         <StyledMessage>
-        <h3>Temporarily disabled NFT generation, yields for NFT are inconsistent, we are looking into the issue. Join discord to get up to the current information</h3>
+        <h3>Temporarily disabled NFT generation, yields for NFT are inconsistent, we are looking into the issue. Join discord to get current status</h3>
         </StyledMessage>
       <StyledPageLayout>
         <StyledGenerationForm>
