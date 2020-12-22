@@ -375,14 +375,9 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256[]",
+          "internalType": "uint256",
           "name": "_nfts",
-          "type": "uint256[]"
+          "type": "uint256"
         }
       ],
       "name": "earned",
@@ -715,6 +710,21 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "_strnGenerationFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setStrnGenerationFee",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "_poolid",
           "type": "uint256"
         },
@@ -779,6 +789,21 @@
           "internalType": "contract IERC20",
           "name": "",
           "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "strnGenerationFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,

@@ -322,7 +322,7 @@ export const getEarned = async (yam, pool, account) => {
 };
 
 export const getNftEarned = async (yam, pool, account, nftids) => {
-  return yam.toBigN(await pool.methods.earned(account, nftids).call());
+  return yam.toBigN(await pool.methods.earned(nftids[0]).call());
 };
 
 export const getStaked = async (yam, pool, account) => {
