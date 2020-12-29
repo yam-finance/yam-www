@@ -42,11 +42,6 @@ const Home: React.FC = () => {
           </>
         )}
         <Treasury />
-        <Spacer />
-        <Split>
-          <Rebase />
-          <Stats />
-        </Split>
       </Container>
     </Page>
   );

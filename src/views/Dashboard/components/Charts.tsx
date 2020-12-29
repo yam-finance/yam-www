@@ -914,31 +914,11 @@ const Charts: React.FC = () => {
     if (status === "connected") {
       return (
         <>
-          <Split>
-            <Card>
-              <CardTitle text="🚀 Scaling Factor History" />
-              <Spacer size="sm" />
-              {DisplayChartScaling}
-            </Card>
             <Card>
               <CardTitle text="💰 Treasury History ($)" />
               <Spacer size="sm" />
               {DisplayChartReserves}
             </Card>
-          </Split>
-          <Spacer />
-          <Split>
-            <Card>
-              <CardTitle text="🔽 Yams Sold Per Rebase" />
-              <Spacer size="sm" />
-              {DisplayChartSold}
-            </Card>
-            <Card>
-              <CardTitle text="🔼 Yams Minted Per Rebase" />
-              <Spacer size="sm" />
-              {DisplayChartMint}
-            </Card>
-          </Split>
         </>
       );
     }
