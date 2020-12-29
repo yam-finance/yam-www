@@ -102,14 +102,7 @@ const TopCards: React.FC = () => {
         value: currentPrice ? `${currentPrice} USDC` : "--",
         hint: change24 ? change24 : "-",
         tooltip: "24h Change",
-      },
-      {
-        icon: "🚀",
-        label: "Scaling factor",
-        value: scalingFactor ? `x${scalingFactor}` : "--",
-        hint: "",
-        tooltip: "",
-      },
+      }
     ],
     [
       {
@@ -118,14 +111,7 @@ const TopCards: React.FC = () => {
         value: maxSupply ? maxSupply : "--",
         hint: "",
         tooltip: "",
-      },
-      {
-        icon: "🍠",
-        label: "YAM rebase impact",
-        value: projectedRebase ? projectedRebase : "--",
-        hint: projectedRebasePercent ? projectedRebasePercent : "-",
-        tooltip: "",
-      },
+      }
     ],
     [
       {
@@ -134,20 +120,21 @@ const TopCards: React.FC = () => {
         value: marketCap ? `$${marketCap}` : "--",
         hint: "",
         tooltip: "",
-      },
+      }
+    ],
+    [
       {
         icon: "💰",
         label: "Treasury value",
         value: treasuryValue ? treasuryValue : "--",
         hint: "",
         tooltip: "",
-      },
+      }
     ],
   ];
 
   return (
     <Split>
-      <Rebase type="bar" />
       <Box column>
         <Card>
           <CardContent>
@@ -158,19 +145,6 @@ const TopCards: React.FC = () => {
               value={col[0][0].value}
               hint={col[0][0].hint}
               tooltip={col[0][0].tooltip}
-            />
-          </CardContent>
-        </Card>
-        <Spacer />
-        <Card>
-          <CardContent>
-            <FancyValue
-              wrap
-              icon={col[0][1].icon}
-              label={col[0][1].label}
-              value={col[0][1].value}
-              hint={col[0][1].hint}
-              tooltip={col[0][1].tooltip}
             />
           </CardContent>
         </Card>
@@ -189,18 +163,6 @@ const TopCards: React.FC = () => {
           </CardContent>
         </Card>
         <Spacer />
-        <Card>
-          <CardContent>
-            <FancyValue
-              wrap
-              icon={col[1][1].icon}
-              label={col[1][1].label}
-              value={col[1][1].value}
-              hint={col[1][1].hint}
-              tooltip={col[1][1].tooltip}
-            />
-          </CardContent>
-        </Card>
       </Box>
       <Box column>
         <Card>
@@ -215,16 +177,17 @@ const TopCards: React.FC = () => {
             />
           </CardContent>
         </Card>
-        <Spacer />
+      </Box>
+      <Box column>
         <Card>
           <CardContent>
             <FancyValue
               wrap
-              icon={col[2][1].icon}
-              label={col[2][1].label}
-              value={col[2][1].value}
-              hint={col[2][1].hint}
-              tooltip={col[2][1].tooltip}
+              icon={col[3][0].icon}
+              label={col[3][0].label}
+              value={col[3][0].value}
+              hint={col[3][0].hint}
+              tooltip={col[3][0].tooltip}
             />
           </CardContent>
         </Card>
