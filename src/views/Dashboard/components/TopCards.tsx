@@ -9,14 +9,6 @@ import { bnToDec } from "utils";
 
 import {
   getCurrentPrice,
-  getScalingFactor,
-  getMaxSupply,
-  getMarketCap,
-  getProjectedRebase,
-  getProjectedMint,
-  getProjectedRebasePercent,
-  getProjectedMintPercent,
-  getRebaseType,
   getDPIPrice,
   getYam,
   getWETHPrice,
@@ -24,7 +16,6 @@ import {
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
-import Rebase from "views/Home/components/Rebase";
 import { useWallet } from "use-wallet";
 
 const TopCards: React.FC = () => {
@@ -37,9 +28,6 @@ const TopCards: React.FC = () => {
   const [yusdPrice, setYUSDPrice] = useState<number>();
   const [dpiPrice, setDPIPrice] = useState<number>();
   const [wethPrice, setWETHPrice] = useState<number>();
-  const [projectedRebase, setProjectedRebase] = useState<string>();
-  const [projectedMint, setProjectedMint] = useState<string>();
-  const [projectedRebasePercent, setProjectedRebasePercent] = useState<string>();
   const [change24, setChange24] = useState<string>();
   const { status } = useWallet();
 
@@ -67,18 +55,9 @@ const TopCards: React.FC = () => {
     if (status === "connected") {
       if (!yam) return;
       const price = await getCurrentPrice(yam);
-      const factor = await getScalingFactor(yam);
-      const projectedRebase = await getProjectedRebase(yam);
-      const rebaseType = getRebaseType(projectedRebase);
-      const projectedRebasePercent = await getProjectedRebasePercent(yam);
-      // const projectedMint = await getProjectedMint(yam);
       setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
-      setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));
-      setProjectedRebase((rebaseType ? "+" : "") + numeral(projectedRebase).format("0.00a"));
-      setProjectedRebasePercent(numeral(projectedRebasePercent).format("0.00a") + "%");
-      // setProjectedMint(numeral(projectedMint).format("0.00a"));
     }
-  }, [yam, setCurrentPrice, setScalingFactor, setProjectedRebase, setProjectedMint, setProjectedRebasePercent]);
+  }, [yam, setCurrentPrice, setScalingFactor]);
 
   useEffect(() => {
     fetchStats();
