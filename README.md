@@ -4,7 +4,7 @@
 
 # What is YAM?
 
-YAM is the governance token for the YAM protocol. A decentralized cryptocurrency that uses a rebase mechanism to raise funds for a treasury managed by the community. The community can then use those funds via YAM governance to build out the protocol.
+YAM is the governance token for the YAM protocol. A decentralized cryptocurrency with treasury managed by the community. The community can then use those funds via YAM governance to build out the protocol.
 
 ## Available at
 
