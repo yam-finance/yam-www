@@ -28,7 +28,7 @@ const Charts: React.FC = () => {
   const [seriesReserves, setSeriesReserves] = useState<SeriesInterface[]>();
   const [treasuryValues, setTreasuryValues] = useState<any>();
   const { darkMode, colors } = useTheme();
-  const { totalYUsdValue, totalWETHValue, totalDPIValue, totalBalanceINDEX } = useTreasury();
+  const { totalYUsdValue, totalWETHValue, totalDPIValue, totalBalanceIndexCoop } = useTreasury();
 
   const { status } = useWallet();
   const defaultRange = 14;
@@ -142,7 +142,7 @@ const Charts: React.FC = () => {
         DPI: DPIBalance * dpiPrice,
         WETH: totalWETHValue * wethPrice,
         INDEXLP: 2929 * dpiPrice + 640 * wethPrice,
-        INDEX: indexCoopLPRewards * indexPrice + (totalBalanceINDEX || 0) * indexPrice,
+        INDEX: (indexCoopLPRewards * indexPrice) + (totalBalanceIndexCoop * indexPrice),
         Sushi: SushiRewards * sushiPrice,
       },
     ];
@@ -234,7 +234,7 @@ const Charts: React.FC = () => {
         y: reservesHistory[i].Sushi,
       });
     }
-
+    
     // // on DPI purchase
     // reserves.push({
     //   // x: 1603739830,
@@ -347,7 +347,7 @@ const Charts: React.FC = () => {
     // reserves.sort((a, b) => (a.x > b.x) ? 1 : -1)
     // reservesDPI.sort((a, b) => (a.x > b.x) ? 1 : -1)
     // reservesETH.sort((a, b) => (a.x > b.x) ? 1 : -1)
-    
+
     const series: SeriesInterface[] = [
       {
         name: "yUSD Reserves",
@@ -374,6 +374,7 @@ const Charts: React.FC = () => {
         data: reservesINDEX ? reservesINDEX.slice(reservesINDEX.length - (defaultRange + 6)) : [],
       },
     ];
+
 
     let theme;
     let labelColor;
@@ -513,11 +514,11 @@ const Charts: React.FC = () => {
     if (status === "connected") {
       return (
         <>
-            <Card>
-              <CardTitle text="💰 Treasury History ($)" />
-              <Spacer size="sm" />
-              {DisplayChartReserves}
-            </Card>
+          <Card>
+            <CardTitle text="💰 Treasury History ($)" />
+            <Spacer size="sm" />
+            {DisplayChartReserves}
+          </Card>
         </>
       );
     }
