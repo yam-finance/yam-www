@@ -20,7 +20,7 @@ import { useWallet } from "use-wallet";
 
 const TopCards: React.FC = () => {
   const yam = useYam();
-  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, totalBalanceValueINDEX } = useTreasury();
+  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, totalIndexCoop, totalSushi } = useTreasury();
   const [currentPrice, setCurrentPrice] = useState<string>();
   const [scalingFactor, setScalingFactor] = useState<string>();
   const [maxSupply, setMaxSupply] = useState<string>();
@@ -65,12 +65,12 @@ const TopCards: React.FC = () => {
     return () => clearInterval(refreshInterval);
   }, [fetchStats, yam]);
 
-  const assetYUSD = (totalYUsdValue ? totalYUsdValue : 0) * (yusdPrice ? yusdPrice : 0);
-  const assetDPI = (totalDPIValue ? totalDPIValue : 0) * (dpiPrice ? dpiPrice : 0);
-  const assetWETH = (totalWETHValue ? totalWETHValue : 0) * (wethPrice ? wethPrice : 0);
-  const assetIndex = totalBalanceValueINDEX ? totalBalanceValueINDEX : 0;
+  const assetYUSD = (totalYUsdValue || 0) * (yusdPrice || 0);
+  const assetDPI = (totalDPIValue || 0) * (dpiPrice || 0);
+  const assetWETH = (totalWETHValue || 0) * (wethPrice || 0);
+  const assetIndex = totalIndexCoop ? totalIndexCoop : 0;
   const assetIndexLP = totalIndexLPValue ? totalIndexLPValue : 0;
-  const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP + assetIndex;
+  const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP + assetIndex + totalSushi;
   const treasuryValue = typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--";
 
   const col = [
