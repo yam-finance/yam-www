@@ -13,7 +13,7 @@ const Umbrella_Protocol_Lite_Paper_CN = require("assets/documents/Umbrella_Proto
 
 const YCP: React.FC = () => {
   const { darkMode } = useTheme();
-  const progress = 60;
+  const progress = 75;
 
   return (
     <Page>
