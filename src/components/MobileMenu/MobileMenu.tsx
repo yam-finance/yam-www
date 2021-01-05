@@ -23,7 +23,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
             Umbrella
           </StyledRouterLink>
-          <StyledLink href="https://degenerative.finance/" target="_blank">Degenerative</StyledLink>
+          <StyledLink href="https://degenerative.finance/" target="_blank">
+            Degenerative
+          </StyledLink>
           <StyledRouterLink exact activeClassName="active" to="/governance" onClick={onDismiss}>
             Govern
           </StyledRouterLink>
