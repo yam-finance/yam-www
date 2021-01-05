@@ -35,9 +35,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledRouterLink exact activeClassName="active" to="/migrate" onClick={onDismiss}>
             Migrate
           </StyledRouterLink>
-          <StyledRouterLink exact activeClassName="active" to="/faq" onClick={onDismiss}>
+          <StyledLink href="https://docs.yam.finance/" target="_blank">
             FAQ
-          </StyledRouterLink>
+          </StyledLink>
         </StyledMobileMenu>
       </StyledMobileMenuWrapper>
     );
