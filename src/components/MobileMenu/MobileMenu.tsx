@@ -17,12 +17,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledRouterLink exact activeClassName="active" to="/" onClick={onDismiss}>
             Home
           </StyledRouterLink>
-          <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
-            Umbrella
-          </StyledRouterLink>
           <StyledRouterLink exact activeClassName="active" to="/dashboard" onClick={onDismiss}>
             Dashboard
           </StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
+            Umbrella
+          </StyledRouterLink>
+          <StyledLink href="https://degenerative.finance/" target="_blank">
+            Degenerative
+          </StyledLink>
           <StyledRouterLink exact activeClassName="active" to="/governance" onClick={onDismiss}>
             Govern
           </StyledRouterLink>
@@ -32,9 +35,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledRouterLink exact activeClassName="active" to="/migrate" onClick={onDismiss}>
             Migrate
           </StyledRouterLink>
-          <StyledRouterLink exact activeClassName="active" to="/faq" onClick={onDismiss}>
+          <StyledLink href="https://docs.yam.finance/" target="_blank">
             FAQ
-          </StyledRouterLink>
+          </StyledLink>
         </StyledMobileMenu>
       </StyledMobileMenuWrapper>
     );

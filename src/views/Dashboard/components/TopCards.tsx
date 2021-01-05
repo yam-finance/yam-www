@@ -13,6 +13,7 @@ import {
   getYam,
   getWETHPrice,
   getYUSDPrice,
+  getYamPrice,
 } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
@@ -54,8 +55,10 @@ const TopCards: React.FC = () => {
   const fetchStats = useCallback(async () => {
     if (status === "connected") {
       if (!yam) return;
-      const price = await getCurrentPrice(yam);
-      setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
+      // const price = await getCurrentPrice(yam);
+      // setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
+      const price = await getYamPrice();
+      setCurrentPrice(numeral(price).format("0.00a"));
     }
   }, [yam, setCurrentPrice, setScalingFactor]);
 
