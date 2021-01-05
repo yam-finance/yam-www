@@ -11,6 +11,7 @@ const Nav: React.FC = () => {
       <StyledRouterLink exact activeClassName="active" to="/umbrella">
         Umbrella
       </StyledRouterLink>
+      <StyledLink href="https://degenerative.finance/" target="_blank">Degenerative</StyledLink>
       <StyledRouterLink exact activeClassName="active" to="/governance">
         Govern
       </StyledRouterLink>

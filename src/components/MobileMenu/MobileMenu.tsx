@@ -17,12 +17,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledRouterLink exact activeClassName="active" to="/" onClick={onDismiss}>
             Home
           </StyledRouterLink>
-          <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
-            Umbrella
-          </StyledRouterLink>
           <StyledRouterLink exact activeClassName="active" to="/dashboard" onClick={onDismiss}>
             Dashboard
           </StyledRouterLink>
+          <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
+            Umbrella
+          </StyledRouterLink>
+          <StyledLink href="https://degenerative.finance/" target="_blank">Degenerative</StyledLink>
           <StyledRouterLink exact activeClassName="active" to="/governance" onClick={onDismiss}>
             Govern
           </StyledRouterLink>
