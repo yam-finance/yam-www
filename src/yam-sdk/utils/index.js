@@ -900,3 +900,8 @@ export const getMaxSupply = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.max_supply;
 };
+
+export const getYamPrice = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
+  return data.market_data.current_price.usd;
+};
