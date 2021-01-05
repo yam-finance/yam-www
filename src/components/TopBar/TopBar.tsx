@@ -106,7 +106,6 @@ const StyledLeftMenuBalancesWrapper = styled.div`
 `;
 
 const StyledTopBarDarkModeSwitch = styled.div`
-  display: none;
   @media (max-width: 1130px) {
     display: none;
   }

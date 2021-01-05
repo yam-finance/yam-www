@@ -91,7 +91,7 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
         {!userAccount ? (
           <Button onClick={handleUnlockWalletClick} size="sm" text="Unlock Wallet" />
         ) : (
-          <Button onClick={handleWalletClick} size="sm" text="View Balances" variant="tertiary" />
+          <Button onClick={handleWalletClick} size="sm" text="Balances" variant="tertiary" />
         )}
       </StyledWalletButton>
       <WalletModal isOpen={walletModalIsOpen} onDismiss={handleDismissWalletModal} />
