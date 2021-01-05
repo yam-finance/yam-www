@@ -26,8 +26,8 @@ const Nav: React.FC = () => {
       <StyledLink href="https://forum.yam.finance" target="_blank">
         Forum
       </StyledLink>
-      <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">
-        Docs
+      <StyledLink href="https://docs.yam.finance/" target="_blank">
+        FAQ
       </StyledLink>
     </StyledNav>
   );

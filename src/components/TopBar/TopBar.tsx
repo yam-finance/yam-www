@@ -25,16 +25,19 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           <StyledNavWrapper>
             <Nav />
           </StyledNavWrapper>
-          <StyledAccountButtonWrapper>
-            <StyledTopBarDarkModeSwitch>
-              <DarkModeSwitch />
-            </StyledTopBarDarkModeSwitch>
+          <StyledLeftMenuBalancesWrapper>
+            <StyledAccountButtonWrapper>
+              <StyledTopBarDarkModeSwitch>
+                <DarkModeSwitch />
+              </StyledTopBarDarkModeSwitch>
+              <Spacer />
+              <WalletButton />
+            </StyledAccountButtonWrapper>
             <Spacer />
-            <WalletButton />
-          </StyledAccountButtonWrapper>
-          <StyledMenuButton onClick={onPresentMobileMenu}>
-            <MenuIcon />
-          </StyledMenuButton>
+            <StyledMenuButton onClick={onPresentMobileMenu}>
+              <MenuIcon />
+            </StyledMenuButton>
+          </StyledLeftMenuBalancesWrapper>
         </StyledTopBarInner>
       </Container>
     </StyledTopBar>
@@ -86,13 +89,20 @@ const StyledMenuButton = styled.button`
   outline: 0;
   padding: 0;
   display: none;
-  @media (max-width: 400px) {
+  @media (max-width: 770px) {
     align-items: center;
     display: flex;
     height: 44px;
     justify-content: center;
     width: 44px;
   }
+`;
+
+const StyledLeftMenuBalancesWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  height: 72px;
+  justify-content: space-between;
 `;
 
 const StyledTopBarDarkModeSwitch = styled.div`
