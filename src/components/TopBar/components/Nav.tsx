@@ -1,30 +1,32 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { useIntl } from "react-intl";
 
 const Nav: React.FC = () => {
+  const intl = useIntl();
   return (
     <StyledNav>
       <StyledRouterLink exact activeClassName="active" to="/dashboard">
-        Dashboard
+        {intl.formatMessage({ id: "menu.dashboard" })}
       </StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/umbrella">
-        Umbrella
+        {intl.formatMessage({ id: "menu.umbrella" })}
       </StyledRouterLink>
       <StyledLink href="https://degenerative.finance/" target="_blank">
-        Degenerative
+        {intl.formatMessage({ id: "menu.degenerative" })}
       </StyledLink>
       <StyledRouterLink exact activeClassName="active" to="/governance">
-        Govern
+        {intl.formatMessage({ id: "menu.govern" })}
       </StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/farm">
-        Farm
+        {intl.formatMessage({ id: "menu.farm" })}
       </StyledRouterLink>
       <StyledRouterLink exact activeClassName="active" to="/migrate">
-        Migrate
+        {intl.formatMessage({ id: "menu.migrate" })}
       </StyledRouterLink>
       <StyledLink href="https://docs.yam.finance/" target="_blank">
-        FAQ
+        {intl.formatMessage({ id: "menu.faq" })}
       </StyledLink>
     </StyledNav>
   );

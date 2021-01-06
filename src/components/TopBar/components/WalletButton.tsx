@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { Button } from "react-neu";
+import { useIntl } from "react-intl";
 import { useWallet } from "use-wallet";
 
 import UnlockWalletModal from "components/UnlockWalletModal";
@@ -11,6 +12,7 @@ import { sleep } from "utils";
 interface WalletButtonProps {}
 
 const WalletButton: React.FC<WalletButtonProps> = (props) => {
+  const intl = useIntl();
   const [walletModalIsOpen, setWalletModalIsOpen] = useState(false);
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const [userAccount, setUserAccount] = useState<string | null>();
@@ -89,9 +91,9 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
     <>
       <StyledWalletButton>
         {!userAccount ? (
-          <Button onClick={handleUnlockWalletClick} size="sm" text="Unlock Wallet" />
+          <Button onClick={handleUnlockWalletClick} size="sm" text={intl.formatMessage({ id: "header.unlockWallet" })} />
         ) : (
-          <Button onClick={handleWalletClick} size="sm" text="Balances" variant="tertiary" />
+          <Button onClick={handleWalletClick} size="sm" text={intl.formatMessage({ id: "common.balances" })} variant="tertiary" />
         )}
       </StyledWalletButton>
       <WalletModal isOpen={walletModalIsOpen} onDismiss={handleDismissWalletModal} />

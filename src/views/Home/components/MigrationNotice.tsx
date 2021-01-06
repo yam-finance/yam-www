@@ -1,18 +1,20 @@
 import React from "react";
+import { useIntl } from "react-intl";
 
 import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
 import styled from "styled-components";
 
 const MigrationNotice: React.FC = () => {
+  const intl = useIntl();
   return (
     <Notice>
       <NoticeIcon>🦋</NoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span>You have unmigrated YAMV2 tokens!</span>
+          <span>{intl.formatMessage({ id: "home.unmigrated" })}</span>
           <Box flex={1} />
           <Spacer size="sm" />
-          <Button size="sm" text="Migrate" to="migrate" />
+          <Button size="sm" text={intl.formatMessage({ id: "common.migrate" })} to="migrate" />
         </StyledNoticeContentInner>
       </NoticeContent>
     </Notice>

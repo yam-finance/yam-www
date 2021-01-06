@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { useIntl } from "react-intl";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
 
@@ -8,6 +9,7 @@ import useYam from "hooks/useYam";
 import { delegate, didDelegate } from "yam-sdk/utils";
 
 const RegisterVoteNotice: React.FC = () => {
+  const intl = useIntl();
   const [isRegistered, setIsRegistered] = useState<boolean>();
   const [isRegistering, setIsRegistering] = useState(false);
   const { account } = useWallet();
@@ -34,11 +36,16 @@ const RegisterVoteNotice: React.FC = () => {
       <NoticeIcon>{isRegistered ? "✔️" : "🗣️"}</NoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span>{isRegistered ? `You've successfuly registered to vote!` : `It's time to register to vote for onchain and Snapshot proposals.`}</span>
+          <span>{isRegistered ? intl.formatMessage({ id: "home.vote.registered" }) : intl.formatMessage({ id: "home.vote.unregistered" })}</span>
           <Box flex={1} />
           <Spacer size="sm" />
           {!isRegistered && (
-            <Button disabled={isRegistering} onClick={handleRegisterClick} size="sm" text={isRegistering ? "Registering..." : "Register"} />
+            <Button
+              disabled={isRegistering}
+              onClick={handleRegisterClick}
+              size="sm"
+              text={isRegistering ? intl.formatMessage({ id: "common.registering" }) : intl.formatMessage({ id: "common.register" })}
+            />
           )}
         </StyledNoticeContentInner>
       </NoticeContent>

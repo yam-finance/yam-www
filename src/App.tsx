@@ -6,6 +6,7 @@ import { UseWalletProvider } from "use-wallet";
 import MobileMenu from "components/MobileMenu";
 import TopBar from "components/TopBar";
 
+import { LanguageProvider } from "contexts/Language";
 import { BalancesProvider } from "contexts/Balances";
 import { FarmingProvider } from "contexts/Farming";
 import { MigrationProvider } from "contexts/Migration";
@@ -98,7 +99,9 @@ const Providers: React.FC = ({ children }) => {
               <FarmingProvider>
                 <MigrationProvider>
                   <VestingProvider>
-                    <GovernanceProvider>{children}</GovernanceProvider>
+                    <GovernanceProvider>
+                      <LanguageProvider>{children}</LanguageProvider>
+                    </GovernanceProvider>
                   </VestingProvider>
                 </MigrationProvider>
               </FarmingProvider>

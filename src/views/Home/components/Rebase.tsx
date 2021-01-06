@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo } from "react";
 
 import Countdown, { CountdownRenderProps } from "react-countdown";
 import { Box, Button, Card, CardContent, CardIcon, Modal, ModalTitle, ModalContent, ModalActions, Spacer } from "react-neu";
+import { useIntl } from "react-intl";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
 
@@ -18,6 +19,7 @@ interface RebaseProps {
 }
 
 const Rebase: React.FC<RebaseProps> = ({ type }) => {
+  const intl = useIntl();
   const yam = useYam();
 
   const [nextRebase, setNextRebase] = useState(0);
@@ -66,7 +68,7 @@ const Rebase: React.FC<RebaseProps> = ({ type }) => {
           <Bar value={dialValue}></Bar>
           <StyledCountdown>
             <StyledCountdownTextBar>{!nextRebase ? "--" : <Countdown date={new Date(nextRebase)} renderer={renderer} />}</StyledCountdownTextBar>
-            <Label text="Next rebase" />
+            <Label text={intl.formatMessage({ id: "common.nextRebase" })} />
           </StyledCountdown>
         </Box>
       );
@@ -76,7 +78,7 @@ const Rebase: React.FC<RebaseProps> = ({ type }) => {
           <Dial size={196} value={dialValue}>
             <StyledCountdown>
               <StyledCountdownText>{!nextRebase ? "--" : <Countdown date={new Date(nextRebase)} renderer={renderer} />}</StyledCountdownText>
-              <Label text="Next rebase" />
+              <Label text={intl.formatMessage({ id: "common.nextRebase" })} />
             </StyledCountdown>
           </Dial>
         </Box>
@@ -90,15 +92,20 @@ const Rebase: React.FC<RebaseProps> = ({ type }) => {
         <CardContent>
           {DisplayRebaseProgress}
           <Spacer />
-          <Button disabled={!account} onClick={() => setRebaseWarningModal(true)} text="Rebase" variant="secondary" />
+          <Button
+            disabled={!account}
+            onClick={() => setRebaseWarningModal(true)}
+            text={intl.formatMessage({ id: "common.rebase" })}
+            variant="secondary"
+          />
         </CardContent>
       </Card>
       <Modal isOpen={rebaseWarningModal}>
         <CardIcon>⚠️</CardIcon>
-        <ModalContent>WARNING: Only 1 rebase transaction succeeds every 12 hours. This transaction will likely fail.</ModalContent>
+        <ModalContent>{intl.formatMessage({ id: "home.rebase.warning" })}</ModalContent>
         <ModalActions>
-          <Button onClick={() => setRebaseWarningModal(false)} text="Cancel" variant="secondary" />
-          <Button onClick={handleRebaseClick} text="Confirm rebase" />
+          <Button onClick={() => setRebaseWarningModal(false)} text={intl.formatMessage({ id: "common.cancel" })} variant="secondary" />
+          <Button onClick={handleRebaseClick} text={intl.formatMessage({ id: "common.confirmRebase" })} />
         </ModalActions>
       </Modal>
     </>

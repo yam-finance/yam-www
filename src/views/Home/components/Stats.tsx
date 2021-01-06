@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import numeral from "numeral";
 import { Box, Card, CardContent, Spacer } from "react-neu";
+import { useIntl } from "react-intl";
 
 import FancyValue from "components/FancyValue";
 import useYam from "hooks/useYam";
@@ -9,6 +10,7 @@ import { bnToDec } from "utils";
 import { getCurrentPrice, getScalingFactor } from "yam-sdk/utils";
 
 const Stats: React.FC = () => {
+  const intl = useIntl();
   const [currentPrice, setCurrentPrice] = useState<string>();
   const [scalingFactor, setScalingFactor] = useState<string>();
   const yam = useYam();
@@ -28,19 +30,19 @@ const Stats: React.FC = () => {
     <Box column>
       <Card>
         <CardContent>
-          <FancyValue icon="💲" label="Current price (TWAP)" value={currentPrice ? `${currentPrice} USDC` : "--"} />
+          <FancyValue icon="💲" label={intl.formatMessage({ id: "home.stats.currentPrice" })} value={currentPrice ? `${currentPrice} USDC` : "--"} />
         </CardContent>
       </Card>
       <Spacer />
       <Card>
         <CardContent>
-          <FancyValue icon="🎯" label="Target price" value="1 USDC" />
+          <FancyValue icon="🎯" label={intl.formatMessage({ id: "home.stats.targetPrice" })} value="1 USDC" />
         </CardContent>
       </Card>
       <Spacer />
       <Card>
         <CardContent>
-          <FancyValue icon="🚀" label="Scaling factor" value={scalingFactor ? "x" + scalingFactor : "--"} />
+          <FancyValue icon="🚀" label={intl.formatMessage({ id: "home.stats.scalingFactor" })} value={scalingFactor ? "x" + scalingFactor : "--"} />
         </CardContent>
       </Card>
     </Box>

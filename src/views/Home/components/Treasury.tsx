@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import numeral from "numeral";
 import { Box, Button, Card, CardActions, CardContent, CardTitle, Spacer } from "react-neu";
+import { useIntl } from "react-intl";
 
 import FancyValue from "components/FancyValue";
 import Split from "components/Split";
@@ -11,6 +12,7 @@ import { getDPIPrice, getWETHPrice, getYUSDPrice } from "yam-sdk/utils";
 import { useWallet } from "use-wallet";
 
 const Treasury: React.FC = () => {
+  const intl = useIntl();
   const { status } = useWallet();
   const [yusdPrice, setYUSDPrice] = useState<number>();
   const [dpiPrice, setDPIPrice] = useState<number>();
@@ -42,16 +44,15 @@ const Treasury: React.FC = () => {
   const yamValue = typeof yamBalance !== "undefined" ? numeral(yamBalance).format("0.00a") : "--";
   const yUsdValue = typeof yUsdBalance !== "undefined" ? numeral(yUsdBalance).format("0.00a") : "--";
 
-
   return (
     <Card>
-      <CardTitle text="Treasury Overview" />
+      <CardTitle text={intl.formatMessage({ id: "home.treasury.overview" })} />
       <Spacer size="sm" />
       <CardContent>
         <Split>
-          <FancyValue icon="💰" label="Treasury value" value={treasuryValue} />
-          <FancyValue icon="💸" label="yUSD in reserves" value={yUsdValue} />
-          <FancyValue icon="🍠" label="YAM in reserves" value={yamValue} />
+          <FancyValue icon="💰" label={intl.formatMessage({ id: "home.treasury.value" })} value={treasuryValue} />
+          <FancyValue icon="💸" label={intl.formatMessage({ id: "home.treasury.yUSD" })} value={yUsdValue} />
+          <FancyValue icon="🍠" label={intl.formatMessage({ id: "home.treasury.YAM" })} value={yamValue} />
         </Split>
         <Spacer />
       </CardContent>
@@ -59,7 +60,7 @@ const Treasury: React.FC = () => {
         <Box row justifyContent="center">
           <Button
             href="https://etherscan.io/tokenholdings?a=0x97990B693835da58A281636296D2Bf02787DEa17"
-            text="View on Etherscan"
+            text={intl.formatMessage({ id: "home.treasury.viewOnEtherscan" })}
             variant="secondary"
           />
         </Box>

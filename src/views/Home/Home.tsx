@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Spacer, useTheme } from "react-neu";
+import { useIntl } from "react-intl";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
@@ -13,6 +14,7 @@ import Treasury from "./components/Treasury";
 import VestingNotice from "./components/VestingNotice";
 
 const Home: React.FC = () => {
+  const intl = useIntl();
   const { darkMode } = useTheme();
   const { yamV2Balance } = useBalances();
   const { vestedBalance } = useVesting();
@@ -20,8 +22,8 @@ const Home: React.FC = () => {
     <Page>
       <PageHeader
         icon={darkMode ? "🌚" : "🌞"}
-        subtitle={darkMode ? "🤫 shhh... the YAMs are sleeping." : "It's a great day to farm YAMs!"}
-        title="Welcome to YAM Finance."
+        subtitle={darkMode ? intl.formatMessage({ id: "home.subtitle.dark" }) : intl.formatMessage({ id: "home.subtitle" })}
+        title={intl.formatMessage({ id: "home.title" })}
       />
       <Container>
         <RegisterVoteNotice />

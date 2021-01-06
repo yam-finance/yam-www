@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import Nav from "./components/Nav";
+import LanguageSwitch from "./components/LanguageSwitch";
 import DarkModeSwitch from "../DarkModeSwitch";
 
 const Footer: React.FC = () => (
   <StyledFooter>
     <StyledFooterInner>
       <Nav />
+      <LanguageSwitch />
     </StyledFooterInner>
     <br />
     <StyledFooterDarkModeSwitch>
