@@ -47,7 +47,7 @@ const Addresses: React.FC = () => {
         <AddressButton name="Incentivizer" address={ContractIncentivizer} uniswap={false} />
         <AddressButton name="Migrator" address={ContractMigrator} uniswap={false} />
         <AddressButton name="Contributor Governor" address={ContractContributorGovernor} uniswap={false} />
-        <AddressButton name="Contribtor Timelock" address={ContractContribtorTimelock} uniswap={false} />
+        <AddressButton name="Contributor Timelock" address={ContractContribtorTimelock} uniswap={false} />
         <AddressButton name="Index Staking" address={ContractIndexStaking} uniswap={false} />
         <AddressButton name="Vesting Pool" address={ContractVestingPool} uniswap={false} />
         <AddressButton name="Monthly Allowance" address={ContractMonthlyAllowance} uniswap={false} />
