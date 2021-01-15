@@ -34,18 +34,22 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
     backgroundColor = colors.grey[400];
   }
 
-  //self defined theme price change +
-  const customTheme = {
-    main: "green", //price change +
-    negetive: "red", // price change -
-  };
-
   const DisplayHint = useMemo(() => {
     if (hint) {
-      //console.log(hint);
+      let isNum : boolean;
+      //if hint means price Change
+      if(hint.charAt(hint.length-1)=='%'){
+        isNum = true;
+      }
+      //hint means normal info
+      else
+      {
+        isNum = false;
+      }
+      console.log(isNum);
       return (
         <>
-          <ValueHint data-tip={tooltip} darkMode={darkMode} hint={hint} theme={customTheme}>
+          <ValueHint data-tip={tooltip} darkMode={darkMode} hint={hint} isNumber={isNum}>
             <div>{hint}</div>
           </ValueHint>
           <ReactTooltip
@@ -53,7 +57,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
             type="light"
             effect="solid"
             className="tooltip"
-            textColor={labelColor}
+            textColor={isNum? (hint?.substr(0, 1) == "-" ? 'red' : 'green') :labelColor}
             borderColor={borderColor}
             backgroundColor={backgroundColor}
             border={true}
@@ -114,6 +118,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
 interface ValueHintProps {
   darkMode?: boolean;
   hint?: string;
+  isNumber?:boolean;
 }
 
 const DisplayFancyValue = styled.div`
@@ -138,11 +143,11 @@ const ValueHint = styled.span<ValueHintProps>`
   top: -8px;
   right: -8px;
   background: #ae0e463b;
-  color: ${(props) => (props.hint?.substr(0, 1) == "+" ? props.theme.main : props.theme.negetive)};
+  color: ${(props) => (props.isNumber? (props.hint?.substr(0, 1) == "-" ? 'red' : 'green') : props.theme.colors.primary.main)};
   line-height: 16px;
   font-weight: bold;
   font-size: 12px;
-  border: 2px solid ${(props) => (props.hint?.substr(0, 1) == "+" ? props.theme.main : props.theme.negetive)};
+  border: 2px solid ${(props) => (props.isNumber? (props.hint?.substr(0, 1) == "-" ? 'red' : 'green') : props.theme.colors.primary.main)};
   border-radius: 100px;
   padding: 0px 5px 1px 5px;
   opacity: 0.4;
