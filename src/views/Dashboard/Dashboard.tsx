@@ -13,7 +13,6 @@ const Dashboard: React.FC = () => {
       <PageHeader icon="📊" subtitle="Overview of the YAM ecosystem" title="YAM Dashboard" />
       <Container size="lg">
         <TopCards />
-        <Spacer />
         <Charts />
       </Container>
     </Page>
