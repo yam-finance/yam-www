@@ -30,7 +30,16 @@ import { useWallet } from "use-wallet";
 
 const AssetsList: React.FC = () => {
   const yam = useYam();
-  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, totalIndexCoop, totalSushi, totalUMAValue, totalBalanceIndexCoop } = useTreasury();
+  const {
+    totalYUsdValue,
+    totalDPIValue,
+    totalWETHValue,
+    totalIndexLPValue,
+    totalIndexCoop,
+    totalSushi,
+    totalUMAValue,
+    totalBalanceIndexCoop,
+  } = useTreasury();
   const [currentPrice, setCurrentPrice] = useState<string>();
   const [scalingFactor, setScalingFactor] = useState<string>();
   const [maxSupply, setMaxSupply] = useState<string>();
@@ -110,29 +119,29 @@ const AssetsList: React.FC = () => {
 
   const columns = [
     {
-      id: 'token_name',
-      title: 'Token Name'
+      id: "token_name",
+      title: "Token Name",
     },
     {
-      id: 'symbol',
-      title: 'Symbol'
+      id: "symbol",
+      title: "Symbol",
     },
     {
-      id: 'quantity',
-      title: 'Quantity'
+      id: "quantity",
+      title: "Quantity",
     },
     {
-      id: 'token_price',
-      title: 'Token Price($)'
+      id: "token_price",
+      title: "Token Price($)",
     },
     {
-      id: 'change',
-      title: 'Change (24h)'
+      id: "change",
+      title: "Change (24h)",
     },
     {
-      id: 'value_in_usd',
-      title: 'Value in USD($)'
-    }
+      id: "value_in_usd",
+      title: "Value in USD($)",
+    },
   ];
 
   const rows = [
@@ -140,212 +149,210 @@ const AssetsList: React.FC = () => {
       id: 1,
       cells: [
         {
-          id: 'token_name',
-          value: 'DefiPulse Index',
-          classes: '',
-          icon: ''
+          id: "token_name",
+          value: "DefiPulse Index",
+          classes: "",
+          icon: "",
         },
         {
-          id: 'symbol',
-          value: 'DPI',
-          classes: 'font-bold',
-          icon: ''
+          id: "symbol",
+          value: "DPI",
+          classes: "font-bold",
+          icon: "",
         },
         {
-          id: 'quantity',
+          id: "quantity",
           value: numeral(totalDPIValue).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'token_price',
-          value: '$' + numeral(dpiPrice).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          id: "token_price",
+          value: "$" + numeral(dpiPrice).format("0,0.000000"),
+          classes: "",
+          icon: "",
         },
         {
-          id: 'change',
+          id: "change",
           value: change24DPI,
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'value_in_usd',
-          value: '$' + numeral(assetDPI).format("0,0.00"),
-          classes: '',
-          icon: ''
-        }
-      ]
+          id: "value_in_usd",
+          value: "$" + numeral(assetDPI).format("0,0.00"),
+          classes: "",
+          icon: "",
+        },
+      ],
     },
     {
       id: 2,
       cells: [
         {
-          id: 'token_name',
-          value: 'Index',
-          classes: '',
-          icon: ''
+          id: "token_name",
+          value: "Index",
+          classes: "",
+          icon: "",
         },
         {
-          id: 'symbol',
-          value: 'INDEX',
-          classes: 'font-bold',
-          icon: ''
+          id: "symbol",
+          value: "INDEX",
+          classes: "font-bold",
+          icon: "",
         },
         {
-          id: 'quantity',
+          id: "quantity",
           value: numeral(totalBalanceIndexCoop).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'token_price',
-          value: '$' + numeral(indexCoopPrice).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          id: "token_price",
+          value: "$" + numeral(indexCoopPrice).format("0,0.000000"),
+          classes: "",
+          icon: "",
         },
         {
-          id: 'change',
+          id: "change",
           value: change24IndexCoop,
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'value_in_usd',
-          value: '$' + numeral(assetIndexBalance).format("0,0.00"),
-          classes: '',
-          icon: ''
-        }
-      ]
+          id: "value_in_usd",
+          value: "$" + numeral(assetIndexBalance).format("0,0.00"),
+          classes: "",
+          icon: "",
+        },
+      ],
     },
     {
       id: 3,
       cells: [
         {
-          id: 'token_name',
-          value: 'UMA Voting Token',
-          classes: '',
-          icon: ''
+          id: "token_name",
+          value: "UMA Voting Token",
+          classes: "",
+          icon: "",
         },
         {
-          id: 'symbol',
-          value: 'UMA',
-          classes: 'font-bold',
-          icon: ''
+          id: "symbol",
+          value: "UMA",
+          classes: "font-bold",
+          icon: "",
         },
         {
-          id: 'quantity',
+          id: "quantity",
           value: numeral(totalUMAValue).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'token_price',
-          value: '$' + numeral(umaPrice).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          id: "token_price",
+          value: "$" + numeral(umaPrice).format("0,0.000000"),
+          classes: "",
+          icon: "",
         },
         {
-          id: 'change',
+          id: "change",
           value: change24UMA,
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'value_in_usd',
-          value: '$' + numeral(assetUMA).format("0,0.00"),
-          classes: '',
-          icon: ''
-        }
-      ]
+          id: "value_in_usd",
+          value: "$" + numeral(assetUMA).format("0,0.00"),
+          classes: "",
+          icon: "",
+        },
+      ],
     },
     {
       id: 4,
       cells: [
         {
-          id: 'token_name',
-          value: 'Wrapped Ether',
-          classes: '',
-          icon: ''
+          id: "token_name",
+          value: "Wrapped Ether",
+          classes: "",
+          icon: "",
         },
         {
-          id: 'symbol',
-          value: 'WETH',
-          classes: 'font-bold',
-          icon: ''
+          id: "symbol",
+          value: "WETH",
+          classes: "font-bold",
+          icon: "",
         },
         {
-          id: 'quantity',
+          id: "quantity",
           value: numeral(totalWETHValue).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'token_price',
-          value: '$' + numeral(wethPrice).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          id: "token_price",
+          value: "$" + numeral(wethPrice).format("0,0.000000"),
+          classes: "",
+          icon: "",
         },
         {
-          id: 'change',
+          id: "change",
           value: change24WETH,
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'value_in_usd',
-          value: '$' + numeral(assetWETH).format("0,0.00"),
-          classes: '',
-          icon: ''
-        }
-      ]
+          id: "value_in_usd",
+          value: "$" + numeral(assetWETH).format("0,0.00"),
+          classes: "",
+          icon: "",
+        },
+      ],
     },
     {
       id: 5,
       cells: [
         {
-          id: 'token_name',
-          value: 'yearn Curve',
-          classes: '',
-          icon: ''
+          id: "token_name",
+          value: "yearn Curve",
+          classes: "",
+          icon: "",
         },
         {
-          id: 'symbol',
-          value: 'yyDAI+',
-          classes: 'font-bold',
-          icon: ''
+          id: "symbol",
+          value: "yyDAI+",
+          classes: "font-bold",
+          icon: "",
         },
         {
-          id: 'quantity',
+          id: "quantity",
           value: numeral(totalYUsdValue).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'token_price',
-          value: '$' + numeral(yusdPrice).format("0,0.000000"),
-          classes: '',
-          icon: ''
+          id: "token_price",
+          value: "$" + numeral(yusdPrice).format("0,0.000000"),
+          classes: "",
+          icon: "",
         },
         {
-          id: 'change',
+          id: "change",
           value: change24YUSD,
-          classes: '',
-          icon: ''
+          classes: "",
+          icon: "",
         },
         {
-          id: 'value_in_usd',
-          value: '$' + numeral(assetYUSD).format("0,0.00"),
-          classes: '',
-          icon: ''
-        }
-      ]
+          id: "value_in_usd",
+          value: "$" + numeral(assetYUSD).format("0,0.00"),
+          classes: "",
+          icon: "",
+        },
+      ],
     },
   ];
 
-  return (
-    <YamTable columns={columns} rows={rows} />
-  );
+  return <YamTable columns={columns} rows={rows} />;
 };
 
 export default AssetsList;
