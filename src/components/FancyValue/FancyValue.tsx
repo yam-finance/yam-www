@@ -36,14 +36,13 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
 
   const DisplayHint = useMemo(() => {
     if (hint) {
-      let isNum : boolean;
+      let isNum: boolean;
       //if hint means price Change
-      if(hint.charAt(hint.length-1)=='%'){
+      if (hint.charAt(hint.length - 1) == "%") {
         isNum = true;
       }
       //hint means normal info
-      else
-      {
+      else {
         isNum = false;
       }
       console.log(isNum);
@@ -57,7 +56,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
             type="light"
             effect="solid"
             className="tooltip"
-            textColor={isNum? (hint?.substr(0, 1) == "-" ? 'red' : 'green') :labelColor}
+            textColor={isNum ? (hint?.substr(0, 1) == "-" ? "red" : "green") : labelColor}
             borderColor={borderColor}
             backgroundColor={backgroundColor}
             border={true}
@@ -118,7 +117,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
 interface ValueHintProps {
   darkMode?: boolean;
   hint?: string;
-  isNumber?:boolean;
+  isNumber?: boolean;
 }
 
 const DisplayFancyValue = styled.div`
@@ -143,11 +142,11 @@ const ValueHint = styled.span<ValueHintProps>`
   top: -8px;
   right: -8px;
   background: #ae0e463b;
-  color: ${(props) => (props.isNumber? (props.hint?.substr(0, 1) == "-" ? 'red' : 'green') : props.theme.colors.primary.main)};
+  color: ${(props) => (props.isNumber ? (props.hint?.substr(0, 1) == "-" ? "red" : "green") : props.theme.colors.primary.main)};
   line-height: 16px;
   font-weight: bold;
   font-size: 12px;
-  border: 2px solid ${(props) => (props.isNumber? (props.hint?.substr(0, 1) == "-" ? 'red' : 'green') : props.theme.colors.primary.main)};
+  border: 2px solid ${(props) => (props.isNumber ? (props.hint?.substr(0, 1) == "-" ? "red" : "green") : props.theme.colors.primary.main)};
   border-radius: 100px;
   padding: 0px 5px 1px 5px;
   opacity: 0.4;
