@@ -905,3 +905,38 @@ export const getYamPrice = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.current_price.usd;
 };
+
+export const getUMAPrice = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/uma");
+  return data.market_data.current_price.usd;
+};
+
+export const getWETH = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/weth");
+  return data;
+};
+
+export const getYUSD = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yvault-lp-ycurve");
+  return data;
+};
+
+export const getDPI = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/defipulse-index");
+  return data;
+};
+
+export const getINDEXCOOP = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/index-cooperative");
+  return data;
+};
+
+export const getSUSHI = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/sushi");
+  return data;
+};
+
+export const getUMA = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/uma");
+  return data;
+};

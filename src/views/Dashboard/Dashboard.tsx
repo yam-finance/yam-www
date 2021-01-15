@@ -6,6 +6,7 @@ import PageHeader from "components/PageHeader";
 import styled from "styled-components";
 import Charts from "./components/Charts";
 import TopCards from "./components/TopCards";
+import AssetsList from "./components/AssetsList";
 
 const Dashboard: React.FC = () => {
   return (
@@ -15,6 +16,8 @@ const Dashboard: React.FC = () => {
         <TopCards />
         <Spacer />
         <Charts />
+        <Spacer />
+        <AssetsList />
       </Container>
     </Page>
   );

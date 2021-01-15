@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, INDEX } from "constants/tokenAddresses";
+import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, INDEX, UMA as UMAAddress } from "constants/tokenAddresses";
 
 import usePrices from "hooks/usePrices";
 import useTokenBalance from "hooks/useTokenBalance";
@@ -16,6 +16,7 @@ const useTreasury = () => {
   const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress);
   const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress);
   const totalWETHValue = useTokenBalance(treasuryAddress, WETH);
+  const totalUMAValue = useTokenBalance(treasuryAddress, UMAAddress);
   const [totalIndexLPValue, setTotalIndexLPValue] = useState<number>(0);
   const [rewardsIndexCoop, setRewardsIndexCoop] = useState<number>(0);
   const [totalBalanceValueIndexCoop, setTotalBalanceValueIndexCoop] = useState<number>(0);
@@ -26,7 +27,7 @@ const useTreasury = () => {
   const totalBalanceIndexCoop = useTokenBalance(treasuryAddress, INDEX) || 0;
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const fetchValues = useCallback(async () => {
-    if(!yam) {
+    if (!yam) {
       return;
     }
 
@@ -40,11 +41,11 @@ const useTreasury = () => {
     setTotalBalanceValueIndexCoop(totalBalanceValueIndexCoop);
     setTotalLpRewardsValueIndexCoop(totalLpRewardsValueIndexCoop);
 
-    const wethPrice = await getWETHPrice() || 0;
-    const dpiPrice = await getDPIPrice() || 0;
+    const wethPrice = (await getWETHPrice()) || 0;
+    const dpiPrice = (await getDPIPrice()) || 0;
     const totalIndexLPValue = 2929 * dpiPrice + 640 * wethPrice;
     setTotalIndexLPValue(totalIndexLPValue);
-    
+
     const rewardsSushi = (await getSushiRewards(yam)) || 0;
     const totalSushi = rewardsSushi * sushiPrice;
     setRewardsSushi(totalSushi);
@@ -55,7 +56,6 @@ const useTreasury = () => {
     // let refreshInterval = setInterval(() => fetchValues(), 100000);
     // return () => clearInterval(refreshInterval);
   }, [yam, totalBalanceIndexCoop, setRewardsIndexCoop, setRewardsSushi]);
-
 
   const totalIndexCoop = totalBalanceValueIndexCoop + totalLpRewardsValueIndexCoop;
   const totalSushi = rewardsSushi;
@@ -70,6 +70,7 @@ const useTreasury = () => {
     totalDPIValue,
     totalWETHValue,
     totalIndexLPValue,
+    totalUMAValue,
     yamBalance,
     yUsdBalance,
 
