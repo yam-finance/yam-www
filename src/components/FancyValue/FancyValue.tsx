@@ -19,7 +19,7 @@ interface FancyValueProps {
 }
 
 const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip }) => {
-  const { darkMode, colors} = useTheme();
+  const { darkMode, colors } = useTheme();
 
   let labelColor: string;
   let borderColor: string;
@@ -34,12 +34,11 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
     backgroundColor = colors.grey[400];
   }
 
-
-//self defined theme price change +
-const customTheme = {
-  main: "green", //price change +
-  negetive:"red" // price change -
-};
+  //self defined theme price change +
+  const customTheme = {
+    main: "green", //price change +
+    negetive: "red", // price change -
+  };
 
   const DisplayHint = useMemo(() => {
     if (hint) {
@@ -114,10 +113,8 @@ const customTheme = {
 
 interface ValueHintProps {
   darkMode?: boolean;
-  hint?:string;
+  hint?: string;
 }
-
-
 
 const DisplayFancyValue = styled.div`
   position: relative;
@@ -141,11 +138,11 @@ const ValueHint = styled.span<ValueHintProps>`
   top: -8px;
   right: -8px;
   background: #ae0e463b;
-  color: ${(props) => props.hint?.substr(0,1) == '+'? props.theme.main :props.theme.negetive};
+  color: ${(props) => (props.hint?.substr(0, 1) == "+" ? props.theme.main : props.theme.negetive)};
   line-height: 16px;
   font-weight: bold;
   font-size: 12px;
-  border: 2px solid  ${(props) => props.hint?.substr(0,1) == '+'? props.theme.main :props.theme.negetive};
+  border: 2px solid ${(props) => (props.hint?.substr(0, 1) == "+" ? props.theme.main : props.theme.negetive)};
   border-radius: 100px;
   padding: 0px 5px 1px 5px;
   opacity: 0.4;

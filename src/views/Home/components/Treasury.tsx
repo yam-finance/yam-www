@@ -42,7 +42,6 @@ const Treasury: React.FC = () => {
   const yamValue = typeof yamBalance !== "undefined" ? numeral(yamBalance).format("0.00a") : "--";
   const yUsdValue = typeof yUsdBalance !== "undefined" ? numeral(yUsdBalance).format("0.00a") : "--";
 
-
   return (
     <Card>
       <CardTitle text="Treasury Overview" />

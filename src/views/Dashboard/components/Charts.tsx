@@ -142,7 +142,7 @@ const Charts: React.FC = () => {
         DPI: DPIBalance * dpiPrice,
         WETH: totalWETHValue * wethPrice,
         INDEXLP: 2929 * dpiPrice + 640 * wethPrice,
-        INDEX: (indexCoopLPRewards * indexPrice) + (totalBalanceIndexCoop * indexPrice),
+        INDEX: indexCoopLPRewards * indexPrice + totalBalanceIndexCoop * indexPrice,
         Sushi: SushiRewards * sushiPrice,
       },
     ];
@@ -234,7 +234,7 @@ const Charts: React.FC = () => {
         y: reservesHistory[i].Sushi,
       });
     }
-    
+
     // // on DPI purchase
     // reserves.push({
     //   // x: 1603739830,
@@ -374,7 +374,6 @@ const Charts: React.FC = () => {
         data: reservesINDEX ? reservesINDEX.slice(reservesINDEX.length - (defaultRange + 6)) : [],
       },
     ];
-
 
     let theme;
     let labelColor;
@@ -530,14 +529,7 @@ const Charts: React.FC = () => {
         <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
       </>
     );
-  }, [
-    status,
-    unlockModalIsOpen,
-    handleDismissUnlockModal,
-    handleUnlockWalletClick,
-    optsReserves,
-    seriesReserves,
-  ]);
+  }, [status, unlockModalIsOpen, handleDismissUnlockModal, handleUnlockWalletClick, optsReserves, seriesReserves]);
 
   return <>{DisplayCharts}</>;
 };
