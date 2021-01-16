@@ -49,7 +49,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
             className="tooltip"
             textColor={isNum ? (hint?.substr(0, 1) == "-" ? "red" : "green") : labelColor}
             borderColor={isNum ? (hint?.substr(0, 1) == "-" ? "red" : "green") : borderColor}
-            backgroundColor={isNum ? (hint?.substr(0, 1) == "-" ?  "#ff00003b" : "#0080003b") :backgroundColor}
+            backgroundColor={isNum ? (hint?.substr(0, 1) == "-" ? "#ff00003b" : "#0080003b") : backgroundColor}
             border={true}
           />
         </>
