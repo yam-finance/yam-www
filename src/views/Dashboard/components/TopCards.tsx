@@ -120,6 +120,7 @@ const TopCards: React.FC = () => {
               value={col[0][0].value}
               hint={col[0][0].hint}
               tooltip={col[0][0].tooltip}
+              isNum = {true}
             />
           </CardContent>
         </Card>
