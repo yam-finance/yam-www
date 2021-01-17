@@ -11,15 +11,11 @@ import styled from "styled-components";
 
 import {
   getDPIPrice,
-  getWETH,
-  getDPI,
-  getUMA,
-  getINDEXCOOP,
-  getYUSD,
   getWETHPrice,
   getYUSDPrice,
   getUMAPrice,
   getINDEXCOOPPrice,
+  getValue
 } from "yam-sdk/utils";
 import useTreasury from "hooks/useTreasury";
 import { useWallet } from "use-wallet";
@@ -39,11 +35,11 @@ const AssetsList: React.FC = () => {
   const { status } = useWallet();
 
   const fetchOnce = useCallback(async () => {
-    const wethValues = await getWETH();
-    const dpiValues = await getDPI();
-    const umaValues = await getUMA();
-    const yusdValues = await getYUSD();
-    const indexCoopValues = await getINDEXCOOP();
+    const wethValues = await getValue('weth');
+    const dpiValues = await getValue('defipulse-index');
+    const umaValues = await getValue('uma');
+    const yusdValues = await getValue('yvault-lp-ycurve');
+    const indexCoopValues = await getValue('index-cooperative');
 
     const yusdPrice = await getYUSDPrice();
     const dpiPrice = await getDPIPrice();
