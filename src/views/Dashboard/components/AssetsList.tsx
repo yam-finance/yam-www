@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import numeral from "numeral";
-import { Box, Card, CardContent, Spacer } from "react-neu";
+import { Card, CardContent, Spacer, CardTitle, Surface, Separator } from "react-neu";
 
-import FancyValue from "components/FancyValue";
-import YamTable from "components/YamTable";
+import { AssetEntry, StyledAssetContentInner } from "./Asset";
+
+import SeparatorGrid from "./SeparatorWithCSS";
+import Box from "./BoxWithDisplay";
+import styled from "styled-components";
 import useYam from "hooks/useYam";
-import { bnToDec } from "utils";
 
 import {
   getCurrentPrice,
@@ -117,242 +119,167 @@ const AssetsList: React.FC = () => {
   const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP + assetIndex + totalSushi + assetUMA;
   const treasuryValue = typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--";
 
-  const columns = [
+  const assets = [
     {
-      id: "token_name",
-      title: "Token Name",
+      name: "DefiPulse Index",
+      index: "DPI",
+      quantity: numeral(totalDPIValue).format("0,0.000000"),
+      price: "$" + numeral(dpiPrice).format("0,0.000000"),
+      change: change24DPI,
+      value: "$" + numeral(assetDPI).format("0,0.00"),
     },
     {
-      id: "symbol",
-      title: "Symbol",
+      name: "Index",
+      index: "INDEX",
+      quantity: numeral(totalBalanceIndexCoop).format("0,0.000000"),
+      price: "$" + numeral(indexCoopPrice).format("0,0.000000"),
+      change: change24IndexCoop,
+      value: "$" + numeral(assetIndexBalance).format("0,0.00"),
     },
     {
-      id: "quantity",
-      title: "Quantity",
+      name: "UMA Voting Token",
+      index: "UMA",
+      quantity: numeral(totalUMAValue).format("0,0.000000"),
+      price: "$" + numeral(umaPrice).format("0,0.000000"),
+      change: change24UMA,
+      value: "$" + numeral(assetUMA).format("0,0.00"),
     },
     {
-      id: "token_price",
-      title: "Token Price($)",
+      name: "Wrapped Ether",
+      index: "WETH",
+      quantity: numeral(totalWETHValue).format("0,0.000000"),
+      price: "$" + numeral(wethPrice).format("0,0.000000"),
+      change: change24WETH,
+      value: "$" + numeral(assetWETH).format("0,0.00"),
     },
     {
-      id: "change",
-      title: "Change (24h)",
-    },
-    {
-      id: "value_in_usd",
-      title: "Value in USD($)",
-    },
-  ];
-
-  const rows = [
-    {
-      id: 1,
-      cells: [
-        {
-          id: "token_name",
-          value: "DefiPulse Index",
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "symbol",
-          value: "DPI",
-          classes: "font-bold",
-          icon: "",
-        },
-        {
-          id: "quantity",
-          value: numeral(totalDPIValue).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "token_price",
-          value: "$" + numeral(dpiPrice).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "change",
-          value: change24DPI,
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "value_in_usd",
-          value: "$" + numeral(assetDPI).format("0,0.00"),
-          classes: "",
-          icon: "",
-        },
-      ],
-    },
-    {
-      id: 2,
-      cells: [
-        {
-          id: "token_name",
-          value: "Index",
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "symbol",
-          value: "INDEX",
-          classes: "font-bold",
-          icon: "",
-        },
-        {
-          id: "quantity",
-          value: numeral(totalBalanceIndexCoop).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "token_price",
-          value: "$" + numeral(indexCoopPrice).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "change",
-          value: change24IndexCoop,
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "value_in_usd",
-          value: "$" + numeral(assetIndexBalance).format("0,0.00"),
-          classes: "",
-          icon: "",
-        },
-      ],
-    },
-    {
-      id: 3,
-      cells: [
-        {
-          id: "token_name",
-          value: "UMA Voting Token",
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "symbol",
-          value: "UMA",
-          classes: "font-bold",
-          icon: "",
-        },
-        {
-          id: "quantity",
-          value: numeral(totalUMAValue).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "token_price",
-          value: "$" + numeral(umaPrice).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "change",
-          value: change24UMA,
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "value_in_usd",
-          value: "$" + numeral(assetUMA).format("0,0.00"),
-          classes: "",
-          icon: "",
-        },
-      ],
-    },
-    {
-      id: 4,
-      cells: [
-        {
-          id: "token_name",
-          value: "Wrapped Ether",
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "symbol",
-          value: "WETH",
-          classes: "font-bold",
-          icon: "",
-        },
-        {
-          id: "quantity",
-          value: numeral(totalWETHValue).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "token_price",
-          value: "$" + numeral(wethPrice).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "change",
-          value: change24WETH,
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "value_in_usd",
-          value: "$" + numeral(assetWETH).format("0,0.00"),
-          classes: "",
-          icon: "",
-        },
-      ],
-    },
-    {
-      id: 5,
-      cells: [
-        {
-          id: "token_name",
-          value: "yearn Curve",
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "symbol",
-          value: "yyDAI+",
-          classes: "font-bold",
-          icon: "",
-        },
-        {
-          id: "quantity",
-          value: numeral(totalYUsdValue).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "token_price",
-          value: "$" + numeral(yusdPrice).format("0,0.000000"),
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "change",
-          value: change24YUSD,
-          classes: "",
-          icon: "",
-        },
-        {
-          id: "value_in_usd",
-          value: "$" + numeral(assetYUSD).format("0,0.00"),
-          classes: "",
-          icon: "",
-        },
-      ],
+      name: "yearn Curve",
+      index: "yyDAI+",
+      quantity: numeral(totalYUsdValue).format("0,0.000000"),
+      price: "$" + numeral(yusdPrice).format("0,0.000000"),
+      change: change24YUSD,
+      value: "$" + numeral(assetYUSD).format("0,0.00"),
     },
   ];
 
-  return <YamTable columns={columns} rows={rows} />;
+  return (
+    <>
+      <Spacer size="lg" />
+      <Card>
+        <CardTitle text="💰 Treasury Assets" />
+        <Spacer size="sm" />
+        <CardContent>
+          <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+            <StyledAssetContentInner>
+              <StyledTokenNameMain>Token Name</StyledTokenNameMain>
+              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
+              <StyledSymbolMain>Symbol</StyledSymbolMain>
+              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+              <StyledQuantityMain>Quantity</StyledQuantityMain>
+              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
+              <StyledPriceMain>Token Price($)</StyledPriceMain>
+              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
+              <StyledChangeMain>Change(24h)</StyledChangeMain>
+              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
+              <StyledValueMain>Value in USD($)</StyledValueMain>
+            </StyledAssetContentInner>
+          </Box>
+          <Spacer size="sm" />
+          {assets && (
+            <Surface>
+              {assets.map((asset, i) => {
+                if (i === 0) {
+                  return <AssetEntry key={'asset' + i} prop={asset} />;
+                } else {
+                  return [<Separator />, <AssetEntry key={'asset' + i} prop={asset}/>];
+                }
+              })}
+            </Surface>
+          )}
+        </CardContent>
+      </Card>
+    </>
+  )
 };
+
+export const StyledTokenNameMain = styled.span`
+  font-weight: 600;
+  display: grid;
+  grid-area: name;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`;
+
+export const StyledSymbolMain = styled.span`
+  font-weight: 600;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: grid;
+  grid-area: symbol;
+  justify-content: center;
+  min-width: 67px;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`;
+
+export const StyledQuantityMain = styled.span`
+  font-weight: 600;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: grid;
+  grid-area: quantity;
+  justify-content: center;
+  min-width: 67px;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`;
+
+export const StyledPriceMain = styled.span`
+  font-weight: 600;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: grid;
+  grid-area: price;
+  justify-content: center;
+  min-width: 67px;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`;
+
+export const StyledChangeMain = styled.span`
+  font-weight: 600;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: grid;
+  grid-area: change;
+  justify-content: center;
+  min-width: 67px;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`;
+
+export const StyledValueMain = styled.span`
+  font-weight: 600;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: grid;
+  grid-area: value;
+  justify-content: center;
+  min-width: 67px;
+  @media (max-width: 768px) {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+`;
 
 export default AssetsList;

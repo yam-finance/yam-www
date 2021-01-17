@@ -64,7 +64,7 @@ const Governance: React.FC = () => {
             {proposals && (
               <Surface>
                 {proposals.map((prop, i) => {
-                  if (i == 0) {
+                  if (i === 0) {
                     return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
                   } else {
                     return [<Separator />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
