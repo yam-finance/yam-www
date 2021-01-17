@@ -189,9 +189,9 @@ const AssetsList: React.FC = () => {
             <Surface>
               {assets.map((asset, i) => {
                 if (i === 0) {
-                  return <AssetEntry key={'asset' + i} prop={asset} />;
+                  return <AssetEntry key={"asset" + i} prop={asset} />;
                 } else {
-                  return [<Separator />, <AssetEntry key={'asset' + i} prop={asset}/>];
+                  return [<Separator />, <AssetEntry key={"asset" + i} prop={asset} />];
                 }
               })}
             </Surface>
@@ -199,7 +199,7 @@ const AssetsList: React.FC = () => {
         </CardContent>
       </Card>
     </>
-  )
+  );
 };
 
 export const StyledTokenNameMain = styled.span`

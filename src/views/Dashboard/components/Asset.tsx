@@ -10,7 +10,6 @@ interface ProposalProps {
 }
 
 export const AssetEntry: React.FC<ProposalProps> = ({ prop }) => {
-
   return (
     <Fragment>
       <Box display="grid" alignItems="center" padding={4} row>
