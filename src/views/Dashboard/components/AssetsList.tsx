@@ -8,12 +8,9 @@ import { AssetEntry, StyledAssetContentInner } from "./Asset";
 import SeparatorGrid from "./SeparatorWithCSS";
 import Box from "./BoxWithDisplay";
 import styled from "styled-components";
-import useYam from "hooks/useYam";
 
 import {
-  getCurrentPrice,
   getDPIPrice,
-  getYam,
   getWETH,
   getDPI,
   getUMA,
@@ -21,37 +18,25 @@ import {
   getYUSD,
   getWETHPrice,
   getYUSDPrice,
-  getYamPrice,
   getUMAPrice,
   getINDEXCOOPPrice,
-  getIndexCoopLP,
 } from "yam-sdk/utils";
-import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
 import { useWallet } from "use-wallet";
 
 const AssetsList: React.FC = () => {
-  const yam = useYam();
   const {
     totalYUsdValue,
     totalDPIValue,
     totalWETHValue,
-    totalIndexLPValue,
-    totalIndexCoop,
-    totalSushi,
     totalUMAValue,
     totalBalanceIndexCoop,
   } = useTreasury();
-  const [currentPrice, setCurrentPrice] = useState<string>();
-  const [scalingFactor, setScalingFactor] = useState<string>();
-  const [maxSupply, setMaxSupply] = useState<string>();
-  const [marketCap, setMarketCap] = useState<string>();
   const [yusdPrice, setYUSDPrice] = useState<number>();
   const [dpiPrice, setDPIPrice] = useState<number>();
   const [wethPrice, setWETHPrice] = useState<number>();
   const [umaPrice, setUMAPrice] = useState<number>();
   const [indexCoopPrice, setIndexCoopPrice] = useState<number>();
-  const [change24, setChange24] = useState<string>();
   const [change24WETH, setChange24WETH] = useState<string>();
   const [change24DPI, setChange24DPI] = useState<string>();
   const [change24UMA, setChange24UMA] = useState<string>();
@@ -60,7 +45,6 @@ const AssetsList: React.FC = () => {
   const { status } = useWallet();
 
   const fetchOnce = useCallback(async () => {
-    const yamValues = await getYam();
     const wethValues = await getWETH();
     const dpiValues = await getDPI();
     const umaValues = await getUMA();
@@ -72,9 +56,6 @@ const AssetsList: React.FC = () => {
     const wethPrice = await getWETHPrice();
     const umaPrice = await getUMAPrice();
     const indexCoopPrice = await getINDEXCOOPPrice();
-    setMaxSupply(numeral(yamValues.market_data.max_supply).format("0.00a"));
-    setMarketCap(numeral(yamValues.market_data.market_cap.usd).format("0.00a"));
-    setChange24(numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
     setChange24WETH(numeral(wethValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
     setChange24DPI(numeral(dpiValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
     setChange24UMA(numeral(umaValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
@@ -85,78 +66,58 @@ const AssetsList: React.FC = () => {
     setWETHPrice(wethPrice);
     setUMAPrice(umaPrice);
     setIndexCoopPrice(indexCoopPrice);
-  }, [setMaxSupply, setMarketCap, setYUSDPrice, setDPIPrice, setChange24]);
+  }, [setYUSDPrice, setDPIPrice, setWETHPrice, setIndexCoopPrice, setUMAPrice]);
 
   useEffect(() => {
     if (status === "connected") {
       fetchOnce();
     }
-  }, [status]);
-
-  const fetchStats = useCallback(async () => {
-    if (status === "connected") {
-      if (!yam) return;
-      // const price = await getCurrentPrice(yam);
-      // setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
-      const price = await getYamPrice();
-      setCurrentPrice(numeral(price).format("0.00a"));
-    }
-  }, [yam, setCurrentPrice, setScalingFactor]);
-
-  useEffect(() => {
-    fetchStats();
-    let refreshInterval = setInterval(fetchStats, 10000);
-    return () => clearInterval(refreshInterval);
-  }, [fetchStats, yam]);
+  }, [fetchOnce, status]);
 
   const assetYUSD = (totalYUsdValue || 0) * (yusdPrice || 0);
   const assetDPI = (totalDPIValue || 0) * (dpiPrice || 0);
   const assetWETH = (totalWETHValue || 0) * (wethPrice || 0);
   const assetUMA = (totalUMAValue || 0) * (umaPrice || 0);
-  const assetIndex = totalIndexCoop ? totalIndexCoop : 0;
-  const assetIndexLP = totalIndexLPValue ? totalIndexLPValue : 0;
   const assetIndexBalance = (totalBalanceIndexCoop || 0) * (indexCoopPrice || 0);
-  const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP + assetIndex + totalSushi + assetUMA;
-  const treasuryValue = typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--";
 
   const assets = [
     {
       name: "DefiPulse Index",
       index: "DPI",
-      quantity: numeral(totalDPIValue).format("0,0.000000"),
-      price: "$" + numeral(dpiPrice).format("0,0.000000"),
+      quantity: numeral(totalDPIValue).format("0,0.00"),
+      price: "$" + numeral(dpiPrice).format("0,0.00"),
       change: change24DPI,
       value: "$" + numeral(assetDPI).format("0,0.00"),
     },
     {
       name: "Index",
       index: "INDEX",
-      quantity: numeral(totalBalanceIndexCoop).format("0,0.000000"),
-      price: "$" + numeral(indexCoopPrice).format("0,0.000000"),
+      quantity: numeral(totalBalanceIndexCoop).format("0,0.00"),
+      price: "$" + numeral(indexCoopPrice).format("0,0.00"),
       change: change24IndexCoop,
       value: "$" + numeral(assetIndexBalance).format("0,0.00"),
     },
     {
       name: "UMA Voting Token",
       index: "UMA",
-      quantity: numeral(totalUMAValue).format("0,0.000000"),
-      price: "$" + numeral(umaPrice).format("0,0.000000"),
+      quantity: numeral(totalUMAValue).format("0,0.00"),
+      price: "$" + numeral(umaPrice).format("0,0.00"),
       change: change24UMA,
       value: "$" + numeral(assetUMA).format("0,0.00"),
     },
     {
       name: "Wrapped Ether",
       index: "WETH",
-      quantity: numeral(totalWETHValue).format("0,0.000000"),
-      price: "$" + numeral(wethPrice).format("0,0.000000"),
+      quantity: numeral(totalWETHValue).format("0,0.00"),
+      price: "$" + numeral(wethPrice).format("0,0.00"),
       change: change24WETH,
       value: "$" + numeral(assetWETH).format("0,0.00"),
     },
     {
       name: "yearn Curve",
       index: "yyDAI+",
-      quantity: numeral(totalYUsdValue).format("0,0.000000"),
-      price: "$" + numeral(yusdPrice).format("0,0.000000"),
+      quantity: numeral(totalYUsdValue).format("0,0.00"),
+      price: "$" + numeral(yusdPrice).format("0,0.00"),
       change: change24YUSD,
       value: "$" + numeral(assetYUSD).format("0,0.00"),
     },
@@ -191,7 +152,7 @@ const AssetsList: React.FC = () => {
                 if (i === 0) {
                   return <AssetEntry key={"asset" + i} prop={asset} />;
                 } else {
-                  return [<Separator />, <AssetEntry key={"asset" + i} prop={asset} />];
+                  return [<Separator key={"seperator" + i}/>, <AssetEntry key={"asset" + i} prop={asset} />];
                 }
               })}
             </Surface>
