@@ -911,7 +911,7 @@ export const getUMAPrice = async () => {
   return data.market_data.current_price.usd;
 };
 
-export const getValue = async(asset_name) => {
+export const getValue = async (asset_name) => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/" + asset_name);
   return data;
 };
