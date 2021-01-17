@@ -25,13 +25,7 @@ import useTreasury from "hooks/useTreasury";
 import { useWallet } from "use-wallet";
 
 const AssetsList: React.FC = () => {
-  const {
-    totalYUsdValue,
-    totalDPIValue,
-    totalWETHValue,
-    totalUMAValue,
-    totalBalanceIndexCoop,
-  } = useTreasury();
+  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalUMAValue, totalBalanceIndexCoop } = useTreasury();
   const [yusdPrice, setYUSDPrice] = useState<number>();
   const [dpiPrice, setDPIPrice] = useState<number>();
   const [wethPrice, setWETHPrice] = useState<number>();
@@ -152,7 +146,7 @@ const AssetsList: React.FC = () => {
                 if (i === 0) {
                   return <AssetEntry key={"asset" + i} prop={asset} />;
                 } else {
-                  return [<Separator key={"seperator" + i}/>, <AssetEntry key={"asset" + i} prop={asset} />];
+                  return [<Separator key={"seperator" + i} />, <AssetEntry key={"asset" + i} prop={asset} />];
                 }
               })}
             </Surface>
