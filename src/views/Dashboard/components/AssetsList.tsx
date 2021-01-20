@@ -5,8 +5,8 @@ import { Card, CardContent, Spacer, CardTitle, Surface, Separator } from "react-
 
 import { AssetEntry, StyledAssetContentInner } from "./Asset";
 
-import SeparatorGrid from "./SeparatorWithCSS";
-import Box from "./BoxWithDisplay";
+import SeparatorGrid from "components/SeparatorWithCSS";
+import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
 
 import { getDPIPrice, getWETHPrice, getYUSDPrice, getUMAPrice, getINDEXCOOPPrice, getValue } from "yam-sdk/utils";
@@ -69,7 +69,7 @@ const AssetsList: React.FC = () => {
       index: "DPI",
       quantity: numeral(totalDPIValue).format("0,0.00"),
       price: "$" + numeral(dpiPrice).format("0,0.00"),
-      change: change24DPI,
+      change: change24DPI ? change24DPI : "0.00%",
       value: "$" + numeral(assetDPI).format("0,0.00"),
     },
     {
@@ -77,7 +77,7 @@ const AssetsList: React.FC = () => {
       index: "INDEX",
       quantity: numeral(totalBalanceIndexCoop).format("0,0.00"),
       price: "$" + numeral(indexCoopPrice).format("0,0.00"),
-      change: change24IndexCoop,
+      change: change24IndexCoop ? change24IndexCoop : "0.00%",
       value: "$" + numeral(assetIndexBalance).format("0,0.00"),
     },
     {
@@ -85,7 +85,7 @@ const AssetsList: React.FC = () => {
       index: "UMA",
       quantity: numeral(totalUMAValue).format("0,0.00"),
       price: "$" + numeral(umaPrice).format("0,0.00"),
-      change: change24UMA,
+      change: change24UMA ? change24UMA : "0.00%",
       value: "$" + numeral(assetUMA).format("0,0.00"),
     },
     {
@@ -93,7 +93,7 @@ const AssetsList: React.FC = () => {
       index: "WETH",
       quantity: numeral(totalWETHValue).format("0,0.00"),
       price: "$" + numeral(wethPrice).format("0,0.00"),
-      change: change24WETH,
+      change: change24WETH ? change24WETH : "0.00%",
       value: "$" + numeral(assetWETH).format("0,0.00"),
     },
     {
@@ -101,7 +101,7 @@ const AssetsList: React.FC = () => {
       index: "yyDAI+",
       quantity: numeral(totalYUsdValue).format("0,0.00"),
       price: "$" + numeral(yusdPrice).format("0,0.00"),
-      change: change24YUSD,
+      change: change24YUSD ? change24YUSD : "0.00%",
       value: "$" + numeral(assetYUSD).format("0,0.00"),
     },
   ];

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState, Fragment } from "react";
 
-import SeparatorGrid from "./SeparatorWithCSS";
-import Box from "./BoxWithDisplay";
+import SeparatorGrid from "components/SeparatorWithCSS";
+import Box from "components/BoxWithDisplay";
 
 import styled from "styled-components";
 
