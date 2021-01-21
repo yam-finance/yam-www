@@ -70,6 +70,9 @@ const App: React.FC = () => {
           <Route exact path="/contributor">
             <Contributor />
           </Route>
+          <Route exact path="/contributors">
+            <Contributor />
+          </Route>
         </Switch>
       </Providers>
     </Router>
