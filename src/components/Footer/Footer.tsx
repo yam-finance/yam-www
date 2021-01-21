@@ -8,8 +8,8 @@ const Footer: React.FC = () => (
     <StyledFooterInner>
       <Nav />
     </StyledFooterInner>
-    <br />
     <StyledFooterDarkModeSwitch>
+      <br />
       <DarkModeSwitch />
       <br />
     </StyledFooterDarkModeSwitch>

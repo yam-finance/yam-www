@@ -26,7 +26,7 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
             href={unilink ? unilink + address : "https://uniswap.exchange/swap?inputCurrency=" + address}
             target="_blank"
             color="white"
-            overflow={true}
+            overflow="true"
           >
             <StyledUniswapButton darkMode={darkMode}>
               <StyledSpan>
@@ -99,7 +99,7 @@ interface StyledSpanProps {
 interface StyledLinkProps {
   darkMode?: boolean;
   color?: string;
-  overflow?: boolean;
+  overflow?: string;
 }
 
 interface StyledCopyProps {
@@ -166,7 +166,7 @@ const StyledName = styled.span<StyledSpanProps>`
 const StyledLink = styled.a<StyledLinkProps>`
   cursor: pointer;
   color: ${(props) => (props.color ? props.color : "white")};
-  overflow: ${(props) => (props.overflow ? null : "hidden")};
+  overflow: ${(props) => (props.overflow === "true" ? "initial" : "hidden")};
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
