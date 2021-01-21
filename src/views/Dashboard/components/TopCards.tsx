@@ -80,7 +80,7 @@ const TopCards: React.FC = () => {
     [
       {
         icon: "💲",
-        label: "Current price TWAP",
+        label: "Current price",
         value: currentPrice ? `${currentPrice} USDC` : "--",
         hint: change24 ? change24 : "-",
         tooltip: "24h Change",
