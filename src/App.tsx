@@ -24,6 +24,7 @@ import Dashboard from "views/Dashboard";
 import Governance from "views/Governance";
 import Addresses from "views/Addresses";
 import Umbrella from "views/Landings/Umbrella";
+import Contributor from "views/Contributor";
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -66,9 +67,9 @@ const App: React.FC = () => {
           <Route exact path="/umbrella">
             <Umbrella />
           </Route>
-          <StyledLink href="https://yam.gitbook.io/yam/" target="_blank">
-            Docs
-          </StyledLink>
+          <Route exact path="/contributor">
+            <Contributor />
+          </Route>
         </Switch>
       </Providers>
     </Router>
