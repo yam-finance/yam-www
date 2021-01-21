@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useWallet } from "use-wallet";
+import { contributors } from "utils/misc";
 
 const Nav: React.FC = () => {
+  const { account, status } = useWallet();
+
+  const CheckContributor = useMemo(() => {
+    if (status === "connected" && contributors.hasOwnProperty(account?.toLowerCase())) {
+      return <StyledRouterLinkColor exact to="/contributor">Contributor</StyledRouterLinkColor>;
+    }
+  }, [status, account]);
+
   return (
     <StyledNav>
       <StyledRouterLink exact to="/addresses">
@@ -29,6 +39,7 @@ const Nav: React.FC = () => {
       <StyledLink href="https://docs.yam.finance/" target="_blank">
         FAQ
       </StyledLink>
+      {CheckContributor}
     </StyledNav>
   );
 };
@@ -56,6 +67,10 @@ const StyledRouterLink = styled(NavLink)`
   &:hover {
     color: ${(props) => props.theme.colors.grey[600]};
   }
+`;
+
+const StyledRouterLinkColor = styled(StyledRouterLink)`
+  color: ${(props) => props.theme.colors.primary.main};
 `;
 
 export default Nav;

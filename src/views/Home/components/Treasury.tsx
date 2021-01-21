@@ -58,9 +58,15 @@ const Treasury: React.FC = () => {
       <CardActions>
         <Box row justifyContent="center">
           <Button
+            href="https://exchange.sushiswapclassic.org/#/?inputCurrency=0x0aacfbec6a24756c20d41914f2caba817c0d8521"
+            text="Buy Yam"
+            variant="secondary"
+          />
+          <Spacer />
+          <Button
             href="https://etherscan.io/tokenholdings?a=0x97990B693835da58A281636296D2Bf02787DEa17"
             text="View on Etherscan"
-            variant="secondary"
+            variant="tertiary"
           />
         </Box>
       </CardActions>
