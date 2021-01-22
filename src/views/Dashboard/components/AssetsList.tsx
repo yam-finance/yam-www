@@ -108,7 +108,7 @@ const AssetsList: React.FC = () => {
 
   return (
     <>
-      <Spacer size="lg" />
+      <Spacer size="sm" />
       <Card>
         <CardTitle text="💰 Treasury Assets" />
         <Spacer size="sm" />
