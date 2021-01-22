@@ -16,11 +16,11 @@ interface FancyValueProps {
   wrap?: boolean;
   hint?: string;
   tooltip?: string;
+  isNum?: boolean;
 }
 
-const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip }) => {
+const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip, isNum }) => {
   const { darkMode, colors } = useTheme();
-
   let labelColor: string;
   let borderColor: string;
   let backgroundColor: string;
@@ -38,7 +38,7 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
     if (hint) {
       return (
         <>
-          <ValueHint data-tip={tooltip} darkMode={darkMode}>
+          <ValueHint data-tip={tooltip} darkMode={darkMode} hint={hint} isNumber={isNum}>
             <div>{hint}</div>
           </ValueHint>
           <ReactTooltip
@@ -46,9 +46,9 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
             type="light"
             effect="solid"
             className="tooltip"
-            textColor={labelColor}
-            borderColor={borderColor}
-            backgroundColor={backgroundColor}
+            textColor={isNum ? (hint?.substr(0, 1) == "-" ? "red" : "green") : labelColor}
+            borderColor={isNum ? (hint?.substr(0, 1) == "-" ? "red" : "green") : borderColor}
+            backgroundColor={isNum ? (hint?.substr(0, 1) == "-" ? "#ff00003b" : "#0080003b") : backgroundColor}
             border={true}
           />
         </>
@@ -106,6 +106,8 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
 
 interface ValueHintProps {
   darkMode?: boolean;
+  hint?: string;
+  isNumber?: boolean;
 }
 
 const DisplayFancyValue = styled.div`
@@ -129,12 +131,12 @@ const ValueHint = styled.span<ValueHintProps>`
   position: absolute;
   top: -8px;
   right: -8px;
-  background: #ae0e463b;
-  color: ${(props) => props.theme.colors.primary.main};
+  background: ${(props) => (props.isNumber ? (props.hint?.substr(0, 1) == "-" ? "#ff00003b" : "#0080003b") : "#ae0e463b")};
+  color: ${(props) => (props.isNumber ? (props.hint?.substr(0, 1) == "-" ? "red" : "green") : props.theme.colors.primary.main)};
   line-height: 16px;
   font-weight: bold;
   font-size: 12px;
-  border: 2px solid ${(props) => props.theme.colors.primary.main};
+  border: 2px solid ${(props) => (props.isNumber ? (props.hint?.substr(0, 1) == "-" ? "red" : "green") : props.theme.colors.primary.main)};
   border-radius: 100px;
   padding: 0px 5px 1px 5px;
   opacity: 0.4;
