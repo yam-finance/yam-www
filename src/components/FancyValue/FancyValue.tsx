@@ -36,7 +36,6 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
 
   const DisplayHint = useMemo(() => {
     if (hint) {
-      //console.log(isNum);
       return (
         <>
           <ValueHint data-tip={tooltip} darkMode={darkMode} hint={hint} isNumber={isNum}>
