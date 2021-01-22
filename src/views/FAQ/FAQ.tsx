@@ -28,7 +28,6 @@ const FAQ: React.FC = () => {
       <Container>
         <Card>
           <CardContent>
-
             <Question active={activeSlug === "yam-protocol"} question="What is the YAM protocol?" slug="yam-protocol">
               <span>
                 YAM is a decentralized cryptocurrency that uses a rebasing mechanism to raise funds for a treasury managed by the community. The
@@ -38,20 +37,32 @@ const FAQ: React.FC = () => {
 
             <Question active={activeSlug === "yam-token"} question="What is YAM?" slug="yam-token">
               <span>
-                Yam is a community run Decentralized Autonomous Organization (DAO) innovating at the intersection of decentralized governance and programmable finance. YAM is the governance token for the YAM protocol. Using token voting, YAM holders have direct influence over the YAM treasury and direction of the protocol. Governance discussions take place on Discord and the <ExternalLink href="https://forum.yam.finance/">Yam Governance Forum</ExternalLink>.
+                Yam is a community run Decentralized Autonomous Organization (DAO) innovating at the intersection of decentralized governance and
+                programmable finance. YAM is the governance token for the YAM protocol. Using token voting, YAM holders have direct influence over the
+                YAM treasury and direction of the protocol. Governance discussions take place on Discord and the{" "}
+                <ExternalLink href="https://forum.yam.finance/">Yam Governance Forum</ExternalLink>.
               </span>
             </Question>
 
             <Question active={activeSlug === "treasury"} question="How does YAM have a treasury?" slug="treasury">
               <span>
-                Before the Yam community voted to disable the rebasing / elastic supply function, every positive rebase, the treasury mints 5% of the rebase amount and sells YAM to the YAM/ETH Sushiswap pool. The ETH acquired through this action is sent to the treasury which is managed by YAM holders. The current treasury value can be seen on yam.finance.
+                Before the Yam community voted to disable the rebasing / elastic supply function, every positive rebase, the treasury mints 5% of the
+                rebase amount and sells YAM to the YAM/ETH Sushiswap pool. The ETH acquired through this action is sent to the treasury which is
+                managed by YAM holders. The current treasury value can be seen on yam.finance.
               </span>
             </Question>
 
-            <Question active={activeSlug === "what-happened-to-rebase"} question="What happened with rebasing function of Yam?" slug="what-happened-to-rebase">
+            <Question
+              active={activeSlug === "what-happened-to-rebase"}
+              question="What happened with rebasing function of Yam?"
+              slug="what-happened-to-rebase"
+            >
               <span>
-                December 29th, 2020 the Yam community has voted to disable the rebasing / elastic supply function of Yam and the scaling factor of Yam has been fixed at 2.50.
-                Yam initially as an experiment has evolved into a launch pad for DeFi projects supported by a community governed treasury. Yam is currently developing multiple projects including Umbrella (Smart Contract Insurance), Degenerative.Finance (Synthetics) and Yam DAO Set (Set Protocol DAO Investment fund). All of which will generate revenue for Yam. For most current projects, please visit us in discord.
+                December 29th, 2020 the Yam community has voted to disable the rebasing / elastic supply function of Yam and the scaling factor of Yam
+                has been fixed at 2.50. Yam initially as an experiment has evolved into a launch pad for DeFi projects supported by a community
+                governed treasury. Yam is currently developing multiple projects including Umbrella (Smart Contract Insurance), Degenerative.Finance
+                (Synthetics) and Yam DAO Set (Set Protocol DAO Investment fund). All of which will generate revenue for Yam. For most current
+                projects, please visit us in discord.
               </span>
             </Question>
 
@@ -69,7 +80,6 @@ const FAQ: React.FC = () => {
                 Currently check the <RouterLink to="/farm">Farm</RouterLink> page to know if you are able to farm.
               </span>
             </Question>
-
           </CardContent>
         </Card>
       </Container>
