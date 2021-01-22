@@ -43,6 +43,7 @@ import SushiswapPoolJson from "../clean_build/contracts/SushiswapPool.json";
 import SushiBarXSushiJson from "../clean_build/contracts/SushiBarXSushi.json";
 import SushiTokenJson from "../clean_build/contracts/SushiToken.json";
 import IndexStakingRewardsJson from "../clean_build/contracts/IndexStakingRewards.json";
+import VestingPoolJson from "../clean_build/contracts/VestingPool.json";
 
 import MigratorJson from "../clean_build/contracts/Migrator.json";
 import YAMv3Json from "../clean_build/contracts/YAMDelegatorV3.json";
@@ -77,6 +78,7 @@ export class Contracts {
     this.SushibarXSushi = new this.web3.eth.Contract(SushiBarXSushiJson.abi);
     this.SushiToken = new this.web3.eth.Contract(SushiTokenJson.abi);
     this.IndexStakingRewards = new this.web3.eth.Contract(IndexStakingRewardsJson.abi);
+    this.VestingPool = new this.web3.eth.Contract(VestingPoolJson.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
     this.link_pool = new this.web3.eth.Contract(LINKPoolJson.abi);
@@ -149,6 +151,7 @@ export class Contracts {
       { contract: this.SushibarXSushi, json: SushiBarXSushiJson },
       { contract: this.SushiToken, json: SushiTokenJson },
       { contract: this.IndexStakingRewards, json: IndexStakingRewardsJson },
+      { contract: this.VestingPool, json: VestingPoolJson },
     ];
 
     contracts.forEach((contract) => this.setContractProvider(contract.contract, contract.json, provider, networkId));
@@ -177,6 +180,7 @@ export class Contracts {
     this.SushibarXSushi.options.address = "0x8798249c2e607446efb7ad49ec89dd1865ff4272";
     this.SushiToken.options.address = "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2";
     this.IndexStakingRewards.options.address = "0xb93b505ed567982e2b6756177ddd23ab5745f309";
+    this.VestingPool.options.address = "0xDCf613db29E4d0B35e7e15e93BF6cc6315eB0b82";
 
     this.pools = [
       {
@@ -236,6 +240,7 @@ export class Contracts {
     this.names[this.SushibarXSushi.options.address] = "Sushi Bar XSushi";
     this.names[this.SushiToken.options.address] = "Sushi Token";
     this.names[this.IndexStakingRewards.options.address] = "INDEX Coop Staking Rewards";
+    this.names[this.VestingPool.options.address] = "Vesting Pool";
   }
 
   setDefaultAccount(account) {
