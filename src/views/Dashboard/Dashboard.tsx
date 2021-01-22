@@ -15,7 +15,6 @@ const Dashboard: React.FC = () => {
       <Container size="lg">
         <TopCards />
         <Charts />
-        <Spacer />
         <AssetsList />
       </Container>
     </Page>
