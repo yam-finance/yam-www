@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useMemo, useState } from "react";
-import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button } from "react-neu";
+import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button, Input } from "react-neu";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
@@ -9,8 +9,10 @@ import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import SeparatorGrid from "./components/SeparatorWithCSS";
 import Box from "./components/BoxWithDisplay";
 import styled from "styled-components";
+import DelegateForm from "./components/DelegateForm";
 
 import useGovernance from "hooks/useGovernance";
+import useFarming from "hooks/useFarming";
 import { useWallet } from "use-wallet";
 
 import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProposalContentInner } from "./components/Proposal";
@@ -18,7 +20,18 @@ import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProp
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
 const Governance: React.FC = () => {
-  const { proposals, isRegistered, onVote, onRegister } = useGovernance();
+  const {
+    proposals,
+    isRegistered,
+    onVote,
+    onRegister,
+    onDelegateStaked,
+    onDelegateUnstaked,
+    onUndelegate
+  } = useGovernance();
+
+  const { stakedBalanceYAMETH } = useFarming();
+  const isStaked = !!stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0;
 
   const [astronaut, setAstronaut] = useState("👨‍🚀");
 
@@ -46,7 +59,20 @@ const Governance: React.FC = () => {
           <Button full text="Off-chain Voting" href="https://snapshot.page/#/yam" variant="tertiary" />
           <Spacer />
         </Split>
-        <Spacer size="lg" />
+        <Spacer size="md" />
+        <Card>
+          <CardTitle text="Delegate Vote" />
+          <CardContent>
+            <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+              <DelegateForm
+                isStaked={isStaked}
+                onDelegateStaked={onDelegateStaked}
+                onDelegateUnstaked={onDelegateUnstaked}
+                onUndelegate={onUndelegate} />
+            </Box>
+          </CardContent>
+        </Card>
+        <Spacer size="md" />
         <Card>
           <CardTitle text="On-chain Proposals" />
           <Spacer size="sm" />

@@ -4,7 +4,16 @@ import BigNumber from "bignumber.js";
 import { useWallet } from "use-wallet";
 
 import useYam from "hooks/useYam";
-import { getProposals, vote, didDelegate, getVotingPowers, getCurrentVotingPower, delegate } from "yam-sdk/utils";
+import {
+  getProposals,
+  vote,
+  didDelegate,
+  getVotingPowers,
+  getCurrentVotingPower,
+  delegate,
+  delegateStaked,
+  delegateUnstaked
+} from "yam-sdk/utils";
 
 import Context from "./Context";
 
@@ -79,6 +88,28 @@ const Provider: React.FC = ({ children }) => {
     setIsRegistering(false);
   }, [account, setIsRegistering, yam]);
 
+  const handleDelegateStaked = useCallback(
+    async (delegatee : string) => {
+      if (!account || !yam) return;
+      await delegateStaked(yam, account, delegatee, (txHash: string) => null);
+    },
+    [account, yam]
+  );
+
+  const handleDelegateUnstaked = useCallback(
+    async (delegatee : string) => {
+      if (!account || !yam) return;
+      await delegateUnstaked(yam, account, delegatee, (txHash: string) => null);
+    },
+    [account, yam]
+  );
+
+  // TODO are two functions necessary?
+  const handleRemoveDelegation = useCallback(async () => {
+    if (!account || !yam) return;
+    await delegate(yam, account, (txHash: string) => null);
+  }, [account, yam]);
+
   useEffect(() => {
     if (yam) {
       fetchProposals();
@@ -104,6 +135,9 @@ const Provider: React.FC = ({ children }) => {
         isVoting,
         onRegister: handleRegisterClick,
         onVote: handleVote,
+        onDelegateStaked: handleDelegateStaked,
+        onDelegateUnstaked: handleDelegateUnstaked,
+        onUndelegate: handleRemoveDelegation
       }}
     >
       {children}

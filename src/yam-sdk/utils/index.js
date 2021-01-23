@@ -272,20 +272,57 @@ export const getStats = async (yam) => {
 };
 
 export const delegate = async (yam, account, onTxHash) => {
-  return yam.contracts.yamV3.methods.delegate(account).send({ from: account, gas: 150000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Delegate error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(yam.web3.eth, txHash);
-    if (!status) {
-      console.log("Delegate transaction failed.");
-      return false;
-    }
-    return true;
-  });
+  console.log('REMOVE DELEGATION CALLED')
+//return yam.contracts.yamV3.methods.delegate(account).send({ from: account, gas: 150000 }, async (error, txHash) => {
+//  if (error) {
+//    onTxHash && onTxHash("");
+//    console.log("Delegate error", error);
+//    return false;
+//  }
+//  onTxHash && onTxHash(txHash);
+//  const status = await waitTransaction(yam.web3.eth, txHash);
+//  if (!status) {
+//    console.log("Delegate transaction failed.");
+//    return false;
+//  }
+//  return true;
+//});
+};
+
+export const delegateUnstaked = async (yam, account, delegatee, onTxHash) => {
+  console.log('DELEGATE UNSTAKED CALLED')
+//return yam.contracts.yamV3.methods.delegate(delegatee).send({ from: account, gas: 150000 }, async (error, txHash) => {
+//  if (error) {
+//    onTxHash && onTxHash("");
+//    console.log("Delegate error", error);
+//    return false;
+//  }
+//  onTxHash && onTxHash(txHash);
+//  const status = await waitTransaction(yam.web3.eth, txHash);
+//  if (!status) {
+//    console.log("Delegate transaction failed.");
+//    return false;
+//  }
+//  return true;
+//});
+};
+
+export const delegateStaked = async (yam, account, delegatee, onTxHash) => {
+  console.log('DELEGATE STAKED CALLED')
+//return yam.contracts.voting_eth_pool.methods.delegate(delegatee).send({ from: account, gas: 150000 }, async (error, txHash) => {
+//  if (error) {
+//    onTxHash && onTxHash("");
+//    console.log("Delegate error", error);
+//    return false;
+//  }
+//  onTxHash && onTxHash(txHash);
+//  const status = await waitTransaction(yam.web3.eth, txHash);
+//  if (!status) {
+//    console.log("Delegate transaction failed.");
+//    return false;
+//  }
+//  return true;
+//});
 };
 
 export const didDelegate = async (yam, account) => {
