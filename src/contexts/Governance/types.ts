@@ -34,5 +34,5 @@ export interface ContextValues {
   onRegister: () => void;
   onDelegateStaked: (delegatee: string) => void;
   onDelegateUnstaked: (delegatee: string) => void;
-  onUndelegate: () => void;
+  onRemoveDelegation: () => void;
 }

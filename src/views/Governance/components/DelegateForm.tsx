@@ -1,40 +1,42 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button, Input } from "react-neu";
 import Split from "components/Split";
+import { validateAddress } from 'utils';
 
 interface DelegateFormProps {
   isStaked: boolean,
   onDelegateUnstaked: (delegatee: string) => void,
   onDelegateStaked: (delegatee: string) => void,
-  onUndelegate: () => void
+  onRemoveDelegation: () => void
 }
 
-const DelegateForm: React.FC<DelegateFormProps> = ({ isStaked, onDelegateStaked, onDelegateUnstaked, onUndelegate }) => {
+const DelegateForm: React.FC<DelegateFormProps> = ({ isStaked, onDelegateStaked, onDelegateUnstaked, onRemoveDelegation }) => {
   const [delegatee, setDelegatee] = useState('');
 
-  const delegateStaked = () => {
-    console.log('delegate staked called!!')
-    onDelegateStaked(delegatee);
-  }
+  const handleOnDelegateStaked = useCallback(
+    () => onDelegateStaked(delegatee),
+    [onDelegateStaked, delegatee]
+  );
 
-  const delegateUnstaked = () => {
-    console.log('delegate unstaked called!!')
-    onDelegateUnstaked(delegatee);
-  }
+  const handleOnDelegateUnstaked = useCallback(
+    () => onDelegateUnstaked(delegatee),
+    [onDelegateUnstaked, delegatee]
+  );
 
-  const undelegate = () => {
-    console.log('undelegate called!!')
-  }
+  const handleOnRemoveDelegation = useCallback(
+    () => onRemoveDelegation(),
+    [onRemoveDelegation]
+  );
 
-  const onChange = (e: any) => setDelegatee(e.target.value);
+  const onChange = (e: any): void => setDelegatee(e.target.value);
 
   return (
     <Fragment>
-      <Input onChange={onChange} placeholder="Delegate to..."></Input>
+      <Input onChange={onChange} placeholder=" Delegate to..."></Input>
       <Spacer />
       <Split>
-        <Button full text="Delegate" variant="tertiary" onClick={isStaked ? delegateStaked : delegateUnstaked} />
-        <Button full text="Remove Delegation" variant="tertiary" onClick={undelegate} />
+        <Button full text="Delegate" variant="tertiary" onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked} disabled={!validateAddress(delegatee)} />
+        <Button full text="Remove Delegation" variant="tertiary" onClick={handleOnRemoveDelegation} />
       </Split>
     </Fragment>
   )

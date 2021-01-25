@@ -290,6 +290,7 @@ export const delegate = async (yam, account, onTxHash) => {
 };
 
 export const delegateUnstaked = async (yam, account, delegatee, onTxHash) => {
+  console.log(`DELEGATEE IS ${delegatee}`);
   console.log('DELEGATE UNSTAKED CALLED')
 //return yam.contracts.yamV3.methods.delegate(delegatee).send({ from: account, gas: 150000 }, async (error, txHash) => {
 //  if (error) {
@@ -308,6 +309,7 @@ export const delegateUnstaked = async (yam, account, delegatee, onTxHash) => {
 };
 
 export const delegateStaked = async (yam, account, delegatee, onTxHash) => {
+  console.log(`DELEGATEE IS ${delegatee}`);
   console.log('DELEGATE STAKED CALLED')
 //return yam.contracts.voting_eth_pool.methods.delegate(delegatee).send({ from: account, gas: 150000 }, async (error, txHash) => {
 //  if (error) {

@@ -137,7 +137,7 @@ const Provider: React.FC = ({ children }) => {
         onVote: handleVote,
         onDelegateStaked: handleDelegateStaked,
         onDelegateUnstaked: handleDelegateUnstaked,
-        onUndelegate: handleRemoveDelegation
+        onRemoveDelegation: handleRemoveDelegation
       }}
     >
       {children}

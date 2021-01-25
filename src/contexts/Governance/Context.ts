@@ -7,7 +7,7 @@ const Context = createContext<ContextValues>({
   onRegister: () => {},
   onDelegateStaked: () => {},
   onDelegateUnstaked: () => {},
-  onUndelegate: () => {}
+  onRemoveDelegation: () => {}
 });
 
 export default Context;

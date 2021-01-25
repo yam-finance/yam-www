@@ -20,6 +20,7 @@ import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProp
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
 const Governance: React.FC = () => {
+  const { account } = useWallet();
   const {
     proposals,
     isRegistered,
@@ -27,9 +28,8 @@ const Governance: React.FC = () => {
     onRegister,
     onDelegateStaked,
     onDelegateUnstaked,
-    onUndelegate
+    onRemoveDelegation,
   } = useGovernance();
-
   const { stakedBalanceYAMETH } = useFarming();
   const isStaked = !!stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0;
 
@@ -60,18 +60,20 @@ const Governance: React.FC = () => {
           <Spacer />
         </Split>
         <Spacer size="md" />
-        <Card>
-          <CardTitle text="Delegate Vote" />
-          <CardContent>
-            <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-              <DelegateForm
-                isStaked={isStaked}
-                onDelegateStaked={onDelegateStaked}
-                onDelegateUnstaked={onDelegateUnstaked}
-                onUndelegate={onUndelegate} />
-            </Box>
-          </CardContent>
-        </Card>
+        {account && (
+          <Card>
+            <CardTitle text="Delegate Vote" />
+            <CardContent>
+              <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+                <DelegateForm
+                  isStaked={isStaked}
+                  onDelegateStaked={onDelegateStaked}
+                  onDelegateUnstaked={onDelegateUnstaked}
+                  onRemoveDelegation={onRemoveDelegation} />
+              </Box>
+            </CardContent>
+          </Card>
+        )}
         <Spacer size="md" />
         <Card>
           <CardTitle text="On-chain Proposals" />
