@@ -933,3 +933,13 @@ export const getYamPrice = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.current_price.usd;
 };
+
+export const getUMAPrice = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/uma");
+  return data.market_data.current_price.usd;
+};
+
+export const getValue = async (asset_name) => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/" + asset_name);
+  return data;
+};
