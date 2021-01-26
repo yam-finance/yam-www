@@ -28,11 +28,6 @@ const DelegateForm: React.FC<DelegateFormProps> = ({
     [onDelegateUnstaked, delegatee]
   );
 
-  const handleOnRemoveDelegation = useCallback(
-    () => onRemoveDelegation(),
-    [onRemoveDelegation]
-  );
-
   const onChange = (e: any): void => setDelegatee(e.target.value);
 
   return (
@@ -46,7 +41,7 @@ const DelegateForm: React.FC<DelegateFormProps> = ({
           onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked}
           disabled={!validateAddress(delegatee)}
         />
-        <Button full text="Remove Delegation" variant="tertiary" onClick={handleOnRemoveDelegation} />
+        <Button full text="Remove Delegation" variant="tertiary" onClick={onRemoveDelegation} />
       </Split>
     </Fragment>
   );
