@@ -12,7 +12,6 @@ import {
   getCurrentVotingPower,
   delegate,
   delegateStaked,
-  delegateUnstaked
 } from "yam-sdk/utils";
 
 import Context from "./Context";
@@ -84,31 +83,47 @@ const Provider: React.FC = ({ children }) => {
 
   const handleRegisterClick = useCallback(async () => {
     if (!account || !yam) return;
-    await delegate(yam, account, (txHash: string) => setIsRegistering(true));
+    await delegate(yam, account, account, (txHash: string) => setIsRegistering(true));
     setIsRegistering(false);
   }, [account, setIsRegistering, yam]);
 
-  const handleDelegateStaked = useCallback(
-    async (delegatee : string) => {
-      if (!account || !yam) return;
-      await delegateStaked(yam, account, delegatee, (txHash: string) => null);
-    },
-    [account, yam]
-  );
-
   const handleDelegateUnstaked = useCallback(
-    async (delegatee : string) => {
+    async (delegatee: string) => {
       if (!account || !yam) return;
-      await delegateUnstaked(yam, account, delegatee, (txHash: string) => null);
+      try {
+        await delegate(yam, account, delegatee, (txHash: string) => null);
+      }
+      catch(err) {
+        console.error(err.message);
+      }
     },
     [account, yam]
   );
 
-  // TODO are two functions necessary?
-  const handleRemoveDelegation = useCallback(async () => {
-    if (!account || !yam) return;
-    await delegate(yam, account, (txHash: string) => null);
-  }, [account, yam]);
+  const handleDelegateStaked = useCallback(
+    async (delegatee: string) => {
+      if (!account || !yam) return;
+      try {
+        await delegateStaked(yam, account, delegatee, (txHash: string) => null);
+      }
+      catch(err) {
+        console.error(err.message);
+      }
+    },
+    [account, yam]
+  );
+  
+  const handleRemoveDelegation = useCallback(
+    async () => {
+      if (!account || !yam) return;
+      try {
+        await delegate(yam, account, account, (txHash: string) => null);
+      }
+      catch(err) {
+        console.error(err.message);
+      }
+    }, [account, yam]
+  );
 
   useEffect(() => {
     if (yam) {

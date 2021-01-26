@@ -21,7 +21,7 @@ const RegisterVoteNotice: React.FC = () => {
 
   const handleRegisterClick = useCallback(async () => {
     if (!account || !yam) return;
-    await delegate(yam, account, (txHash: string) => setIsRegistering(!!txHash));
+    await delegate(yam, account, account, (txHash: string) => setIsRegistering(!!txHash));
     setIsRegistering(false);
   }, [account, setIsRegistering, yam]);
 
