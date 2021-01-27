@@ -306,7 +306,11 @@ export const delegateStaked = async (yam, account, delegatee, onTxHash) => {
 };
 
 export const didDelegate = async (yam, account) => {
-  return (await yam.contracts.yamV3.methods.delegates(account).call()) === account;
+  const [unstaked, staked] = await Promise.allSettled([
+    yam.contracts.yamV3.methods.delegates(account).call(),
+    yam.contracts.voting_eth_pool.methods.delegates(account).call()
+  ]);
+  return unstaked === account || staked === account;
 };
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {

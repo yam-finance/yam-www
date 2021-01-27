@@ -1,17 +1,20 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { Spacer, Button, Input } from "react-neu";
 import Split from "components/Split";
 import { validateAddress } from 'utils';
+import styled from "styled-components";
 
 interface DelegateFormProps {
   isStaked: boolean,
+  isDelegated: boolean,
   onDelegateUnstaked: (delegatee: string) => void,
   onDelegateStaked: (delegatee: string) => void,
-  onRemoveDelegation: () => void
+  onRemoveDelegation: () => void,
 }
 
-const DelegateForm: React.FC<DelegateFormProps> = ({
+export const DelegateForm: React.FC<DelegateFormProps> = ({
   isStaked,
+  isDelegated,
   onDelegateStaked,
   onDelegateUnstaked,
   onRemoveDelegation
@@ -35,13 +38,19 @@ const DelegateForm: React.FC<DelegateFormProps> = ({
       <Input onChange={onChange} placeholder="Delegate to..."></Input>
       <Spacer />
       <Split>
-        <Button full
+        <Button
+          full
           text="Delegate"
           variant="tertiary" 
           onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked}
           disabled={!validateAddress(delegatee)}
         />
-        <Button full text="Remove Delegation" variant="tertiary" onClick={onRemoveDelegation} />
+        <Button
+          full
+          text="Remove Delegation"
+          variant="tertiary"
+          onClick={onRemoveDelegation}
+          disabled={!isDelegated}/>
       </Split>
     </Fragment>
   );

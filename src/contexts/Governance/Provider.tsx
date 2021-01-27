@@ -24,9 +24,12 @@ const Provider: React.FC = ({ children }) => {
 
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
+  const [isDelegated, setIsDelegated] = useState(false);
   const [proposals, setProposals] = useState<Proposal[]>();
   const [votingPowers, setVotingPowers] = useState<ProposalVotingPower[]>();
   const [currentPower, setCurrentPower] = useState<number>();
+  const [isRegistered, setIsRegistered] = useState<boolean>();
+  const [isRegistering, setIsRegistering] = useState<boolean>();
 
   const fetchProposals = useCallback(async () => {
     if (!yam) return;
@@ -69,8 +72,6 @@ const Provider: React.FC = ({ children }) => {
     [account, setConfirmTxModalIsOpen, setIsVoting, yam]
   );
 
-  const [isRegistered, setIsRegistered] = useState<boolean>();
-  const [isRegistering, setIsRegistering] = useState<boolean>();
   const fetchIsRegistered = useCallback(async () => {
     if (!account || !yam) return;
     const registered = await didDelegate(yam, account);
@@ -91,7 +92,9 @@ const Provider: React.FC = ({ children }) => {
     async (delegatee: string) => {
       if (!account || !yam) return;
       try {
-        await delegate(yam, account, delegatee, (txHash: string) => null);
+        await delegate(yam, account, delegatee, (txHash: string) => {
+          if(txHash !== "") setIsDelegated(true);
+        });
       }
       catch(err) {
         console.error(err.message);
@@ -104,7 +107,9 @@ const Provider: React.FC = ({ children }) => {
     async (delegatee: string) => {
       if (!account || !yam) return;
       try {
-        await delegateStaked(yam, account, delegatee, (txHash: string) => null);
+        await delegateStaked(yam, account, delegatee, (txHash: string) => {
+          if(txHash !== "") setIsDelegated(true);
+        });
       }
       catch(err) {
         console.error(err.message);
@@ -117,12 +122,23 @@ const Provider: React.FC = ({ children }) => {
     async () => {
       if (!account || !yam) return;
       try {
-        await delegate(yam, account, account, (txHash: string) => null);
+        await delegate(yam, account, account, (txHash: string) => {
+          if(txHash !== "") setIsDelegated(false);
+        });
       }
       catch(err) {
         console.error(err.message);
       }
     }, [account, yam]
+  );
+
+  useEffect(
+    () => {
+      if (yam) {
+        (async () => setIsDelegated(await didDelegate(yam, account)))();
+      }
+    },
+    [account, yam]
   );
 
   useEffect(() => {
@@ -148,11 +164,12 @@ const Provider: React.FC = ({ children }) => {
         isRegistered,
         isRegistering,
         isVoting,
+        isDelegated,
         onRegister: handleRegisterClick,
         onVote: handleVote,
         onDelegateStaked: handleDelegateStaked,
         onDelegateUnstaked: handleDelegateUnstaked,
-        onRemoveDelegation: handleRemoveDelegation
+        onRemoveDelegation: handleRemoveDelegation,
       }}
     >
       {children}
