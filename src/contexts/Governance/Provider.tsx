@@ -92,9 +92,8 @@ const Provider: React.FC = ({ children }) => {
     async (delegatee: string) => {
       if (!account || !yam) return;
       try {
-        await delegate(yam, account, delegatee, (txHash: string) => {
-          if(txHash !== "") setIsDelegated(true);
-        });
+        await delegate(yam, account, delegatee, (txHash: string) => null);
+        verifyDelegation();
       }
       catch(err) {
         console.error(err.message);
@@ -107,9 +106,8 @@ const Provider: React.FC = ({ children }) => {
     async (delegatee: string) => {
       if (!account || !yam) return;
       try {
-        await delegateStaked(yam, account, delegatee, (txHash: string) => {
-          if(txHash !== "") setIsDelegated(true);
-        });
+        await delegateStaked(yam, account, delegatee, (txHash: string) => null)
+        verifyDelegation();
       }
       catch(err) {
         console.error(err.message);
@@ -122,9 +120,8 @@ const Provider: React.FC = ({ children }) => {
     async () => {
       if (!account || !yam) return;
       try {
-        await delegate(yam, account, account, (txHash: string) => {
-          if(txHash !== "") setIsDelegated(false);
-        });
+        await delegate(yam, account, account, (txHash: string) => null);
+        verifyDelegation();
       }
       catch(err) {
         console.error(err.message);
@@ -132,11 +129,11 @@ const Provider: React.FC = ({ children }) => {
     }, [account, yam]
   );
 
+  const verifyDelegation = async () => setIsDelegated(await didDelegate(yam, account));
+
   useEffect(
     () => {
-      if (yam) {
-        (async () => setIsDelegated(await didDelegate(yam, account)))();
-      }
+      if(yam) verifyDelegation();
     },
     [account, yam]
   );

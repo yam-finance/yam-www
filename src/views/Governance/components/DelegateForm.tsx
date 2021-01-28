@@ -41,14 +41,14 @@ export const DelegateForm: React.FC<DelegateFormProps> = ({
         <Button
           full
           text="Delegate"
-          variant="tertiary" 
+          variant="secondary"
           onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked}
           disabled={!validateAddress(delegatee)}
         />
         <Button
           full
           text="Remove Delegation"
-          variant="tertiary"
+          variant="secondary"
           onClick={onRemoveDelegation}
           disabled={!isDelegated}/>
       </Split>
