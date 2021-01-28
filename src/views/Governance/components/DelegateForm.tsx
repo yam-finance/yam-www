@@ -41,7 +41,7 @@ export const DelegateForm: React.FC<DelegateFormProps> = ({
         <Button
           full
           text="Delegate"
-          variant="tertiary" 
+          variant="secondary" 
           onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked}
           disabled={!validateAddress(delegatee)}
         />
