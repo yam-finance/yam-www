@@ -305,13 +305,21 @@ export const delegateStaked = async (yam, account, delegatee, onTxHash) => {
   });
 };
 
-export const didDelegate = async (yam, account) => {
+export const delegatedTo = async(yam, account) => {
+  const emptyDelegation = '0x0000000000000000000000000000000000000000';
   const [unstaked, staked] = await Promise.allSettled([
     yam.contracts.yamV3.methods.delegates(account).call(),
     yam.contracts.voting_eth_pool.methods.delegates(account).call()
   ]);
-  return unstaked === account || staked === account;
-};
+
+  if(unstaked.value !== emptyDelegation) {
+    return unstaked.value
+  } else if(staked.value !== emptyDelegation) {
+    return staked.value
+  } else {
+    return emptyDelegation;
+  }
+}
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {
   return yam.contracts.gov3.methods.castVote(proposal, side).send({ from: account, gas: 180000 }, async (error, txHash) => {

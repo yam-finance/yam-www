@@ -7,11 +7,11 @@ import useYam from "hooks/useYam";
 import {
   getProposals,
   vote,
-  didDelegate,
   getVotingPowers,
   getCurrentVotingPower,
   delegate,
   delegateStaked,
+  delegatedTo,
 } from "yam-sdk/utils";
 
 import Context from "./Context";
@@ -74,8 +74,7 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchIsRegistered = useCallback(async () => {
     if (!account || !yam) return;
-    const registered = await didDelegate(yam, account);
-    setIsRegistered(registered);
+    setIsRegistered((await delegatedTo(yam, account)) === account);
   }, [account, setIsRegistered, yam]);
 
   useEffect(() => {
@@ -129,7 +128,11 @@ const Provider: React.FC = ({ children }) => {
     }, [account, yam]
   );
 
-  const verifyDelegation = async () => setIsDelegated(await didDelegate(yam, account));
+  const verifyDelegation = async () => {
+    const emptyDelegation = '0x0000000000000000000000000000000000000000';
+    const delegatedAccount = await delegatedTo(yam, account);
+    setIsDelegated(delegatedAccount !== emptyDelegation && delegatedAccount !== account);
+  }
 
   useEffect(
     () => {
