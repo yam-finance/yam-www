@@ -15,7 +15,8 @@ const useTreasury = () => {
   const yamBalance = useTokenBalance(treasuryAddress, yamV3Address);
   const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress);
   const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress);
-  const totalWETHValue = useTokenBalance(treasuryAddress, WETH);
+  const totalWETHTokenBalance = useTokenBalance(treasuryAddress, WETH);
+  const totalWETHValue = (totalWETHTokenBalance || 0) + 283;
   const totalUMAValue = useTokenBalance(treasuryAddress, UMAAddress);
   const [totalIndexLPValue, setTotalIndexLPValue] = useState<number>(0);
   const [rewardsIndexCoop, setRewardsIndexCoop] = useState<number>(0);
@@ -31,18 +32,18 @@ const useTreasury = () => {
       return;
     }
 
-    const indexCoopPrice = (await getINDEXCOOPPrice()) || 0;
-    const sushiPrice = (await getSUSHIPrice()) || 0;
+    const sushiPrice = await getSUSHIPrice() || 0;
+    const wethPrice = await getWETHPrice() || 0;
+    const dpiPrice = await getDPIPrice() || 0;
+    const indexCoopPrice = await getINDEXCOOPPrice() || 0;
+    const rewardsIndexCoop = await getIndexCoopLPRewards(yam) || 0;
 
-    const rewardsIndexCoop = (await getIndexCoopLPRewards(yam)) || 0;
     const totalBalanceValueIndexCoop = totalBalanceIndexCoop * indexCoopPrice;
     const totalLpRewardsValueIndexCoop = rewardsIndexCoop * indexCoopPrice;
     setRewardsIndexCoop(rewardsIndexCoop);
     setTotalBalanceValueIndexCoop(totalBalanceValueIndexCoop);
     setTotalLpRewardsValueIndexCoop(totalLpRewardsValueIndexCoop);
 
-    const wethPrice = (await getWETHPrice()) || 0;
-    const dpiPrice = (await getDPIPrice()) || 0;
     const totalIndexLPValue = 2929 * dpiPrice + 640 * wethPrice;
     setTotalIndexLPValue(totalIndexLPValue);
 
