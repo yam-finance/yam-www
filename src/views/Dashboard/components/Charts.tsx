@@ -136,6 +136,16 @@ const Charts: React.FC = () => {
         Sushi: SushiRewards * sushiPrice,
       },
       {
+        info: "Moved-Out Eth",
+        block: 11680240,
+        yUSD: 1.19 * 1896995,
+        DPI: 434 * 104,
+        WETH: (283 + 4.47) * 1258,
+        INDEXLP: 2929 * 104 + 640 * 480,
+        INDEX: 36 * 11.6,
+        Sushi: SushiRewards * sushiPrice,
+      },
+      {
         info: "present",
         block: currentBlock + 5000,
         yUSD: yusdPrice * totalYUsdValue,
