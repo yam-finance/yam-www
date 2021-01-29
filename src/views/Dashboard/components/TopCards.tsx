@@ -7,14 +7,7 @@ import FancyValue from "components/FancyValue";
 import useYam from "hooks/useYam";
 import { bnToDec } from "utils";
 
-import {
-  getCurrentPrice,
-  getDPIPrice,
-  getYam,
-  getWETHPrice,
-  getYUSDPrice,
-  getYamPrice,
-} from "yam-sdk/utils";
+import { getCurrentPrice, getDPIPrice, getYam, getWETHPrice, getYUSDPrice, getYamPrice } from "yam-sdk/utils";
 import Split from "components/Split";
 import useTreasury from "hooks/useTreasury";
 import { useWallet } from "use-wallet";
@@ -80,11 +73,11 @@ const TopCards: React.FC = () => {
     [
       {
         icon: "💲",
-        label: "Current price",
+        label: "Current price TWAP",
         value: currentPrice ? `${currentPrice} USDC` : "--",
         hint: change24 ? change24 : "-",
         tooltip: "24h Change",
-      }
+      },
     ],
     [
       {
@@ -93,7 +86,7 @@ const TopCards: React.FC = () => {
         value: maxSupply ? maxSupply : "--",
         hint: "",
         tooltip: "",
-      }
+      },
     ],
     [
       {
@@ -102,7 +95,7 @@ const TopCards: React.FC = () => {
         value: marketCap ? `$${marketCap}` : "--",
         hint: "",
         tooltip: "",
-      }
+      },
     ],
     [
       {
@@ -111,7 +104,7 @@ const TopCards: React.FC = () => {
         value: treasuryValue ? treasuryValue : "--",
         hint: "",
         tooltip: "",
-      }
+      },
     ],
   ];
 
@@ -127,6 +120,7 @@ const TopCards: React.FC = () => {
               value={col[0][0].value}
               hint={col[0][0].hint}
               tooltip={col[0][0].tooltip}
+              isNum={true}
             />
           </CardContent>
         </Card>

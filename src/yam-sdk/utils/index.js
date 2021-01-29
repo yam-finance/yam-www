@@ -825,6 +825,34 @@ export const getCurrentBlock = async (yam) => {
   }
 };
 
+export const getContributorVestingData = async (yam, contributor) => {
+  try {
+    let BASE = new BigNumber(10).pow(18);
+    let BASE24 = new BigNumber(10).pow(24);
+    const vestingDataAvailable = await yam.contracts.VestingPool.methods.claimable(contributor.id).call();
+    const vestingData = await yam.contracts.VestingPool.methods.streams(contributor.id).call();
+    const totalAmount = Number(new BigNumber(vestingData.totalAmount).dividedBy(BASE24).toString()) || 0;
+    const amountPaidOut = Number(new BigNumber(vestingData.amountPaidOut).dividedBy(BASE24).toString()) || 0;
+    const availableClaim = Number(new BigNumber(vestingDataAvailable).dividedBy(BASE24).toString()) || 0;
+    const result = {
+      totalClaimed: amountPaidOut * 2.5,
+      availableClaim: availableClaim * 2.5,
+      availableClaimOver: (totalAmount - amountPaidOut) * 2.5,
+      totalAmount,
+      amountPaidOut,
+    };
+    console.debug("result", result);
+    return result;
+  } catch (e) {
+    // console.log(e);
+  }
+};
+
+export const claimContributorVestedTokens = async (yam, account, contributor) => {
+  console.log("account, accountId", account, contributor)
+  return yam.contracts.VestingPool.methods.payout(contributor.id).send({ from: account, gas: 120000 });
+};
+
 const requestHttp = (url) => {
   return new Promise((resolve, reject) => {
     request(
@@ -904,4 +932,14 @@ export const getMaxSupply = async () => {
 export const getYamPrice = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.current_price.usd;
+};
+
+export const getUMAPrice = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/uma");
+  return data.market_data.current_price.usd;
+};
+
+export const getValue = async (asset_name) => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/" + asset_name);
+  return data;
 };

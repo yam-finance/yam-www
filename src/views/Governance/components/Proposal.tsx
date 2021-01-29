@@ -3,8 +3,8 @@ import React, { useCallback, useMemo, useState, Fragment } from "react";
 import BigNumber from "bignumber.js";
 import { Button, Notice, NoticeContent, NoticeIcon, Spacer, Surface } from "react-neu";
 
-import SeparatorGrid from "./SeparatorWithCSS";
-import Box from "./BoxWithDisplay";
+import SeparatorGrid from "components/SeparatorWithCSS";
+import Box from "components/BoxWithDisplay";
 
 import useGovernance from "hooks/useGovernance";
 

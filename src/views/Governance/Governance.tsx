@@ -6,8 +6,8 @@ import PageHeader from "components/PageHeader";
 import Split from "components/Split";
 
 import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
-import SeparatorGrid from "./components/SeparatorWithCSS";
-import Box from "./components/BoxWithDisplay";
+import SeparatorGrid from "components/SeparatorWithCSS";
+import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
 
 import useGovernance from "hooks/useGovernance";
@@ -64,7 +64,7 @@ const Governance: React.FC = () => {
             {proposals && (
               <Surface>
                 {proposals.map((prop, i) => {
-                  if (i == 0) {
+                  if (i === 0) {
                     return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
                   } else {
                     return [<Separator />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];

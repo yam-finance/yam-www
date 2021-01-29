@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, INDEX } from "constants/tokenAddresses";
+import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, INDEX, UMA as UMAAddress } from "constants/tokenAddresses";
 
 import usePrices from "hooks/usePrices";
 import useTokenBalance from "hooks/useTokenBalance";
@@ -17,6 +17,7 @@ const useTreasury = () => {
   const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress);
   const totalWETHTokenBalance = useTokenBalance(treasuryAddress, WETH);
   const totalWETHValue = (totalWETHTokenBalance || 0) + 283;
+  const totalUMAValue = useTokenBalance(treasuryAddress, UMAAddress);
   const [totalIndexLPValue, setTotalIndexLPValue] = useState<number>(0);
   const [rewardsIndexCoop, setRewardsIndexCoop] = useState<number>(0);
   const [totalBalanceValueIndexCoop, setTotalBalanceValueIndexCoop] = useState<number>(0);
@@ -57,7 +58,6 @@ const useTreasury = () => {
     // return () => clearInterval(refreshInterval);
   }, [yam, totalBalanceIndexCoop, setRewardsIndexCoop, setRewardsSushi]);
 
-
   const totalIndexCoop = totalBalanceValueIndexCoop + totalLpRewardsValueIndexCoop;
   const totalSushi = rewardsSushi;
 
@@ -71,6 +71,7 @@ const useTreasury = () => {
     totalDPIValue,
     totalWETHValue,
     totalIndexLPValue,
+    totalUMAValue,
     yamBalance,
     yUsdBalance,
 
