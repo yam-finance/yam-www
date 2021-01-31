@@ -8,12 +8,15 @@ import Split from "components/Split";
 import ClaimCard from "./components/ClaimCard";
 import MigrateCard from "./components/MigrateCard";
 import VestingNotice from "./components/VestingNotice";
+import EndingMigrationNotice from "./components/EndingMigrationNotice";
 
 const Migrate: React.FC = () => {
   return (
     <Page>
       <PageHeader icon="🦋" subtitle="This is the last time you'll need to migrate!" title="Migrate to V3" />
       <Container>
+        <EndingMigrationNotice />
+        <Spacer />
         <VestingNotice />
         <Spacer />
         <Split>

@@ -104,6 +104,10 @@ button {
   animation: buffermove 5s linear infinite;
 }
 
+.alert-color {
+  color: #f03a17;
+}
+
 @keyframes buffermove {
   0% {
     background-position: 0 0;
