@@ -50,7 +50,7 @@ const Treasury: React.FC = () => {
         <Split>
           <FancyValue icon="💰" label="Treasury value" value={treasuryValue} />
           <FancyValue icon="💸" label="yUSD in reserves" value={yUsdValue} />
-          <FancyValue icon="🍠" label="YAM in reserves" value={yamValue} />
+          {/* <FancyValue icon="🍠" label="YAM in reserves" value={yamValue} /> */}
         </Split>
         <Spacer />
       </CardContent>
