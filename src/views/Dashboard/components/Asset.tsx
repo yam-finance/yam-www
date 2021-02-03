@@ -14,7 +14,12 @@ export const AssetEntry: React.FC<ProposalProps> = ({ prop }) => {
     <Fragment>
       <Box display="grid" alignItems="center" padding={4} row>
         <StyledAssetContentInner>
-          <StyledTokenNameMain>{prop.name}</StyledTokenNameMain>
+          <StyledTokenNameMain>
+            <Box alignItems="center" row>
+              <img alt="token-icon" src={prop.icon} style={{ height: 24, marginRight: 10 }}></img>
+              {prop.name}
+            </Box>
+          </StyledTokenNameMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
           <StyledSymbolMain>{prop.index}</StyledSymbolMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
