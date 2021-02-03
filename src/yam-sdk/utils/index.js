@@ -668,7 +668,7 @@ export const delegatorRewards = async (yam, account) => {
 };
 
 export const migrateV3 = async (yam, account, onTxHash) => {
-  return await yam.contracts.migrator.methods.migrate().send({ from: account, gas: 200000 }, async (error, txHash) => {
+  return await yam.contracts.migrator.methods.migrate().send({ from: account, gas: 250000 }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
       console.log("Migration error", error);
