@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import Web3 from "web3";
 import { provider, TransactionReceipt } from "web3-core";
-import { AbiItem } from "web3-utils";
+import { AbiItem, isAddress } from "web3-utils";
 
 import ERC20ABI from "constants/abi/ERC20.json";
 
@@ -112,3 +112,5 @@ export const getTimestampDate = (obj: { ts: number; ap?: boolean }) => {
   const year = d.getFullYear().toString().substring(0, 2) + (obj.ap ? " " + getAMPM(d) : "");
   return (day < 9 ? "0" + day : day) + s + (month <= 9 ? "0" + month : month) + s + year;
 };
+
+export const validateAddress = (address: string) => isAddress(address);

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useWallet } from "use-wallet";
 
 import useYam from "hooks/useYam";
-import { delegate, didDelegate } from "yam-sdk/utils";
+import { delegate, delegatedTo } from "yam-sdk/utils";
 
 const RegisterVoteNotice: React.FC = () => {
   const [isRegistered, setIsRegistered] = useState<boolean>();
@@ -15,13 +15,12 @@ const RegisterVoteNotice: React.FC = () => {
 
   const fetchIsRegistered = useCallback(async () => {
     if (!account || !yam) return;
-    const registered = await didDelegate(yam, account);
-    setIsRegistered(registered);
+    setIsRegistered((await delegatedTo(yam, account)) === account);
   }, [account, setIsRegistered, yam]);
 
   const handleRegisterClick = useCallback(async () => {
     if (!account || !yam) return;
-    await delegate(yam, account, (txHash: string) => setIsRegistering(!!txHash));
+    await delegate(yam, account, account, (txHash: string) => setIsRegistering(!!txHash));
     setIsRegistering(false);
   }, [account, setIsRegistering, yam]);
 
