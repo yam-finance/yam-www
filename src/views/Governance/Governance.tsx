@@ -23,17 +23,10 @@ const Governance: React.FC = () => {
   const { account } = useWallet();
   const {
     proposals,
-    isRegistered,
-    isDelegated,
     onVote,
     onRegister,
-    onDelegateStaked,
-    onDelegateUnstaked,
-    onRemoveDelegation,
   } = useGovernance();
-  const { stakedBalanceYAMETH } = useFarming();
 
-  const isStaked = !!stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0;
   const [astronaut, setAstronaut] = useState("👨‍🚀");
 
   const updateAstronaut = useCallback(() => {
@@ -66,13 +59,7 @@ const Governance: React.FC = () => {
             <CardTitle text="Delegate Vote" />
             <CardContent>
               <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                <DelegateForm
-                  isStaked={isStaked}
-                  isDelegated={isDelegated}
-                  onDelegateStaked={onDelegateStaked}
-                  onDelegateUnstaked={onDelegateUnstaked}
-                  onRemoveDelegation={onRemoveDelegation}
-                />
+                <DelegateForm />
               </Box>
             </CardContent>
           </Card>

@@ -2,24 +2,21 @@ import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { Spacer, Button, Input } from "react-neu";
 import Split from "components/Split";
 import { validateAddress } from 'utils';
-import styled from "styled-components";
 
-interface DelegateFormProps {
-  isStaked: boolean,
-  isDelegated: boolean,
-  onDelegateUnstaked: (delegatee: string) => void,
-  onDelegateStaked: (delegatee: string) => void,
-  onRemoveDelegation: () => void,
-}
+import useGovernance from "hooks/useGovernance";
+import useFarming from "hooks/useFarming";
 
-export const DelegateForm: React.FC<DelegateFormProps> = ({
-  isStaked,
-  isDelegated,
-  onDelegateStaked,
-  onDelegateUnstaked,
-  onRemoveDelegation
-}) => {
+export const DelegateForm: React.FC = () => {
   const [delegatee, setDelegatee] = useState('');
+
+  const {
+    isDelegated,
+    onDelegateStaked,
+    onDelegateUnstaked,
+    onRemoveDelegation,
+  } = useGovernance();
+  const { stakedBalanceYAMETH } = useFarming();
+  const isStaked = !!stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0;
 
   const handleOnDelegateStaked = useCallback(
     () => onDelegateStaked(delegatee),
