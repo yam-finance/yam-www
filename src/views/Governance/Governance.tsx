@@ -9,10 +9,9 @@ import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
-import DelegateForm from "./components/DelegateForm";
+import DelegateForm from "components/DelegateForm";
 
 import useGovernance from "hooks/useGovernance";
-import useFarming from "hooks/useFarming";
 import { useWallet } from "use-wallet";
 
 import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProposalContentInner } from "./components/Proposal";
@@ -54,17 +53,6 @@ const Governance: React.FC = () => {
           <Spacer />
         </Split>
         <Spacer size="md" />
-        {account && (
-          <Card>
-            <CardTitle text="Delegate Vote" />
-            <CardContent>
-              <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                <DelegateForm />
-              </Box>
-            </CardContent>
-          </Card>
-        )}
-        <Spacer size="md" />
         <Card>
           <CardTitle text="On-chain Proposals" />
           <Spacer size="sm" />
@@ -92,6 +80,17 @@ const Governance: React.FC = () => {
             )}
           </CardContent>
         </Card>
+        <Spacer size="md" />
+        {account && (
+          <Card>
+            <CardTitle text="Delegate Vote" />
+            <CardContent>
+              <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+                <DelegateForm />
+              </Box>
+            </CardContent>
+          </Card>
+        )}
       </Container>
     </Page>
   );
