@@ -1,5 +1,6 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react';
-import { Spacer, Button, Input } from "react-neu";
+import React, { Fragment, useState, useCallback } from 'react';
+import { Card, CardTitle, CardContent, Button, Input, Spacer } from "react-neu";
+import Box from 'components/BoxWithDisplay';
 import Split from "components/Split";
 import { validateAddress } from 'utils';
 
@@ -31,25 +32,30 @@ export const DelegateForm: React.FC = () => {
   const onChange = (e: any): void => setDelegatee(e.target.value);
 
   return (
-    <Fragment>
-      <Input onChange={onChange} placeholder="Delegate to..."></Input>
-      <Spacer />
-      <Split>
-        <Button
-          full
-          text="Delegate"
-          variant="secondary" 
-          onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked}
-          disabled={!validateAddress(delegatee)}
-        />
-        <Button
-          full
-          text="Remove Delegation"
-          variant="secondary"
-          onClick={onRemoveDelegation}
-          disabled={!isDelegated}/>
-      </Split>
-    </Fragment>
+    <Card>
+      <CardTitle text="Delegate Vote" />
+      <CardContent>
+        <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+          <Input onChange={onChange} placeholder="Delegate to..."></Input>
+          <Spacer />
+          <Split>
+            <Button
+              full
+              text="Delegate"
+              variant="secondary" 
+              onClick={isStaked ? handleOnDelegateStaked : handleOnDelegateUnstaked}
+              disabled={!validateAddress(delegatee)}
+            />
+            <Button
+              full
+              text="Remove Delegation"
+              variant="secondary"
+              onClick={onRemoveDelegation}
+              disabled={!isDelegated}/>
+          </Split>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 

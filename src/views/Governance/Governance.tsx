@@ -81,16 +81,7 @@ const Governance: React.FC = () => {
           </CardContent>
         </Card>
         <Spacer size="md" />
-        {account && (
-          <Card>
-            <CardTitle text="Delegate Vote" />
-            <CardContent>
-              <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                <DelegateForm />
-              </Box>
-            </CardContent>
-          </Card>
-        )}
+        {account && <DelegateForm />}
       </Container>
     </Page>
   );
