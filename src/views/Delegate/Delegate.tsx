@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Card, CardTitle, CardContent, Separator, Surface, Button, Input } from "react-neu";
+import { Container, Card, CardTitle, CardContent, Separator, Surface, Button, Input, Spacer } from "react-neu";
 import Box from 'components/BoxWithDisplay';
 import Page from 'components/Page';
 import PageHeader from "components/PageHeader";
@@ -14,6 +14,7 @@ const Delegate = () => {
     <Page>
       <Container>
         <PageHeader icon="📜" title="Delegate" />
+        <Spacer size="md" />
         {account && (
           <Card>
             <CardTitle text="Delegate Vote" />
