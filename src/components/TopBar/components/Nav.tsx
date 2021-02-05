@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 const Nav: React.FC = () => {
+  const [isShow, setIsShow] = useState(false);
   return (
     <StyledNav>
       <StyledRouterLink exact activeClassName="active" to="/dashboard">
         Dashboard
       </StyledRouterLink>
-      <StyledRouterLink exact activeClassName="active" to="/umbrella">
-        Umbrella
-      </StyledRouterLink>
-      <StyledLink href="https://degenerative.finance/" target="_blank">
-        Degenerative
-      </StyledLink>
+      <div onMouseEnter={() => setIsShow(true)} onMouseLeave={() => setIsShow(false)}>
+        <StyledLink>Projects</StyledLink>
+        {
+          isShow === true && <StyledDiv>
+            <StyledRouterLink exact activeClassName="active" to="/umbrella" style={{ height: 26, display: "flex", alignItems: "center" }}>
+              Umbrella
+            </StyledRouterLink>
+            <StyledLink href="https://degenerative.finance/" target="_blank" style={{ height: 26, display: "flex", alignItems: "center" }}>
+              Degenerative
+            </StyledLink>
+          </StyledDiv>
+        }
+      </div>
       <StyledRouterLink exact activeClassName="active" to="/governance">
         Govern
       </StyledRouterLink>
@@ -58,6 +66,12 @@ const StyledLink = styled.a`
   &:hover {
     color: ${(props) => props.theme.colors.grey[600]};
   }
+`;
+
+const StyledDiv = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default Nav;
