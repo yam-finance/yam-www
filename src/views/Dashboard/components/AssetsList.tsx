@@ -16,7 +16,7 @@ interface AssetsListProps {
 
 const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
 
-  const [csvData, setCSVData] = useState<any>();
+  const [csvData, setCSVData] = useState<any>([]);
 
   useEffect(() => {
     const csvData = [];
@@ -33,52 +33,57 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
     <>
       <Spacer size="md" />
       <Card>
-        <CardTitle text="💰 Treasury Assets" />
+        <Box row alignItems="center" justifyContent="space-between" marginLeft={5} marginRight={5}>
+          <Box justifyContent="center" width="100%">
+            <CardTitle text="💰 Treasury Assets" />
+          </Box>
+          <CSVLink data={csvData} filename={"Assets.csv"} onClick={() => {
+            if (!assets) {
+              return false;
+            }
+          }}>
+            <Button disabled={!assets} size="sm" text="Download" variant="tertiary" />
+          </CSVLink>
+        </Box>
         <Spacer size="sm" />
         <div style={{overflow: "auto"}}>
-        <CardContent>
-          <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-            <StyledAssetContentInner>
-              <StyledTokenNameMain>Token Name</StyledTokenNameMain>
-              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-              <StyledSymbolMain>Symbol</StyledSymbolMain>
-              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-              <StyledQuantityMain>Quantity</StyledQuantityMain>
-              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
-              <StyledPriceMain>Token Price($)</StyledPriceMain>
-              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
-              <StyledChangeMain>Change(24h)</StyledChangeMain>
-              <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
-              <StyledValueMain>Value in USD($)</StyledValueMain>
-            </StyledAssetContentInner>
-          </Box>
-          <Spacer size="sm" />
-          {assets ? (
-            <>
-              {/* <Surface> */}
+          <CardContent>
+            <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+              <StyledAssetContentInner>
+                <StyledTokenNameMain>Token Name</StyledTokenNameMain>
+                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
+                <StyledSymbolMain>Symbol</StyledSymbolMain>
+                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+                <StyledQuantityMain>Quantity</StyledQuantityMain>
+                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
+                <StyledPriceMain>Token Price($)</StyledPriceMain>
+                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
+                <StyledChangeMain>Change(24h)</StyledChangeMain>
+                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
+                <StyledValueMain>Value in USD($)</StyledValueMain>
+              </StyledAssetContentInner>
+            </Box>
+            <Spacer size="sm" />
+            {assets ? (
               <>
-                {assets.map((asset:any, i:any) => {
-                  if (i === 0) {
-                    return <AssetEntry key={"asset" + i} prop={asset} />;
-                  } else {
-                    return [<Separator key={"seperator" + i} />, <AssetEntry key={"asset" + i} prop={asset} />];
-                  }
-                })}
+                {/* <Surface> */}
+                <>
+                  {assets.map((asset:any, i:any) => {
+                    if (i === 0) {
+                      return <AssetEntry key={"asset" + i} prop={asset} />;
+                    } else {
+                      return [<Separator key={"seperator" + i} />, <AssetEntry key={"asset" + i} prop={asset} />];
+                    }
+                  })}
+                </>
+                {/* </Surface> */}
               </>
-              {/* </Surface> */}
-              <Spacer size="sm" />
-              <Box alignItems="center" justifyContent="center" row>
-                <CSVLink data={csvData} filename={"Assets.xlsx"}>
-                  <Button size="sm" text="Download" variant="default" />
-                </CSVLink>
-              </Box>
-            </>
-          ): (
-            <>
-              <YamLoader space={320}></YamLoader>
-            </>
-          )}
-        </CardContent>
+            ): (
+              <>
+                <YamLoader space={320}></YamLoader>
+              </>
+            )}
+          </CardContent>
         </div>
       </Card>
     </>
