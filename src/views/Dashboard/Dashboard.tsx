@@ -8,22 +8,16 @@ import { OptionInterface, SeriesInterface, TimeSeries } from "types/Charts";
 import { useWallet } from "use-wallet";
 import {
   treasuryEvents,
-  getDPIPrice,
   getCurrentBlock,
-  getWETHPrice,
-  getYUSDPrice,
-  getINDEXCOOPPrice,
   getIndexCoopLPRewards,
   getSushiRewards,
-  getSUSHIPrice,
-  getUMAPrice,
-  getValue
+  getValue,
+  getYam
 } from "yam-sdk/utils";
 import numeral from "numeral";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
-import styled from "styled-components";
 import Charts from "./components/Charts";
 import TopCards from "./components/TopCards";
 import AssetsList from "./components/AssetsList";
@@ -34,6 +28,11 @@ const Dashboard: React.FC = () => {
   const [seriesReserves, setSeriesReserves] = useState<SeriesInterface[]>();
   const [treasuryValues, setTreasuryValues] = useState<any>();
   const [assetsData, setAssetsData] = useState<Object[]>();
+  const [currentPrice, setCurrentPrice] = useState<any>();
+  const [change24, setChange24] = useState<any>();
+  const [maxSupply, setMaxSupply] = useState<any>();
+  const [marketCap, setMarketCap] = useState<any>();
+  const [treasuryValue, SetTreasuryValue] = useState<any>();
   const { darkMode, colors } = useTheme();
   const { totalYUsdValue, totalWETHValue, totalDPIValue, totalUMAValue, totalBalanceIndexCoop, getAssetsHistory } = useTreasury();
   
@@ -78,24 +77,25 @@ const Dashboard: React.FC = () => {
 
     const currentBlock = (await getCurrentBlock(yam)).number;
 
-    const wethPrice = await getWETHPrice();
-    const yusdPrice = await getYUSDPrice();
-    const dpiPrice = await getDPIPrice();
-    const indexPrice = await getINDEXCOOPPrice();
-    const sushiPrice = await getSUSHIPrice();
-    const umaPrice = await getUMAPrice();
-
-    const DPIBalance = totalDPIValue;
-    // const indexCoopLP = await getIndexCoopLP(yam);
-    const indexCoopLPRewards = (await getIndexCoopLPRewards(yam)) || 0;
-    const SushiRewards = (await getSushiRewards(yam)) || 0;
-
     const wethValues = await getValue("weth");
     const dpiValues = await getValue("defipulse-index");
     const umaValues = await getValue("uma");
     const yusdValues = await getValue("yvault-lp-ycurve");
     const sushiValues = await getValue("sushi");
     const indexCoopValues = await getValue("index-cooperative");
+    const yamValues = await getYam();
+
+    const wethPrice = wethValues.market_data.current_price.usd;
+    const yusdPrice = yusdValues.market_data.current_price.usd;
+    const dpiPrice = dpiValues.market_data.current_price.usd;
+    const indexPrice = indexCoopValues.market_data.current_price.usd;
+    const sushiPrice = sushiValues.market_data.current_price.usd;
+    const umaPrice = umaValues.market_data.current_price.usd;
+
+    const DPIBalance = totalDPIValue;
+    // const indexCoopLP = await getIndexCoopLP(yam);
+    const indexCoopLPRewards = (await getIndexCoopLPRewards(yam)) || 0;
+    const SushiRewards = (await getSushiRewards(yam)) || 0;
 
     const change24WETH = numeral(wethValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
     const change24DPI = numeral(dpiValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
@@ -417,6 +417,7 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(wethPrice).format("0,0.00"),
         change: change24WETH ? change24WETH : "0.00%",
         value: "$" + numeral(assetsHistory.WETH.latest).format("0,0.00"),
+        number: assetsHistory.WETH.latest,
       },
       {
         icon: sushiValues.image.large,
@@ -426,6 +427,7 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(sushiPrice).format("0,0.00"),
         change: change24Sushi ? change24Sushi : "0.00%",
         value: "$" + numeral(assetsHistory.Sushi.latest).format("0,0.00"),
+        number: assetsHistory.Sushi.latest,
       },
       {
         icon: yusdValues.image.large,
@@ -435,6 +437,7 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(yusdPrice).format("0,0.00"),
         change: change24YUSD ? change24YUSD : "0.00%",
         value: "$" + numeral(assetsHistory.yUSD.latest).format("0,0.00"),
+        number: assetsHistory.yUSD.latest,
       },
       {
         icon: dpiValues.image.large,
@@ -444,6 +447,7 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(dpiPrice).format("0,0.00"),
         change: change24DPI ? change24DPI : "0.00%",
         value: "$" + numeral(assetsHistory.DPI.latest).format("0,0.00"),
+        number: assetsHistory.DPI.latest,
       },
       {
         icon: indexCoopValues.image.large,
@@ -453,6 +457,7 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(indexPrice).format("0,0.00"),
         change: change24IndexCoop ? change24IndexCoop : "0.00%",
         value: "$" + numeral(assetsHistory.INDEX.latest).format("0,0.00"),
+        number: assetsHistory.INDEX.latest,
       },
       {
         icon: indexCoopValues.image.large,
@@ -462,6 +467,7 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(indexPrice).format("0,0.00"),
         change: change24IndexCoop ? change24IndexCoop : "0.00%",
         value: "$" + numeral(assetsHistory.INDEXLP.latest).format("0,0.00"),
+        number: assetsHistory.INDEXLP.latest,
       },
       {
         icon: umaValues.image.large,
@@ -471,19 +477,27 @@ const Dashboard: React.FC = () => {
         price: "$" + numeral(umaPrice).format("0,0.00"),
         change: change24UMA ? change24UMA : "0.00%",
         value: "$" + numeral(assetsHistory.UMA.latest).format("0,0.00"),
+        number: assetsHistory.UMA.latest,
       },
     ];
-
-    console.log("assets", assets);
 
     setOptsReserves(options);
     setSeriesReserves(series);
     setAssetsData(assets);
+    setCurrentPrice(numeral(yamValues.market_data.current_price.usd).format("0.00a"));
+    setMaxSupply(numeral(yamValues.market_data.max_supply).format("0.00a"));
+    setMarketCap(numeral(yamValues.market_data.market_cap.usd).format("0.00a"));
+    setChange24(numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
+    let treasuryAssets = 0;
+    assets.forEach((asset:any) => {
+      treasuryAssets += asset.number;
+    });
+    SetTreasuryValue(typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--");
   }, [setOptsReserves, setSeriesReserves, darkMode, status, yam, totalDPIValue, treasuryValues]);
 
   useEffect(() => {
     fetchTreasury();
-    let refreshInterval = setInterval(() => fetchTreasury(), 30000);
+    let refreshInterval = setInterval(() => fetchTreasury(), 300000);
     // console.log("treasuryValues", treasuryValues);
     return () => clearInterval(refreshInterval);
   }, [fetchTreasury]);
@@ -492,16 +506,16 @@ const Dashboard: React.FC = () => {
     <Page>
       <PageHeader icon="📊" subtitle="Overview of the YAM ecosystem" title="YAM Dashboard" />
       <Container size="lg">
-        <TopCards />
+        <TopCards currentPrice={currentPrice} change24={change24} maxSupply={maxSupply} marketCap={marketCap} treasuryValue={treasuryValue} />
         <Charts seriesReserves={seriesReserves} optsReserves={optsReserves}/>
-        <AssetsList assets={assetsData}/>
+        <AssetsList assets={assetsData?.sort((a:any,b:any):number => {
+          if (a.number > b.number) return -1;
+          if (a.number < b.number) return 1;
+          return 0;
+        })}/>
       </Container>
     </Page>
   );
 };
-
-const StyledCharts = styled.div`
-  padding: 0px;
-`;
 
 export default Dashboard;

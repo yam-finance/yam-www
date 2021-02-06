@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
+import moment from "moment";
+import numeral from "numeral";
 
-import { Card, CardContent, Spacer, CardTitle, Surface, Separator, Button } from "react-neu";
+import { Card, CardContent, Spacer, CardTitle, Separator, Button } from "react-neu";
 
 import { AssetEntry, StyledAssetContentInner } from "./Asset";
 
@@ -20,12 +22,16 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
 
   useEffect(() => {
     const csvData = [];
+    csvData.push([moment().format("dddd , Do MMMM YYYY")]);
     csvData.push(["Token Name", "Symbol", "Quantity", "Token Price($)", "Change(24h)","Value in USD($)"]);
+    let treasuryAssets = 0;
     if (assets) {
       assets.forEach((asset:any) => {
         csvData.push([asset.name, asset.index, asset.quantity, asset.price, asset.change, asset.value]);
+        treasuryAssets += asset.number;
       });
     }
+    csvData.push(["Total Assets", "$" + numeral(treasuryAssets).format("0,0.00")]);
     setCSVData(csvData);
   }, [assets]);
 
@@ -37,7 +43,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
           <Box justifyContent="center" width="100%">
             <CardTitle text="💰 Treasury Assets" />
           </Box>
-          <CSVLink data={csvData} filename={"Assets.csv"} onClick={() => {
+          <CSVLink data={csvData} filename={"Assets" + moment().format("DD-MM-YYYY") +".csv"} onClick={() => {
             if (!assets) {
               return false;
             }
@@ -66,17 +72,13 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
             <Spacer size="sm" />
             {assets ? (
               <>
-                {/* <Surface> */}
-                <>
-                  {assets.map((asset:any, i:any) => {
-                    if (i === 0) {
-                      return <AssetEntry key={"asset" + i} prop={asset} />;
-                    } else {
-                      return [<Separator key={"seperator" + i} />, <AssetEntry key={"asset" + i} prop={asset} />];
-                    }
-                  })}
-                </>
-                {/* </Surface> */}
+                {assets.map((asset:any, i:any) => {
+                  if (i === 0) {
+                    return <AssetEntry key={"asset" + i} prop={asset} />;
+                  } else {
+                    return [<Separator key={"seperator" + i} />, <AssetEntry key={"asset" + i} prop={asset} />];
+                  }
+                })}
               </>
             ): (
               <>

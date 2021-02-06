@@ -1,73 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 
-import numeral from "numeral";
 import { Box, Card, CardContent, Spacer } from "react-neu";
 
 import FancyValue from "components/FancyValue";
-import useYam from "hooks/useYam";
-import { bnToDec } from "utils";
 
-import { getCurrentPrice, getDPIPrice, getYam, getWETHPrice, getYUSDPrice, getYamPrice } from "yam-sdk/utils";
 import Split from "components/Split";
-import useTreasury from "hooks/useTreasury";
-import { useWallet } from "use-wallet";
 
-const TopCards: React.FC = () => {
-  const yam = useYam();
-  const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, totalIndexCoop, totalSushi } = useTreasury();
-  const [currentPrice, setCurrentPrice] = useState<string>();
-  const [scalingFactor, setScalingFactor] = useState<string>();
-  const [maxSupply, setMaxSupply] = useState<string>();
-  const [marketCap, setMarketCap] = useState<string>();
-  const [yusdPrice, setYUSDPrice] = useState<number>();
-  const [dpiPrice, setDPIPrice] = useState<number>();
-  const [wethPrice, setWETHPrice] = useState<number>();
-  const [change24, setChange24] = useState<string>();
-  const { status } = useWallet();
+interface TopCardProps {
+  currentPrice:any;
+  change24:any;
+  maxSupply:any;
+  marketCap:any;
+  treasuryValue:any;
+}
 
-  const fetchOnce = useCallback(async () => {
-    const yamValues = await getYam();
-
-    const yusdPrice = await getYUSDPrice();
-    const dpiPrice = await getDPIPrice();
-    const wethPrice = await getWETHPrice();
-    setMaxSupply(numeral(yamValues.market_data.max_supply).format("0.00a"));
-    setMarketCap(numeral(yamValues.market_data.market_cap.usd).format("0.00a"));
-    setChange24(numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
-    setYUSDPrice(yusdPrice);
-    setDPIPrice(dpiPrice);
-    setWETHPrice(wethPrice);
-  }, [setMaxSupply, setMarketCap, setYUSDPrice, setDPIPrice, setChange24]);
-
-  useEffect(() => {
-    if (status === "connected") {
-      fetchOnce();
-    }
-  }, [status]);
-
-  const fetchStats = useCallback(async () => {
-    if (status === "connected") {
-      if (!yam) return;
-      // const price = await getCurrentPrice(yam);
-      // setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
-      const price = await getYamPrice();
-      setCurrentPrice(numeral(price).format("0.00a"));
-    }
-  }, [yam, setCurrentPrice, setScalingFactor]);
-
-  useEffect(() => {
-    fetchStats();
-    let refreshInterval = setInterval(fetchStats, 10000);
-    return () => clearInterval(refreshInterval);
-  }, [fetchStats, yam]);
-
-  const assetYUSD = (totalYUsdValue || 0) * (yusdPrice || 0);
-  const assetDPI = (totalDPIValue || 0) * (dpiPrice || 0);
-  const assetWETH = (totalWETHValue || 0) * (wethPrice || 0);
-  const assetIndex = totalIndexCoop ? totalIndexCoop : 0;
-  const assetIndexLP = totalIndexLPValue ? totalIndexLPValue : 0;
-  const treasuryAssets = assetYUSD + assetDPI + assetWETH + assetIndexLP + assetIndex + totalSushi;
-  const treasuryValue = typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--";
+const TopCards: React.FC<TopCardProps> = ({currentPrice, change24, maxSupply, marketCap, treasuryValue}) => {
 
   const col = [
     [
