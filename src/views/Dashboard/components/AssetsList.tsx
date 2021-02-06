@@ -85,10 +85,6 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
   );
 };
 
-const StyledCardContent = styled(CardContent)`
-  overflow: auto;
-`;
-
 export const StyledTokenNameMain = styled.span`
   font-weight: 600;
   display: grid;
