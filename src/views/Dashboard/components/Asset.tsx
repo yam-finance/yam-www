@@ -119,6 +119,7 @@ export const StyledValueMain = styled.span`
 export const StyledAssetContentInner = styled.div`
   align-items: center;
   display: grid;
+  min-width: 768px;
   grid-template-columns: 20fr 5px 10fr 5px 20fr 5px 20fr 5px 12fr 5px 18fr;
   grid-template-areas: "name spacer1 symbol spacer2 quantity spacer3 price spacer4 change spacer5 value";
   grid-template-rows: 100fr;

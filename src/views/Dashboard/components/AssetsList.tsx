@@ -35,6 +35,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
       <Card>
         <CardTitle text="💰 Treasury Assets" />
         <Spacer size="sm" />
+        <div style={{overflow: "auto"}}>
         <CardContent>
           <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
             <StyledAssetContentInner>
@@ -54,7 +55,8 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
           <Spacer size="sm" />
           {assets ? (
             <>
-              <Surface>
+              {/* <Surface> */}
+              <>
                 {assets.map((asset:any, i:any) => {
                   if (i === 0) {
                     return <AssetEntry key={"asset" + i} prop={asset} />;
@@ -62,7 +64,8 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
                     return [<Separator key={"seperator" + i} />, <AssetEntry key={"asset" + i} prop={asset} />];
                   }
                 })}
-              </Surface>
+              </>
+              {/* </Surface> */}
               <Spacer size="sm" />
               <Box alignItems="center" justifyContent="center" row>
                 <CSVLink data={csvData} filename={"Assets.xlsx"}>
@@ -76,10 +79,15 @@ const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
             </>
           )}
         </CardContent>
+        </div>
       </Card>
     </>
   );
 };
+
+const StyledCardContent = styled(CardContent)`
+  overflow: auto;
+`;
 
 export const StyledTokenNameMain = styled.span`
   font-weight: 600;
