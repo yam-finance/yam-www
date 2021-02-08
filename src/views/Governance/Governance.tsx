@@ -53,6 +53,7 @@ const Governance: React.FC = () => {
           <Spacer />
         </Split>
         <Spacer size="md" />
+        {account &&
         <Card>
           <CardTitle text="On-chain Proposals" />
           <Spacer size="sm" />
@@ -79,9 +80,9 @@ const Governance: React.FC = () => {
               </Surface>
             )}
           </CardContent>
-        </Card>
+        </Card>}
         <Spacer size="md" />
-        {account && <DelegateForm />}
+        <DelegateForm />
       </Container>
     </Page>
   );

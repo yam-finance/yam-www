@@ -13,7 +13,7 @@ const Delegate = () => {
       <Container>
         <PageHeader icon="📜" title="Delegate" />
         <Spacer size="md" />
-        {account && <DelegateForm />}
+        <DelegateForm />
       </Container>
     </Page>
   );
