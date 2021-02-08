@@ -6,6 +6,7 @@ import PageHeader from "components/PageHeader";
 import Split from "components/Split";
 
 import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
+import RegistrationButton from 'components/RegistrationButton';
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
@@ -50,6 +51,8 @@ const Governance: React.FC = () => {
           <Button full text="Forum" href="https://forum.yam.finance" variant="tertiary" />
           <Spacer />
           <Button full text="Off-chain Voting" href="https://snapshot.page/#/yam" variant="tertiary" />
+          <Spacer />
+          <RegistrationButton />
           <Spacer />
         </Split>
         <Spacer size="md" />

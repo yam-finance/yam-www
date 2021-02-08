@@ -18,6 +18,8 @@ import Context from "./Context";
 
 import { Proposal, ProposalVotingPower } from "./types";
 
+const emptyDelegation = '0x0000000000000000000000000000000000000000';
+
 const Provider: React.FC = ({ children }) => {
   const { account } = useWallet();
   const yam = useYam();
@@ -72,6 +74,39 @@ const Provider: React.FC = ({ children }) => {
     [account, setConfirmTxModalIsOpen, setIsVoting, yam]
   );
 
+  const delegateTo = useCallback(
+    async (delegatee: string | null, callback?: (txHash?: string) => any) => {
+      if (!account || !yam) return;
+      try {
+        await delegate(yam, account, delegatee, callback)
+        verifyDelegation();
+      }
+      catch(err) {
+        console.error(err.message);
+      }
+    },
+    [account, yam]
+  );
+
+  const delegateStakedTo = useCallback(
+    async (delegatee: string | null, callback?: (txHash?: string) => any) => {
+      if (!account || !yam) return;
+      try {
+        await delegateStaked(yam, account, delegatee, callback)
+        verifyDelegation();
+      }
+      catch(err) {
+        console.error(err.message);
+      }
+    },
+    [account, yam]
+  );
+
+  const verifyDelegation = async () => {
+    const delegatedAccount = await delegatedTo(yam, account);
+    setIsDelegated(delegatedAccount !== emptyDelegation && delegatedAccount !== account);
+  };
+
   const fetchIsRegistered = useCallback(async () => {
     if (!account || !yam) return;
     setIsRegistered((await delegatedTo(yam, account)) === account);
@@ -81,58 +116,21 @@ const Provider: React.FC = ({ children }) => {
     fetchIsRegistered();
   }, [account, fetchIsRegistered, yam]);
 
-  const handleRegisterClick = useCallback(async () => {
-    if (!account || !yam) return;
-    await delegate(yam, account, account, (txHash: string) => setIsRegistering(true));
-    setIsRegistering(false);
-  }, [account, setIsRegistering, yam]);
+  const handleRegisterClick = async () => {
+    await delegateTo(account, () => setIsRegistering(true));
+    setIsRegistering(false)
+  };
 
-  const handleDelegateUnstaked = useCallback(
-    async (delegatee: string) => {
-      if (!account || !yam) return;
-      try {
-        await delegate(yam, account, delegatee, (txHash: string) => null);
-        verifyDelegation();
-      }
-      catch(err) {
-        console.error(err.message);
-      }
-    },
-    [account, yam]
-  );
+  const handleUnregisterClick = async () => {
+    await delegateTo(emptyDelegation, () => setIsRegistering(true));
+    setIsRegistering(false)
+  };
 
-  const handleDelegateStaked = useCallback(
-    async (delegatee: string) => {
-      if (!account || !yam) return;
-      try {
-        await delegateStaked(yam, account, delegatee, (txHash: string) => null)
-        verifyDelegation();
-      }
-      catch(err) {
-        console.error(err.message);
-      }
-    },
-    [account, yam]
-  );
+  const handleDelegateUnstaked = async (delegatee: string) => await delegateTo(delegatee, () => null)
+
+  const handleDelegateStaked = async (delegatee: string) => await delegateStakedTo(delegatee, () => null)
   
-  const handleRemoveDelegation = useCallback(
-    async () => {
-      if (!account || !yam) return;
-      try {
-        await delegate(yam, account, account, (txHash: string) => null);
-        verifyDelegation();
-      }
-      catch(err) {
-        console.error(err.message);
-      }
-    }, [account, yam]
-  );
-
-  const verifyDelegation = async () => {
-    const emptyDelegation = '0x0000000000000000000000000000000000000000';
-    const delegatedAccount = await delegatedTo(yam, account);
-    setIsDelegated(delegatedAccount !== emptyDelegation && delegatedAccount !== account);
-  }
+  const handleRemoveDelegation = async () => await delegateTo(account, () => null);
 
   useEffect(
     () => {
@@ -166,6 +164,7 @@ const Provider: React.FC = ({ children }) => {
         isVoting,
         isDelegated,
         onRegister: handleRegisterClick,
+        onUnregister: handleUnregisterClick,
         onVote: handleVote,
         onDelegateStaked: handleDelegateStaked,
         onDelegateUnstaked: handleDelegateUnstaked,
