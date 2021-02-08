@@ -86,6 +86,7 @@ const useTreasury = () => {
     const umaPrice = await getUMAPrice() || 0;
     const rewardsSushi = (await getSushiRewards(yam)) || 0;
 
+    // WETH must have all blocks number since we get blocks from WETH
     const history = {
       WETH: {
         11133885: {
@@ -112,7 +113,8 @@ const useTreasury = () => {
           value: (283 + 4.47) * 1258,
           tx: ''
         },
-        latest: totalWETHValue * wethPrice
+        latest: totalWETHValue * wethPrice,
+        color: "#C60C4D"
       },
       yUSD: {
         11133885: {
@@ -139,7 +141,8 @@ const useTreasury = () => {
           value: 1.19 * 1896995,
           tx: ''
         },
-        latest: yusdPrice * totalYUsdValue
+        latest: yusdPrice * totalYUsdValue,
+        color: "#8150E6"
       },
       DPI: {
         11133885: {
@@ -166,25 +169,10 @@ const useTreasury = () => {
           value: 434 * 104,
           tx: ''
         },
-        latest: (totalDPIValue || 0) * dpiPrice
+        latest: (totalDPIValue || 0) * dpiPrice,
+        color: "#4777e0"
       },
       INDEX: {
-        11133885: {
-          value: 0,
-          tx: ''
-        },
-        11160087: {
-          value: 0,
-          tx: ''
-        },
-        11243912: {
-          value: 0,
-          tx: ''
-        },
-        11244494: {
-          value: 0,
-          tx: ''
-        },
         11289910: {
           value: 36 * 11.6,
           tx: ''
@@ -193,25 +181,10 @@ const useTreasury = () => {
           value: 36 * 11.6,
           tx: ''
         },
-        latest: rewardsIndexCoop * indexCoopPrice + totalBalanceIndexCoop * indexCoopPrice
+        latest: rewardsIndexCoop * indexCoopPrice + totalBalanceIndexCoop * indexCoopPrice,
+        color: "#D16C00"
       },
       INDEXLP: {
-        11133885: {
-          value: 0,
-          tx: ''
-        },
-        11160087: {
-          value: 0,
-          tx: ''
-        },
-        11243912: {
-          value: 0,
-          tx: ''
-        },
-        11244494: {
-          value: 0,
-          tx: ''
-        },
         11289910: {
           value: 2929 * 104 + 640 * 480,
           tx: ''
@@ -220,17 +193,10 @@ const useTreasury = () => {
           value: 2929 * 104 + 640 * 480,
           tx: ''
         },
-        latest: 2929 * dpiPrice + 640 * wethPrice
+        latest: 2929 * dpiPrice + 640 * wethPrice,
+        color: "#838bfc"
       },
       Sushi: {
-        11133885: {
-          value: 0,
-          tx: ''
-        },
-        11160087: {
-          value: 0,
-          tx: ''
-        },
         11243912: {
           value: rewardsSushi * sushiPrice,
           tx: ''
@@ -247,34 +213,12 @@ const useTreasury = () => {
           value: rewardsSushi * sushiPrice,
           tx: ''
         },
-        latest: rewardsSushi * sushiPrice
+        latest: rewardsSushi * sushiPrice,
+        color: "#FFB900"
       },
       UMA: {
-        11133885: {
-          value: 0,
-          tx: ''
-        },
-        11160087: {
-          value: 0,
-          tx: ''
-        },
-        11243912: {
-          value: 0,
-          tx: ''
-        },
-        11244494: {
-          value: 0,
-          tx: ''
-        },
-        11289910: {
-          value: 0,
-          tx: ''
-        },
-        11680240: {
-          value: 0,
-          tx: ''
-        },
-        latest: (totalUMAValue || 0) * umaPrice
+        latest: (totalUMAValue || 0) * umaPrice,
+        color: "#2a9d8f"
       },
     };
     console.log("history", history);
