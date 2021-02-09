@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 import { NavLink } from "react-router-dom";
+import NestedMobileLink from "./NestedMobileLink";
 
 interface MobileMenuProps {
   onDismiss: () => void;
@@ -20,12 +21,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           <StyledRouterLink exact activeClassName="active" to="/dashboard" onClick={onDismiss}>
             Dashboard
           </StyledRouterLink>
-          <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
-            Umbrella
-          </StyledRouterLink>
-          <StyledLink href="https://degenerative.finance/" target="_blank">
-            Degenerative
-          </StyledLink>
+          <NestedMobileLink label="Projects" >
+            <StyledRouterLink exact activeClassName="active" to="/umbrella" onClick={onDismiss}>
+              Umbrella
+            </StyledRouterLink>
+            <StyledLink href="https://degenerative.finance/" target="_blank">
+              Degenerative
+            </StyledLink>
+          </NestedMobileLink>
           <StyledRouterLink exact activeClassName="active" to="/governance" onClick={onDismiss}>
             Govern
           </StyledRouterLink>
@@ -86,7 +89,7 @@ const StyledMobileMenu = styled.div`
   top: 0;
   left: 100%;
   bottom: 0;
-  width: calc(100% - 48px);
+  width: 418px;
 `;
 
 const StyledRouterLink = styled(NavLink)`
