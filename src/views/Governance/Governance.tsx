@@ -10,6 +10,7 @@ import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
 import DelegateForm from "./components/DelegateForm";
+import YamLoader from "components/YamLoader";
 
 import useGovernance from "hooks/useGovernance";
 import useFarming from "hooks/useFarming";
@@ -92,16 +93,18 @@ const Governance: React.FC = () => {
               </StyledProposalContentInner>
             </Box>
             <Spacer size="sm" />
-            {proposals && (
+            {proposals ? (
               <Surface>
                 {proposals.map((prop, i) => {
                   if (i === 0) {
                     return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
                   } else {
-                    return [<Separator />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
+                    return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
                   }
                 })}
               </Surface>
+            ) : (
+              <YamLoader space={320}></YamLoader>
             )}
           </CardContent>
         </Card>
