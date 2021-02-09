@@ -11,7 +11,7 @@ export const reservesContractv2 = "0xCF27cA116dd5C7b4201c75B46489D1c075362087";
 export const YAMETHSLPAddress = "0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c";
 
 export const OldContractIncentivizer = "0x5b0501F7041120d36Bc8c6DC3FAeA0b74b32a0Ed";
-export const ContractGovernor = "0xc32f9b0292965c5dd4a0ea1abfcc1f5a36d66986";
+export const ContractGovernor = "0x2da253835967d6e721c6c077157f9c9742934aea";
 export const ContractTimelock = "0x8b4f1616751117C38a0f84F9A146cca191ea3EC5";
 export const ContractRebaser = "0xd93f403b432d39aa0f736c2021be6051d85a1d55";
 export const ContractIncentivizer = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
