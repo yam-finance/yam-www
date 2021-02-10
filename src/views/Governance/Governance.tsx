@@ -9,8 +9,9 @@ import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
+
 import YamLoader from "components/YamLoader";
-import DelegateForm from "components/DelegateForm";
+
 import useGovernance from "hooks/useGovernance";
 import useFarming from "hooks/useFarming";
 import { useWallet } from "use-wallet";
