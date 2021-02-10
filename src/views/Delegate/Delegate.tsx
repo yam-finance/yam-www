@@ -6,7 +6,6 @@ import DelegateForm from "components/DelegateForm";
 import { useWallet } from "use-wallet";
 
 const Delegate = () => {
-  const { account } = useWallet();
 
   return (
     <Page>
