@@ -67,13 +67,13 @@ const Governance: React.FC = () => {
             <CardTitle text="Delegate Vote" />
             <CardContent>
               <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                <DelegateForm
+                 <!-- <DelegateForm
                   isStaked={isStaked}
                   isDelegated={isDelegated}
                   onDelegateStaked={onDelegateStaked}
                   onDelegateUnstaked={onDelegateUnstaked}
                   onRemoveDelegation={onRemoveDelegation}
-                />
+                /> -->
               </Box>
             </CardContent>
           </Card>
