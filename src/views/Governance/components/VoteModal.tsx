@@ -135,7 +135,7 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
               <Spacer size="sm" />
               <StyledInfo>
                 {prop.inputs.map((input, i) => {
-                  return <code>{JSON.stringify(input)}</code>;
+                  return <code key={"code" + i}>{JSON.stringify(input)}</code>;
                 })}
               </StyledInfo>
             </CardContent>
