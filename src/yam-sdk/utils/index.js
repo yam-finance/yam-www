@@ -1,11 +1,18 @@
-import { ethers } from "ethers";
+import {
+  ethers
+} from "ethers";
 import Web3 from "web3";
 import BigNumber from "bignumber.js";
 import request from "request";
-import { bnToDec } from "utils";
+import {
+  bnToDec
+} from "utils";
 
 // temp
-import { ContractIndexStaking, ContractIncentivizer } from "constants/tokenAddresses";
+import {
+  ContractIndexStaking,
+  ContractIncentivizer
+} from "constants/tokenAddresses";
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -21,20 +28,13 @@ const GAS_LIMIT = {
 };
 
 const knownSnapshots = {
-  "0x110f2263e5adf63ea82514bbec3440762edefed1bdf4f0ee06a9458fc3e7e2e7":
-    "https://snapshot.page/#/yamv2/proposal/QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9",
-  "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7":
-    "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf",
-  "0xd00307c2982b4fba5790f238ff8df9faab975794dd4144eddbd30ac67eb873ed":
-    "https://snapshot.page/#/yam/proposal/QmQxMTQkz7fW3AXma69ueEwhq5Sf8HNdUYseEFQFw3uKEx",
-  "0xe4e06aae747e811b8de892c0c8b1ca78238b437a2893e78a3b1be91db608f75e":
-    "https://snapshot.page/#/yam/proposal/Qmf6ECSwrmWqHNq6CRTtnFR66ZFhth4kBXTbRy24wcVzLg",
-  "0x64c9c21c8fa9482456aaf0234e5deb07a06318a714434388b2c7bdc3336140a7":
-    "https://snapshot.page/#/yam/proposal/QmPYUwtbqsAjQxHZJ6HzGMmrP22FDVhL81cz5X2yFAe7vG",
-  "0x8fd235442f5edec67d5af587640115cc26b98ae04ab4a2212f0815d589d1ea80":
-    "https://snapshot.page/#/yam/proposal/QmdPpHZZ5zpYmmM3SxGWmi8MCa8shPnmWvRGcsV1qkRUDJ",
-  "0xb8392c2a230f3428e05e3874fd01306354b762da88e73e70482d48ad67e00834":
-    "https://snapshot.page/#/yam/proposal/QmdPpHZZ5zpYmmM3SxGWmi8MCa8shPnmWvRGcsV1qkRUDJ",
+  "0x110f2263e5adf63ea82514bbec3440762edefed1bdf4f0ee06a9458fc3e7e2e7": "https://snapshot.page/#/yamv2/proposal/QmTCXW2bhETiwHoDqeyxoDA4CwjURyfc6T4fAJLGz3yKj9",
+  "0xad13b6cc77c781ee81529b3bcac2c2e81f588eede376fc9b2c75879cd20ffdc7": "https://snapshot.page/#/yam/proposal/QmVzvqJwnnEhnJGxDoKZNNkeRXvrmscrhwpLbZrQxw1mkf",
+  "0xd00307c2982b4fba5790f238ff8df9faab975794dd4144eddbd30ac67eb873ed": "https://snapshot.page/#/yam/proposal/QmQxMTQkz7fW3AXma69ueEwhq5Sf8HNdUYseEFQFw3uKEx",
+  "0xe4e06aae747e811b8de892c0c8b1ca78238b437a2893e78a3b1be91db608f75e": "https://snapshot.page/#/yam/proposal/Qmf6ECSwrmWqHNq6CRTtnFR66ZFhth4kBXTbRy24wcVzLg",
+  "0x64c9c21c8fa9482456aaf0234e5deb07a06318a714434388b2c7bdc3336140a7": "https://snapshot.page/#/yam/proposal/QmPYUwtbqsAjQxHZJ6HzGMmrP22FDVhL81cz5X2yFAe7vG",
+  "0x8fd235442f5edec67d5af587640115cc26b98ae04ab4a2212f0815d589d1ea80": "https://snapshot.page/#/yam/proposal/QmdPpHZZ5zpYmmM3SxGWmi8MCa8shPnmWvRGcsV1qkRUDJ",
+  "0xb8392c2a230f3428e05e3874fd01306354b762da88e73e70482d48ad67e00834": "https://snapshot.page/#/yam/proposal/QmdPpHZZ5zpYmmM3SxGWmi8MCa8shPnmWvRGcsV1qkRUDJ",
 };
 
 export const getPoolStartTime = async (poolContract) => {
@@ -48,7 +48,10 @@ export const stake = async (yam, amount, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .stake(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas }, async (error, txHash) => {
+      .send({
+        from: account,
+        gas
+      }, async (error, txHash) => {
         if (error) {
           onTxHash && onTxHash("");
           console.log("Staking error", error);
@@ -72,7 +75,10 @@ export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
   if (now >= 1597172400) {
     return poolContract.methods
       .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
-      .send({ from: account, gas: GAS_LIMIT.GENERAL }, async (error, txHash) => {
+      .send({
+        from: account,
+        gas: GAS_LIMIT.GENERAL
+      }, async (error, txHash) => {
         if (error) {
           onTxHash && onTxHash("");
           console.log("Unstaking error", error);
@@ -94,7 +100,10 @@ export const unstake = async (yam, amount, account, poolContract, onTxHash) => {
 export const harvest = async (yam, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
-    return poolContract.methods.getReward().send({ from: account, gas: GAS_LIMIT.GENERAL }, async (error, txHash) => {
+    return poolContract.methods.getReward().send({
+      from: account,
+      gas: GAS_LIMIT.GENERAL
+    }, async (error, txHash) => {
       if (error) {
         onTxHash && onTxHash("");
         console.log("Harvest error", error);
@@ -116,7 +125,10 @@ export const harvest = async (yam, account, poolContract, onTxHash) => {
 export const redeem = async (yam, account, poolContract, onTxHash) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
-    return poolContract.methods.exit().send({ from: account, gas: GAS_LIMIT.GENERAL }, async (error, txHash) => {
+    return poolContract.methods.exit().send({
+      from: account,
+      gas: GAS_LIMIT.GENERAL
+    }, async (error, txHash) => {
       if (error) {
         onTxHash && onTxHash("");
         console.log("Redeem error", error);
@@ -136,14 +148,19 @@ export const redeem = async (yam, account, poolContract, onTxHash) => {
 };
 
 export const approve = async (tokenContract, poolContract, account) => {
-  return tokenContract.methods.approve(poolContract.options.address, ethers.constants.MaxUint256).send({ from: account, gas: 80000 });
+  return tokenContract.methods.approve(poolContract.options.address, ethers.constants.MaxUint256).send({
+    from: account,
+    gas: 80000
+  });
 };
 
 export const getPoolContracts = async (yam) => {
   const pools = Object.keys(yam.contracts)
     .filter((c) => c.indexOf("_pool") !== -1)
     .reduce((acc, cur) => {
-      const newAcc = { ...acc };
+      const newAcc = {
+        ...acc
+      };
       newAcc[cur] = yam.contracts[cur];
       return newAcc;
     }, {});
@@ -322,7 +339,10 @@ export const delegatedTo = async(yam, account) => {
 }
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {
-  return yam.contracts.gov3.methods.castVote(proposal, side).send({ from: account, gas: 180000 }, async (error, txHash) => {
+  return yam.contracts.gov4.methods.castVote(proposal, side).send({
+    from: account,
+    gas: 180000
+  }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
       console.log("Vote error", error);
@@ -413,7 +433,10 @@ export const getProposals = async (yam) => {
       more: more,
     });
   }
-  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", { fromBlock: 10926022, toBlock: 11258285 });
+  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", {
+    fromBlock: 10926022,
+    toBlock: 11258285
+  });
   for (let i = 0; i < v2Proposals.length; i++) {
     let id = v2Proposals[i]["returnValues"]["id"];
     let targets = [];
@@ -476,7 +499,10 @@ export const getProposals = async (yam) => {
     });
   }
 
-  const v3Proposals = await yam.contracts.gov3.getPastEvents("ProposalCreated", { fromBlock: 11185996, toBlock: "latest" });
+  const v3Proposals = await yam.contracts.gov3.getPastEvents("ProposalCreated", {
+    fromBlock: 11185996,
+    toBlock: 11797475
+  });
   for (let i = 0; i < v3Proposals.length; i++) {
     let id = v3Proposals[i]["returnValues"]["id"];
     let targets = [];
@@ -540,6 +566,74 @@ export const getProposals = async (yam) => {
       more: more,
     });
   }
+
+  const v4Proposals = await yam.contracts.gov4.getPastEvents("ProposalCreated", {
+    fromBlock: 11778137,
+    toBlock: "latest"
+  });
+  for (let i = 0; i < v4Proposals.length; i++) {
+    let id = v4Proposals[i]["returnValues"]["id"];
+    let targets = [];
+    for (let j = 0; j < v4Proposals[i]["returnValues"]["targets"].length; j++) {
+      if (yam.contracts.names[v4Proposals[i]["returnValues"]["targets"][j]]) {
+        targets.push(yam.contracts.names[v4Proposals[i]["returnValues"]["targets"][j]]);
+      } else {
+        targets.push(v4Proposals[i]["returnValues"]["targets"][j]);
+      }
+    }
+
+    let sigs = [];
+    for (let j = 0; j < v4Proposals[i]["returnValues"]["signatures"].length; j++) {
+      if (yam.contracts.names[v4Proposals[i]["returnValues"]["signatures"][j]]) {
+        sigs.push(yam.contracts.names[v4Proposals[i]["returnValues"]["signatures"][j]]);
+      } else {
+        sigs.push(v4Proposals[i]["returnValues"]["signatures"][j]);
+      }
+    }
+
+    let ins = [];
+    for (let j = 0; j < v4Proposals[i]["returnValues"]["calldatas"].length; j++) {
+      let abi_types;
+      try {
+        abi_types = v4Proposals[i]["returnValues"]["signatures"][j].split("(")[1].split(")").slice(0, -1)[0].split(",");
+        if (abi_types[0] != "") {
+          let result = yam.web3.eth.abi.decodeParameters(abi_types, v4Proposals[i]["returnValues"]["calldatas"][j]);
+          let fr = [];
+          for (let k = 0; k < result.__length__; k++) {
+            fr.push(result[k.toString()]);
+          }
+          ins.push(fr);
+        }
+      } catch (e) {
+        console.log("Error parsing prop", e);
+      }
+    }
+    let proposal = await yam.contracts.gov4.methods.proposals(id).call();
+    console.log(proposal)
+    let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
+    let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
+
+    let more;
+    if (knownSnapshots[v4Proposals[i]["transactionHash"]]) {
+      more = knownSnapshots[v4Proposals[i]["transactionHash"]];
+    }
+
+    proposals.push({
+      gov: "gov4",
+      description: v4Proposals[i]["returnValues"]["description"],
+      state: stateMap[await yam.contracts.gov4.methods.state(id).call()],
+      targets: targets,
+      signatures: sigs,
+      inputs: ins,
+      forVotes: fv.toNumber(),
+      againstVotes: av.toNumber(),
+      id: id,
+      start: v4Proposals[i]["returnValues"]["startBlock"],
+      end: v4Proposals[i]["returnValues"]["endBlock"],
+      hash: v4Proposals[i]["transactionHash"],
+      more: more,
+    });
+  }
   // proposals[1].state = "Active"
   // proposals[0].state = "Active"
   return proposals;
@@ -549,7 +643,7 @@ export const getVotingPowers = async (yam, proposals, account) => {
   let BASE24 = new BigNumber(10).pow(24);
   let powers = [];
   for (let i = 0; i < proposals.length; i++) {
-    if (proposals[i].gov == "gov") {
+    if (proposals[i].gov === "gov") {
       let receipt = await yam.contracts.gov.methods.getReceipt(proposals[i].id, account).call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
       if (power == 0) {
@@ -561,7 +655,7 @@ export const getVotingPowers = async (yam, proposals, account) => {
         voted: receipt[0],
         side: receipt[1],
       });
-    } else if (proposals[i].gov == "gov2") {
+    } else if (proposals[i].gov === "gov2") {
       let receipt = await yam.contracts.gov2.methods.getReceipt(proposals[i].id, account).call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
       if (power == 0) {
@@ -573,11 +667,23 @@ export const getVotingPowers = async (yam, proposals, account) => {
         voted: receipt[0],
         side: receipt[1],
       });
-    } else {
+    } else if (proposals[i].gov === "gov3") {
       let receipt = await yam.contracts.gov3.methods.getReceipt(proposals[i].id, account).call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
       if (power == 0) {
         power = new BigNumber(await yam.contracts.gov3.methods.getPriorVotes(account, proposals[i].start).call()).div(BASE24).toNumber();
+      }
+      powers.push({
+        hash: proposals[i].hash,
+        power: power,
+        voted: receipt[0],
+        side: receipt[1],
+      });
+    } else {
+      let receipt = await yam.contracts.gov4.methods.getReceipt(proposals[i].id, account).call();
+      let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
+      if (power == 0) {
+        power = new BigNumber(await yam.contracts.gov4.methods.getPriorVotes(account, proposals[i].start).call()).div(BASE24).toNumber();
       }
       powers.push({
         hash: proposals[i].hash,
@@ -611,7 +717,10 @@ export const getDelegatedBalance = async (yam, account) => {
 };
 
 export const migrate = async (yam, account) => {
-  return yam.contracts.yamV2migration.methods.migrate().send({ from: account, gas: 320000 });
+  return yam.contracts.yamV2migration.methods.migrate().send({
+    from: account,
+    gas: 320000
+  });
 };
 
 export const getMigrationEndTime = async (yam) => {
@@ -697,7 +806,10 @@ export const delegatorRewards = async (yam, account) => {
 };
 
 export const migrateV3 = async (yam, account, onTxHash) => {
-  return await yam.contracts.migrator.methods.migrate().send({ from: account, gas: 250000 }, async (error, txHash) => {
+  return await yam.contracts.migrator.methods.migrate().send({
+    from: account,
+    gas: 250000
+  }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
       console.log("Migration error", error);
@@ -714,7 +826,10 @@ export const migrateV3 = async (yam, account, onTxHash) => {
 };
 
 export const claimVested = async (yam, account, onTxHash) => {
-  return await yam.contracts.migrator.methods.claimVested().send({ from: account, gas: 140000 });
+  return await yam.contracts.migrator.methods.claimVested().send({
+    from: account,
+    gas: 140000
+  });
 };
 
 export const scalingFactors = async (yam) => {
@@ -879,13 +994,15 @@ export const getContributorVestingData = async (yam, contributor) => {
 
 export const claimContributorVestedTokens = async (yam, account, contributor) => {
   console.log("account, accountId", account, contributor)
-  return yam.contracts.VestingPool.methods.payout(contributor.id).send({ from: account, gas: 120000 });
+  return yam.contracts.VestingPool.methods.payout(contributor.id).send({
+    from: account,
+    gas: 120000
+  });
 };
 
 const requestHttp = (url) => {
   return new Promise((resolve, reject) => {
-    request(
-      {
+    request({
         url: url,
         json: true,
       },
@@ -972,3 +1089,4 @@ export const getValue = async (asset_name) => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/" + asset_name);
   return data;
 };
+
