@@ -9,7 +9,8 @@ import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
-import DelegateForm from "components/DelegateForm";
+import DelegateForm from "./components/DelegateForm";
+import YamLoader from "components/YamLoader";
 
 import useGovernance from "hooks/useGovernance";
 import { useWallet } from "use-wallet";
@@ -58,26 +59,32 @@ const Governance: React.FC = () => {
           <CardTitle text="On-chain Proposals" />
           <Spacer size="sm" />
           <CardContent>
-            <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-              <StyledProposalContentInner>
-                <StyledDescriptionMain>Description</StyledDescriptionMain>
-                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                <StyledStateMain>State</StyledStateMain>
-                <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-                <StyledButtonMain>Action</StyledButtonMain>
-              </StyledProposalContentInner>
-            </Box>
-            <Spacer size="sm" />
-            {proposals && (
-              <Surface>
-                {proposals.map((prop, i) => {
-                  if (i === 0) {
-                    return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
-                  } else {
-                    return [<Separator />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
-                  }
-                })}
-              </Surface>
+            {proposals ? (
+              <>
+                <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+                  <StyledProposalContentInner>
+                    <StyledDescriptionMain>Description</StyledDescriptionMain>
+                    <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
+                    <StyledStateMain>State</StyledStateMain>
+                    <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+                    <StyledButtonMain>Action</StyledButtonMain>
+                  </StyledProposalContentInner>
+                </Box>
+                <Spacer size="sm" />
+                {proposals && (
+                  <Surface>
+                    {proposals.map((prop, i) => {
+                      if (i === 0) {
+                        return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
+                      } else {
+                        return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
+                      }
+                    })}
+                  </Surface>
+                )}
+              </>
+            ) : (
+              <YamLoader space={320}></YamLoader>
             )}
           </CardContent>
         </Card>}
