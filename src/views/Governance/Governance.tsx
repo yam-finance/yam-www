@@ -9,7 +9,7 @@ import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
-import DelegateForm from "./components/DelegateForm";
+import DelegateForm from "components/DelegateForm";
 import YamLoader from "components/YamLoader";
 
 import useGovernance from "hooks/useGovernance";
