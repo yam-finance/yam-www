@@ -10,11 +10,10 @@ import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
 
-import DelegateForm from "./components/DelegateForm";
+import DelegateForm from "components/DelegateForm";
 import YamLoader from "components/YamLoader";
 
 import useGovernance from "hooks/useGovernance";
-import useFarming from "hooks/useFarming";
 import { useWallet } from "use-wallet";
 
 import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProposalContentInner } from "./components/Proposal";
@@ -25,17 +24,10 @@ const Governance: React.FC = () => {
   const { account } = useWallet();
   const {
     proposals,
-    isRegistered,
-    isDelegated,
     onVote,
     onRegister,
-    onDelegateStaked,
-    onDelegateUnstaked,
-    onRemoveDelegation,
   } = useGovernance();
-  const { stakedBalanceYAMETH } = useFarming();
 
-  const isStaked = !!stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0;
   const [astronaut, setAstronaut] = useState("👨‍🚀");
 
   const updateAstronaut = useCallback(() => {
@@ -63,23 +55,7 @@ const Governance: React.FC = () => {
           <Spacer />
         </Split>
         <Spacer size="md" />
-        {account && (
-          <Card>
-            <CardTitle text="Delegate Vote" />
-            <CardContent>
-              <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                 <DelegateForm
-                  isStaked={isStaked}
-                  isDelegated={isDelegated}
-                  onDelegateStaked={onDelegateStaked}
-                  onDelegateUnstaked={onDelegateUnstaked}
-                  onRemoveDelegation={onRemoveDelegation}
-                />
-              </Box>
-            </CardContent>
-          </Card>
-        )}
-        <Spacer size="md" />
+        {account &&
         <Card>
           <CardTitle text="On-chain Proposals" />
           <Spacer size="sm" />
@@ -112,7 +88,9 @@ const Governance: React.FC = () => {
               <YamLoader space={320}></YamLoader>
             )}
           </CardContent>
-        </Card>
+        </Card>}
+        <Spacer size="md" />
+        <DelegateForm />
       </Container>
     </Page>
   );

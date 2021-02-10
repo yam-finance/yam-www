@@ -25,6 +25,7 @@ import Governance from "views/Governance";
 import Addresses from "views/Addresses";
 import Umbrella from "views/Landings/Umbrella";
 import Contributor from "views/Contributor";
+import Delegate from "views/Delegate";
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -72,6 +73,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/contributors">
             <Contributor />
+          </Route>
+          <Route exact path="/delegate">
+            <Delegate />
           </Route>
         </Switch>
       </Providers>
