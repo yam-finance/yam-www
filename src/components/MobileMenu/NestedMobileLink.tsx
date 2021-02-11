@@ -22,17 +22,7 @@ const NestedMobileLink: React.FC<NestedMobileLinkProps> = ({children, label}) =>
   )
 }
 
-const slideDown = keyframes`
-  0% {
-    transform: translateX(100%)
-  }
-  100% {
-    transform: translateX(0);
-  }
-`;
-
 const StyledNestedMenu = styled.div`
-  animation: ${slideDown} 0.3s forwards ease-out;
   display: flex;
   flex-direction: column;
   background-color: #ddd;
@@ -44,7 +34,7 @@ const StyledLabel = styled.label`
   font-size: 24px;
   font-weight: 700;
   padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
-  text-align: center;
+  text-align: right;
   cursor: pointer;
   text-decoration: none;
   width: 100%;

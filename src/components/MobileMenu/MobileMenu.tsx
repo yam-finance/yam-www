@@ -89,7 +89,7 @@ const StyledMobileMenu = styled.div`
   top: 0;
   left: 100%;
   bottom: 0;
-  width: 418px;
+  width: 248px;
 `;
 
 const StyledRouterLink = styled(NavLink)`
@@ -98,7 +98,7 @@ const StyledRouterLink = styled(NavLink)`
   font-size: 24px;
   font-weight: 700;
   padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
-  text-align: center;
+  text-align: right;
   text-decoration: none;
   width: 100%;
   &:hover {
@@ -115,7 +115,7 @@ const StyledLink = styled.a`
   font-size: 24px;
   font-weight: 700;
   padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
-  text-align: center;
+  text-align: right;
   text-decoration: none;
   width: 100%;
   &:hover {
