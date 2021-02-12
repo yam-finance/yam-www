@@ -3,11 +3,8 @@ import { Container, Spacer } from "react-neu";
 import Page from 'components/Page';
 import PageHeader from "components/PageHeader";
 import DelegateForm from "components/DelegateForm";
-import { useWallet } from "use-wallet";
 
 const Delegate = () => {
-  const { account } = useWallet();
-
   return (
     <Page>
       <Container>
