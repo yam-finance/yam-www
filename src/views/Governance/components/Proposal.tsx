@@ -51,8 +51,8 @@ export const ProposalEntry: React.FC<ProposalProps> = ({ prop, onVote, onRegiste
           <StyledState>{prop.state}</StyledState>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
           <StyledButton>
-            {(prop.state != "Active" && <Button size="sm" onClick={handleVoteClick} text="View" variant="tertiary" />) ||
-              (prop.state == "Active" && <Button size="sm" text="Vote" onClick={handleVoteClick} />)}
+            {(prop.state !== "Active" && <Button size="sm" onClick={handleVoteClick} text="View" variant="tertiary" />) ||
+              (prop.state === "Active" && <Button size="sm" text="Vote" onClick={handleVoteClick} />)}
           </StyledButton>
         </StyledProposalContentInner>
       </Box>

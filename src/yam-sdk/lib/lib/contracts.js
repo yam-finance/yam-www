@@ -111,6 +111,7 @@ export class Contracts {
     this.gov = new this.web3.eth.Contract(YAMGovJson.abi);
     this.gov2 = new this.web3.eth.Contract(YAMGovJson.abi);
     this.gov3 = new this.web3.eth.Contract(DualGovJson.abi);
+    this.gov4 = new this.web3.eth.Contract(DualGovJson.abi);
     this.timelock = new this.web3.eth.Contract(YAMTimelockJson.abi);
     this.weth = new this.web3.eth.Contract(WETHJson);
     this.setProvider(provider, networkId);
@@ -173,6 +174,7 @@ export class Contracts {
     this.reserves2.options.address = "0x97990B693835da58A281636296D2Bf02787DEa17";
     this.otc.options.address = "0x92ab5CCe7Af1605da2681458aE52a0BEc4eCB74C";
     this.gov3.options.address = "0xC32f9b0292965c5dd4A0Ea1abfcC1f5a36d66986";
+    this.gov4.options.address = "0x2da253835967d6e721c6c077157f9c9742934aea";
     this.voting_eth_pool.options.address = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
     this.eth_rebaser.options.address = "0xD93f403b432d39aa0f736C2021bE6051d85a1D55";
     this.masterchef.options.address = "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd";
@@ -232,7 +234,8 @@ export class Contracts {
     this.names[this.gov2.options.address] = "Second Governor";
     this.names[this.otc.options.address] = "OTC";
     this.names[this.reserves2.options.address] = "New Reserves";
-    this.names[this.gov3.options.address] = "Dual Governor (current)";
+    this.names[this.gov3.options.address] = "Dual Governor (old)";
+    this.names[this.gov4.options.address] = "Dual Governor (current)";
     this.names[this.eth_rebaser.options.address] = "ETH Rebaser";
     this.names[this.voting_eth_pool.options.address] = "Voting ETH/YAM Incentivizer";
     this.names[this.masterchef.options.address] = "Master Chef";
