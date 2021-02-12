@@ -24,12 +24,8 @@ const useDahsboard = () => {
   const [treasuryValues, setTreasuryValues] = useState<any>();
   const [seriesReserves, setSeriesReserves] = useState<SeriesInterface[]>();
   const [assetsData, setAssetsData] = useState<Object[]>();
-  const [currentPrice, setCurrentPrice] = useState<any>();
-  const [change24, setChange24] = useState<any>();
-  const [maxSupply, setMaxSupply] = useState<any>();
-  const [marketCap, setMarketCap] = useState<any>();
-  const [treasuryValue, SetTreasuryValue] = useState<any>();
   const [assetsColors, setAssetsColors] = useState<any>();
+  const [yamObject, setYamObject] = useState<Object>();
 
   const { darkMode, colors } = useTheme();
   const { totalYUsdValue, totalWETHValue, totalDPIValue, totalUMAValue, totalBalanceIndexCoop, getAssetsHistory } = useTreasury();
@@ -339,15 +335,17 @@ const useDahsboard = () => {
     setSeriesReserves(series);
     setAssetsData(assets);
     setAssetsColors(assetsColors);
-    setCurrentPrice(numeral(yamValues.market_data.current_price.usd).format("0.00a"));
-    setMaxSupply(numeral(yamValues.market_data.max_supply).format("0.00a"));
-    setMarketCap(numeral(yamValues.market_data.market_cap.usd).format("0.00a"));
-    setChange24(numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%");
     let treasuryAssets = 0;
     assets.forEach((asset:any) => {
       treasuryAssets += asset.number;
     });
-    SetTreasuryValue(typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--");
+    setYamObject({
+      currentPrice: numeral(yamValues.market_data.current_price.usd).format("0.00a"),
+      maxSupply: numeral(yamValues.market_data.max_supply).format("0.00a"),
+      marketCap: numeral(yamValues.market_data.market_cap.usd).format("0.00a"),
+      treasuryValue: typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--",
+      change24: numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%"
+    });
   }, [darkMode, status, yam, totalDPIValue, treasuryValues]);
 
   useEffect(() => {
@@ -360,11 +358,7 @@ const useDahsboard = () => {
   return {
     assetsData,
     seriesReserves,
-    currentPrice,
-    change24,
-    maxSupply,
-    marketCap,
-    treasuryValue,
+    yamObject,
     assetsColors
   };
 

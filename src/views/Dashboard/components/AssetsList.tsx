@@ -13,12 +13,17 @@ import styled from "styled-components";
 import YamLoader from "components/YamLoader";
 
 interface AssetsListProps {
-  assets: any
+  assetsData: any
 }
 
-const AssetsList: React.FC<AssetsListProps> = ({assets}) => {
+const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
 
   const [csvData, setCSVData] = useState<any>([]);
+  const assets = assetsData?.sort((a:any,b:any):number => {
+    if (a.number > b.number) return -1;
+    if (a.number < b.number) return 1;
+    return 0;
+  });
 
   useEffect(() => {
     const csvData = [];

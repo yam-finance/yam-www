@@ -7,22 +7,18 @@ import FancyValue from "components/FancyValue";
 import Split from "components/Split";
 
 interface TopCardProps {
-  currentPrice:any;
-  change24:any;
-  maxSupply:any;
-  marketCap:any;
-  treasuryValue:any;
+  yamObject: any;
 }
 
-const TopCards: React.FC<TopCardProps> = ({currentPrice, change24, maxSupply, marketCap, treasuryValue}) => {
+const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
 
   const col = [
     [
       {
         icon: "💲",
         label: "Current price TWAP",
-        value: currentPrice ? `${currentPrice} USDC` : "--",
-        hint: change24 ? change24 : "-",
+        value: yamObject?.currentPrice ? `${yamObject?.currentPrice} USDC` : "--",
+        hint: yamObject?.change24 ? yamObject?.change24 : "-",
         tooltip: "24h Change",
       },
     ],
@@ -30,7 +26,7 @@ const TopCards: React.FC<TopCardProps> = ({currentPrice, change24, maxSupply, ma
       {
         icon: "🧱",
         label: "YAM total supply",
-        value: maxSupply ? maxSupply : "--",
+        value: yamObject?.maxSupply ? yamObject?.maxSupply : "--",
         hint: "",
         tooltip: "",
       },
@@ -39,7 +35,7 @@ const TopCards: React.FC<TopCardProps> = ({currentPrice, change24, maxSupply, ma
       {
         icon: "🌎",
         label: "Marketcap",
-        value: marketCap ? `$${marketCap}` : "--",
+        value: yamObject?.marketCap ? `$${yamObject?.marketCap}` : "--",
         hint: "",
         tooltip: "",
       },
@@ -48,7 +44,7 @@ const TopCards: React.FC<TopCardProps> = ({currentPrice, change24, maxSupply, ma
       {
         icon: "💰",
         label: "Treasury value",
-        value: treasuryValue ? treasuryValue : "--",
+        value: yamObject?.treasuryValue ? yamObject?.treasuryValue : "--",
         hint: "",
         tooltip: "",
       },
