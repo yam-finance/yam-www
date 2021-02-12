@@ -5,6 +5,10 @@ import PageHeader from "components/PageHeader";
 import DelegateForm from "components/DelegateForm";
 
 const Delegate = () => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/develop
   return (
     <Page>
       <Container>

@@ -10,6 +10,10 @@ import RegistrationButton from 'components/RegistrationButton';
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/develop
 import DelegateForm from "components/DelegateForm";
 import YamLoader from "components/YamLoader";
 

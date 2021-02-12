@@ -76,7 +76,7 @@ export const DelegateForm: React.FC = () => {
       // TODO This should become a self-contained component shared across codebase
       <Fragment>
         <Box row justifyContent="center">
-          <Button onClick={handleUnlockWalletClick} text="Please unlock wallet to access" variant="secondary" />
+          <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display proposals" variant="secondary" />
         </Box>
         <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
       </Fragment>
