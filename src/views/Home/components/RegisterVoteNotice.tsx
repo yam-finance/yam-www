@@ -9,7 +9,6 @@ const RegisterVoteNotice: React.FC = () => {
   const { isRegistered } = useGovernance();
 
   return (
-
     <Notice isHidden={isRegistered}>
       <NoticeIcon>{isRegistered ? "✔️" : "🗣️"}</NoticeIcon>
       <NoticeContent>
