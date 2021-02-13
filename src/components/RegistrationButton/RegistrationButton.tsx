@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import styled from "styled-components";
-
 import { Button } from 'react-neu';
 import useGovernance from "hooks/useGovernance";
 import { useWallet } from "use-wallet";
