@@ -20,17 +20,6 @@ import {
 } from "hooks/useTimer";
 import styled from "styled-components";
 
-import strain from "../../assets/randomStrainNFT.png";
-import twoStrainsNew from "../../assets/two-strains-new.png";
-import {
-  getDaysRemaining,
-  getHoursMinusDaysRemaining,
-  getMinutesMinusHoursRemaining,
-  getSecondsMinusMinutesRemaining,
-  useTimer,
-} from "hooks/useTimer";
-import styled from "styled-components";
-
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
   const { vestedBalance } = useVesting();
