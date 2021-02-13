@@ -7,4 +7,6 @@ export interface ContextValues {
   setParentOneNftId: (nftId: string) => void,
   setParentTwoNftId: (nftId: string) => void,
   burnAmount: string,
+  childName: string,
+  setChildName: (name: string) => void;
 }

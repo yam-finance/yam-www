@@ -18,6 +18,7 @@ const Provider: React.FC = ({ children }) => {
   const [parentOneNftId, setParentOneNftId] = useState('')
   const [parentTwoNftId, setParentTwoNftId] = useState('')
   const [burnAmount, setBurnAmount] = useState('0')
+  const [childName, setChildName] = useState('')
   
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -52,6 +53,8 @@ const Provider: React.FC = ({ children }) => {
       setParentOneNftId,
       setParentTwoNftId,
       burnAmount,
+      setChildName,
+      childName,
     }}>
       {children}
     </Context.Provider>

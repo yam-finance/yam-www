@@ -11,6 +11,8 @@ const Context = createContext<ContextValues>({
     setParentOneNftId: () => { },
     setParentTwoNftId: () => { },
     burnAmount: '0',
+    childName: '',
+    setChildName: () => { },
 })
 
 export default Context
