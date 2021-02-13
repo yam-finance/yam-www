@@ -6,7 +6,7 @@ import { AbiItem } from 'web3-utils'
 
 import ERC20ABI from 'constants/abi/ERC20.json'
 import ERC1155 from 'constants/abi/ERC1155.json'
-import { NftInfo, NftInstance } from 'constants/poolValues'
+import { COOLING_OFF_IN_SECONDS, NftInfo, NftInstance } from 'constants/poolValues'
 import StrainNFTLPTokenWrapper from '../yam-sdk/lib/clean_build/contracts/StrainNFTLPTokenWrapper.json'
 import StrainNft from '../yam-sdk/lib/clean_build/contracts/StrainNFT.json'
 import {
@@ -249,8 +249,15 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nft.nftId, userAddress);
       nft.lpBalance = lpBalance;
       nft.poolId = poolId
+
+      // add convenience property
+      const now = new Date().getTime() / 1000;
+      const timePassed = now - Number(nft.nftInfo ? nft.nftInfo.lastBreedTime : 0);
+      nft.canBreed = timePassed > COOLING_OFF_IN_SECONDS;
       userItems.push(nft)
     }
+    // for debugging
+    console.log(userItems)
     return userItems
   } catch (e) {
     return []

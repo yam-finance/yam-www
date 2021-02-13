@@ -11,6 +11,7 @@ export const MIN_STRN_ETH_LP_VALUE = 4.20;
 export const MIN_STRN_XIOT_LP_VALUE = 0.000000542;
 export const DEFAULT_NFT_SIZE = 250;
 export const ENABLE_BURN_REWARDS_AMOUNT = new BigNumber(10).pow(18);
+export const COOLING_OFF_IN_SECONDS = 5400;
 
 export const MIN_LP_AMOUNTS = [
   MIN_STRN_ETH_LP_VALUE,
@@ -51,7 +52,8 @@ export interface NftInstance {
   attribs?: AttribCollection;
   poolId?: string;
   isDestroying?: boolean;
-  nftInfo?: NftInfo
+  nftInfo?: NftInfo;
+  canBreed?: boolean;
 }
 
 export interface AttribCollection {
