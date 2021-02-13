@@ -29,6 +29,7 @@ const Redeem: React.FC<{ poolId: string }> = ({ poolId }) => {
         if (!getItemValue(isRedeeming, poolId)) {
             return (
                 <Button
+                    disabled
                     onClick={() => onRedeem(poolId)}
                     text="Claim &amp; Unstake"
                     variant="secondary"

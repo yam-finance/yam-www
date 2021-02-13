@@ -1,17 +1,14 @@
-import React from 'react'
+import React from "react";
 
-import styled from 'styled-components'
-import Page from 'components/Page'
-import useStrainNfts from 'hooks/useStrainNfts'
-import StyledNft from 'views/Common/StyledNft'
-import GenerateNFT from './GenerateNFT'
-import Harvest from './Harvest'
+import styled from "styled-components";
+import Page from "components/Page";
+import useStrainNfts from "hooks/useStrainNfts";
+import StyledNft from "views/Common/StyledNft";
+import GenerateNFT from "./GenerateNFT";
+import Harvest from "./Harvest";
 
 const Apothecary: React.FC = () => {
-
-  const {
-    strainNftCollection
-  } = useStrainNfts()
+  const { strainNftCollection } = useStrainNfts();
 
   return (
     <Page>
@@ -21,26 +18,24 @@ const Apothecary: React.FC = () => {
           <Harvest />
         </StyledGenerationForm>
         <StyledNftSection>
-          {strainNftCollection && strainNftCollection.map(nft => (
-            <StyledNft
-              key={nft.nftId}
-              nft={nft}
-            />
-          ))}
+          {strainNftCollection &&
+            strainNftCollection.map((nft) => (
+              <StyledNft key={nft.nftId} nft={nft} />
+            ))}
         </StyledNftSection>
       </StyledPageLayout>
     </Page>
-  )
-}
+  );
+};
 
 const StyledPageLayout = styled.div`
   display: grid;
-  grid-template-columns: 1.5fr 3fr ;
+  grid-template-columns: 1.5fr 3fr;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
-`
+`;
 
 const StyledGenerationForm = styled.div`
   margin: 1rem;
@@ -48,12 +43,12 @@ const StyledGenerationForm = styled.div`
   min-width: 300px;
 
   @media (max-width: 600px) {
-    border-bottom: 1px solid #00AC69;
+    border-bottom: 1px solid #00ac69;
   }
-`
+`;
 
 const StyledNftSection = styled.div`
-  border-left: 1px solid #00AC69;
+  border-left: 1px solid #00ac69;
   display: flex;
   flex-flow: row wrap;
   width: 100%;
@@ -61,7 +56,6 @@ const StyledNftSection = styled.div`
   @media (max-width: 600px) {
     border-left: unset;
   }
-`
+`;
 
-export default Apothecary
-
+export default Apothecary;

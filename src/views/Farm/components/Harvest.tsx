@@ -48,6 +48,7 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
       return (
         <Button
           full
+          disabled
           onClick={() => onHarvest(poolId)}
           text="Claim"
         />

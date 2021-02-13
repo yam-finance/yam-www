@@ -27,13 +27,23 @@ export const getPoolStartTime = async (poolContract) => {
   return await poolContract.methods.starttime().call();
 };
 
-export const stake = async (poolContract, provider, poolId, amount, account, onTxHash) => {
+export const stake = async (
+  poolContract,
+  provider,
+  poolId,
+  amount,
+  account,
+  onTxHash
+) => {
   let now = new Date().getTime() / 1000;
   // const gas = GAS_LIMIT.STAKING[tokenName.toUpperCase()] || GAS_LIMIT.STAKING.DEFAULT;
   const gas = GAS_LIMIT.STAKING.DEFAULT;
   if (now >= 1597172400) {
     return poolContract.methods
-      .stake(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(poolId)))
+      .stake(
+        String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+        String(new BigNumber(poolId))
+      )
       .send({ from: account, gas: 400000 }, async (error, txHash) => {
         if (error) {
           onTxHash && onTxHash("");
@@ -53,12 +63,22 @@ export const stake = async (poolContract, provider, poolId, amount, account, onT
   }
 };
 
-export const unstake = async (poolContract, provider, poolId, amount, account, onTxHash) => {
+export const unstake = async (
+  poolContract,
+  provider,
+  poolId,
+  amount,
+  account,
+  onTxHash
+) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
-      .withdraw(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), String(new BigNumber(poolId)))
-      .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      .withdraw(
+        String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+        String(new BigNumber(poolId))
+      )
+      .send({ from: account, gas: 600000 }, async (error, txHash) => {
         if (error) {
           onTxHash && onTxHash("");
           console.log("Unstaking error", error);
@@ -78,41 +98,57 @@ export const unstake = async (poolContract, provider, poolId, amount, account, o
 };
 
 export const harvest = async (poolContract, provider, account, onTxHash) => {
-  return poolContract.methods.getReward().send({ from: account, gas: 800000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Claim error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(provider, txHash);
-    if (!status) {
-      console.log("Claim transaction failed.");
-      return false;
-    }
-    return true;
-  });
+  return poolContract.methods
+    .getReward()
+    .send({ from: account, gas: 800000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Claim error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Claim transaction failed.");
+        return false;
+      }
+      return true;
+    });
 };
 
-export const harvestNfts = async (poolContract, provider, account, nftids, onTxHash) => {
-  console.log('getRewards nftids', nftids)
-  return poolContract.methods.getReward(nftids).send({ from: account, gas: 800000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Claim error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(provider, txHash);
-    if (!status) {
-      console.log("Claim transaction failed.");
-      return false;
-    }
-    return true;
-  });
+export const harvestNfts = async (
+  poolContract,
+  provider,
+  account,
+  nftids,
+  onTxHash
+) => {
+  console.log("getRewards nftids", nftids);
+  return poolContract.methods
+    .getReward(nftids)
+    .send({ from: account, gas: 800000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Claim error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Claim transaction failed.");
+        return false;
+      }
+      return true;
+    });
 };
 
-export const redeem = async (poolContract, provider, poolId, account, onTxHash) => {
+export const redeem = async (
+  poolContract,
+  provider,
+  poolId,
+  account,
+  onTxHash
+) => {
   let now = new Date().getTime() / 1000;
   if (now >= 1597172400) {
     return poolContract.methods
@@ -136,7 +172,13 @@ export const redeem = async (poolContract, provider, poolId, account, onTxHash) 
   }
 };
 
-export const singleExit = async (poolContract, provider, amount, account, onTxHash) => {
+export const singleExit = async (
+  poolContract,
+  provider,
+  amount,
+  account,
+  onTxHash
+) => {
   return poolContract.methods
     .exit(String(new BigNumber(amount).times(new BigNumber(10).pow(18))))
     .send({ from: account, gas: 400000 }, async (error, txHash) => {
@@ -197,43 +239,68 @@ export const getSingleStakingEndTime = async (yam, pool) => {
   return yam.toBigN(endTime || 0);
 };
 
-export const stxpSingleRedeem = async (poolContract, provider, amount, account, onTxHash) => {
-  return poolContract.methods.exit(String(amount)).send({ from: account, gas: 400000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Redeem error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(provider, txHash);
-    if (!status) {
-      console.log("Redeem transaction failed.");
-      return false;
-    }
-    return true;
-  });
-};
-
-export const stxpSingleHarvest = async (poolContract, provider, account, onTxHash) => {
-  return poolContract.methods.redeem().send({ from: account, gas: 400000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Redeem error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(provider, txHash);
-    if (!status) {
-      console.log("Redeem transaction failed.");
-      return false;
-    }
-    return true;
-  });
-};
-
-export const stxpSingleStake = async (poolContract, provider, duration, amount, account, onTxHash) => {
+export const stxpSingleRedeem = async (
+  poolContract,
+  provider,
+  amount,
+  account,
+  onTxHash
+) => {
   return poolContract.methods
-    .stake(String(new BigNumber(amount).times(new BigNumber(10).pow(18))), duration)
+    .exit(String(amount))
+    .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Redeem error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Redeem transaction failed.");
+        return false;
+      }
+      return true;
+    });
+};
+
+export const stxpSingleHarvest = async (
+  poolContract,
+  provider,
+  account,
+  onTxHash
+) => {
+  return poolContract.methods
+    .redeem()
+    .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Redeem error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Redeem transaction failed.");
+        return false;
+      }
+      return true;
+    });
+};
+
+export const stxpSingleStake = async (
+  poolContract,
+  provider,
+  duration,
+  amount,
+  account,
+  onTxHash
+) => {
+  return poolContract.methods
+    .stake(
+      String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+      duration
+    )
     .send({ from: account, gas: 400000 }, async (error, txHash) => {
       if (error) {
         onTxHash && onTxHash("");
@@ -250,10 +317,27 @@ export const stxpSingleStake = async (poolContract, provider, duration, amount, 
     });
 };
 
-export const generateNft = async (poolContract, provider, poolId, amount, name, account, onTxHash) => {
-  console.log('create NFT', String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))), name)
+export const generateNft = async (
+  poolContract,
+  provider,
+  poolId,
+  amount,
+  name,
+  account,
+  onTxHash
+) => {
+  console.log(
+    "create NFT",
+    String(poolId),
+    String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+    name
+  );
   return poolContract.methods
-    .craftStrainNFT(String(poolId), String(new BigNumber(amount).times(new BigNumber(10).pow(18))), name)
+    .craftStrainNFT(
+      String(poolId),
+      String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+      name
+    )
     .send({ from: account, gas: 1300000 }, async (error, txHash) => {
       if (error) {
         onTxHash && onTxHash("");
@@ -270,10 +354,23 @@ export const generateNft = async (poolContract, provider, poolId, amount, name, 
     });
 };
 
-export const addNftStake = async (poolContract, provider, poolId, nftId, amount, stxpTokens, account, onTxHash) => {
-  console.log('add stake to NFT', String(poolId), amount, stxpTokens)
-  const lpAmount = String(new BigNumber(amount).times(new BigNumber(10).pow(18)));
-  const stxpAmount = String(new BigNumber(stxpTokens).times(new BigNumber(10).pow(18)))
+export const addNftStake = async (
+  poolContract,
+  provider,
+  poolId,
+  nftId,
+  amount,
+  stxpTokens,
+  account,
+  onTxHash
+) => {
+  console.log("add stake to NFT", String(poolId), amount, stxpTokens);
+  const lpAmount = String(
+    new BigNumber(amount).times(new BigNumber(10).pow(18))
+  );
+  const stxpAmount = String(
+    new BigNumber(stxpTokens).times(new BigNumber(10).pow(18))
+  );
   return poolContract.methods
     .stake(String(poolId), nftId, lpAmount, stxpAmount)
     .send({ from: account, gas: 1300000 }, async (error, txHash) => {
@@ -289,10 +386,17 @@ export const addNftStake = async (poolContract, provider, poolId, nftId, amount,
         return false;
       }
       return true;
-    })
+    });
 };
 
-export const burnNft = async (poolContract, provider, nftId, poolId, account, onTxHash) => {
+export const burnNft = async (
+  poolContract,
+  provider,
+  nftId,
+  poolId,
+  account,
+  onTxHash
+) => {
   return poolContract.methods
     .burn(String(nftId), String(poolId))
     .send({ from: account, gas: 400000 }, async (error, txHash) => {
@@ -310,8 +414,6 @@ export const burnNft = async (poolContract, provider, nftId, poolId, account, on
       return true;
     });
 };
-
-
 
 export const getSingleEarned = async (yam, pool, account) => {
   return yam.toBigN(await pool.methods.withdrawableRewards(account).call());
@@ -331,7 +433,9 @@ export const getStaked = async (yam, pool, account) => {
 
 export const getCurrentPrice = async (yam) => {
   // FORBROCK: get current YAM price
-  return new BigNumber(await yam.contracts.rebaser.methods.getCurrentTWAP().call());
+  return new BigNumber(
+    await yam.contracts.rebaser.methods.getCurrentTWAP().call()
+  );
 };
 
 export const getTargetPrice = async (yam) => {
@@ -340,14 +444,20 @@ export const getTargetPrice = async (yam) => {
 
 export const getCirculatingSupply = async (yam) => {
   let now = await yam.web3.eth.getBlock("latest");
-  let scalingFactor = yam.toBigN(await yam.contracts.yamV3.methods.yamsScalingFactor().call());
-  let starttime = yam.toBigN(await yam.contracts.eth_pool.methods.starttime().call()).toNumber();
+  let scalingFactor = yam.toBigN(
+    await yam.contracts.yamV3.methods.yamsScalingFactor().call()
+  );
+  let starttime = yam
+    .toBigN(await yam.contracts.eth_pool.methods.starttime().call())
+    .toNumber();
   let timePassed = now["timestamp"] - starttime;
   if (timePassed < 0) {
     return 0;
   }
   let yamsDistributed = yam.toBigN((8 * timePassed * 250000) / 625000); //yams from first 8 pools
-  let starttimePool2 = yam.toBigN(await yam.contracts.ycrv_pool.methods.starttime().call()).toNumber();
+  let starttimePool2 = yam
+    .toBigN(await yam.contracts.ycrv_pool.methods.starttime().call())
+    .toNumber();
   timePassed = now["timestamp"] - starttime;
   let pool2Yams = yam.toBigN((timePassed * 1500000) / 625000); // yams from second pool. note: just accounts for first week
   let circulating = pool2Yams
@@ -360,7 +470,11 @@ export const getCirculatingSupply = async (yam) => {
 
 export const getLastRebaseTimestamp = async (yam) => {
   try {
-    const lastTimestamp = yam.toBigN(await yam.contracts.rebaser.methods.lastRebaseTimestampSec().call()).toNumber();
+    const lastTimestamp = yam
+      .toBigN(
+        await yam.contracts.rebaser.methods.lastRebaseTimestampSec().call()
+      )
+      .toNumber();
     return lastTimestamp;
   } catch (e) {
     console.log(e);
@@ -368,24 +482,28 @@ export const getLastRebaseTimestamp = async (yam) => {
 };
 
 export const delegate = async (yam, account, onTxHash) => {
-  return yam.contracts.yamV3.methods.delegate(account).send({ from: account, gas: 150000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Delegate error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(yam.web3.eth, txHash);
-    if (!status) {
-      console.log("Delegate transaction failed.");
-      return false;
-    }
-    return true;
-  });
+  return yam.contracts.yamV3.methods
+    .delegate(account)
+    .send({ from: account, gas: 150000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Delegate error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(yam.web3.eth, txHash);
+      if (!status) {
+        console.log("Delegate transaction failed.");
+        return false;
+      }
+      return true;
+    });
 };
 
 export const didDelegate = async (yam, account) => {
-  return (await yam.contracts.yamV3.methods.delegates(account).call()) === account;
+  return (
+    (await yam.contracts.yamV3.methods.delegates(account).call()) === account
+  );
 };
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {
@@ -432,29 +550,46 @@ export const getProposals = async (yam) => {
     let targets = [];
     for (let j = 0; j < v1Proposals[i]["returnValues"]["targets"].length; j++) {
       if (yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]) {
-        targets.push(yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]);
+        targets.push(
+          yam.contracts.names[v1Proposals[i]["returnValues"]["targets"][j]]
+        );
       } else {
         targets.push(v1Proposals[i]["returnValues"]["targets"][j]);
       }
     }
 
     let sigs = [];
-    for (let j = 0; j < v1Proposals[i]["returnValues"]["signatures"].length; j++) {
-      if (yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]) {
-        sigs.push(yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]);
+    for (
+      let j = 0;
+      j < v1Proposals[i]["returnValues"]["signatures"].length;
+      j++
+    ) {
+      if (
+        yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]
+      ) {
+        sigs.push(
+          yam.contracts.names[v1Proposals[i]["returnValues"]["signatures"][j]]
+        );
       } else {
         sigs.push(v1Proposals[i]["returnValues"]["signatures"][j]);
       }
     }
 
     let ins = [];
-    for (let j = 0; j < v1Proposals[i]["returnValues"]["calldatas"].length; j++) {
+    for (
+      let j = 0;
+      j < v1Proposals[i]["returnValues"]["calldatas"].length;
+      j++
+    ) {
       let abi_types = v1Proposals[i]["returnValues"]["signatures"][j]
         .split("(")[1]
         .split(")")
         .slice(0, -1)[0]
         .split(",");
-      let result = yam.web3.eth.abi.decodeParameters(abi_types, v1Proposals[i]["returnValues"]["calldatas"][j]);
+      let result = yam.web3.eth.abi.decodeParameters(
+        abi_types,
+        v1Proposals[i]["returnValues"]["calldatas"][j]
+      );
       let fr = [];
       for (let k = 0; k < result.__length__; k++) {
         fr.push(result[k.toString()]);
@@ -486,38 +621,58 @@ export const getProposals = async (yam) => {
       more: more,
     });
   }
-  const v2Proposals = await yam.contracts.gov2.getPastEvents("ProposalCreated", {
-    fromBlock: 10926022,
-    toBlock: "latest",
-  });
+  const v2Proposals = await yam.contracts.gov2.getPastEvents(
+    "ProposalCreated",
+    {
+      fromBlock: 10926022,
+      toBlock: "latest",
+    }
+  );
   for (let i = 0; i < v2Proposals.length; i++) {
     let id = v2Proposals[i]["returnValues"]["id"];
     let targets = [];
     for (let j = 0; j < v2Proposals[i]["returnValues"]["targets"].length; j++) {
       if (yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]) {
-        targets.push(yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]);
+        targets.push(
+          yam.contracts.names[v2Proposals[i]["returnValues"]["targets"][j]]
+        );
       } else {
         targets.push(v2Proposals[i]["returnValues"]["targets"][j]);
       }
     }
 
     let sigs = [];
-    for (let j = 0; j < v2Proposals[i]["returnValues"]["signatures"].length; j++) {
-      if (yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]) {
-        sigs.push(yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]);
+    for (
+      let j = 0;
+      j < v2Proposals[i]["returnValues"]["signatures"].length;
+      j++
+    ) {
+      if (
+        yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]
+      ) {
+        sigs.push(
+          yam.contracts.names[v2Proposals[i]["returnValues"]["signatures"][j]]
+        );
       } else {
         sigs.push(v2Proposals[i]["returnValues"]["signatures"][j]);
       }
     }
 
     let ins = [];
-    for (let j = 0; j < v2Proposals[i]["returnValues"]["calldatas"].length; j++) {
+    for (
+      let j = 0;
+      j < v2Proposals[i]["returnValues"]["calldatas"].length;
+      j++
+    ) {
       let abi_types = v2Proposals[i]["returnValues"]["signatures"][j]
         .split("(")[1]
         .split(")")
         .slice(0, -1)[0]
         .split(",");
-      let result = yam.web3.eth.abi.decodeParameters(abi_types, v2Proposals[i]["returnValues"]["calldatas"][j]);
+      let result = yam.web3.eth.abi.decodeParameters(
+        abi_types,
+        v2Proposals[i]["returnValues"]["calldatas"][j]
+      );
       let fr = [];
       for (let k = 0; k < result.__length__; k++) {
         fr.push(result[k.toString()]);
@@ -560,10 +715,16 @@ export const getVotingPowers = async (yam, proposals, account) => {
   let powers = [];
   for (let i = 0; i < proposals.length; i++) {
     if (proposals[i].gov == "gov") {
-      let receipt = await yam.contracts.gov.methods.getReceipt(proposals[i].id, account).call();
+      let receipt = await yam.contracts.gov.methods
+        .getReceipt(proposals[i].id, account)
+        .call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
       if (power == 0) {
-        power = new BigNumber(await yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call())
+        power = new BigNumber(
+          await yam.contracts.yamV3.methods
+            .getPriorVotes(account, proposals[i].start)
+            .call()
+        )
           .div(BASE24)
           .toNumber();
       }
@@ -574,10 +735,16 @@ export const getVotingPowers = async (yam, proposals, account) => {
         side: receipt[1],
       });
     } else {
-      let receipt = await yam.contracts.gov2.methods.getReceipt(proposals[i].id, account).call();
+      let receipt = await yam.contracts.gov2.methods
+        .getReceipt(proposals[i].id, account)
+        .call();
       let power = new BigNumber(receipt[2]).div(BASE24).toNumber();
       if (power == 0) {
-        power = new BigNumber(await yam.contracts.yamV3.methods.getPriorVotes(account, proposals[i].start).call())
+        power = new BigNumber(
+          await yam.contracts.yamV3.methods
+            .getPriorVotes(account, proposals[i].start)
+            .call()
+        )
           .div(BASE24)
           .toNumber();
       }
@@ -594,26 +761,38 @@ export const getVotingPowers = async (yam, proposals, account) => {
 
 export const getCurrentVotingPower = async (yam, account) => {
   let BASE24 = new BigNumber(10).pow(24);
-  return new BigNumber(await yam.contracts.yamV3.methods.getCurrentVotes(account).call()).dividedBy(BASE24).toNumber();
+  return new BigNumber(
+    await yam.contracts.yamV3.methods.getCurrentVotes(account).call()
+  )
+    .dividedBy(BASE24)
+    .toNumber();
 };
 
 export const getVotes = async (yam) => {
   const votesRaw = new BigNumber(
-    await yam.contracts.yam.methods.getCurrentVotes("0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84").call(),
+    await yam.contracts.yam.methods
+      .getCurrentVotes("0x683A78bA1f6b25E29fbBC9Cd1BFA29A51520De84")
+      .call()
   ).dividedBy(10 ** 24);
   return votesRaw;
 };
 
 export const getScalingFactor = async (yam) => {
-  return new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call());
+  return new BigNumber(
+    await yam.contracts.yamV3.methods.yamsScalingFactor().call()
+  );
 };
 
 export const getDelegatedBalance = async (yam, account) => {
-  return new BigNumber(await yam.contracts.yam.methods.balanceOfUnderlying(account).call()).dividedBy(10 ** 24);
+  return new BigNumber(
+    await yam.contracts.yam.methods.balanceOfUnderlying(account).call()
+  ).dividedBy(10 ** 24);
 };
 
 export const migrate = async (yam, account) => {
-  return yam.contracts.yamV2migration.methods.migrate().send({ from: account, gas: 320000 });
+  return yam.contracts.yamV2migration.methods
+    .migrate()
+    .send({ from: account, gas: 320000 });
 };
 
 export const getMigrationEndTime = async (yam) => {
@@ -630,8 +809,12 @@ export const getV2Supply = async (yam) => {
 export const migrationStarted = async (yam) => {
   let now = new Date().getTime() / 1000; // get current time
   let startTime = await yam.contracts.migrator.methods.startTime().call();
-  let token_initialized = await yam.contracts.migrator.methods.token_initialized().call();
-  let delegatorRewardsSet = await yam.contracts.migrator.methods.delegatorRewardsSet().call();
+  let token_initialized = await yam.contracts.migrator.methods
+    .token_initialized()
+    .call();
+  let delegatorRewardsSet = await yam.contracts.migrator.methods
+    .delegatorRewardsSet()
+    .call();
   if (now >= startTime && token_initialized && delegatorRewardsSet) {
     return true;
   }
@@ -640,7 +823,9 @@ export const migrationStarted = async (yam) => {
 
 const yamToFragment = async (yam, amount) => {
   let BASE24 = new BigNumber(10).pow(24);
-  let scalingFactor = new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call());
+  let scalingFactor = new BigNumber(
+    await yam.contracts.yamV3.methods.yamsScalingFactor().call()
+  );
 
   return amount.multipliedBy(scalingFactor).dividedBy(BASE24);
 };
@@ -648,7 +833,9 @@ const yamToFragment = async (yam, amount) => {
 export const currVested = async (yam, account) => {
   let BASE = new BigNumber(10).pow(18);
 
-  let vested = new BigNumber(await yam.contracts.migrator.methods.vested(account).call());
+  let vested = new BigNumber(
+    await yam.contracts.migrator.methods.vested(account).call()
+  );
   let amt = await yamToFragment(yam, vested);
   return amt.dividedBy(BASE);
 };
@@ -667,7 +854,9 @@ export const currUnclaimedDelegatorRewards = async (yam, account) => {
   //let totalVesting = new BigNumber(await yam.contracts.migrator.methods.delegator_vesting(account).call());
   //let claimed = new BigNumber(await yam.contracts.migrator.methods.delegator_claimed(account).call());
   //let unclaimed = ((totalVesting.multipliedBy(percDone)).minus(claimed));
-  let unclaimed = new BigNumber(await yam.contracts.strneth_pool.methods.earned(account).call());
+  let unclaimed = new BigNumber(
+    await yam.contracts.strneth_pool.methods.earned(account).call()
+  );
   let amt = await yamToFragment(yam, unclaimed);
   return amt.dividedBy(BASE);
 };
@@ -683,8 +872,12 @@ export const currUnclaimedMigratorVesting = async (yam, account) => {
   if (percDone.gt(1)) {
     percDone = new BigNumber(1);
   }
-  let totalVesting = new BigNumber(await yam.contracts.migrator.methods.vesting(account).call());
-  let claimed = new BigNumber(await yam.contracts.migrator.methods.claimed(account).call());
+  let totalVesting = new BigNumber(
+    await yam.contracts.migrator.methods.vesting(account).call()
+  );
+  let claimed = new BigNumber(
+    await yam.contracts.migrator.methods.claimed(account).call()
+  );
   let unclaimed = totalVesting.multipliedBy(percDone).minus(claimed);
   let amt = await yamToFragment(yam, unclaimed);
   return amt.dividedBy(BASE);
@@ -694,30 +887,36 @@ export const delegatorRewards = async (yam, account) => {
   let BASE = new BigNumber(10).pow(18);
   let BASE24 = new BigNumber(10).pow(24);
 
-  let rewards = new BigNumber(await yam.contracts.migrator.methods.delegator_vesting(account).call());
+  let rewards = new BigNumber(
+    await yam.contracts.migrator.methods.delegator_vesting(account).call()
+  );
   let amt = await yamToFragment(yam, rewards);
   return amt.dividedBy(BASE);
 };
 
 export const migrateV3 = async (yam, account, onTxHash) => {
-  return await yam.contracts.migrator.methods.migrate().send({ from: account, gas: 200000 }, async (error, txHash) => {
-    if (error) {
-      onTxHash && onTxHash("");
-      console.log("Migration error", error);
-      return false;
-    }
-    onTxHash && onTxHash(txHash);
-    const status = await waitTransaction(yam.web3.eth, txHash);
-    if (!status) {
-      console.log("Migration transaction failed.");
-      return false;
-    }
-    return true;
-  });
+  return await yam.contracts.migrator.methods
+    .migrate()
+    .send({ from: account, gas: 200000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Migration error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(yam.web3.eth, txHash);
+      if (!status) {
+        console.log("Migration transaction failed.");
+        return false;
+      }
+      return true;
+    });
 };
 
 export const claimVested = async (yam, account, onTxHash) => {
-  return await yam.contracts.migrator.methods.claimVested().send({ from: account, gas: 140000 });
+  return await yam.contracts.migrator.methods
+    .claimVested()
+    .send({ from: account, gas: 140000 });
 };
 
 const sleep = (ms) => {
