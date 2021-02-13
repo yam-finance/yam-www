@@ -8,13 +8,13 @@ const Context = createContext<ContextValues>({
     isBreeding: false,
     onBreeding: () => { },
     setBurnAmount: () => { },
-    setStxpAmount: () => { },
     setParentOneNftId: () => { },
     setParentTwoNftId: () => { },
     burnAmount: '0',
-    stxpAmount: '0',
     childName: '',
     setChildName: () => { },
+    lpTokenAmount: '0',
+    setLpTokenAmount: () => { },
 })
 
 export default Context

@@ -13,8 +13,8 @@ const Provider: React.FC = ({ children }) => {
   const [parentOneNftId, setParentOneNftId] = useState('')
   const [parentTwoNftId, setParentTwoNftId] = useState('')
   const [burnAmount, setBurnAmount] = useState('0')
-  const [stxpAmount, setStxpAmount] = useState('0')
   const [childName, setChildName] = useState('')
+  const [lpTokenAmount, setLpTokenAmount] = useState('0');
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -28,7 +28,7 @@ const Provider: React.FC = ({ children }) => {
     await breedNfts(yam.contracts.strain_nft_crafter,
       yam.web3.eth,
       "0",
-      stxpAmount,
+      lpTokenAmount,
       burnAmount,
       childName,
       parentOneNftId,
@@ -53,13 +53,13 @@ const Provider: React.FC = ({ children }) => {
       isBreeding,
       onBreeding: handleBreeding,
       setBurnAmount,
-      setStxpAmount: setStxpAmount,
       setParentOneNftId,
       setParentTwoNftId,
       burnAmount,
-      stxpAmount,
       setChildName,
       childName,
+      lpTokenAmount,
+      setLpTokenAmount,
     }}>
       {children}
     </Context.Provider>
