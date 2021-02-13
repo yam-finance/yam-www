@@ -13,6 +13,7 @@ const Provider: React.FC = ({ children }) => {
   const [parentOneNftId, setParentOneNftId] = useState('')
   const [parentTwoNftId, setParentTwoNftId] = useState('')
   const [burnAmount, setBurnAmount] = useState('0')
+  const [stxpAmount, setStxpAmount] = useState('0')
   const [childName, setChildName] = useState('')
   const [lpTokenAmount, setLpTokenAmount] = useState('0');
 
@@ -29,6 +30,7 @@ const Provider: React.FC = ({ children }) => {
       yam.web3.eth,
       "0",
       lpTokenAmount,
+      stxpAmount,
       burnAmount,
       childName,
       parentOneNftId,
@@ -53,9 +55,11 @@ const Provider: React.FC = ({ children }) => {
       isBreeding,
       onBreeding: handleBreeding,
       setBurnAmount,
+      setStxpAmount: setStxpAmount,
       setParentOneNftId,
       setParentTwoNftId,
       burnAmount,
+      stxpAmount,
       setChildName,
       childName,
       lpTokenAmount,
