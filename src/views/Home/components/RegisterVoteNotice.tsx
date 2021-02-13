@@ -17,7 +17,7 @@ const RegisterVoteNotice: React.FC = () => {
           <Box flex={1} />
           <Spacer size="sm" />
           {!isRegistered && <RegistrationButton size='sm'/>}
-         </StyledNoticeContentInner>
+        </StyledNoticeContentInner>
       </NoticeContent>
     </Notice>
   );

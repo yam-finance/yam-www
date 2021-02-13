@@ -28,6 +28,7 @@ const Governance: React.FC = () => {
     onRegister,
   } = useGovernance();
 
+  const [hoverOnRegister, setHoverOnRegister] = useState(false);
   const [astronaut, setAstronaut] = useState("👨‍🚀");
 
   const updateAstronaut = useCallback(() => {

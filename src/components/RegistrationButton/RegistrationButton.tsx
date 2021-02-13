@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 
 import { Button } from 'react-neu';
@@ -13,17 +13,19 @@ const RegistrationButton: React.FC<RegistrationButtonProps> = ({ size }) => {
   const { isRegistered, isRegistering, onRegister, onUnregister } = useGovernance();
   const { account } = useWallet();
 
+  const [hover, setHover] = useState(false);
 
   return (
-    <StyledButton>
-    {!isRegistered
-      ? <Button full disabled={!account || isRegistering} onClick={onRegister} size={size} text={isRegistering ? "Registering..." : "Register"} variant="secondary" />
-      : <Button full disabled={isRegistering} onClick={onUnregister} size={size} text="Unregister" variant="secondary" />
-    }
-    </StyledButton>
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      {!isRegistered
+        ? <Button full disabled={!account || isRegistering} onClick={onRegister} size={size} text={isRegistering ? "Registering..." : "Register"} variant="secondary" />
+        : <Button full disabled={isRegistering} onClick={onUnregister} size={size} text={ hover ? "Unregister" : "Registered"} variant="secondary" />
+      }
+    </div>
   )
 }
-
-const StyledButton = styled.div``;
 
 export default RegistrationButton;
