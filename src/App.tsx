@@ -35,6 +35,7 @@ import { chainId } from 'constants/tokenAddresses'
 import { StakingProvider } from 'contexts/Staking'
 import { StrainNftsProvider } from 'contexts/StrainNfts'
 import Gallery from 'views/Gallery'
+import { GreenhouseProvider } from 'contexts/Greenhouse'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -66,7 +67,7 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/gallery">
             <Gallery />
-          </Route>          
+          </Route>
           {/*<Route exact path="/dispensary">
             <Dispensary />
           </Route>
@@ -117,13 +118,15 @@ const Providers: React.FC = ({ children }) => {
               <FarmingProvider>
                 <StrainNftsProvider>
                   <StakingProvider>
-                    <MigrationProvider>
-                      <VestingProvider>
-                        {/*<GovernanceProvider>*/}
-                        {children}
-                        {/*</GovernanceProvider>*/}
-                      </VestingProvider>
-                    </MigrationProvider>
+                    <GreenhouseProvider>
+                      <MigrationProvider>
+                        <VestingProvider>
+                          {/*<GovernanceProvider>*/}
+                          {children}
+                          {/*</GovernanceProvider>*/}
+                        </VestingProvider>
+                      </MigrationProvider>
+                    </GreenhouseProvider>
                   </StakingProvider>
                 </StrainNftsProvider>
               </FarmingProvider>
