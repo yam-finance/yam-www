@@ -13,4 +13,5 @@ export interface ContextValues {
   setChildName: (name: string) => void;
   lpTokenAmount: string,
   setLpTokenAmount: (amount: string) => void,
+  getBreedingFee: () => string,
 }

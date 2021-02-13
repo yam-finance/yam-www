@@ -17,6 +17,7 @@ const Context = createContext<ContextValues>({
     setChildName: () => { },
     lpTokenAmount: '0',
     setLpTokenAmount: () => { },
+    getBreedingFee: () => '0'
 })
 
 export default Context

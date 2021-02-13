@@ -254,6 +254,10 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const now = new Date().getTime() / 1000;
       const timePassed = now - Number(nft.nftInfo ? nft.nftInfo.lastBreedTime : 0);
       nft.canBreed = timePassed > COOLING_OFF_IN_SECONDS;
+
+      // TODO: get real bread fee from genetics contract
+      nft.breedFee = "100000000000000000"
+
       userItems.push(nft)
     }
     // for debugging
