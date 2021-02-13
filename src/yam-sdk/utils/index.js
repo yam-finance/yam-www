@@ -1053,3 +1053,8 @@ export const getYamPrice = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2");
   return data.market_data.current_price.usd;
 };
+
+export const getYam30D = async () => {
+  const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2/market_chart?vs_currency=usd&days=30&interval=daily");
+  return data.prices;
+};
