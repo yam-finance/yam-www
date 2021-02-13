@@ -16,7 +16,7 @@ const RegisterVoteNotice: React.FC = () => {
           <span>{isRegistered ? `You've successfuly registered to vote!` : `It's time to register to vote for onchain and Snapshot proposals.`}</span>
           <Box flex={1} />
           <Spacer size="sm" />
-          {!isRegistered && <RegistrationButton/>}
+          {!isRegistered && <RegistrationButton size='sm'/>}
          </StyledNoticeContentInner>
       </NoticeContent>
     </Notice>
