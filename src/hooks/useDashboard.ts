@@ -16,8 +16,6 @@ import {
   getYam
 } from "yam-sdk/utils";
 import numeral from "numeral";
-import { keyframes } from "styled-components";
-
 
 const useDahsboard = () => {
   const yam = useYam();
@@ -91,12 +89,12 @@ const useDahsboard = () => {
     const indexCoopLPRewards = (await getIndexCoopLPRewards(yam)) || 0;
     const SushiRewards = (await getSushiRewards(yam)) || 0;
 
-    const change24WETH = numeral(wethValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24DPI = numeral(dpiValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24UMA = numeral(umaValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24YUSD = numeral(yusdValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24IndexCoop = numeral(indexCoopValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24Sushi = numeral(sushiValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24WETH = numeral(wethValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24DPI = numeral(dpiValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24UMA = numeral(umaValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24YUSD = numeral(yusdValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24IndexCoop = numeral(indexCoopValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24Sushi = numeral(sushiValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
 
     const reservesHistory = [];
     const assetsColors = [];
@@ -261,7 +259,7 @@ const useDahsboard = () => {
 
     const assets: Object[] = [
       {
-        icon: wethValues.image.large,
+        icon: wethValues?.image.large,
         name: "Wrapped Ether",
         index: "WETH",
         quantity: numeral(totalWETHValue).format("0,0.00"),
@@ -271,7 +269,7 @@ const useDahsboard = () => {
         number: assetsHistory.WETH.latest,
       },
       {
-        icon: sushiValues.image.large,
+        icon: sushiValues?.image.large,
         name: "Sush Gains",
         index: "SUSHI",
         quantity: numeral(SushiRewards).format("0,0.00"),
@@ -281,7 +279,7 @@ const useDahsboard = () => {
         number: assetsHistory.Sushi.latest,
       },
       {
-        icon: yusdValues.image.large,
+        icon: yusdValues?.image.large,
         name: "yearn Curve",
         index: "yyDAI+",
         quantity: numeral(totalYUsdValue).format("0,0.00"),
@@ -291,7 +289,7 @@ const useDahsboard = () => {
         number: assetsHistory.yUSD.latest,
       },
       {
-        icon: dpiValues.image.large,
+        icon: dpiValues?.image.large,
         name: "DefiPulse Index",
         index: "DPI",
         quantity: numeral(DPIBalance).format("0,0.00"),
@@ -301,7 +299,7 @@ const useDahsboard = () => {
         number: assetsHistory.DPI.latest,
       },
       {
-        icon: indexCoopValues.image.large,
+        icon: indexCoopValues?.image.large,
         name: "Index Coop Gains",
         index: "INDEX",
         quantity: numeral(totalBalanceIndexCoop).format("0,0.00"),
@@ -311,7 +309,7 @@ const useDahsboard = () => {
         number: assetsHistory.INDEX.latest,
       },
       {
-        icon: indexCoopValues.image.large,
+        icon: indexCoopValues?.image.large,
         name: "Index Coop LP",
         index: "INDEXLP",
         quantity: numeral(indexCoopLPRewards).format("0,0.00"),
@@ -321,7 +319,7 @@ const useDahsboard = () => {
         number: assetsHistory.INDEXLP.latest,
       },
       {
-        icon: umaValues.image.large,
+        icon: umaValues?.image.large,
         name: "UMA Voting Token",
         index: "UMA",
         quantity: numeral(totalUMAValue).format("0,0.00"),
@@ -340,11 +338,11 @@ const useDahsboard = () => {
       treasuryAssets += asset.number;
     });
     setYamObject({
-      currentPrice: numeral(yamValues.market_data.current_price.usd).format("0.00a"),
-      maxSupply: numeral(yamValues.market_data.max_supply).format("0.00a"),
-      marketCap: numeral(yamValues.market_data.market_cap.usd).format("0.00a"),
+      currentPrice: numeral(yamValues?.market_data.current_price.usd).format("0.00a"),
+      maxSupply: numeral(yamValues?.market_data.max_supply).format("0.00a"),
+      marketCap: numeral(yamValues?.market_data.market_cap.usd).format("0.00a"),
       treasuryValue: typeof totalYUsdValue !== "undefined" && totalYUsdValue !== 0 ? "~$" + numeral(treasuryAssets).format("0.00a") : "--",
-      change24: numeral(yamValues.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%"
+      change24: numeral(yamValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%"
     });
   }, [darkMode, status, yam, totalDPIValue, treasuryValues]);
 

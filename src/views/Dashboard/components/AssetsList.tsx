@@ -44,7 +44,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
     <>
       <Spacer size="md" />
       <Card>
-        <Box row alignItems="center" justifyContent="space-between" marginLeft={5} marginRight={5}>
+        <StyledBox row alignItems="center" justifyContent="space-between" marginLeft={5} marginRight={5}>
           <Box justifyContent="center" width="100%">
             <CardTitle text="💰 Treasury Assets" />
           </Box>
@@ -53,9 +53,11 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
               return false;
             }
           }}>
-            <Button disabled={!assets} size="sm" text="Download" variant="tertiary" />
+            <StyledButton>
+              <Button disabled={!assets} size="sm" text="💾" variant="tertiary" />
+            </StyledButton>
           </CSVLink>
-        </Box>
+        </StyledBox>
         <Spacer size="sm" />
         <div style={{overflow: "auto"}}>
           <CardContent>
@@ -175,6 +177,19 @@ export const StyledValueMain = styled.span`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
+`;
+
+export const StyledButton = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  @media (max-width: 768px) {
+    right: 0;
+  }
+`;
+
+export const StyledBox = styled(Box)`
+  position: relative;
 `;
 
 export default AssetsList;
