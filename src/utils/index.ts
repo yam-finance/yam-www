@@ -257,7 +257,7 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       userItems.push(nft)
     }
     // for debugging
-    console.log(userItems)
+    console.log('users NFTs', userItems)
     return userItems
   } catch (e) {
     return []

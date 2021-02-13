@@ -415,6 +415,53 @@ export const burnNft = async (
     });
 };
 
+export const breedNfts = async (
+  crafterContract,
+  provider,
+  poolId,
+  amount,
+  stxpAmount,
+  stxpBurnAmount,
+  name,
+  parentOne,
+  parentTwo,
+  account,
+  onTxHash
+) => {
+  console.log(
+    "breading NFTs",
+    String(poolId),
+    String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+    String(new BigNumber(stxpAmount).times(new BigNumber(10).pow(18))),
+    String(new BigNumber(stxpBurnAmount).times(new BigNumber(10).pow(18))),
+    name
+  );
+  return crafterContract.methods
+    .breedStrainNFT(
+      String(poolId),
+      String(new BigNumber(amount).times(new BigNumber(10).pow(18))),
+      String(new BigNumber(stxpAmount).times(new BigNumber(10).pow(18))),
+      String(new BigNumber(stxpBurnAmount).times(new BigNumber(10).pow(18))),
+      name,
+      String(parentOne),
+      String(parentTwo)
+    )
+    .send({ from: account, gas: 1300000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("breeding NFTs error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Breeding NFT transaction failed.");
+        return false;
+      }
+      return true;
+    });
+};
+
 export const getSingleEarned = async (yam, pool, account) => {
   return yam.toBigN(await pool.methods.withdrawableRewards(account).call());
 };
