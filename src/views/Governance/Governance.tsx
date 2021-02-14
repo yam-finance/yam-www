@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useMemo, useState } from "react";
-import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button, Input } from "react-neu";
+import React, { useEffect, useCallback, useState } from "react";
+import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button } from "react-neu";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
@@ -16,7 +16,7 @@ import YamLoader from "components/YamLoader";
 import useGovernance from "hooks/useGovernance";
 import { useWallet } from "use-wallet";
 
-import { ProposalEntry, StyledDescription, StyledState, StyledButton, StyledProposalContentInner } from "./components/Proposal";
+import { ProposalEntry, StyledProposalContentInner } from "./components/Proposal";
 
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
@@ -28,7 +28,6 @@ const Governance: React.FC = () => {
     onRegister,
   } = useGovernance();
 
-  const [hoverOnRegister, setHoverOnRegister] = useState(false);
   const [astronaut, setAstronaut] = useState("👨‍🚀");
 
   const updateAstronaut = useCallback(() => {
@@ -93,7 +92,7 @@ const Governance: React.FC = () => {
           </CardContent>
         </Card>}
         <Spacer size="md" />
-        <DelegateForm />
+        {account && <DelegateForm />}
       </Container>
     </Page>
   );

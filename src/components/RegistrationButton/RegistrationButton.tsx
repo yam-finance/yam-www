@@ -17,6 +17,7 @@ const RegistrationButton: React.FC<RegistrationButtonProps> = ({ size }) => {
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      style={{ width: '125px' }}
     >
       {!isRegistered
         ? <Button full disabled={!account || isRegistering} onClick={onRegister} size={size} text={isRegistering ? "Registering..." : "Register"} variant="secondary" />
