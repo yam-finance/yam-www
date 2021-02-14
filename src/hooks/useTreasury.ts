@@ -221,7 +221,6 @@ const useTreasury = () => {
         color: "#2a9d8f"
       },
     };
-    console.log("history", history);
     return history;
   };
 
