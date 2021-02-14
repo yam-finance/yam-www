@@ -85,7 +85,8 @@ const StyledNestedMenu = styled.div`
   flex-direction: column;
   @media (max-width: 770px) {
     position: relative;
-    background-color: #ddd;
+    background-color: rgba(194 , 163, 174, 0.33);
+    padding-left: 30px;
   }
 `;
 
