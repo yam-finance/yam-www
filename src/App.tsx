@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { UseWalletProvider } from "use-wallet";
 
-import MobileMenu from "components/MobileMenu";
 import TopBar from "components/TopBar";
 
 import { BalancesProvider } from "contexts/Balances";
@@ -14,7 +13,6 @@ import { VestingProvider } from "contexts/Vesting";
 import { GovernanceProvider } from "contexts/Governance";
 import YamProvider from "contexts/YamProvider";
 import useLocalStorage from "hooks/useLocalStorage";
-import styled from "styled-components";
 
 import Farm from "views/Farm";
 import FAQ from "views/FAQ";
@@ -28,21 +26,11 @@ import Contributor from "views/Contributor";
 import Delegate from "views/Delegate";
 
 const App: React.FC = () => {
-  const [mobileMenu, setMobileMenu] = useState(false);
-
-  const handleDismissMobileMenu = useCallback(() => {
-    setMobileMenu(false);
-  }, [setMobileMenu]);
-
-  const handlePresentMobileMenu = useCallback(() => {
-    setMobileMenu(true);
-  }, [setMobileMenu]);
 
   return (
     <Router>
       <Providers>
-        <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
-        <MobileMenu onDismiss={handleDismissMobileMenu} visible={mobileMenu} />
+        <TopBar />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -117,15 +105,5 @@ const Providers: React.FC = ({ children }) => {
     </ThemeProvider>
   );
 };
-
-const StyledLink = styled.a`
-  color: ${(props) => props.theme.colors.grey[500]};
-  padding-left: ${(props) => props.theme.spacing[3]}px;
-  padding-right: ${(props) => props.theme.spacing[3]}px;
-  text-decoration: none;
-  &:hover {
-    color: ${(props) => props.theme.colors.grey[600]};
-  }
-`;
 
 export default App;
