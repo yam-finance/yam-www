@@ -6,11 +6,12 @@ interface StyleRouterLinkProps {
   target?: string;
   label?: string;
   style?: any;
+  onDismiss?: () => void;
 }
 
-const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style}) => {
+const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss}) => {
   return (
-    <StyledLink exact activeClassName="active" to={target || ''} style={style}>{label}</StyledLink>
+    <StyledLink exact activeClassName="active" to={target || ''} style={style} onClick={onDismiss}>{label}</StyledLink>
   )
 }
 
@@ -32,7 +33,7 @@ const StyledLink = styled(NavLink)`
     font-size: 24px;
     font-weight: 700;
     padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
-    text-align: center;
+    text-align: right;
     text-decoration: none;
     width: 100%;
     &:hover {
