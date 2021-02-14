@@ -125,7 +125,6 @@ const useDahsboard = () => {
       }
     }
 
-    console.log(reservesHistory);
 
     let now = Math.floor(Date.now() / 1000);
     let reserves: TimeSeries[] = [];
