@@ -12,6 +12,7 @@ import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
 import DelegateForm from "components/DelegateForm";
 import YamLoader from "components/YamLoader";
+import UnlockWalletModal from "components/UnlockWalletModal";
 
 import useGovernance from "hooks/useGovernance";
 import { useWallet } from "use-wallet";
@@ -29,6 +30,7 @@ const Governance: React.FC = () => {
   } = useGovernance();
 
   const [astronaut, setAstronaut] = useState("👨‍🚀");
+  const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
 
   const updateAstronaut = useCallback(() => {
     const newAstro = ASTRONAUTS[Math.floor(Math.random() * ASTRONAUTS.length)];
@@ -39,6 +41,16 @@ const Governance: React.FC = () => {
     const refresh = setInterval(updateAstronaut, 1000);
     return () => clearInterval(refresh);
   }, [updateAstronaut]);
+
+
+  // TODO Move these to their own component
+  const handleDismissUnlockModal = useCallback(() => {
+    setUnlockModalIsOpen(false);
+  }, [setUnlockModalIsOpen]);
+
+  const handleUnlockWalletClick = useCallback(() => {
+    setUnlockModalIsOpen(true);
+  }, [setUnlockModalIsOpen]);
 
   return (
     <Page>
@@ -53,7 +65,7 @@ const Governance: React.FC = () => {
           <Spacer />
           <Button full text="Off-chain Voting" href="https://snapshot.page/#/yam" variant="tertiary" />
           <Spacer />
-          <RegistrationButton />
+          <RegistrationButton width='125px' />
           <Spacer />
         </Split>
         <Spacer size="md" />
@@ -92,7 +104,17 @@ const Governance: React.FC = () => {
           </CardContent>
         </Card>}
         <Spacer size="md" />
-        {account && <DelegateForm />}
+        {account
+          ? <DelegateForm />
+          : (
+            <>
+              <Box row justifyContent="center">
+                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to delegate" variant="secondary" />
+              </Box>
+              <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
+            </>
+          )
+        }
       </Container>
     </Page>
   );
