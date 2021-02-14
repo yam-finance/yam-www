@@ -9,8 +9,8 @@ export const migrator = "0x72cfed9293cbfb2bfc7515c413048c697c6c811c";
 export const chainId = 4;
 export const base_image_url = "https://nft-image-service.herokuapp.com/";
 //export const infura_key = 'https://rinkeby.infura.io/v3/1b38871d05fa4d3298a3096c6e863c97';
-export const infura_key =
-  "https://rinkeby.infura.io/v3/b939aead2bdf44ad89eecac113a4e143";
+//export const infura_key =
+  //"https://rinkeby.infura.io/v3/b939aead2bdf44ad89eecac113a4e143";
 
 // mainnet
 const strn = "0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f";
@@ -47,6 +47,8 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
     strainNFTCrafterAddress: "0x7b8B851D4e26D46f68bF3F2C67a220398B7DB234",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
+    strainNFTGeneticsAdderss: "...",
+    // src/yam-sdk/lib/clean_build/contracts/StrainNFTGenetics.json
   },
   4: {
     strnTokenAddress: "0x49aF0fa41DdC96F502c67AcdC5064aABFf6b43da",
@@ -67,6 +69,8 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
     strainNFTCrafterAddress: "0xe952Ff878342a46E9C7A7C56ff6DFf3a97b8d92e",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
+    strainNFTGeneticsAdderss: "0xd3836d1f5b498aeea59ada59b085d2ed28adc9c3",
+    // src/yam-sdk/lib/clean_build/contracts/StrainNFTGenetics.json
   },
 };
 

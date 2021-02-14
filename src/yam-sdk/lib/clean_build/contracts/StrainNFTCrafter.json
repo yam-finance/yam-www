@@ -187,26 +187,6 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "_queryId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_rng",
-          "type": "uint256"
-        }
-      ],
-      "name": "__callback",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "internalType": "address",
           "name": "pool",
           "type": "address"
@@ -253,130 +233,8 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "_nfts",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "balanceOf",
-      "outputs": [
-        {
           "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_pool",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_stxpAmount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_stxpBurnedAmount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nft1",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nft2",
-          "type": "uint256"
-        }
-      ],
-      "name": "breedStrainNFT",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "nftID",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "poolID",
-          "type": "uint256"
-        }
-      ],
-      "name": "burn",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_pool",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        }
-      ],
-      "name": "craftStrainNFT",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_queryId",
-          "type": "bytes32"
-        }
-      ],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_nfts",
+          "name": "_nft",
           "type": "uint256"
         }
       ],
@@ -658,9 +516,9 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "address",
+          "internalType": "uint256",
           "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "name": "rewards",
@@ -680,71 +538,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_nftGenetics",
-          "type": "address"
-        }
-      ],
-      "name": "setNFTGenetics",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "address",
           "name": "_owner",
           "type": "address"
         }
       ],
       "name": "setOwner",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_strnGenerationFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "setStrnGenerationFee",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_poolid",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nftid",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_stxpAmount",
-          "type": "uint256"
-        }
-      ],
-      "name": "stake",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -874,14 +672,9 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "_nfts",
-          "type": "uint256[]"
+          "internalType": "uint256",
+          "name": "_nft",
+          "type": "uint256"
         }
       ],
       "name": "updateReward",
@@ -903,9 +696,9 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "address",
+          "internalType": "uint256",
           "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "name": "userRewardPerTokenPaid",
@@ -918,6 +711,182 @@
       ],
       "payable": false,
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_nftGenetics",
+          "type": "address"
+        }
+      ],
+      "name": "setNFTGenetics",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_strnGenerationFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setStrnGenerationFee",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_pool",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        }
+      ],
+      "name": "craftStrainNFT",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_queryId",
+          "type": "bytes32"
+        }
+      ],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_pool",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_stxpAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_stxpBurnedAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nft1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nft2",
+          "type": "uint256"
+        }
+      ],
+      "name": "breedStrainNFT",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_queryId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_rng",
+          "type": "uint256"
+        }
+      ],
+      "name": "__callback",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_poolid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nftid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_stxpAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "stake",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nftID",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolID",
+          "type": "uint256"
+        }
+      ],
+      "name": "burn",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     }
   ],

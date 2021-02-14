@@ -42,7 +42,7 @@ const Provider: React.FC = ({ children }) => {
     if (fetchNfts) {
       const startTime = new Date().getTime();
       setFetchNfts(false)
-      getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter)
+      getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter, yam.contracts.strain_nft_genetics)
         .then(nftinstances => {
           const fetchTime = new Date().getTime();
           console.log(`NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
