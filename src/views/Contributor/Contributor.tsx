@@ -8,7 +8,7 @@ import Split from "components/Split";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
 import { contributors } from "utils/misc";
-import { getContributorVestingData, claimContributorVestedTokens } from "yam-sdk/utils";
+import { getContributorVestingData, claimContributorVestedTokens, getYam30D } from "yam-sdk/utils";
 import { useCallback } from "react";
 
 const Contributor: React.FC = () => {
@@ -19,6 +19,7 @@ const Contributor: React.FC = () => {
   const [availableClaimOver, setAvailableClaimOver] = useState<number>();
   const [totalClaimed, setTotalClaimed] = useState<number>();
   const [theBehalf, setTheBehalf] = useState<string>("");
+  const [last30D, setLast30D] = useState<string>("0");
 
   const fetchOnce = useCallback(async () => {
     if (!yam) return;
@@ -35,6 +36,14 @@ const Contributor: React.FC = () => {
       setAvailableClaimOver(vestingData?.availableClaimOver || 0);
       setTotalClaimed(vestingData?.totalClaimed || 0);
     }, 400);
+
+    let totalDays: number = 0;
+    const yam30D = await getYam30D();
+    for (let i = 0; i < yam30D.length; i++) {
+      totalDays += Number(yam30D[i][1]);
+    }
+    setLast30D(numeral(totalDays/30).format("0,0.00a"));
+    
   }, [account, yam, contributor, theBehalf]);
 
   useEffect(() => {
@@ -75,6 +84,7 @@ const Contributor: React.FC = () => {
           <Box column>
             <h2 className="center">{numeral(availableClaim).format("0,0.00a")} of {numeral(availableClaimOver).format("0,0.00a")} YAM Available to Claim</h2>
             <h3 className="center">{numeral(totalClaimed).format("0,0.00a")} YAM Claimed Overtime</h3>
+            <AvgStyle className="center gray"><b>${last30D}/YAM</b> 30d Avg.</AvgStyle>
             <br />
           </Box>
         </Split>
@@ -93,6 +103,12 @@ const Contributor: React.FC = () => {
 export default Contributor;
 
 const UserBalances = styled.h1`
+  text-align: center;
+`;
+
+const AvgStyle = styled.div`
+  color: #ffffff;
+  opacity: 0.66;
   text-align: center;
 `;
 
