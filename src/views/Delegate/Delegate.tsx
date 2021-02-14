@@ -30,7 +30,7 @@ const Delegate = () => {
           : (
             <>
               <Box row justifyContent="center">
-                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display proposals" variant="secondary" />
+                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to delegate" variant="secondary" />
               </Box>
               <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
             </>
