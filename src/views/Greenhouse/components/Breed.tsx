@@ -7,31 +7,33 @@ const Breed: React.FC = () => {
     <DivContainer>
       <BetweenCardsOuterContainer>
         <BetweenCardsInnerContainer>
-          <BurnSTXPContainer>
-            <MidContainerTitle>Burn STXP</MidContainerTitle>
+          <ApproveContainer>
+            <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
             <BurnSTXPSubtitle>Increase chance of rarity</BurnSTXPSubtitle>
-            <AproveButtonContainer>
-              <AproveButton>Aprove STXP</AproveButton>
-            </AproveButtonContainer>
-            <AproveButtonContainer>
-              <AproveButton>Aprove STRN</AproveButton>
-            </AproveButtonContainer>
-            <AproveButtonContainer>
-              <AproveButton>Aprove LP</AproveButton>
-            </AproveButtonContainer>
-          </BurnSTXPContainer>
-          <InputContainer>
-            <MidContainerTitle>LP amount</MidContainerTitle>
-            <DivContainer>
-              <InputForm />
-            </DivContainer>
-          </InputContainer>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve STXP</ApproveButton>
+            </ApproveButtonContainer>
+          </ApproveContainer>
           <InputContainer>
             <MidContainerTitle>STXP amount</MidContainerTitle>
             <DivContainer>
               <InputForm />
             </DivContainer>
-            <STRNFeeLabel>420 STRN Fee</STRNFeeLabel>
+            <FeeLabel>420 STRN Fee</FeeLabel>
+          </InputContainer>
+          <ApproveContainer>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve STRN</ApproveButton>
+            </ApproveButtonContainer>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve LP</ApproveButton>
+            </ApproveButtonContainer>
+          </ApproveContainer>
+          <InputContainer>
+            <MidContainerTitle>LP amount</MidContainerTitle>
+            <DivContainer>
+              <InputForm />
+            </DivContainer>
           </InputContainer>
           <DivContainer>
             <BreedButtonContainer>
@@ -63,7 +65,7 @@ const BetweenCardsInnerContainer = styled.div`
   flex-direction: column;
 `;
 
-const BurnSTXPContainer = styled.div`
+const ApproveContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;
@@ -85,12 +87,12 @@ const BurnSTXPSubtitle = styled.div`
   font-weight: 300;
 `;
 
-const AproveButtonContainer = styled.div`
+const ApproveButtonContainer = styled.div`
   width: 100%;
   margin-top: 1rem;
 `;
 
-const AproveButton = styled.a`
+const ApproveButton = styled.a`
   display: block;
   text-transform: uppercase;
   font-weight: 700;
@@ -140,7 +142,7 @@ const InputForm = styled.input`
   margin-bottom: 0.5rem;
 `;
 
-const STRNFeeLabel = styled.div`
+const FeeLabel = styled.div`
   text-align: right;
   color: rgba(229, 229, 229, 1);
   font-size: 0.875rem;
