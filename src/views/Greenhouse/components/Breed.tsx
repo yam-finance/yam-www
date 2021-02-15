@@ -13,14 +13,26 @@ const Breed: React.FC = () => {
             <AproveButtonContainer>
               <AproveButton>Aprove STXP</AproveButton>
             </AproveButtonContainer>
+            <AproveButtonContainer>
+              <AproveButton>Aprove STRN</AproveButton>
+            </AproveButtonContainer>
+            <AproveButtonContainer>
+              <AproveButton>Aprove LP</AproveButton>
+            </AproveButtonContainer>
           </BurnSTXPContainer>
-          <STXPInputContainer>
+          <InputContainer>
+            <MidContainerTitle>LP amount</MidContainerTitle>
+            <DivContainer>
+              <InputForm />
+            </DivContainer>
+          </InputContainer>
+          <InputContainer>
             <MidContainerTitle>STXP amount</MidContainerTitle>
             <DivContainer>
-              <STXPInputForm />
+              <InputForm />
             </DivContainer>
-            {/* <TotalPriceSTXP>USD 25,00</TotalPriceSTXP> */}
-          </STXPInputContainer>
+            <STRNFeeLabel>420 STRN Fee</STRNFeeLabel>
+          </InputContainer>
           <DivContainer>
             <BreedButtonContainer>
               <BreedButton>Breed</BreedButton>
@@ -102,7 +114,7 @@ const AproveButton = styled.a`
   }
 `;
 
-const STXPInputContainer = styled.div`
+const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1.25rem;
@@ -112,7 +124,7 @@ const STXPInputContainer = styled.div`
   }
 `;
 
-const STXPInputForm = styled.input`
+const InputForm = styled.input`
   /* width: 100%; */
   border-radius: 0.25rem;
   background-color: rgba(6, 15, 30, 1);
@@ -128,7 +140,7 @@ const STXPInputForm = styled.input`
   margin-bottom: 0.5rem;
 `;
 
-const TotalPriceSTXP = styled.div`
+const STRNFeeLabel = styled.div`
   text-align: right;
   color: rgba(229, 229, 229, 1);
   font-size: 0.875rem;

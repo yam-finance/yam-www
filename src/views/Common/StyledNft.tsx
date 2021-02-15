@@ -245,10 +245,10 @@ const StyledLoading = styled.div`
 `;
 
 const StyledInfo = styled.div`
-    display flex;
-    justify-content: space-between;
-    align-items: center;    
-    margin: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem;
 `;
 
 const StyledLabels = styled.div`
