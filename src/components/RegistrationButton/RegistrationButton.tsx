@@ -5,10 +5,9 @@ import { useWallet } from "use-wallet";
 
 interface RegistrationButtonProps {
   size?: 'sm' | 'md' | 'lg';
-  width?: string
 }
 
-const RegistrationButton: React.FC<RegistrationButtonProps> = ({ size, width }) => {
+const RegistrationButton: React.FC<RegistrationButtonProps> = ({ size }) => {
   const { isRegistered, isRegistering, onRegister, onUnregister } = useGovernance();
   const { account } = useWallet();
 
@@ -18,11 +17,11 @@ const RegistrationButton: React.FC<RegistrationButtonProps> = ({ size, width }) 
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ width }}
+      style={{ minWidth: isRegistered ? '128px' : '' }}
     >
       {!isRegistered
         ? <Button full disabled={!account || isRegistering} onClick={onRegister} size={size} text={isRegistering ? "Registering..." : "Register"} variant="secondary" />
-        : <Button full disabled={isRegistering} onClick={onUnregister} size={size} text={ hover ? "Unregister" : "Registered"} variant="secondary" />
+        : <Button full disabled={isRegistering} onClick={onUnregister} size={size} text={hover ? "Unregister" : "Registered"} variant="secondary" />
       }
     </div>
   )

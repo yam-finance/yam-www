@@ -65,44 +65,53 @@ const Governance: React.FC = () => {
           <Spacer />
           <Button full text="Off-chain Voting" href="https://snapshot.page/#/yam" variant="tertiary" />
           <Spacer />
-          <RegistrationButton width='125px' />
+          <RegistrationButton />
           <Spacer />
         </Split>
         <Spacer size="md" />
-        {account &&
-        <Card>
-          <CardTitle text="On-chain Proposals" />
-          <Spacer size="sm" />
-          <CardContent>
-            {proposals ? (
-              <>
-                <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                  <StyledProposalContentInner>
-                    <StyledDescriptionMain>Description</StyledDescriptionMain>
-                    <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                    <StyledStateMain>State</StyledStateMain>
-                    <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-                    <StyledButtonMain>Action</StyledButtonMain>
-                  </StyledProposalContentInner>
-                </Box>
-                <Spacer size="sm" />
-                {proposals && (
-                  <Surface>
-                    {proposals.map((prop, i) => {
-                      if (i === 0) {
-                        return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
-                      } else {
-                        return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
-                      }
-                    })}
-                  </Surface>
+        {account
+          ? <Card>
+              <CardTitle text="On-chain Proposals" />
+              <Spacer size="sm" />
+              <CardContent>
+                {proposals ? (
+                  <>
+                    <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+                      <StyledProposalContentInner>
+                        <StyledDescriptionMain>Description</StyledDescriptionMain>
+                        <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
+                        <StyledStateMain>State</StyledStateMain>
+                        <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+                        <StyledButtonMain>Action</StyledButtonMain>
+                      </StyledProposalContentInner>
+                    </Box>
+                    <Spacer size="sm" />
+                    {proposals && (
+                      <Surface>
+                        {proposals.map((prop, i) => {
+                          if (i === 0) {
+                            return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
+                          } else {
+                            return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
+                          }
+                        })}
+                      </Surface>
+                    )}
+                  </>
+                ) : (
+                  <YamLoader space={320}></YamLoader>
                 )}
-              </>
-            ) : (
-              <YamLoader space={320}></YamLoader>
-            )}
-          </CardContent>
-        </Card>}
+              </CardContent>
+            </Card>
+          : (
+            <>
+              <Box row justifyContent="center">
+                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display proposals" variant="secondary" />
+              </Box>
+              <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
+            </>
+          )
+        }
         <Spacer size="md" />
         {account
           ? <DelegateForm />
