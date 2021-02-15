@@ -113,17 +113,7 @@ const Governance: React.FC = () => {
           )
         }
         <Spacer size="md" />
-        {account
-          ? <DelegateForm />
-          : (
-            <>
-              <Box row justifyContent="center">
-                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to delegate" variant="secondary" />
-              </Box>
-              <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
-            </>
-          )
-        }
+        {account && <DelegateForm />}
       </Container>
     </Page>
   );
