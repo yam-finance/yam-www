@@ -31,7 +31,7 @@ const StyledNestedLink: React.FC<StyledNestedLinkProps> = ({children, href, targ
           setIsShow(!isShow)
         }
       }}
-      style={{cursor: "pointer", width: "100%", textAlign: "right"}}
+      style={{cursor: "pointer", width: "100%", textAlign: "left"}}
     >
       { type === "router" ? (
           <StyledRouterLink target={target} label={label} /> 
