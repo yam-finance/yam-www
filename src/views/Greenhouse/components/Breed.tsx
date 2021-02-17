@@ -8,20 +8,6 @@ const Breed: React.FC = () => {
       <BetweenCardsOuterContainer>
         <BetweenCardsInnerContainer>
           <ApproveContainer>
-            <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
-            <BurnSTXPSubtitle>Increase chance of rarity</BurnSTXPSubtitle>
-            <ApproveButtonContainer>
-              <ApproveButton>Approve STXP</ApproveButton>
-            </ApproveButtonContainer>
-          </ApproveContainer>
-          <InputContainer>
-            <MidContainerTitle>STXP amount</MidContainerTitle>
-            <DivContainer>
-              <InputForm />
-            </DivContainer>
-            <FeeLabel>420 STRN Fee</FeeLabel>
-          </InputContainer>
-          <ApproveContainer>
             <ApproveButtonContainer>
               <ApproveButton>Approve STRN</ApproveButton>
             </ApproveButtonContainer>
@@ -34,6 +20,20 @@ const Breed: React.FC = () => {
             <DivContainer>
               <InputForm />
             </DivContainer>
+          </InputContainer>
+          <ApproveContainer>
+            <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
+            <BurnSTXPSubtitle>Increase chance of rarity</BurnSTXPSubtitle>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve STXP</ApproveButton>
+            </ApproveButtonContainer>
+          </ApproveContainer>
+          <InputContainer>
+            <MidContainerTitle>STXP amount</MidContainerTitle>
+            <DivContainer>
+              <InputForm />
+            </DivContainer>
+            <FeeLabel>420 STRN Fee</FeeLabel>
           </InputContainer>
           <DivContainer>
             <BreedButtonContainer>
