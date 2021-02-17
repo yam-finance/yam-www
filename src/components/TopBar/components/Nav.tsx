@@ -32,10 +32,10 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
 
 const slideIn = keyframes`
   0% {
-    transform: translateX(0)
+    transform: translateX(-100%)
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(0);
   }
 `;
 
@@ -48,11 +48,11 @@ const StyledNav = styled.div`
     position: fixed;
     background: rgb(243, 237, 239);
     justify-content: center;
-    width: 288px;
+    width: 60%;
     top: 0;
     right: 0;
     bottom: 0;
-    left: 100%;
+    left: 0;
     z-index: 1000;
   }
 `;
