@@ -6,6 +6,7 @@ const Context = createContext<ContextValues>({
   isDelegated: false,
   onVote: () => {},
   onRegister: () => {},
+  onUnregister: () => {},
   onDelegateStaked: () => {},
   onDelegateUnstaked: () => {},
   onRemoveDelegation: () => {},
