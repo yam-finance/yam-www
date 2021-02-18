@@ -92,6 +92,7 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
         <Box>{ClaimButton}</Box>
         <Box row justifyContent="flex-end" alignItems="center">
           <Button onClick={onDismiss} text="Cancel" variant="secondary" />
+          <Spacer />
           <Button onClick={handleSignOut} text="Sign Out" />
         </Box>
       </Box>
