@@ -26,6 +26,7 @@ import Addresses from "views/Addresses";
 import Umbrella from "views/Landings/Umbrella";
 import Contributor from "views/Contributor";
 import Delegate from "views/Delegate";
+import Claim from "views/Claim";
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -76,6 +77,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/delegate">
             <Delegate />
+          </Route>
+          <Route exact path="/claim">
+            <Claim />
           </Route>
         </Switch>
       </Providers>
