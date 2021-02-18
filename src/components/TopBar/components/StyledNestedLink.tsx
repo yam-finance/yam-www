@@ -9,12 +9,30 @@ interface StyledNestedLinkProps {
   target?: string;
   label?: string;
   type?: string;
+  mobileMenu?: boolean;
 }
 
-const StyledNestedLink: React.FC<StyledNestedLinkProps> = ({children, href, target, label, type}) => {
+const StyledNestedLink: React.FC<StyledNestedLinkProps> = ({children, href, target, label, type, mobileMenu}) => {
   const [isShow, setIsShow] = useState(false);
   return (
-    <div onMouseEnter={() => setIsShow(true)} onMouseLeave={() => setIsShow(false)} style={{cursor: "pointer"}}>
+    <div 
+      onMouseEnter={() => { 
+        if (!mobileMenu) {
+          setIsShow(true)
+        }
+      }} 
+      onMouseLeave={() => { 
+        if (!mobileMenu) {
+          setIsShow(false)
+        }
+      }}
+      onClick={() => { 
+        if (mobileMenu) {
+          setIsShow(!isShow)
+        }
+      }}
+      style={{cursor: "pointer", width: "100%", textAlign: "left"}}
+    >
       { type === "router" ? (
           <StyledRouterLink target={target} label={label} /> 
         ) : (
@@ -34,6 +52,10 @@ const StyledNestedMenu = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  @media (max-width: 770px) {
+    position: relative;
+    background-color: #ddd;
+  }
 `;
 
 export default StyledNestedLink;
