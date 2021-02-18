@@ -20,9 +20,6 @@ const Nav: React.FC = () => {
       <StyledRouterLink exact activeClassName="active" to="/farm">
         Farm
       </StyledRouterLink>
-      <StyledRouterLink exact activeClassName="active" to="/migrate">
-        Migrate
-      </StyledRouterLink>
       <StyledLink href="https://docs.yam.finance/" target="_blank">
         FAQ
       </StyledLink>
