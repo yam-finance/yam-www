@@ -6,21 +6,17 @@ import PageHeader from "components/PageHeader";
 import Split from "components/Split";
 
 import ClaimCard from "./components/ClaimCard";
-import MigrateCard from "./components/MigrateCard";
 import VestingNotice from "./components/VestingNotice";
-import EndingMigrationNotice from "./components/EndingMigrationNotice";
 
 const Claim: React.FC = () => {
   return (
     <Page>
-      <PageHeader icon="🦋" subtitle="This is the last time you'll need to migrate!" title="Migrate to V3" />
+      <PageHeader icon="🦋" subtitle="" title="Claim YAMs!" />
       <Container>
-        <EndingMigrationNotice />
         <Spacer />
         <VestingNotice />
         <Spacer />
         <Split>
-          <MigrateCard />
           <ClaimCard />
         </Split>
       </Container>

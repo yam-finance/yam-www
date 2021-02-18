@@ -22,8 +22,10 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           <StyledLink href="https://degenerative.finance/" label="Degenerative" style={mobileMenu ? {} : { height: 26, display: "flex", alignItems: "center" }} onDismiss={onDismiss} />
         </StyledNestedLink>
         <StyledRouterLink target="/governance" label="Govern" onDismiss={onDismiss} />
-        <StyledRouterLink target="/farm" label="Farm" onDismiss={onDismiss} />
-        <StyledRouterLink target="/migrate" label="Migrate" onDismiss={onDismiss} />
+        <StyledNestedLink target="/farm" label="Farm" type="router" mobileMenu={mobileMenu} >
+          <StyledRouterLink target="/farm" label="Farm" style={ mobileMenu ? {} : { height: 26, display: "flex", alignItems: "center" }} onDismiss={onDismiss} />
+          <StyledRouterLink target="/claim" label="Claim" style={ mobileMenu ? {} : { height: 26, display: "flex", alignItems: "center" }} onDismiss={onDismiss} />
+        </StyledNestedLink>
         <StyledLink href="https://docs.yam.finance/" label="FAQ" onDismiss={onDismiss} />
       </StyledNav>
     </>
