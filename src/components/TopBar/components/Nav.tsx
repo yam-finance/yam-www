@@ -2,7 +2,6 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import StyledRouterLink from "./StyledRouterLink";
 import StyledLink from "./StyledLink";
-import StyledNestedLink from "./StyledNestedLink";
 
 interface NavProps {
   onDismiss: () => void;
@@ -16,15 +15,15 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
         <StyledBackdrop onClick={onDismiss} />
       )}
       <StyledNav>
-        <StyledRouterLink target="/dashboard" label="Dashboard" onDismiss={onDismiss} />
-        <StyledNestedLink target="/umbrella" label="Projects" type="router" mobileMenu={mobileMenu} >
-          <StyledRouterLink target="/umbrella" label="Umbrella" style={ mobileMenu ? {} : { height: 26, display: "flex", alignItems: "center" }} onDismiss={onDismiss} />
-          <StyledLink href="https://degenerative.finance/" label="Degenerative" style={mobileMenu ? {} : { height: 26, display: "flex", alignItems: "center" }} onDismiss={onDismiss} />
-        </StyledNestedLink>
-        <StyledRouterLink target="/governance" label="Govern" onDismiss={onDismiss} />
-        <StyledRouterLink target="/farm" label="Farm" onDismiss={onDismiss} />
-        <StyledRouterLink target="/migrate" label="Migrate" onDismiss={onDismiss} />
-        <StyledLink href="https://docs.yam.finance/" label="FAQ" onDismiss={onDismiss} />
+        <StyledRouterLink target="/dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="/umbrella" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
+          <StyledRouterLink target="/umbrella" label="Umbrella" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledLink href="https://degenerative.finance/" label="Degenerative" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        </StyledRouterLink>
+        <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="/migrate" label="Migrate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledLink href="https://docs.yam.finance/" label="FAQ" mobileMenu={mobileMenu} onDismiss={onDismiss} />
       </StyledNav>
     </>
   );
