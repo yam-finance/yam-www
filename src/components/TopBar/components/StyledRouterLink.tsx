@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
@@ -7,12 +7,46 @@ interface StyleRouterLinkProps {
   label?: string;
   style?: any;
   onDismiss?: () => void;
+  children?: React.ReactNode;
+  mobileMenu?: boolean;
 }
 
-const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss}) => {
-  return (
-    <StyledLink exact activeClassName="active" to={target || ''} style={style} onClick={onDismiss}>{label}</StyledLink>
-  )
+const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss, children, mobileMenu}) => {
+  const [isShow, setIsShow] = useState(false);
+  if (children) {
+    return (
+      <div 
+        onMouseEnter={() => { 
+          if (!mobileMenu) {
+            setIsShow(true)
+          }
+        }} 
+        onMouseLeave={() => { 
+          if (!mobileMenu) {
+            setIsShow(false)
+          }
+        }}
+        onClick={() => { 
+          if (mobileMenu) {
+            setIsShow(!isShow)
+          }
+        }}
+        style={mobileMenu ? {cursor: "pointer", width: "100%", textAlign: "left", display: "flex", flexDirection: "column"}
+                          : {cursor: "pointer", width: "100%", textAlign: "left"}}
+      >
+        <StyledLink exact activeClassName="active" style={style} to={target || ''}>{label}</StyledLink>
+        {
+          isShow === true && <StyledNestedMenu>
+            {children}
+          </StyledNestedMenu>
+        }
+      </div>
+    )
+  } else {
+    return (
+      <StyledLink exact activeClassName="active" to={target || ''} style={style} onClick={onDismiss}>{label}</StyledLink>
+    ) 
+  }
 }
 
 const StyledLink = styled(NavLink)`
@@ -42,6 +76,16 @@ const StyledLink = styled(NavLink)`
     &.active {
       color: ${(props) => props.theme.colors.primary.main};
     }
+  }
+`;
+
+const StyledNestedMenu = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 770px) {
+    position: relative;
+    background-color: #ddd;
   }
 `;
 
