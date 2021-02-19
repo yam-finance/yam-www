@@ -13,7 +13,9 @@ import {
   getSushiRewards,
   getWETHPrice,
   getYUSDPrice,
-  getUMAPrice
+  getUMAPrice,
+  getYamHousePrice,
+  getYam
 } from "yam-sdk/utils";
 import useYam from "./useYam";
 
@@ -28,6 +30,7 @@ const useTreasury = () => {
   const totalWETHTokenBalance = useTokenBalance(treasuryAddress, WETH);
   const totalWETHValue = (totalWETHTokenBalance || 0) + 283;
   const totalUMAValue = useTokenBalance(treasuryAddress, UMAAddress);
+  const totalYamHouseValue = 810000;
   const [totalIndexLPValue, setTotalIndexLPValue] = useState<number>(0);
   const [rewardsIndexCoop, setRewardsIndexCoop] = useState<number>(0);
   const [totalBalanceValueIndexCoop, setTotalBalanceValueIndexCoop] = useState<number>(0);
@@ -85,6 +88,7 @@ const useTreasury = () => {
     const yusdPrice = await getYUSDPrice() || 0;
     const umaPrice = await getUMAPrice() || 0;
     const rewardsSushi = (await getSushiRewards(yam)) || 0;
+    const yamHousePrice = await getYamHousePrice() || 0;
 
     // WETH must have all blocks number since we get blocks from WETH
     const history = {
@@ -220,6 +224,10 @@ const useTreasury = () => {
         latest: (totalUMAValue || 0) * umaPrice,
         color: "#2a9d8f"
       },
+      YamHouse: {
+        latest: totalYamHouseValue * yamHousePrice,
+        color: "#6b705c"
+      }
     };
     return history;
   };
@@ -230,6 +238,7 @@ const useTreasury = () => {
     totalWETHValue,
     totalIndexLPValue,
     totalUMAValue,
+    totalYamHouseValue,
     yamBalance,
     yUsdBalance,
 
