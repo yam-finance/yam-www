@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 
-import { Container, Spacer, useTheme } from "react-neu";
+import { Container, Spacer } from "react-neu";
 import styled from "styled-components";
 
 import Logo from "components/Logo";
@@ -11,10 +11,19 @@ import Nav from "./components/Nav";
 import WalletButton from "./components/WalletButton";
 
 interface TopBarProps {
-  onPresentMobileMenu: () => void;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
+const TopBar: React.FC<TopBarProps> = () => {
+  const [mobileMenu, setMobileMenu] = useState(false);
+
+  const handleDismissMobileMenu = useCallback(() => {
+    setMobileMenu(false);
+  }, [setMobileMenu]);
+
+  const handlePresentMobileMenu = useCallback(() => {
+    setMobileMenu(true);
+  }, [setMobileMenu]);
+
   return (
     <StyledTopBar>
       <Container size="lg">
@@ -22,9 +31,15 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           <StyledLogoWrapper>
             <Logo />
           </StyledLogoWrapper>
-          <StyledNavWrapper>
-            <Nav />
-          </StyledNavWrapper>
+          {mobileMenu ? (
+            <StyledMobileMenuWrapper>
+              <Nav onDismiss={handleDismissMobileMenu} mobileMenu={mobileMenu}/>
+            </StyledMobileMenuWrapper>
+          ) : (
+            <StyledNavWrapper>
+              <Nav onDismiss={handleDismissMobileMenu} mobileMenu={mobileMenu}/>
+            </StyledNavWrapper>
+          )}
           <StyledLeftMenuBalancesWrapper>
             <StyledAccountButtonWrapper>
               <StyledTopBarDarkModeSwitch>
@@ -34,7 +49,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
               <WalletButton />
             </StyledAccountButtonWrapper>
             <Spacer />
-            <StyledMenuButton onClick={onPresentMobileMenu}>
+            <StyledMenuButton onClick={handlePresentMobileMenu}>
               <MenuIcon />
             </StyledMenuButton>
           </StyledLeftMenuBalancesWrapper>
@@ -69,6 +84,17 @@ const StyledNavWrapper = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+const StyledMobileMenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
 `;
 
 const StyledAccountButtonWrapper = styled.div`
