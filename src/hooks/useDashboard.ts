@@ -13,7 +13,8 @@ import {
   getIndexCoopLPRewards,
   getSushiRewards,
   getValue,
-  getYam
+  getYam,
+  getYamHousePrice
 } from "yam-sdk/utils";
 import numeral from "numeral";
 
@@ -26,7 +27,7 @@ const useDahsboard = () => {
   const [yamObject, setYamObject] = useState<Object>();
 
   const { darkMode, colors } = useTheme();
-  const { totalYUsdValue, totalWETHValue, totalDPIValue, totalUMAValue, totalBalanceIndexCoop, getAssetsHistory } = useTreasury();
+  const { totalYUsdValue, totalWETHValue, totalDPIValue, totalUMAValue, totalBalanceIndexCoop, totalYamHouseValue, getAssetsHistory } = useTreasury();
 
   const { status } = useWallet();
   const defaultRange = 14;
@@ -83,6 +84,7 @@ const useDahsboard = () => {
     const indexPrice = indexCoopValues.market_data.current_price.usd;
     const sushiPrice = sushiValues.market_data.current_price.usd;
     const umaPrice = umaValues.market_data.current_price.usd;
+    const yamHousePrice = await getYamHousePrice() || 0;
 
     const DPIBalance = totalDPIValue;
     // const indexCoopLP = await getIndexCoopLP(yam);
@@ -95,6 +97,7 @@ const useDahsboard = () => {
     const change24YUSD = numeral(yusdValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
     const change24IndexCoop = numeral(indexCoopValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
     const change24Sushi = numeral(sushiValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const cahnge24YAMHOUSE = 0;
 
     const reservesHistory = [];
     const assetsColors = [];
@@ -133,6 +136,7 @@ const useDahsboard = () => {
     let reservesINDEXLP: TimeSeries[] = [];
     let reservesINDEX: TimeSeries[] = [];
     let reservesUMA: TimeSeries[] = [];
+    let reservesYAMHOUSE: TimeSeries[] = [];
     let reservesSushi: TimeSeries[] = [];
     let running = 0;
     for (let i = 0; i < treasuryValues.reservesAdded.length; i++) {
@@ -191,6 +195,12 @@ const useDahsboard = () => {
           y: 0,
         };
         reservesUMA.push(tmpUMA);
+
+        const tmpYAMHOUSE: TimeSeries = {
+          x: treasuryValues.blockNumbers[i],
+          y: 0,
+        };
+        reservesYAMHOUSE.push(tmpYAMHOUSE);
       }
     }
 
@@ -223,6 +233,10 @@ const useDahsboard = () => {
         x: reservesHistory[i].block,
         y: reservesHistory[i].UMA,
       });
+      reservesYAMHOUSE.push({
+        x: reservesHistory[i].block,
+        y: reservesHistory[i].YamHouse,
+      });
     }
 
     const series: SeriesInterface[] = [
@@ -253,6 +267,10 @@ const useDahsboard = () => {
       {
         name: "UMA Voting Token",
         data: reservesUMA ? reservesUMA.slice(reservesUMA.length - (defaultRange + 6)) : [],
+      },
+      {
+        name: "Yam DAO House",
+        data: reservesYAMHOUSE ? reservesYAMHOUSE.slice(reservesYAMHOUSE.length - (defaultRange + 6)) : [],
       },
     ];
 
@@ -326,6 +344,16 @@ const useDahsboard = () => {
         change: change24UMA ? change24UMA : "0.00%",
         value: "$" + numeral(assetsHistory.UMA.latest).format("0,0.00"),
         number: assetsHistory.UMA.latest,
+      },
+      {
+        icon: "https://set-core.s3.amazonaws.com/img/portfolios/yam_house.png",
+        name: "Yam DAO House",
+        index: "yamHOUSE",
+        quantity: numeral(totalYamHouseValue).format("0,0.00"),
+        price: "$" + numeral(yamHousePrice).format("0,0.00"),
+        change: cahnge24YAMHOUSE ? cahnge24YAMHOUSE : "0.00%",
+        value: "$" + numeral(assetsHistory.YamHouse.latest).format("0,0.00"),
+        number: assetsHistory.YamHouse.latest,
       },
     ];
 

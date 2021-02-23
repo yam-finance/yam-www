@@ -14,6 +14,8 @@ import {
   ContractIncentivizer
 } from "constants/tokenAddresses";
 
+import axios from "axios";
+
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
@@ -1094,3 +1096,10 @@ export const getYam30D = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/yam-2/market_chart?vs_currency=usd&days=30&interval=daily");
   return data.prices;
 };
+
+export const getYamHousePrice = async () => {
+  // const data = await requestHttp("https://api.tokensets.com/v2/funds/yamhouse");
+  // // const data = await axios.get("https://api.tokensets.com/v2/funds/yamhouse");
+  // return data.fund.price_usd;
+  return 1.20;
+}
