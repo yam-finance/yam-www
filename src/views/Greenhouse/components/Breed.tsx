@@ -1,8 +1,26 @@
+import useGreenhouse from "hooks/useGreenhouse";
 import React from "react";
 
 import styled from "styled-components";
 
 const Breed: React.FC = () => {
+
+  const {
+    // isBreeding,
+    // onBreeding,
+    // setBurnAmount,
+    // setStxpAmount,
+    // burnAmount,
+    // stxpAmount,
+    lpTokenAmount,
+    setLpTokenAmount,
+    // getBreedingFee,
+  } = useGreenhouse();
+
+  if (lpTokenAmount > String(0)) {
+    console.log(`lpTokenAmount: ${lpTokenAmount}`);
+  }
+
   return (
     <DivContainer>
       <BetweenCardsOuterContainer>
@@ -18,7 +36,9 @@ const Breed: React.FC = () => {
           <InputContainer>
             <MidContainerTitle>LP amount</MidContainerTitle>
             <DivContainer>
-              <InputForm />
+              <InputForm onChange={(e) => {
+                setLpTokenAmount(e.target.value)
+              }} />
             </DivContainer>
           </InputContainer>
           <ApproveContainer>

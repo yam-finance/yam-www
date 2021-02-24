@@ -4,8 +4,13 @@ import styled from "styled-components";
 import arrowLeft from "../../../assets/arrowLeft.png";
 import arrowRight from "../../../assets/arrowRight.png";
 import arrowDown from "../../../assets/arrowDown.png";
+import useStrainNfts from "hooks/useStrainNfts";
+import StyledNft from "views/Common/StyledNft";
 
-const AsideContainer: React.FC = () => {
+const TopRightCarousel: React.FC = () => {
+
+  const { strainNftCollection } = useStrainNfts();
+
   return (
     <>
       <CarouselOuterContainer>
@@ -15,25 +20,14 @@ const AsideContainer: React.FC = () => {
           </CarouselControlIconsWrap>
           <CarouselStrainsWrap>
             <DivContainer>
-              <img
-                src="https://nft-image-service.herokuapp.com/genome/10411111"
-                alt=""
-                style={{ width: "72px" }}
-              />
-            </DivContainer>
-            <DivContainer>
-              <img
-                src="https://nft-image-service.herokuapp.com/genome/11411111"
-                alt=""
-                style={{ width: "72px" }}
-              />
-            </DivContainer>
-            <DivContainer>
-              <img
-                src="https://nft-image-service.herokuapp.com/genome/12411111"
-                alt=""
-                style={{ width: "72px" }}
-              />
+            {strainNftCollection.length <= 0 ?
+            <NoStrainsText>Generate NFT's First</NoStrainsText> : 
+            strainNftCollection
+            .filter((nft,index) => index <= 3)
+            .map((nft) => (
+              <StyledNft key={nft.nftId} nft={nft} />
+              
+            ))}
             </DivContainer>
           </CarouselStrainsWrap>
           <CarouselControlIconsWrap>
@@ -51,6 +45,14 @@ const AsideContainer: React.FC = () => {
 };
 
 const DivContainer = styled.div``;
+
+const NoStrainsText = styled.div`
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 800;
+  line-height: 1.5rem;
+  text-align: center;
+`;
 
 const CarouselOuterContainer = styled.div`
   display: flex;
@@ -111,4 +113,4 @@ const CarouselArrowDownInnerWrap = styled.div`
 
 const CarouselArrowDownIcon = styled.img``;
 
-export default AsideContainer;
+export default TopRightCarousel;

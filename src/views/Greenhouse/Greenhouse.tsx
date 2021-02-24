@@ -1,40 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { Container, Spacer } from "react-neu";
 import styled from "styled-components";
 
 import Page from "components/Page";
 import Breed from "./components/Breed";
-import AsideContainer from "./components/AsideContainer";
+import RightContainer from "./components/RightContainer";
+import LeftContainer from "./components/LeftContainer";
 import SmallScreenBreedButton from "./components/SmallScreenBreedButton";
 
-import useGreenhouse from "hooks/useGreenhouse";
-
 const Greenhouse: React.FC = () => {
-  const {
-    parentOneNftId,
-    parentTwoNftId,
-    isBreeding,
-    onBreeding,
-    setBurnAmount,
-    setStxpAmount,
-    setParentOneNftId,
-    setParentTwoNftId,
-    burnAmount,
-    stxpAmount,
-    childName,
-    setChildName,
-    lpTokenAmount,
-    setLpTokenAmount,
-    getBreedingFee,
-  } = useGreenhouse();
 
   return (
     <Page>
       <GreenHouseWrapper>
-        <AsideContainer />
+        <LeftContainer />
         <Breed />
-        <AsideContainer />
+        <RightContainer />
         <SmallScreenBreedButton />
       </GreenHouseWrapper>
     </Page>
