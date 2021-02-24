@@ -1,26 +1,60 @@
+import useGreenhouse from "hooks/useGreenhouse";
 import React from "react";
 
 import styled from "styled-components";
 
 const Breed: React.FC = () => {
+
+  const {
+    // isBreeding,
+    // onBreeding,
+    // setBurnAmount,
+    // setStxpAmount,
+    // burnAmount,
+    // stxpAmount,
+    lpTokenAmount,
+    setLpTokenAmount,
+    // getBreedingFee,
+  } = useGreenhouse();
+
+  if (lpTokenAmount > String(0)) {
+    console.log(`lpTokenAmount: ${lpTokenAmount}`);
+  }
+
   return (
     <DivContainer>
       <BetweenCardsOuterContainer>
         <BetweenCardsInnerContainer>
-          <BurnSTXPContainer>
-            <MidContainerTitle>Burn STXP</MidContainerTitle>
+          <ApproveContainer>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve STRN</ApproveButton>
+            </ApproveButtonContainer>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve LP</ApproveButton>
+            </ApproveButtonContainer>
+          </ApproveContainer>
+          <InputContainer>
+            <MidContainerTitle>LP amount</MidContainerTitle>
+            <DivContainer>
+              <InputForm onChange={(e) => {
+                setLpTokenAmount(e.target.value)
+              }} />
+            </DivContainer>
+          </InputContainer>
+          <ApproveContainer>
+            <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
             <BurnSTXPSubtitle>Increase chance of rarity</BurnSTXPSubtitle>
-            <AproveButtonContainer>
-              <AproveButton>Aprove STXP</AproveButton>
-            </AproveButtonContainer>
-          </BurnSTXPContainer>
-          <STXPInputContainer>
+            <ApproveButtonContainer>
+              <ApproveButton>Approve STXP</ApproveButton>
+            </ApproveButtonContainer>
+          </ApproveContainer>
+          <InputContainer>
             <MidContainerTitle>STXP amount</MidContainerTitle>
             <DivContainer>
-              <STXPInputForm />
+              <InputForm />
             </DivContainer>
-            {/* <TotalPriceSTXP>USD 25,00</TotalPriceSTXP> */}
-          </STXPInputContainer>
+            <FeeLabel>420 STRN Fee</FeeLabel>
+          </InputContainer>
           <DivContainer>
             <BreedButtonContainer>
               <BreedButton>Breed</BreedButton>
@@ -51,7 +85,7 @@ const BetweenCardsInnerContainer = styled.div`
   flex-direction: column;
 `;
 
-const BurnSTXPContainer = styled.div`
+const ApproveContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;
@@ -73,12 +107,12 @@ const BurnSTXPSubtitle = styled.div`
   font-weight: 300;
 `;
 
-const AproveButtonContainer = styled.div`
+const ApproveButtonContainer = styled.div`
   width: 100%;
   margin-top: 1rem;
 `;
 
-const AproveButton = styled.a`
+const ApproveButton = styled.a`
   display: block;
   text-transform: uppercase;
   font-weight: 700;
@@ -102,7 +136,7 @@ const AproveButton = styled.a`
   }
 `;
 
-const STXPInputContainer = styled.div`
+const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1.25rem;
@@ -112,7 +146,7 @@ const STXPInputContainer = styled.div`
   }
 `;
 
-const STXPInputForm = styled.input`
+const InputForm = styled.input`
   /* width: 100%; */
   border-radius: 0.25rem;
   background-color: rgba(6, 15, 30, 1);
@@ -128,7 +162,7 @@ const STXPInputForm = styled.input`
   margin-bottom: 0.5rem;
 `;
 
-const TotalPriceSTXP = styled.div`
+const FeeLabel = styled.div`
   text-align: right;
   color: rgba(229, 229, 229, 1);
   font-size: 0.875rem;

@@ -1,8 +1,17 @@
+import useGreenhouse from "hooks/useGreenhouse";
 import React from "react";
 
 import styled from "styled-components";
 
-const BigNFT: React.FC = () => {
+const BigNFTRight: React.FC = () => {
+
+  const {
+    parentTwoNftId,
+    // setParentTwoNftId,
+    // childName,
+    // setChildName,
+  } = useGreenhouse();
+
   return (
     <>
       <BigNFTOuterContainer>
@@ -14,14 +23,14 @@ const BigNFT: React.FC = () => {
             </BigNFTLeftTextContainer>
             <BigNFTRightTextContainer>
               <Hashtag>#</Hashtag>
-              <BigNFTId>75</BigNFTId>
+              <BigNFTId>{parentTwoNftId}</BigNFTId>
             </BigNFTRightTextContainer>
           </BigNFTNameTextContainer>
           <DivContainer>
             <img
               width="250"
-              src="https://nft-image-service.herokuapp.com/genome/11011111"
-            />
+              src="https://nft-image-service.herokuapp.com/genome/12411111"
+            alt="BigNFTRight" />
           </DivContainer>
         </BigNFTInnerContainer>
         <BigNFTType>Supernova</BigNFTType>
@@ -114,4 +123,4 @@ const BigNFTType = styled.div`
   color: black;
 `;
 
-export default BigNFT;
+export default BigNFTRight;

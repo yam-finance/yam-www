@@ -1,10 +1,10 @@
 import React from "react";
 
 import styled from "styled-components";
-import TopCarousel from "./TopCarousel";
-import BigNFT from "./BigNFT";
+import TopCarousel from "./TopRightCarousel";
+import BigNFT from "./BigNFTRight";
 
-const AsideContainer: React.FC = () => {
+const RightContainer: React.FC = () => {
   return (
     <DivContainer>
       <TopCarousel />
@@ -15,4 +15,4 @@ const AsideContainer: React.FC = () => {
 
 const DivContainer = styled.div``;
 
-export default AsideContainer;
+export default RightContainer;
