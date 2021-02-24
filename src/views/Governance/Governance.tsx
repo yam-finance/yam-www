@@ -4,6 +4,7 @@ import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Bu
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
 import Split from "components/Split";
+import { Pagination } from 'semantic-ui-react';
 
 import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import RegistrationButton from 'components/RegistrationButton';
@@ -31,6 +32,9 @@ const Governance: React.FC = () => {
 
   const [astronaut, setAstronaut] = useState("👨‍🚀");
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
+  const [activePage, setActivePage] = useState(1);
+  const proposalCount = 33;
+  const [pageLimit, setPageLimit] = useState(10);
 
   const updateAstronaut = useCallback(() => {
     const newAstro = ASTRONAUTS[Math.floor(Math.random() * ASTRONAUTS.length)];
@@ -51,6 +55,10 @@ const Governance: React.FC = () => {
   const handleUnlockWalletClick = useCallback(() => {
     setUnlockModalIsOpen(true);
   }, [setUnlockModalIsOpen]);
+
+  const handlePageChange = (event:any, data:any) => {
+    setActivePage(data.activePage);
+  };
 
   return (
     <Page>
@@ -95,6 +103,15 @@ const Governance: React.FC = () => {
                             return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
                           }
                         })}
+                        <Box row alignItems="center" justifyContent="center">
+                          <Pagination 
+                            defaultActivePage={activePage} 
+                            totalPages={Math.ceil(proposalCount / 10)} 
+                            style={{ backgroundColor: '#f3edef' }}
+                            onPageChange={(event, data) => handlePageChange(event, data)}
+                          />
+                        </Box>
+                        <Spacer size="sm" />
                       </Surface>
                     )}
                   </>
