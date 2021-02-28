@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import StyledRouterLink from "./StyledRouterLink";
 import StyledLink from "./StyledLink";
+import { useLocation } from "react-router-dom";
 
 interface NavProps {
   onDismiss: () => void;
@@ -9,22 +10,23 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
+  const location = useLocation();
   return (
     <>
       { mobileMenu && (
         <StyledBackdrop onClick={onDismiss} />
       )}
       <StyledNav>
-        <StyledRouterLink target="/dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-        <StyledRouterLink target="/umbrella" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
-          <StyledRouterLink target="/umbrella" label="Umbrella" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink currentPath={location.pathname} target="/dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink currentPath={location.pathname} target="/umbrella" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
+          <StyledRouterLink currentPath={location.pathname} target="/umbrella" label="Umbrella" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledLink href="https://degenerative.finance/" label="Degenerative" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
-        <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
-          <StyledRouterLink target="/delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink currentPath={location.pathname} target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
+          <StyledRouterLink currentPath={location.pathname} target="/delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
-        <StyledRouterLink target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} >
-          <StyledRouterLink target="/claim" label="Claim" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink currentPath={location.pathname} target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} >
+          <StyledRouterLink currentPath={location.pathname} target="/claim" label="Claim" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledLink href="https://docs.yam.finance/" label="FAQ" mobileMenu={mobileMenu} onDismiss={onDismiss} />
       </StyledNav>
