@@ -19,6 +19,7 @@ interface AssetsListProps {
 const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
 
   const [csvData, setCSVData] = useState<any>([]);
+  const [treasuryAssets, setTreasuryAssets] = useState<any>(0);
   const assets = assetsData?.sort((a:any,b:any):number => {
     if (a.number > b.number) return -1;
     if (a.number < b.number) return 1;
@@ -37,6 +38,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
       });
     }
     csvData.push(["Total Assets", "$" + numeral(treasuryAssets).format("0,0.00")]);
+    setTreasuryAssets(treasuryAssets);
     setCSVData(csvData);
   }, [assets]);
 
@@ -45,6 +47,9 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
       <Spacer size="md" />
       <Card>
         <StyledBox row alignItems="center" justifyContent="space-between" marginLeft={5} marginRight={5}>
+          <StyledTotalLabel>
+            {"Total: $" + numeral(treasuryAssets).format("0,0.00")}
+          </StyledTotalLabel>
           <Box justifyContent="center" width="100%">
             <CardTitle text="💰 Treasury Assets" />
           </Box>
@@ -185,6 +190,16 @@ export const StyledButton = styled.div`
   top: 20px;
   @media (max-width: 768px) {
     right: 0;
+  }
+`;
+
+export const StyledTotalLabel = styled.div`
+  position: absolute;
+  left: 20px;
+  top: 30px;
+  @media (max-width: 768px) {
+    left: 0;
+    top: 47px;
   }
 `;
 
