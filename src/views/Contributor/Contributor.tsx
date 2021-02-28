@@ -60,7 +60,6 @@ const Contributor: React.FC = () => {
 
   useEffect(() => {
     fetchOnce();
-    console.log("contributor", contributor);
   }, [theBehalf, setTheBehalf]);
 
   const handleClaimVested = useCallback(async () => {
