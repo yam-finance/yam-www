@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
@@ -9,10 +9,18 @@ interface StyleRouterLinkProps {
   onDismiss?: () => void;
   children?: React.ReactNode;
   mobileMenu?: boolean;
+  currentPath?: string;
 }
 
-const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss, children, mobileMenu}) => {
+const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss, children, mobileMenu, currentPath}) => {
   const [isShow, setIsShow] = useState(false);
+
+  useEffect(() => {
+    if (mobileMenu) {
+      setIsShow(currentPath === target);
+    }
+  }, [currentPath, mobileMenu, setIsShow, target]);
+
   if (children) {
     return (
       <div 
@@ -28,7 +36,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
         }}
         onClick={() => { 
           if (mobileMenu) {
-            setIsShow(!isShow)
+            setIsShow(!isShow);
           }
         }}
         style={mobileMenu ? {cursor: "pointer", width: "100%", textAlign: "left", display: "flex", flexDirection: "column"}
