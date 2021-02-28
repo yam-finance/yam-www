@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface StyleRouterLinkProps {
   target?: string;
@@ -9,17 +9,17 @@ interface StyleRouterLinkProps {
   onDismiss?: () => void;
   children?: React.ReactNode;
   mobileMenu?: boolean;
-  currentPath?: string;
 }
 
-const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss, children, mobileMenu, currentPath}) => {
+const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss, children, mobileMenu}) => {
   const [isShow, setIsShow] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (mobileMenu) {
-      setIsShow(currentPath === target);
+      setIsShow(location.pathname === target);
     }
-  }, [currentPath, mobileMenu, setIsShow, target]);
+  }, [location, mobileMenu, setIsShow, target]);
 
   if (children) {
     return (
