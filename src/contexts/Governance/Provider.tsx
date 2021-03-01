@@ -38,7 +38,7 @@ const Provider: React.FC = ({ children }) => {
     let props: Proposal[] = await getProposals(yam);
     props = props.sort((a, b) => {
       if (a && b && a.end && b.end) {
-        if (a.end == b.end) {
+        if (a.end === b.end) {
           return 0;
         }
         if (a.end < b.end) {

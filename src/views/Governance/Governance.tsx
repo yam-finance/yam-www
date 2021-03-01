@@ -33,8 +33,8 @@ const Governance: React.FC = () => {
   const [astronaut, setAstronaut] = useState("👨‍🚀");
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const [activePage, setActivePage] = useState(1);
-  const proposalCount = 33;
   const [pageLimit, setPageLimit] = useState(10);
+  const [activeProposals, setActiveProposals] = useState<any>([]);
 
   const updateAstronaut = useCallback(() => {
     const newAstro = ASTRONAUTS[Math.floor(Math.random() * ASTRONAUTS.length)];
@@ -45,6 +45,16 @@ const Governance: React.FC = () => {
     const refresh = setInterval(updateAstronaut, 1000);
     return () => clearInterval(refresh);
   }, [updateAstronaut]);
+
+  useEffect(() => {
+    if (proposals) {
+      const activeProposals = [];
+      for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > proposals.length ? proposals.length : pageLimit * activePage); i ++) {
+        activeProposals.push(proposals[i]);
+      }
+      setActiveProposals(activeProposals);
+    }
+  }, [proposals, activePage, pageLimit]);
 
 
   // TODO Move these to their own component
@@ -94,9 +104,9 @@ const Governance: React.FC = () => {
                       </StyledProposalContentInner>
                     </Box>
                     <Spacer size="sm" />
-                    {proposals && (
+                    {activeProposals && (
                       <Surface>
-                        {proposals.map((prop, i) => {
+                        {activeProposals.map((prop:any, i:any) => {
                           if (i === 0) {
                             return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
                           } else {
@@ -106,7 +116,7 @@ const Governance: React.FC = () => {
                         <Box row alignItems="center" justifyContent="center">
                           <Pagination 
                             defaultActivePage={activePage} 
-                            totalPages={Math.ceil(proposalCount / 10)} 
+                            totalPages={Math.ceil(proposals.length / 10)} 
                             style={{ backgroundColor: '#f3edef' }}
                             onPageChange={(event, data) => handlePageChange(event, data)}
                           />
