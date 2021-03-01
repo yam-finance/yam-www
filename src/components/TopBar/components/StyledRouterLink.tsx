@@ -7,19 +7,28 @@ interface StyleRouterLinkProps {
   label?: string;
   style?: any;
   onDismiss?: () => void;
-  children?: React.ReactNode;
+  children?: any;
   mobileMenu?: boolean;
 }
 
 const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, onDismiss, children, mobileMenu}) => {
   const [isShow, setIsShow] = useState(false);
+  const [isActive, setIsActive] = useState('inactive');
   const location = useLocation();
 
   useEffect(() => {
-    if (mobileMenu) {
+    if (children) {
+      setIsActive('inactive');
+      React.Children.map(children, (child: any) => {
+        if (location.pathname === child.props.target) {
+          setIsActive('active');
+        }
+      })
+    }
+    if (mobileMenu && children) {
       setIsShow(location.pathname === target);
     }
-  }, [location, mobileMenu, setIsShow, target]);
+  }, [location, mobileMenu, setIsShow, target, children]);
 
   if (children) {
     return (
@@ -42,7 +51,12 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
         style={mobileMenu ? {cursor: "pointer", width: "100%", textAlign: "left", display: "flex", flexDirection: "column"}
                           : {cursor: "pointer", width: "100%", textAlign: "left"}}
       >
-        <StyledLink exact activeClassName="active" style={style} to={target || ''}>{label}</StyledLink>
+        <StyledLink subactive={isActive} exact activeClassName="active" style={style} to={target || ''}>
+          {label}
+          { mobileMenu && (
+            <StyledSpan>🔻</StyledSpan>
+          )}
+        </StyledLink>
         {
           isShow === true && <StyledNestedMenu>
             {children}
@@ -56,22 +70,25 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
     ) 
   }
 }
+interface StyledLinkProps {
+  subactive?: string;
+}
 
-const StyledLink = styled(NavLink)`
-  color: ${(props) => props.theme.colors.grey[500]};
+const StyledLink = styled(NavLink)<StyledLinkProps>`
+  color: ${(props) => (props.subactive === 'active' ? props.theme.colors.primary.main : props.theme.colors.grey[500])};
   font-weight: 700;
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
   &:hover {
-    color: ${(props) => props.theme.colors.grey[600]};
+    color: ${(props) => (props.subactive === 'active' ? props.theme.colors.primary.main : props.theme.colors.grey[600])};
   }
   &.active {
     color: ${(props) => props.theme.colors.primary.main};
   }
   @media (max-width: 770px) {
     box-sizing: border-box;
-    color: ${(props) => props.theme.colors.grey[500]};
+    color: ${(props) => (props.subactive === 'active' ? props.theme.colors.primary.main : props.theme.colors.grey[500])};
     font-size: 24px;
     font-weight: 700;
     padding: ${(props) => props.theme.spacing[3]}px ${(props) => props.theme.spacing[4]}px;
@@ -79,7 +96,7 @@ const StyledLink = styled(NavLink)`
     text-decoration: none;
     width: 100%;
     &:hover {
-      color: ${(props) => props.theme.colors.grey[600]};
+      color: ${(props) => (props.subactive === 'active' ? props.theme.colors.primary.main : props.theme.colors.grey[600])};
     }
     &.active {
       color: ${(props) => props.theme.colors.primary.main};
@@ -96,6 +113,12 @@ const StyledNestedMenu = styled.div`
     background-color: rgba(194 , 163, 174, 0.33);
     padding-left: 30px;
   }
+`;
+
+const StyledSpan = styled.span`
+  position: absolute;
+  right: 20px;
+  font-size: 20px;
 `;
 
 export default StyleRouterLink;
