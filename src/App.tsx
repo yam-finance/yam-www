@@ -90,6 +90,8 @@ const Providers: React.FC = ({ children }) => {
         chainId={1}
         connectors={{
           walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
+          fortmatic: { apiKey: "pk_live_2B1E18021320B71B" },
+          portis: { dAppId: "df008898-2b38-429d-a42a-119623c8e480" }
         }}
       >
         <YamProvider>
