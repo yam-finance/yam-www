@@ -65,7 +65,7 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/STXPIncentivizer.json
     singleStrnPool: "0x69dc085C3C51F5ef74C737E817DD2A271e772B17",
     // xiot: "0x5deb4627202cD666cE025F78956A14418345f508"
-    strainNFTAddress: "0xa1e8994C7c9734074Bd6EF0421b9ebb6bACfEc35",
+    strainNFTAddress: "0xfC83c90052FE546Ad1d9F78D4e62AE9a08327936",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
     strainNFTCrafterAddress: "0xE8BC9c9885dE95d6b4A8dBbE9507232b7c954569",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
