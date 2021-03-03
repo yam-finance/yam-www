@@ -54,7 +54,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
         <StyledLink subactive={isActive} exact activeClassName="active" style={style} to={target || ''}>
           {label}
           { mobileMenu && (
-            <StyledSpan>🔻</StyledSpan>
+            <StyledSpan>{isShow === true ? '➖' : '➕'}</StyledSpan>
           )}
         </StyledLink>
         {
