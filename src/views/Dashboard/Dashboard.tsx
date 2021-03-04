@@ -10,6 +10,7 @@ import TopCards from "./components/TopCards";
 import AssetsList from "./components/AssetsList";
 
 const Dashboard: React.FC = () => {
+  const { account } = useWallet();
   const { assetsData, seriesReserves, yamObject, assetsColors } = useDashboard();
 
   return (
@@ -18,7 +19,13 @@ const Dashboard: React.FC = () => {
       <Container size="lg">
         <TopCards yamObject={yamObject} />
         <Charts seriesReserves={seriesReserves} assetsColors={assetsColors} />
-        <AssetsList assetsData={assetsData}/>
+        {account
+          ? <AssetsList assetsData={assetsData}/>
+          : (
+            <>
+            </>
+          )
+        }
       </Container>
     </Page>
   );
