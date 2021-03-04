@@ -8,6 +8,7 @@ import PageHeader from "components/PageHeader";
 import Charts from "./components/Charts";
 import TopCards from "./components/TopCards";
 import AssetsList from "./components/AssetsList";
+import { useWallet } from "use-wallet";
 
 const Dashboard: React.FC = () => {
   const { account } = useWallet();
