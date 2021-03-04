@@ -1,26 +1,35 @@
+import useDashboard from "hooks/useDashboard";
+
 import React from "react";
-import { Container, Spacer } from "react-neu";
+import { Container } from "react-neu";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
-import styled from "styled-components";
 import Charts from "./components/Charts";
 import TopCards from "./components/TopCards";
+import AssetsList from "./components/AssetsList";
+import { useWallet } from "use-wallet";
 
 const Dashboard: React.FC = () => {
+  const { account } = useWallet();
+  const { assetsData, seriesReserves, yamObject, assetsColors } = useDashboard();
+
   return (
     <Page>
       <PageHeader icon="📊" subtitle="Overview of the YAM ecosystem" title="YAM Dashboard" />
       <Container size="lg">
-        <TopCards />
-        <Charts />
+        <TopCards yamObject={yamObject} />
+        <Charts seriesReserves={seriesReserves} assetsColors={assetsColors} />
+        {account
+          ? <AssetsList assetsData={assetsData}/>
+          : (
+            <>
+            </>
+          )
+        }
       </Container>
     </Page>
   );
 };
-
-const StyledCharts = styled.div`
-  padding: 0px;
-`;
 
 export default Dashboard;

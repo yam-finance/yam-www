@@ -9,6 +9,7 @@ export const yycrvUniLp = "0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC";
 export const migrator = "0x72cfed9293cbfb2bfc7515c413048c697c6c811c";
 export const reservesContractv2 = "0xCF27cA116dd5C7b4201c75B46489D1c075362087";
 export const YAMETHSLPAddress = "0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c";
+export const UMA = "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828";
 
 export const OldContractIncentivizer = "0x5b0501F7041120d36Bc8c6DC3FAeA0b74b32a0Ed";
 export const ContractGovernor = "0x2da253835967d6e721c6c077157f9c9742934aea";

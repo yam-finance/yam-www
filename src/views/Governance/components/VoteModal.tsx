@@ -10,7 +10,6 @@ import styled from "styled-components";
 import useYam from "hooks/useYam";
 import useGovernance from "hooks/useGovernance";
 import { useWallet } from "use-wallet";
-import { delegate, didDelegate } from "yam-sdk/utils";
 
 import { Proposal } from "../../../contexts/Governance/types";
 import Split from "components/Split";
@@ -136,7 +135,7 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
               <Spacer size="sm" />
               <StyledInfo>
                 {prop.inputs.map((input, i) => {
-                  return <code>{JSON.stringify(input)}</code>;
+                  return <code key={"code" + i}>{JSON.stringify(input)}</code>;
                 })}
               </StyledInfo>
             </CardContent>

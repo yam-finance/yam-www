@@ -1,11 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 
 import BigNumber from "bignumber.js";
-import styled from "styled-components";
 import { useWallet } from "use-wallet";
 
 import numeral from "numeral";
-import { Box, Button, Modal, ModalActions, ModalContent, ModalProps, ModalTitle, Separator, Spacer } from "react-neu";
+import { Box, Button, Modal, ModalContent, ModalProps, ModalTitle, Separator, Spacer } from "react-neu";
 
 import FancyValue from "components/FancyValue";
 import Split from "components/Split";
@@ -18,7 +17,7 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
   const { reset } = useWallet();
   const { yamV2Balance, yamV3Balance } = useBalances();
 
-  const { vestedDelegatorRewardBalance, vestedMigratedBalance } = useVesting();
+  const { isClaiming, onClaim, vestedDelegatorRewardBalance, vestedMigratedBalance, vestedBalance } = useVesting();
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
@@ -27,6 +26,19 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
       return "--";
     }
   }, []);
+
+  
+  const ClaimButton = useMemo(() => {
+    const hasVestedYams = vestedBalance && vestedBalance.toNumber() > 0;
+    if (isClaiming) {
+      return <Button disabled full text="Claiming..." variant="secondary" />;
+    }
+    if (hasVestedYams) {
+      return <Button full onClick={onClaim} text="Claim YAMs" />;
+    }
+    return <Button disabled full text="Claim" variant="secondary" />;
+  }, [isClaiming, onClaim, vestedBalance]);
+
 
   const handleSignOut = useCallback(() => {
     localStorage.removeItem("account");
@@ -76,10 +88,14 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
         <Spacer />
       </ModalContent>
       <Separator />
-      <ModalActions>
-        <Button onClick={onDismiss} text="Cancel" variant="secondary" />
-        <Button onClick={handleSignOut} text="Sign Out" />
-      </ModalActions>
+      <Box justifyContent="space-between" alignItems="center" height={96} row paddingHorizontal={4}>
+        <Box>{ClaimButton}</Box>
+        <Box row justifyContent="flex-end" alignItems="center">
+          <Button onClick={onDismiss} text="Cancel" variant="secondary" />
+          <Spacer />
+          <Button onClick={handleSignOut} text="Sign Out" />
+        </Box>
+      </Box>
     </Modal>
   );
 };
