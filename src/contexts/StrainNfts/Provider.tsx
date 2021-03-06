@@ -183,6 +183,10 @@ const Provider: React.FC = ({ children }) => {
     }
   }
 
+  const findNftById = (id: string) => {
+    return nftcollection.find(n => n.nftId === id);
+  }
+
   return (
     <Context.Provider value={{
       setConfirmTxModalIsOpen,
@@ -199,6 +203,7 @@ const Provider: React.FC = ({ children }) => {
       isHarvesting,
       strnEthLpPoolBalance,
       strnXiotLpPoolBalance,
+      findNftById,
     }}>
       {children}
     </Context.Provider>
