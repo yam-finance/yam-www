@@ -7,19 +7,16 @@ import styled from 'styled-components'
 import { DEFAULT_NFT_SIZE } from 'constants/poolValues'
 import useStrainNfts from "hooks/useStrainNfts";
 
-const BigNFTLeft: React.FC = () => {
+const ParentNFT = ({ nftId }: { nftId: string}) => {
 
-  const {
-    parentOneNftId,
-  } = useGreenhouse();
-
-  const { strainNftCollection } = useStrainNfts();
+  const { strainNftCollection, findNftById } = useStrainNfts();
 
   console.log(strainNftCollection)
+  const nft = findNftById(nftId);
   
   return (
     <>
-      {parentOneNftId ? <StyledNft key={parentOneNftId} nft={strainNftCollection[2]} /> :
+      {nft ? <StyledNft key={nftId} nft={nft} /> :
       (
       <NFTCard>
         <StyledImage>
@@ -54,4 +51,4 @@ const StyledImage = styled.div`
   width: 100%;
 `;
 
-export default BigNFTLeft;
+export default ParentNFT;

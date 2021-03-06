@@ -52,7 +52,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
           setIsNftLoading(false);
         });
     }
-  }, [nft.nftId, updatedNft]);
+  }, [nft?.nftId, updatedNft]);
 
   useEffect(() => {
     if (earnedStrnBalance === undefined) return setCanBurn(false);
