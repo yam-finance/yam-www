@@ -31,7 +31,7 @@ const BreedButtonSmallScreen = styled.a`
   font-size: 0.75rem;
   line-height: 1rem;
   border-radius: 0.5rem;
-  background-color: rgba(16, 185, 129, 1);
+  background-color: #00AC69;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-top: 1.5rem;
@@ -39,10 +39,6 @@ const BreedButtonSmallScreen = styled.a`
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   text-align: center;
-  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5),
-    0 4px 6px -2px rgba(0, 0, 0, 0.2);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   color: black;
 
   &:hover {

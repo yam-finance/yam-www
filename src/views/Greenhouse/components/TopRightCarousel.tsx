@@ -5,9 +5,9 @@ import arrowLeft from "../../../assets/arrowLeft.png";
 import arrowRight from "../../../assets/arrowRight.png";
 import arrowDown from "../../../assets/arrowDown.png";
 import useStrainNfts from "hooks/useStrainNfts";
-import StyledNft from "views/Common/StyledNft";
+import CarouselNFT from "./CarouselNFT";
 
-const TopRightCarousel: React.FC = () => {
+const TopLeftCarousel: React.FC = () => {
 
   const { strainNftCollection } = useStrainNfts();
 
@@ -19,16 +19,16 @@ const TopRightCarousel: React.FC = () => {
             <CarouselControlPrevIcon src={arrowLeft} />
           </CarouselControlIconsWrap>
           <CarouselStrainsWrap>
-            <DivContainer>
+            <CarouselNftContainer>
             {strainNftCollection.length <= 0 ?
             <NoStrainsText>Generate NFT's First</NoStrainsText> : 
             strainNftCollection
-            .filter((nft,index) => index <= 3)
+            .filter((nft,index) => index <= 2)
             .map((nft) => (
-              <StyledNft key={nft.nftId} nft={nft} />
+              <CarouselNFT key={nft.nftId} nft={nft} />
               
             ))}
-            </DivContainer>
+            </CarouselNftContainer>
           </CarouselStrainsWrap>
           <CarouselControlIconsWrap>
             <CarouselControlNextIcon src={arrowRight} />
@@ -44,7 +44,10 @@ const TopRightCarousel: React.FC = () => {
   );
 };
 
-const DivContainer = styled.div``;
+const CarouselNftContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const NoStrainsText = styled.div`
   font-size: 1.25rem;
@@ -113,4 +116,4 @@ const CarouselArrowDownInnerWrap = styled.div`
 
 const CarouselArrowDownIcon = styled.img``;
 
-export default TopRightCarousel;
+export default TopLeftCarousel;

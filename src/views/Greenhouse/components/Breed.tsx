@@ -119,7 +119,7 @@ const ApproveButton = styled.a`
   font-size: 0.875rem;
   line-height: 1.25rem;
   border-radius: 0.375rem;
-  background-color: #00ac69;
+  background-color: #00AC69;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-left: 1.5rem;
@@ -183,7 +183,7 @@ const BreedButton = styled.a`
   text-transform: uppercase;
   font-weight: 700;
   border-radius: 0.5rem;
-  background-color: #00ac69;
+  background-color: #00AC69;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 1.5rem;
