@@ -183,8 +183,8 @@ const Provider: React.FC = ({ children }) => {
     }
   }
 
-  const findNftById = (id: string) => {
-    return nftcollection.find(n => n.nftId === id);
+  const findNftById = (nftId: string): NftInstance | undefined => {
+    return nftcollection.find(n => n.nftId === nftId);
   }
 
   return (
