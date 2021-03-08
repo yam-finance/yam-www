@@ -24,9 +24,13 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
           setIsActive('active');
         }
       })
-    }
+    }    
     if (mobileMenu && children) {
-      setIsShow(location.pathname === target);
+      if (location.pathname !== target) {
+        if (isShow === true) {
+          setIsShow(false);
+        }
+      }
     }
   }, [location, mobileMenu, setIsShow, target, children]);
 
