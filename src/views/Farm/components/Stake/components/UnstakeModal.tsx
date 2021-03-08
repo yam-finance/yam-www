@@ -36,7 +36,7 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({ isOpen, onDismiss, onUnstak
   }, [onUnstake, val]);
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss}>
       <ModalTitle text="Unstake" />
       <ModalContent>
         <TokenInput value={val} onSelectMax={handleSelectMax} onChange={handleChange} max={fullBalance} symbol="YAM_ETH_SLP" />

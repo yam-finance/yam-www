@@ -35,7 +35,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ isOpen, onDismiss, onStake }) =
   }, [onStake, val]);
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss}>
       <ModalTitle text="Stake" />
       <ModalContent>
         <TokenInput value={val} onSelectMax={handleSelectMax} onChange={handleChange} max={fullBalance} symbol="YAM_ETH_SLP" />
