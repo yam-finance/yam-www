@@ -287,7 +287,7 @@ const useDahsboard = () => {
       },
       {
         icon: sushiValues?.image.large,
-        name: "Sush Gains",
+        name: "Sushi Gains",
         index: "SUSHI",
         quantity: numeral(SushiRewards).format("0,0.00"),
         price: "$" + numeral(sushiPrice).format("0,0.00"),
