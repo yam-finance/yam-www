@@ -116,8 +116,14 @@ const Governance: React.FC = () => {
                         <Box row alignItems="center" justifyContent="center">
                           <Pagination 
                             defaultActivePage={activePage} 
+                            boundaryRange={0}
+                            firstItem={null}
+                            lastItem={null}
                             totalPages={Math.ceil(proposals.length / 10)} 
-                            style={{ backgroundColor: '#f3edef' }}
+                            style={{ 
+                              backgroundColor: '#f3edef',
+                              fontFamily: 'Nunito'
+                            }}
                             onPageChange={(event, data) => handlePageChange(event, data)}
                           />
                         </Box>
