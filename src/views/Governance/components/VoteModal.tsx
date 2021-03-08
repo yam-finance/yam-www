@@ -51,7 +51,7 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
   }
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss}>
       <ModalTitle text="Proposal Overview" />
       <ModalContent>
         <CardContent>
@@ -144,17 +144,17 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
       </ModalContent>
       <ModalActions>
         <Button onClick={onDismiss} text="Cancel" variant="tertiary" />
-        {(prop.state == "Active" && !voted && isRegistered && votePower && votePower > 0 && (
+        {(prop.state === "Active" && !voted && isRegistered && votePower && votePower > 0 && (
           <>
             <Button disabled={isVoting} onClick={handleVoteClickTrue} text="For" />
             <Spacer size="md" />
             <Button disabled={isVoting} onClick={handleVoteClickFalse} text="Against" />
           </>
         )) ||
-          (prop.state == "Active" && !voted && isRegistered && (
+          (prop.state === "Active" && !voted && isRegistered && (
             <span>Unable To Vote. You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
           )) ||
-          (prop.state == "Pending" && !isRegistered && !voted && <Button disabled={isRegistering} onClick={onRegister} text="Register" />)}
+          (prop.state === "Pending" && !isRegistered && !voted && <Button disabled={isRegistering} onClick={onRegister} text="Register" />)}
       </ModalActions>
     </Modal>
   );
@@ -168,7 +168,8 @@ const StyledTitle = styled.h1`
   padding: 0;
 `;
 
-const StyledSubtitle = styled.h3`
+const StyledSubtitle = styled.span`
+  display: block;
   color: ${(props) => props.theme.textColor};
   font-size: 14px;
   font-weight: 400;
