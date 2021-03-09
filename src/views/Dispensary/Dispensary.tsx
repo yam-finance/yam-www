@@ -8,26 +8,40 @@ import {
 import styled from 'styled-components'
 import Page from 'components/Page'
 import StyledNotice from 'views/Common/StyledNotice'
+import StyledNft from 'views/Common/StyledNft'
+import useStrainNfts from 'hooks/useStrainNfts'
+import blankStrainNFT from '../../assets/shadyStrainNFT.png'
+import { DEFAULT_NFT_SIZE } from 'constants/poolValues'
 
-const Stake: React.FC = () => {
+const Dispensary: React.FC = () => {
 
+  const { strainNftCollection } = useStrainNfts();
 
   return (
     <Page>
-      <Container>
-        <Spacer size="lg" />
-        <Spacer />
-        <Spacer size="md" />
-        <StyledNotice
-          messages={["Dispensary", "It's in the works"]}
-        />
-        <Spacer size="md" />
-        <StyledNotice
-          messages={["For more information visit our Discord"]}
-        />
-      </Container>
+        <DispensaryContainer>
+          {strainNftCollection.length <= 0 ?
+                  <>
+                  <img style={{paddingBottom: "30px"}} src={blankStrainNFT} alt="Blank Strain NFT" height={DEFAULT_NFT_SIZE} />
+                  <StyledNotice
+                    messages={["Generate NFT's First"]}
+                  />
+                  </> : 
+            strainNftCollection
+            .map((nft) => (
+                  <StyledNft key={nft.nftId} nft={nft} />
+            ))}
+        </DispensaryContainer>
     </Page>
   )
 }
 
-export default Stake
+const DispensaryContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+export default Dispensary;
