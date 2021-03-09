@@ -17,7 +17,7 @@ import StyledPrimaryButton from "./StyledButton";
 import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
 
-const StyledNft = ({ nft, isDispensary }: { nft: NftInstance, isDispensary: Boolean }) => {
+const StyledNft = ({ nft, isDispensary = false}: { nft: NftInstance, isDispensary?: Boolean }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
   const [updatedNft, setUpdatedNft] = useState<NftInstance>();
   const [canBurn, setCanBurn] = useState<boolean>(false);
