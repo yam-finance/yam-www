@@ -16,7 +16,7 @@ const ParentNFT = ({ nftId }: { nftId: string}) => {
   
   return (
     <>
-      {nft ? <StyledNft key={nftId} nft={nft} /> :
+      {nft ? <StyledNft key={nftId} nft={nft} isDispensary={false} /> :
       (
       <NFTCard>
         <StyledImage>

@@ -17,7 +17,7 @@ import StyledPrimaryButton from "./StyledButton";
 import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
 
-const StyledNft = ({ nft }: { nft: NftInstance }) => {
+const StyledNft = ({ nft, isDispensary }: { nft: NftInstance, isDispensary: Boolean }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
   const [updatedNft, setUpdatedNft] = useState<NftInstance>();
   const [canBurn, setCanBurn] = useState<boolean>(false);
@@ -154,7 +154,14 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                     : "Burning will release your LP tokens"
                 }
               >
-                <StyledPrimaryButton
+                {isDispensary ? <StyledPrimaryButton
+                  // onClick={}
+                  // disabled={}
+                  text={
+                    "Buy for 2 ETH"
+                  }
+                  size="sm"
+                /> : <StyledPrimaryButton
                   onClick={handelUnstake}
                   disabled={nft.isDestroying || !canBurn}
                   text={
@@ -165,7 +172,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                       : "Burn"
                   }
                   size="sm"
-                />
+                />}
               </Tooltip>
               <StyledLabels>
                 <StyledLpLabel>
@@ -174,11 +181,11 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
                     {nft?.lpBalance ? formattedLPBalance : "-"}
                   </StyledValue>
                 </StyledLpLabel>
-                <StyledPrimaryButton
+                {isDispensary ? null : <StyledPrimaryButton
                   text={isAdding ? "..." : "+"}
                   onClick={handleAddStakeClick}
                   size={"sm"}
-                />
+                />}
               </StyledLabels>
             </StyledInfo>
           </>

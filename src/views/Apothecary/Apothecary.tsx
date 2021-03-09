@@ -20,7 +20,7 @@ const Apothecary: React.FC = () => {
         <StyledNftSection>
           {strainNftCollection &&
             strainNftCollection.map((nft) => (
-              <StyledNft key={nft.nftId} nft={nft} />
+              <StyledNft key={nft.nftId} nft={nft} isDispensary={false} />
             ))}
         </StyledNftSection>
       </StyledPageLayout>

@@ -29,7 +29,7 @@ const Dispensary: React.FC = () => {
                   </> : 
             strainNftCollection
             .map((nft) => (
-                  <StyledNft key={nft.nftId} nft={nft} />
+                  <StyledNft key={nft.nftId} nft={nft} isDispensary={true} />
             ))}
         </DispensaryContainer>
     </Page>
