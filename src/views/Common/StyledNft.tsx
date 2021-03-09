@@ -149,7 +149,7 @@ const StyledNft = ({ nft, isDispensary }: { nft: NftInstance, isDispensary: Bool
               <Tooltip
                 styles={greenRoundedStyle}
                 content={
-                  !canBurn
+                  isDispensary ? `Buy / Sell Your NFT ${nft.nftName}` : !canBurn
                     ? "In order to burn your NFT, you must first claim your rewards."
                     : "Burning will release your LP tokens"
                 }
