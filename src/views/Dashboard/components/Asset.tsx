@@ -4,6 +4,7 @@ import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 
 import styled from "styled-components";
+import numeral from "numeral";
 
 interface ProposalProps {
   prop: any;
@@ -23,13 +24,13 @@ export const AssetEntry: React.FC<ProposalProps> = ({ prop }) => {
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
           <StyledSymbolMain>{prop.index}</StyledSymbolMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-          <StyledQuantityMain>{prop.quantity}</StyledQuantityMain>
+          <StyledQuantityMain>{numeral(prop.quantity).format("0,0.00")}</StyledQuantityMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
-          <StyledPriceMain>{prop.price}</StyledPriceMain>
+          <StyledPriceMain>{"$" + numeral(prop.price).format("0,0.00")}</StyledPriceMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
-          <StyledChangeMain>{prop.change}</StyledChangeMain>
+          <StyledChangeMain>{numeral(prop.change).format("0.00a") + "%"}</StyledChangeMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
-          <StyledValueMain>{prop.value}</StyledValueMain>
+          <StyledValueMain>{"$" + numeral(prop.value).format("0,0.00")}</StyledValueMain>
         </StyledAssetContentInner>
       </Box>
     </Fragment>
