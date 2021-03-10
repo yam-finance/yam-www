@@ -4,7 +4,7 @@ import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Bu
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
 import Split from "components/Split";
-import { Pagination } from 'semantic-ui-react';
+import { Icon, Pagination } from 'semantic-ui-react';
 
 import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import RegistrationButton from 'components/RegistrationButton';
@@ -117,12 +117,22 @@ const Governance: React.FC = () => {
                           <Pagination 
                             defaultActivePage={activePage} 
                             boundaryRange={0}
+                            siblingRange={1}
                             firstItem={null}
                             lastItem={null}
-                            totalPages={Math.ceil(proposals.length / 10)} 
+                            prevItem={{ content: <Icon name='caret left' />, icon: true }}
+                            nextItem={{ content: <Icon name='caret right' />, icon: true }}
+                            totalPages={Math.ceil(proposals.length / 10)}
                             style={{ 
-                              backgroundColor: '#f3edef',
-                              fontFamily: 'Nunito'
+                              background: 'transparent',
+                              fontFamily: 'Nunito',
+                              fontSize: 16,
+                              fontWeight: 700,
+                              borderRadius: 28,
+                              border: 0,
+                              boxShadow: '0px 0px 1px 1px hsl(338deg 95% 4% / 15%), inset -1px 1px 0px hsl(0deg 0% 100%)',
+                              boxSizing: 'border-box',
+                              height: 48,
                             }}
                             onPageChange={(event, data) => handlePageChange(event, data)}
                           />
