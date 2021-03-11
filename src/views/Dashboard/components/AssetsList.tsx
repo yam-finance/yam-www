@@ -108,15 +108,15 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
               <StyledAssetContentInner>
                 <StyledTokenNameMain onClick={() => requestSort('name')}>Token Name</StyledTokenNameMain>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                <StyledSymbolMain onClick={() => requestSort('index')}>Symbol</StyledSymbolMain>
+                <StyledField gridArea={"symbol"} onClick={() => requestSort('index')}>Symbol</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-                <StyledQuantityMain onClick={() => requestSort('quantity')}>Quantity</StyledQuantityMain>
+                <StyledField gridArea={"quantity"} onClick={() => requestSort('quantity')}>Quantity</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
-                <StyledPriceMain onClick={() => requestSort('price')}>Token Price($)</StyledPriceMain>
+                <StyledField gridArea={"price"} onClick={() => requestSort('price')}>Token Price($)</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
-                <StyledChangeMain onClick={() => requestSort('change')}>Change(24h)</StyledChangeMain>
+                <StyledField gridArea={"change"} onClick={() => requestSort('change')}>Change(24h)</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
-                <StyledValueMain onClick={() => requestSort('value')}>Value in USD($)</StyledValueMain>
+                <StyledField gridArea={"value"} onClick={() => requestSort('value')}>Value in USD($)</StyledField>
               </StyledAssetContentInner>
             </Box>
             <Spacer size="sm" />
@@ -142,7 +142,11 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
   );
 };
 
-export const StyledTokenNameMain = styled.span`
+interface StyledFieldProps {
+  gridArea?: string;
+}
+
+const StyledTokenNameMain = styled.span`
   font-weight: 600;
   display: grid;
   cursor: pointer;
@@ -153,13 +157,13 @@ export const StyledTokenNameMain = styled.span`
   }
 `;
 
-export const StyledSymbolMain = styled.span`
+const StyledField = styled.span<StyledFieldProps>`
   font-weight: 600;
   margin-left: 5px;
   margin-right: 5px;
   display: grid;
+  grid-area: ${(props) => props.gridArea};
   cursor: pointer;
-  grid-area: symbol;
   justify-content: center;
   min-width: 67px;
   @media (max-width: 768px) {
@@ -168,67 +172,7 @@ export const StyledSymbolMain = styled.span`
   }
 `;
 
-export const StyledQuantityMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  cursor: pointer;
-  grid-area: quantity;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledPriceMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  cursor: pointer;
-  grid-area: price;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledChangeMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  cursor: pointer;
-  grid-area: change;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledValueMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: value;
-  justify-content: center;
-  min-width: 67px;
-  cursor: pointer;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledButton = styled.div`
+const StyledButton = styled.div`
   position: absolute;
   right: 20px;
   top: 20px;
@@ -237,7 +181,7 @@ export const StyledButton = styled.div`
   }
 `;
 
-export const StyledTotalLabel = styled.div`
+const StyledTotalLabel = styled.div`
   position: absolute;
   left: 20px;
   top: 30px;
@@ -247,7 +191,7 @@ export const StyledTotalLabel = styled.div`
   }
 `;
 
-export const StyledBox = styled(Box)`
+const StyledBox = styled(Box)`
   position: relative;
 `;
 

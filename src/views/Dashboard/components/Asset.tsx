@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, Fragment } from "react";
+import React, { Fragment } from "react";
 
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
@@ -22,20 +22,24 @@ export const AssetEntry: React.FC<ProposalProps> = ({ prop }) => {
             </Box>
           </StyledTokenNameMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-          <StyledSymbolMain>{prop.index}</StyledSymbolMain>
+          <StyledField gridArea={"symbol"}>{prop.index}</StyledField>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-          <StyledQuantityMain>{numeral(prop.quantity).format("0,0.00")}</StyledQuantityMain>
+          <StyledField gridArea={"quantity"}>{numeral(prop.quantity).format("0,0.00")}</StyledField>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
-          <StyledPriceMain>{"$" + numeral(prop.price).format("0,0.00")}</StyledPriceMain>
+          <StyledField gridArea={"price"}>{"$" + numeral(prop.price).format("0,0.00")}</StyledField>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
-          <StyledChangeMain>{numeral(prop.change).format("0.00a") + "%"}</StyledChangeMain>
+          <StyledField gridArea={"change"}>{numeral(prop.change).format("0.00a") + "%"}</StyledField>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
-          <StyledValueMain>{"$" + numeral(prop.value).format("0,0.00")}</StyledValueMain>
+          <StyledField gridArea={"value"}>{"$" + numeral(prop.value).format("0,0.00")}</StyledField>
         </StyledAssetContentInner>
       </Box>
     </Fragment>
   );
 };
+
+interface StyledFieldProps {
+  gridArea?: string;
+}
 
 export const StyledTokenNameMain = styled.span`
   font-weight: 600;
@@ -47,68 +51,12 @@ export const StyledTokenNameMain = styled.span`
   }
 `;
 
-export const StyledSymbolMain = styled.span`
+const StyledField = styled.span<StyledFieldProps>`
   font-weight: 600;
   margin-left: 5px;
   margin-right: 5px;
   display: grid;
-  grid-area: symbol;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledQuantityMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: quantity;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledPriceMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: price;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledChangeMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: change;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledValueMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: value;
+  grid-area: ${(props) => props.gridArea};
   justify-content: center;
   min-width: 67px;
   @media (max-width: 768px) {
