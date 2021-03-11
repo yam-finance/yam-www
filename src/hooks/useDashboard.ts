@@ -91,12 +91,12 @@ const useDahsboard = () => {
     const indexCoopLPRewards = (await getIndexCoopLPRewards(yam)) || 0;
     const SushiRewards = (await getSushiRewards(yam)) || 0;
 
-    const change24WETH = numeral(wethValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24DPI = numeral(dpiValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24UMA = numeral(umaValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24YUSD = numeral(yusdValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24IndexCoop = numeral(indexCoopValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
-    const change24Sushi = numeral(sushiValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%";
+    const change24WETH = wethValues?.market_data.price_change_percentage_24h_in_currency.usd;
+    const change24DPI = dpiValues?.market_data.price_change_percentage_24h_in_currency.usd;
+    const change24UMA = umaValues?.market_data.price_change_percentage_24h_in_currency.usd;
+    const change24YUSD = yusdValues?.market_data.price_change_percentage_24h_in_currency.usd;
+    const change24IndexCoop = indexCoopValues?.market_data.price_change_percentage_24h_in_currency.usd;
+    const change24Sushi = sushiValues?.market_data.price_change_percentage_24h_in_currency.usd;
     const cahnge24YAMHOUSE = 0;
 
     const reservesHistory = [];
@@ -279,81 +279,73 @@ const useDahsboard = () => {
         icon: wethValues?.image.large,
         name: "Wrapped Ether",
         index: "WETH",
-        quantity: numeral(totalWETHValue).format("0,0.00"),
-        price: "$" + numeral(wethPrice).format("0,0.00"),
-        change: change24WETH ? change24WETH : "0.00%",
-        value: "$" + numeral(assetsHistory.WETH.latest).format("0,0.00"),
-        number: assetsHistory.WETH.latest,
+        quantity: totalWETHValue,
+        price: wethPrice,
+        change: change24WETH ? change24WETH : 0,
+        value: assetsHistory.WETH.latest,
       },
       {
         icon: sushiValues?.image.large,
         name: "Sushi Gains",
         index: "SUSHI",
-        quantity: numeral(SushiRewards).format("0,0.00"),
-        price: "$" + numeral(sushiPrice).format("0,0.00"),
-        change: change24Sushi ? change24Sushi : "0.00%",
-        value: "$" + numeral(assetsHistory.Sushi.latest).format("0,0.00"),
-        number: assetsHistory.Sushi.latest,
+        quantity: SushiRewards,
+        price: sushiPrice,
+        change: change24Sushi ? change24Sushi : 0,
+        value: assetsHistory.Sushi.latest,
       },
       {
         icon: yusdValues?.image.large,
         name: "yearn Curve",
         index: "yyDAI+",
-        quantity: numeral(totalYUsdValue).format("0,0.00"),
-        price: "$" + numeral(yusdPrice).format("0,0.00"),
-        change: change24YUSD ? change24YUSD : "0.00%",
-        value: "$" + numeral(assetsHistory.yUSD.latest).format("0,0.00"),
-        number: assetsHistory.yUSD.latest,
+        quantity: totalYUsdValue,
+        price: yusdPrice,
+        change: change24YUSD ? change24YUSD : 0,
+        value: assetsHistory.yUSD.latest,
       },
       {
         icon: dpiValues?.image.large,
         name: "DefiPulse Index",
         index: "DPI",
-        quantity: numeral(DPIBalance).format("0,0.00"),
-        price: "$" + numeral(dpiPrice).format("0,0.00"),
-        change: change24DPI ? change24DPI : "0.00%",
-        value: "$" + numeral(assetsHistory.DPI.latest).format("0,0.00"),
-        number: assetsHistory.DPI.latest,
+        quantity: DPIBalance,
+        price: dpiPrice,
+        change: change24DPI ? change24DPI : 0,
+        value: assetsHistory.DPI.latest,
       },
       {
         icon: indexCoopValues?.image.large,
         name: "Index Coop Gains",
         index: "INDEX",
-        quantity: numeral(totalBalanceIndexCoop).format("0,0.00"),
-        price: "$" + numeral(indexPrice).format("0,0.00"),
-        change: change24IndexCoop ? change24IndexCoop : "0.00%",
-        value: "$" + numeral(assetsHistory.INDEX.latest).format("0,0.00"),
-        number: assetsHistory.INDEX.latest,
+        quantity: totalBalanceIndexCoop,
+        price: indexPrice,
+        change: change24IndexCoop ? change24IndexCoop : 0,
+        value: assetsHistory.INDEX.latest,
       },
       {
         icon: indexCoopValues?.image.large,
         name: "Index Coop LP",
         index: "INDEXLP",
-        quantity: numeral(indexCoopLPRewards).format("0,0.00"),
-        price: "$" + numeral(indexPrice).format("0,0.00"),
-        change: change24IndexCoop ? change24IndexCoop : "0.00%",
-        value: "$" + numeral(assetsHistory.INDEXLP.latest).format("0,0.00"),
-        number: assetsHistory.INDEXLP.latest,
+        quantity: indexCoopLPRewards,
+        price: indexPrice,
+        change: change24IndexCoop ? change24IndexCoop : 0,
+        value: assetsHistory.INDEXLP.latest,
       },
       {
         icon: umaValues?.image.large,
         name: "UMA Voting Token",
         index: "UMA",
-        quantity: numeral(totalUMAValue).format("0,0.00"),
-        price: "$" + numeral(umaPrice).format("0,0.00"),
-        change: change24UMA ? change24UMA : "0.00%",
-        value: "$" + numeral(assetsHistory.UMA.latest).format("0,0.00"),
-        number: assetsHistory.UMA.latest,
+        quantity: totalUMAValue,
+        price: umaPrice,
+        change: change24UMA ? change24UMA : 0,
+        value: assetsHistory.UMA.latest,
       },
       {
         icon: "https://set-core.s3.amazonaws.com/img/portfolios/yam_house.png",
         name: "Yam DAO House",
         index: "yamHOUSE",
-        quantity: numeral(totalYamHouseValue).format("0,0.00"),
-        price: "$" + numeral(yamHousePrice).format("0,0.00"),
-        change: cahnge24YAMHOUSE ? cahnge24YAMHOUSE : "0.00%",
-        value: "$" + numeral(assetsHistory.YamHouse.latest).format("0,0.00"),
-        number: assetsHistory.YamHouse.latest,
+        quantity: totalYamHouseValue,
+        price: yamHousePrice,
+        change: cahnge24YAMHOUSE ? cahnge24YAMHOUSE : 0,
+        value: assetsHistory.YamHouse.latest,
       },
     ];
 
@@ -362,7 +354,7 @@ const useDahsboard = () => {
     setAssetsColors(assetsColors);
     let treasuryAssets = 0;
     assets.forEach((asset:any) => {
-      treasuryAssets += asset.number;
+      treasuryAssets += asset.value;
     });
     setYamObject({
       currentPrice: numeral(yamValues?.market_data.current_price.usd).format("0.00a"),
