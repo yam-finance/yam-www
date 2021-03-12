@@ -61,7 +61,7 @@ const Start: React.FC = () => {
         />
         <Container size="lg">
           <Box row justifyContent="center">
-            <Button text="Open App" />
+            <Button text="Open App" href="/" />
             <Spacer />
             <Button text="Join the Community" variant="secondary" />
           </Box>
