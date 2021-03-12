@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
 
-import { Container, Spacer } from "react-neu";
+import { Container, Spacer, Button } from "react-neu";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 import Logo from "components/Logo";
 import MenuIcon from "components/icons/Menu";
@@ -15,6 +16,7 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
+  const location = useLocation();
 
   const handleDismissMobileMenu = useCallback(() => {
     setMobileMenu(false);
@@ -31,27 +33,39 @@ const TopBar: React.FC<TopBarProps> = () => {
           <StyledLogoWrapper>
             <Logo />
           </StyledLogoWrapper>
-          {mobileMenu ? (
-            <StyledMobileMenuWrapper>
-              <Nav onDismiss={handleDismissMobileMenu} mobileMenu={mobileMenu}/>
-            </StyledMobileMenuWrapper>
-          ) : (
-            <StyledNavWrapper>
-              <Nav onDismiss={handleDismissMobileMenu} mobileMenu={mobileMenu}/>
-            </StyledNavWrapper>
+          { location.pathname !== '/hometest' && (
+            <>
+            {mobileMenu ? (
+              <StyledMobileMenuWrapper>
+                <Nav onDismiss={handleDismissMobileMenu} mobileMenu={mobileMenu}/>
+              </StyledMobileMenuWrapper>
+            ) : (
+              <StyledNavWrapper>
+                <Nav onDismiss={handleDismissMobileMenu} mobileMenu={mobileMenu}/>
+              </StyledNavWrapper>
+            )}</>
           )}
+          <Spacer />
           <StyledLeftMenuBalancesWrapper>
             <StyledAccountButtonWrapper>
               <StyledTopBarDarkModeSwitch>
                 <DarkModeSwitch />
               </StyledTopBarDarkModeSwitch>
               <Spacer />
-              <WalletButton />
+              { location.pathname !== '/hometest' ? (
+                <WalletButton />
+              ) : (
+                <Button size="sm" text="Open App" />
+              )}
             </StyledAccountButtonWrapper>
-            <Spacer />
-            <StyledMenuButton onClick={handlePresentMobileMenu}>
-              <MenuIcon />
-            </StyledMenuButton>
+            { location.pathname !== '/hometest' && (
+              <>
+                <Spacer />
+                <StyledMenuButton onClick={handlePresentMobileMenu}>
+                  <MenuIcon />
+                </StyledMenuButton>
+              </>
+            )}
           </StyledLeftMenuBalancesWrapper>
         </StyledTopBarInner>
       </Container>
@@ -101,7 +115,7 @@ const StyledAccountButtonWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  width: 156px;
+  width: 210px;
   @media (max-width: 400px) {
     justify-content: center;
     width: auto;
