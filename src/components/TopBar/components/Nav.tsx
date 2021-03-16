@@ -21,6 +21,7 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           <StyledLink href="https://degenerative.finance/" label="Degenerative" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
+          <StyledRouterLink target="/register" label="Register" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="/delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledRouterLink target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} >
