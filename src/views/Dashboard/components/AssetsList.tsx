@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { CSVLink } from "react-csv";
 import moment from "moment";
 import numeral from "numeral";
@@ -16,15 +16,46 @@ interface AssetsListProps {
   assetsData: any
 }
 
+const useSortableData = (items:any, config = null) => {
+  const [sortConfig, setSortConfig] = useState<any>(config);
+  
+  const sortedItems = useMemo(() => {
+    let sortableItems = items;
+    if (sortConfig !== null) {
+      sortableItems.sort((a:any, b:any) => {
+        if (a[sortConfig?.key] < b[sortConfig?.key]) {
+          return sortConfig?.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig?.key] > b[sortConfig?.key]) {
+          return sortConfig?.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [items, sortConfig]);
+
+  const requestSort = (key: any) => {
+    let direction = 'ascending';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  }
+
+  return { items: sortedItems, requestSort, sortConfig };
+}
+
 const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
 
   const [csvData, setCSVData] = useState<any>([]);
   const [treasuryAssets, setTreasuryAssets] = useState<any>(0);
   const assets = assetsData?.sort((a:any,b:any):number => {
-    if (a.number > b.number) return -1;
-    if (a.number < b.number) return 1;
+    if (a.value > b.value) return -1;
+    if (a.value < b.value) return 1;
     return 0;
   });
+  const { items, requestSort, sortConfig } = useSortableData(assets);
 
   useEffect(() => {
     const csvData = [];
@@ -33,8 +64,15 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
     let treasuryAssets = 0;
     if (assets) {
       assets.forEach((asset:any) => {
-        csvData.push([asset.name, asset.index, asset.quantity, asset.price, asset.change, asset.value]);
-        treasuryAssets += asset.number;
+        csvData.push([
+          asset.name, 
+          asset.index, 
+          numeral(asset.quantity).format("0,0.00"),
+          "$" + numeral(asset.price).format("0,0.00"),
+          numeral(asset.change).format("0.00a") + "%",
+          "$" + numeral(asset.value).format("0,0.00")
+        ]);
+        treasuryAssets += asset.value;
       });
     }
     csvData.push(["Total Assets", "$" + numeral(treasuryAssets).format("0,0.00")]);
@@ -68,23 +106,23 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
           <CardContent>
             <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
               <StyledAssetContentInner>
-                <StyledTokenNameMain>Token Name</StyledTokenNameMain>
+                <StyledTokenNameMain onClick={() => requestSort('name')}>Token Name</StyledTokenNameMain>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                <StyledSymbolMain>Symbol</StyledSymbolMain>
+                <StyledField gridArea={"symbol"} onClick={() => requestSort('index')}>Symbol</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
-                <StyledQuantityMain>Quantity</StyledQuantityMain>
+                <StyledField gridArea={"quantity"} onClick={() => requestSort('quantity')}>Quantity</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
-                <StyledPriceMain>Token Price($)</StyledPriceMain>
+                <StyledField gridArea={"price"} onClick={() => requestSort('price')}>Token Price($)</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
-                <StyledChangeMain>Change(24h)</StyledChangeMain>
+                <StyledField gridArea={"change"} onClick={() => requestSort('change')}>Change(24h)</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
-                <StyledValueMain>Value in USD($)</StyledValueMain>
+                <StyledField gridArea={"value"} onClick={() => requestSort('value')}>Value in USD($)</StyledField>
               </StyledAssetContentInner>
             </Box>
             <Spacer size="sm" />
-            {assets ? (
+            {items ? (
               <>
-                {assets.map((asset:any, i:any) => {
+                {items.map((asset:any, i:any) => {
                   if (i === 0) {
                     return <AssetEntry key={"asset" + i} prop={asset} />;
                   } else {
@@ -104,9 +142,14 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
   );
 };
 
-export const StyledTokenNameMain = styled.span`
+interface StyledFieldProps {
+  gridArea?: string;
+}
+
+const StyledTokenNameMain = styled.span`
   font-weight: 600;
   display: grid;
+  cursor: pointer;
   grid-area: name;
   @media (max-width: 768px) {
     flex-flow: column nowrap;
@@ -114,12 +157,13 @@ export const StyledTokenNameMain = styled.span`
   }
 `;
 
-export const StyledSymbolMain = styled.span`
+const StyledField = styled.span<StyledFieldProps>`
   font-weight: 600;
   margin-left: 5px;
   margin-right: 5px;
   display: grid;
-  grid-area: symbol;
+  grid-area: ${(props) => props.gridArea};
+  cursor: pointer;
   justify-content: center;
   min-width: 67px;
   @media (max-width: 768px) {
@@ -128,63 +172,7 @@ export const StyledSymbolMain = styled.span`
   }
 `;
 
-export const StyledQuantityMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: quantity;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledPriceMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: price;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledChangeMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: change;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledValueMain = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: grid;
-  grid-area: value;
-  justify-content: center;
-  min-width: 67px;
-  @media (max-width: 768px) {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-`;
-
-export const StyledButton = styled.div`
+const StyledButton = styled.div`
   position: absolute;
   right: 20px;
   top: 20px;
@@ -193,7 +181,7 @@ export const StyledButton = styled.div`
   }
 `;
 
-export const StyledTotalLabel = styled.div`
+const StyledTotalLabel = styled.div`
   position: absolute;
   left: 20px;
   top: 30px;
@@ -203,7 +191,7 @@ export const StyledTotalLabel = styled.div`
   }
 `;
 
-export const StyledBox = styled(Box)`
+const StyledBox = styled(Box)`
   position: relative;
 `;
 

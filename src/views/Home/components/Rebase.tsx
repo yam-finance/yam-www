@@ -93,7 +93,7 @@ const Rebase: React.FC<RebaseProps> = ({ type }) => {
           <Button disabled={!account} onClick={() => setRebaseWarningModal(true)} text="Rebase" variant="secondary" />
         </CardContent>
       </Card>
-      <Modal isOpen={rebaseWarningModal}>
+      <Modal isOpen={rebaseWarningModal} onDismiss={() => setRebaseWarningModal(false)}>
         <CardIcon>⚠️</CardIcon>
         <ModalContent>WARNING: Only 1 rebase transaction succeeds every 12 hours. This transaction will likely fail.</ModalContent>
         <ModalActions>

@@ -49,7 +49,8 @@ const StyledNav = styled.div`
     flex-direction: column;
     position: fixed;
     background: rgb(243, 237, 239);
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 50px;
     width: 60%;
     top: 0;
     right: 0;
