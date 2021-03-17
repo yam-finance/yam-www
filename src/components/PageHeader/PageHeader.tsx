@@ -15,7 +15,7 @@ interface PageHeaderProps {
   subtitleOpacity?: string;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({
+const StartPageHeader: React.FC<PageHeaderProps> = ({
   icon,
   title,
   titleSize,
@@ -109,4 +109,4 @@ const StyledSubtitle = styled.h3<StyledSubtitleProps>`
   text-align: center;
 `;
 
-export default PageHeader;
+export default StartPageHeader;

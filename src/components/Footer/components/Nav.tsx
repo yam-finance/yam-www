@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useWallet } from "use-wallet";
 import { contributors } from "utils/misc";
 
+import footers from 'constants/Footers.json';
+
 const Nav: React.FC = () => {
   const { account, status } = useWallet();
 
@@ -15,30 +17,16 @@ const Nav: React.FC = () => {
 
   return (
     <StyledNav>
-      <StyledRouterLink exact to="/addresses">
-        Addresses
-      </StyledRouterLink>
-      <StyledLink href="https://github.com/yam-finance/yam-www" target="_blank">
-        Github
-      </StyledLink>
-      <StyledLink href="https://twitter.com/YamFinance" target="_blank">
-        Twitter
-      </StyledLink>
-      <StyledLink href="https://discord.gg/nKKhBbk" target="_blank">
-        Discord
-      </StyledLink>
-      <StyledLink href="https://snapshot.page/#/yam" target="_blank">
-        Proposals
-      </StyledLink>
-      <StyledLink href="https://medium.com/yam-finance" target="_blank">
-        Medium
-      </StyledLink>
-      <StyledLink href="https://forum.yam.finance" target="_blank">
-        Forum
-      </StyledLink>
-      <StyledLink href="https://docs.yam.finance/" target="_blank">
-        FAQ
-      </StyledLink>
+      <>
+      {footers.map((footer:any, index:any) => (
+          <div key={index}>
+          {
+            footer.router ? <StyledRouterLink exact to={footer.url}>{footer.name}</StyledRouterLink>
+                          : <StyledLink href={footer.url} target="_blank">{footer.name}</StyledLink>
+          }
+          </div>
+        ))}
+      </>
       {CheckContributor}
     </StyledNav>
   );
