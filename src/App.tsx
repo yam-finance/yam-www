@@ -25,6 +25,7 @@ import Umbrella from "views/Landings/Umbrella";
 import Contributor from "views/Contributor";
 import Delegate from "views/Delegate";
 import Claim from "views/Claim";
+import Registration from "views/Registration";
 
 const App: React.FC = () => {
 
@@ -68,6 +69,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/claim">
             <Claim />
+          </Route>
+          <Route exact path="/register">
+            <Registration />
           </Route>
         </Switch>
       </Providers>
