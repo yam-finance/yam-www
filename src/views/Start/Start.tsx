@@ -78,6 +78,7 @@ const Start: React.FC = () => {
         <Spacer size="lg" />
         <StartSplit>
           <Card>
+            <Spacer size="md" />
             <CardIcon>💸</CardIcon>
             <CardContent>
               <StyledCardName>Growing treasury</StyledCardName>
@@ -86,11 +87,12 @@ const Start: React.FC = () => {
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
-                <Button text="View treasury" variant="secondary" />
+                <Button text="View treasury" variant="secondary" to="/dashboard" />
               </Box>
             </CardActions>
           </Card>
           <Card>
+            <Spacer size="md" />
             <CardIcon>👨‍🌾</CardIcon>
             <CardContent>
               <StyledCardName>Yield farming</StyledCardName>
@@ -99,11 +101,12 @@ const Start: React.FC = () => {
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
-                <Button text="Start farming" variant="secondary" />
+                <Button text="Start farming" variant="secondary" to="/farm" />
               </Box>
             </CardActions>
           </Card>
           <Card>
+            <Spacer size="md" />
             <CardIcon>🗣️</CardIcon>
             <CardContent>
               <StyledCardName>Decentralized governance</StyledCardName>
@@ -112,7 +115,7 @@ const Start: React.FC = () => {
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
-                <Button text="Go vote" variant="secondary" />
+                <Button text="Go vote" variant="secondary" to="/governance" />
               </Box>
             </CardActions>
           </Card>

@@ -45,7 +45,6 @@ const TopBar: React.FC<TopBarProps> = () => {
               </StyledNavWrapper>
             )}</>
           )}
-          <Spacer />
           <StyledLeftMenuBalancesWrapper>
             <StyledAccountButtonWrapper>
               <StyledTopBarDarkModeSwitch>
