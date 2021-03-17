@@ -12,7 +12,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Spacer } from "react-neu";
 import numeral from "numeral";
 import styled from "styled-components";
-import { Tooltip } from "react-lightweight-tooltip";
 // import StyledPrimaryButton from "./StyledButton";
 import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
@@ -22,9 +21,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
   const [updatedNft, setUpdatedNft] = useState<NftInstance>();
 
-  const {
-    onRetrieve,
-  } = useStrainNfts();
+  const { onRetrieve } = useStrainNfts();
 
   useEffect(() => {
     if (nft && !updatedNft) {
@@ -41,7 +38,6 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     }
   }, [nft?.nftId, updatedNft]);
 
-
   const getName = () => {
     if (!nft) return "-";
     if (nft?.nftName) return nft?.nftName;
@@ -57,28 +53,6 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     return found.value;
   };
 
-  const greenRoundedStyle = {
-    content: {
-      backgroundColor: "hsl(215deg 70.4% 33.1% / 100%)",
-      color: "#FFFFFF",
-      fontWeight: 600,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      lineHeight: "1.2rem",
-      paddingLeft: "1.3rem",
-    },
-    wrapper: {},
-    gap: {},
-    tooltip: {
-      backgroundColor: "hsl(215deg 70.4% 33.1% / 100%)",
-      borderRadius: "10px",
-    },
-    arrow: {
-      borderTop: "solid hsl(215deg 70.4% 33.1% / 100%) 5px",
-    },
-  };
-
   const {
     parentOneNftId,
     setParentOneNftId,
@@ -89,27 +63,23 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
   } = useGreenhouse();
 
   return (
-          <>
-            <Spacer size="sm" />
-            <Tooltip
-                styles={greenRoundedStyle}
-                content={
-                  `Click to Select your NFT ${nft.nftName}`
-                }
-              >
-            <img src={updatedNft?.attribs?.image} height="75px" onClick={() => {
-              if (!parentOneNftId) {
-                setParentOneNftId(nft.nftId)
-              } else if (!parentTwoNftId) {
-                setParentTwoNftId(nft.nftId)
-              }
-            }} />
-            </Tooltip>
-            <Spacer size="sm" />
-          </>
+    <>
+      <Spacer size="sm" />
+      <img
+        src={updatedNft?.attribs?.image}
+        height="75px"
+        onClick={() => {
+          if (!parentOneNftId) {
+            setParentOneNftId(nft.nftId);
+          } else if (!parentTwoNftId) {
+            setParentTwoNftId(nft.nftId);
+          }
+        }}
+      />
+
+      <Spacer size="sm" />
+    </>
   );
 };
-
-
 
 export default StyledNft;

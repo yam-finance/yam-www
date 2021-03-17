@@ -7,12 +7,16 @@ import arrowDown from "../../../assets/arrowDown.png";
 import useStrainNfts from "hooks/useStrainNfts";
 import CarouselNFT from "./CarouselNFT";
 
-const TopLeftCarousel: React.FC = () => {
-
+const TopRightCarousel: React.FC = () => {
   const { strainNftCollection } = useStrainNfts();
 
   return (
     <>
+      {/* {strainNftCollection.length < 0 ? (
+        <CarouselDiv>
+          <StyledText>Select The First Big NFT</StyledText>
+        </CarouselDiv>
+      ) : null} */}
       <CarouselOuterContainer>
         <CarouselInnerContainer>
           <CarouselControlIconsWrap>
@@ -20,14 +24,13 @@ const TopLeftCarousel: React.FC = () => {
           </CarouselControlIconsWrap>
           <CarouselStrainsWrap>
             <CarouselNftContainer>
-            {strainNftCollection.length <= 0 ?
-            <NoStrainsText>Generate NFT's First</NoStrainsText> : 
-            strainNftCollection
-            .filter((nft,index) => index <= 2)
-            .map((nft) => (
-              <CarouselNFT key={nft.nftId} nft={nft} />
-              
-            ))}
+              {strainNftCollection.length <= 0 ? (
+                <NoStrainsText>Generate NFT's First</NoStrainsText>
+              ) : (
+                strainNftCollection.map((nft) => (
+                  <CarouselNFT key={nft.nftId} nft={nft} />
+                ))
+              )}
             </CarouselNftContainer>
           </CarouselStrainsWrap>
           <CarouselControlIconsWrap>
@@ -50,11 +53,20 @@ const CarouselNftContainer = styled.div`
 `;
 
 const NoStrainsText = styled.div`
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   line-height: 1.75rem;
   font-weight: 800;
   line-height: 1.5rem;
   text-align: center;
+`;
+
+const StyledText = styled.div`
+  font-size: 0.9rem;
+  line-height: 1.75rem;
+  font-weight: 800;
+  line-height: 1.5rem;
+  text-align: center;
+  padding-bottom: 1.3rem;
 `;
 
 const CarouselOuterContainer = styled.div`
@@ -74,27 +86,40 @@ const CarouselControlIconsWrap = styled.div`
 
 const CarouselControlPrevIcon = styled.img`
   height: 1rem;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CarouselControlNextIcon = styled.img`
   height: 1rem;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CarouselStrainsWrap = styled.div`
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  width: 260px;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+  padding-bottom: 1.4rem;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    height: 0.6rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #00ac69;
+    border-radius: 20px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #183d69;
+    border-radius: 20px;
+  }
+`;
+
+const CarouselDiv = styled.div`
+  display: flex;
+  justify-content: center;
   width: auto;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 `;
 
 const CarouselArrowDownOuterWrap = styled.div`
@@ -116,4 +141,4 @@ const CarouselArrowDownInnerWrap = styled.div`
 
 const CarouselArrowDownIcon = styled.img``;
 
-export default TopLeftCarousel;
+export default TopRightCarousel;
