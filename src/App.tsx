@@ -26,6 +26,8 @@ import Contributor from "views/Contributor";
 import Delegate from "views/Delegate";
 import Claim from "views/Claim";
 import Start from "views/Start";
+import Registration from "views/Registration";
+
 
 const App: React.FC = () => {
 
@@ -69,6 +71,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/claim">
             <Claim />
+          </Route>
+          <Route exact path="/register">
+            <Registration />
           </Route>
           <Route exact path="/hometest">
             <Start />
