@@ -1,16 +1,27 @@
-import useGreenhouse from "hooks/useGreenhouse";
 import React from "react";
 
 import styled from "styled-components";
 
+import useBalances from "hooks/useBalances";
+import useGreenhouse from "hooks/useGreenhouse";
+import ApproveButtons from "./ApproveButtons";
+
+import { PoolIds } from "constants/poolValues";
+
 const Breed: React.FC = () => {
+  const {
+    strnEthLpBalance,
+    strnEthLpPoolBalance,
+    stxpTokenBalance,
+    strnTokenBalance,
+  } = useBalances();
 
   const {
     // isBreeding,
     // onBreeding,
-    // setBurnAmount,
+    setBurnAmount,
     // setStxpAmount,
-    // burnAmount,
+    burnAmount,
     // stxpAmount,
     lpTokenAmount,
     setLpTokenAmount,
@@ -21,37 +32,56 @@ const Breed: React.FC = () => {
     console.log(`lpTokenAmount: ${lpTokenAmount}`);
   }
 
+  if (burnAmount > String(0)) {
+    console.log(`burnAmount: ${burnAmount}`);
+  }
+
   return (
     <DivContainer>
       <BetweenCardsOuterContainer>
         <BetweenCardsInnerContainer>
           <ApproveContainer>
             <ApproveButtonContainer>
-              <ApproveButton>Approve STRN</ApproveButton>
+              <ApproveButtons
+                poolId={PoolIds.STRN_ETH}
+                walletBalance={strnEthLpBalance}
+              />
             </ApproveButtonContainer>
             <ApproveButtonContainer>
-              <ApproveButton>Approve LP</ApproveButton>
+              <ApproveButtons
+                poolId={PoolIds.STRN_ETH}
+                walletBalance={strnEthLpPoolBalance}
+              />
             </ApproveButtonContainer>
           </ApproveContainer>
           <InputContainer>
-            <MidContainerTitle>LP amount</MidContainerTitle>
+            <MidContainerTitle>LP Amount</MidContainerTitle>
             <DivContainer>
-              <InputForm onChange={(e) => {
-                setLpTokenAmount(e.target.value)
-              }} />
+              <InputForm
+                onChange={(e) => {
+                  setLpTokenAmount(e.target.value);
+                }}
+              />
             </DivContainer>
           </InputContainer>
           <ApproveContainer>
             <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
             <BurnSTXPSubtitle>Increase chance of rarity</BurnSTXPSubtitle>
             <ApproveButtonContainer>
-              <ApproveButton>Approve STXP</ApproveButton>
+              <ApproveButtons
+                poolId={PoolIds.STRN_ETH}
+                walletBalance={stxpTokenBalance}
+              />
             </ApproveButtonContainer>
           </ApproveContainer>
           <InputContainer>
             <MidContainerTitle>STXP amount</MidContainerTitle>
             <DivContainer>
-              <InputForm />
+            <InputForm
+                onChange={(e) => {
+                  setBurnAmount(e.target.value);
+                }}
+              />
             </DivContainer>
             <FeeLabel>420 STRN Fee</FeeLabel>
           </InputContainer>
@@ -68,7 +98,7 @@ const Breed: React.FC = () => {
 
 const BetweenCardsOuterContainer = styled.div`
   align-self: flex-end;
-  padding: 60px;
+  padding: 14px 55px;
   @media (min-width: 980px) {
     margin-bottom: 2.5rem;
   }
@@ -119,7 +149,7 @@ const ApproveButton = styled.a`
   font-size: 0.875rem;
   line-height: 1.25rem;
   border-radius: 0.375rem;
-  background-color: #00AC69;
+  background-color: #00ac69;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-left: 1.5rem;
@@ -183,7 +213,7 @@ const BreedButton = styled.a`
   text-transform: uppercase;
   font-weight: 700;
   border-radius: 0.5rem;
-  background-color: #00AC69;
+  background-color: #00ac69;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 1.5rem;
