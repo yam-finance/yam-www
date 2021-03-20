@@ -7,6 +7,11 @@ import Context from './Context'
 import useYam from 'hooks/useYam'
 import { breedNfts } from 'yam-sdk/utils'
 import useStrainNfts from 'hooks/useStrainNfts'
+import {
+  getAddresses
+} from 'constants/tokenAddresses'
+
+const addresses = getAddresses()
 
 const Provider: React.FC = ({ children }) => {
   const [isBreeding, setIsBreeding] = useState<boolean>(false)
@@ -77,7 +82,8 @@ const Provider: React.FC = ({ children }) => {
       childName,
       lpTokenAmount,
       setLpTokenAmount,
-      getBreedingFee: handleCalculateBreedFee
+      getBreedingFee: handleCalculateBreedFee,
+      strainCrafterAddress: addresses.strainNFTCrafterAddress
     }}>
       {children}
     </Context.Provider>

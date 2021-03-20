@@ -14,4 +14,5 @@ export interface ContextValues {
   setLpTokenAmount: (amount: string) => void, // set the LP token amount
   lpTokenAmount: string,            // amount of LP tokens to give child nft
   getBreedingFee: () => string,     // get STRN fee after parents have been selected
+  strainCrafterAddress: string,     // crafter contract address used for approvals
 }
