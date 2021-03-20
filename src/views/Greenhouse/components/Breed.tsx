@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import styled from "styled-components";
 
 import useBalances from "hooks/useBalances";
 import useGreenhouse from "hooks/useGreenhouse";
 import ApproveButtons from "./ApproveButtons";
+import useApproval from "hooks/useApproval";
+import BigNumber from "bignumber.js";
+import numeral from "numeral";
 
-import { PoolIds } from "constants/poolValues";
+import {
+  PoolIds,
+  POOL_NAMES,
+  MIN_LP_AMOUNTS,
+  MIN_LP_AMOUNTS_DISPLAY,
+  MIN_STRN_GEN_VALUE,
+} from "constants/poolValues";
+import Label from "components/Label";
+import { Spacer } from "react-neu";
+import useStrainNfts from "hooks/useStrainNfts";
+import { useWallet } from "use-wallet";
+
+import { getAddresses } from "constants/tokenAddresses";
 
 const Breed: React.FC = () => {
   const {
@@ -27,6 +42,92 @@ const Breed: React.FC = () => {
     setLpTokenAmount,
     // getBreedingFee,
   } = useGreenhouse();
+
+  const poolId = PoolIds.STRN_ETH;
+  const walletBalance = strnEthLpBalance;
+
+  const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false);
+  const [canGenerate, setCanGenerate] = useState(false);
+
+  const { setConfirmTxModalIsOpen, isCreating, onCreateNft } = useStrainNfts();
+
+  const { status } = useWallet();
+
+  const poolName = useMemo(() => POOL_NAMES[Number(poolId)], [poolId]);
+  const minAmountLpTokens = useMemo(() => MIN_LP_AMOUNTS[Number(poolId)], [
+    poolId,
+  ]);
+
+  const getLpTokenAddress = () => {
+    if (poolId === PoolIds.STRN_ETH) return getAddresses().strnLPTokenAddress;
+    return getAddresses().strnXiotLPTokenAddress;
+  };
+
+  const {
+    isApproved,
+    isApproving,
+    onApprove,
+  } = useApproval(
+    getLpTokenAddress(),
+    getAddresses().strainNFTCrafterAddress,
+    () => setConfirmTxModalIsOpen(false)
+  );
+
+  const {
+    isApproved: isApprovedStrn,
+    isApproving: isApprovingStrn,
+    onApprove: onApproveStrn,
+  } = useApproval(
+    getAddresses().strnTokenAddress,
+    getAddresses().strainNFTCrafterAddress,
+    () => setConfirmTxModalIsOpen(false)
+  );
+
+  const handleApprove = useCallback(() => {
+    setConfirmTxModalIsOpen(true);
+    onApprove();
+  }, [onApprove, setConfirmTxModalIsOpen]);
+
+  const handleApproveStrn = useCallback(() => {
+    setConfirmTxModalIsOpen(true);
+    onApproveStrn();
+  }, [onApprove, setConfirmTxModalIsOpen]);
+  const handleGenerateClick = useCallback(() => {
+    setGenerateModalIsOpen(true);
+  }, [setGenerateModalIsOpen]);
+
+  const handleOnGenerate = (amount: string, name: string) => {
+    onCreateNft(poolId, amount, name);
+    handleDismissGenerateModal();
+  };
+
+  const handleDismissGenerateModal = useCallback(() => {
+    setGenerateModalIsOpen(false);
+  }, [setGenerateModalIsOpen]);
+
+  useEffect(() => {
+    const hasEnoughStrn = strnTokenBalance
+      ? strnTokenBalance?.gte(MIN_STRN_GEN_VALUE)
+      : false;
+    if (!minAmountLpTokens || !walletBalance || !hasEnoughStrn) {
+      setCanGenerate(false);
+    } else if (
+      walletBalance &&
+      new BigNumber(walletBalance).gte(new BigNumber(minAmountLpTokens))
+    ) {
+      setCanGenerate(true);
+    }
+  }, [walletBalance, poolId, strnTokenBalance]);
+
+  const formattedLPBalance = useMemo(() => {
+    if (walletBalance) {
+      return poolId === PoolIds.STRN_ETH
+        ? numeral(walletBalance).format("0.00a")
+        : walletBalance.toFixed(8);
+    } else {
+      return "--";
+    }
+  }, [walletBalance, poolId]);
 
   if (lpTokenAmount > String(0)) {
     console.log(`lpTokenAmount: ${lpTokenAmount}`);
@@ -55,7 +156,18 @@ const Breed: React.FC = () => {
             </ApproveButtonContainer>
           </ApproveContainer>
           <InputContainer>
-            <MidContainerTitle>LP Amount</MidContainerTitle>
+            <MidContainerTitle>
+              {" "}
+              <DivContainer>
+                {poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue>
+              </DivContainer>
+              <Label
+                text={`Min: ${String(
+                  MIN_LP_AMOUNTS_DISPLAY[Number(poolId)]
+                )} ${poolName} LP`}
+              />
+              <Spacer size="sm" />
+            </MidContainerTitle>
             <DivContainer>
               <InputForm
                 onChange={(e) => {
@@ -77,7 +189,7 @@ const Breed: React.FC = () => {
           <InputContainer>
             <MidContainerTitle>STXP amount</MidContainerTitle>
             <DivContainer>
-            <InputForm
+              <InputForm
                 onChange={(e) => {
                   setBurnAmount(e.target.value);
                 }}
@@ -109,6 +221,11 @@ const BetweenCardsOuterContainer = styled.div`
 `;
 
 const DivContainer = styled.div``;
+
+const StyledValue = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+`;
 
 const BetweenCardsInnerContainer = styled.div`
   display: flex;

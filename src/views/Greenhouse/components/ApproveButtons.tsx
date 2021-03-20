@@ -238,15 +238,6 @@ const GenerateNftButton = ({
   return (
     <>
       {status !== "connected" && <Spacer size="sm" />}
-      <div>
-        {poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue>
-      </div>
-      <Label
-        text={`Min: ${String(
-          MIN_LP_AMOUNTS_DISPLAY[Number(poolId)]
-        )} ${poolName} LP`}
-      />
-      <Spacer size="sm" />
 
       {GenerateButton}
 
@@ -262,11 +253,6 @@ const GenerateNftButton = ({
     </>
   );
 };
-
-const StyledValue = styled.span`
-  font-size: 18px;
-  font-weight: 600;
-`;
 
 const StyledButtonRow = styled.div`
   display: flex;
