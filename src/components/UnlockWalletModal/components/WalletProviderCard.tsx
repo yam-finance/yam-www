@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, CardActions, CardContent, CardIcon } from "react-neu";
+import { Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
 import styled from "styled-components";
 
 interface WalletProviderCardProps {
@@ -9,6 +9,7 @@ interface WalletProviderCardProps {
 }
 const WalletProviderCard: React.FC<WalletProviderCardProps> = ({ icon, name, onSelect }) => (
   <Card>
+    <Spacer size="md" />
     <CardIcon>{icon}</CardIcon>
     <CardContent>
       <StyledName>{name}</StyledName>

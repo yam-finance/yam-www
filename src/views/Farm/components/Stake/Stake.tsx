@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Countdown, { CountdownRenderProps } from "react-countdown";
 import numeral from "numeral";
-import { Box, Button, Card, CardActions, CardContent, CardIcon } from "react-neu";
+import { Box, Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
 import { useWallet } from "use-wallet";
 
 import Label from "components/Label";
@@ -131,6 +131,7 @@ const Stake: React.FC = () => {
   return (
     <>
       <Card>
+        <Spacer size="md" />
         <CardIcon>🌱</CardIcon>
         <CardContent>
           <Box alignItems="center" column>
