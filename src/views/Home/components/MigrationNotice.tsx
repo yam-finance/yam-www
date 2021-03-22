@@ -1,12 +1,12 @@
 import React from "react";
 
-import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
 
 const MigrationNotice: React.FC = () => {
   return (
     <Notice>
-      <NoticeIcon>🦋</NoticeIcon>
+      <StyledNoticeIcon role="img">🦋</StyledNoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
           <span>You have unmigrated YAMV2 tokens!</span>
@@ -26,6 +26,13 @@ const StyledNoticeContentInner = styled.div`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
+`;
+
+const StyledNoticeIcon = styled.span`
+  height: 46px;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
 `;
 
 export default MigrationNotice;

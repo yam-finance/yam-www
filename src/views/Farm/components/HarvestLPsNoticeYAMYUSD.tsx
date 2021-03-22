@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import useFarming from "hooks/useFarming";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
 import { bnToDec } from "utils";
@@ -36,7 +36,7 @@ const HarvestLPsNoticeYAMYUSD: React.FC = () => {
       return (
         <>
           <Notice>
-            <NoticeIcon>❗</NoticeIcon>
+            <StyledNoticeIcon role='img'>❗</StyledNoticeIcon>
             <NoticeContent>
               <StyledNoticeContentInner>
                 <span>
@@ -74,6 +74,13 @@ const StyledNoticeContentInner = styled.div`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
+`;
+
+const StyledNoticeIcon = styled.span`
+  height: 46px;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
 `;
 
 export default HarvestLPsNoticeYAMYUSD;
