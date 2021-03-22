@@ -12,7 +12,7 @@ const RegisterNotice: React.FC = () => {
       <NoticeIcon>{isRegistered ? "✔️" : "🗣️"}</NoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span style={{ width: '100%', textAlign: 'center', fontSize: 20 }}>{isRegistered ? `You've successfuly registered to vote!` : `You must register to vote!`}</span>
+          <span style={{ width: '100%', textAlign: 'center', fontSize: 20 }}>{isRegistered ? `You've successfuly registered!` : `It's time to register to vote for onchain and Snapshot proposals.`}</span>
           <Spacer size="sm" />
         </StyledNoticeContentInner>
       </NoticeContent>
