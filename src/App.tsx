@@ -37,7 +37,7 @@ const App: React.FC = () => {
         <TopBar />
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Start />
           </Route>
           <Route exact path="/farm">
             <Farm />
@@ -74,9 +74,6 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/register">
             <Registration />
-          </Route>
-          <Route exact path="/hometest">
-            <Start />
           </Route>
         </Switch>
       </Providers>
