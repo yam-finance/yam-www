@@ -63,7 +63,7 @@ const Start: React.FC = () => {
           <Box row justifyContent="center">
             <Button text="Open App" href="/" />
             <Spacer />
-            <Button text="Join the Community" variant="secondary" />
+            <Button text="Join the Community" href="https://discord.com/invite/TgFpmDj" variant="secondary" />
           </Box>
         </Container>
       </StyledHero>
