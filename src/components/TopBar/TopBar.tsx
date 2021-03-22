@@ -33,7 +33,7 @@ const TopBar: React.FC<TopBarProps> = () => {
           <StyledLogoWrapper>
             <Logo />
           </StyledLogoWrapper>
-          { location.pathname !== '/hometest' && (
+          { location.pathname !== '/' && (
             <>
             {mobileMenu ? (
               <StyledMobileMenuWrapper>
@@ -51,13 +51,13 @@ const TopBar: React.FC<TopBarProps> = () => {
                 <DarkModeSwitch />
               </StyledTopBarDarkModeSwitch>
               <Spacer />
-              { location.pathname !== '/hometest' ? (
+              { location.pathname !== '/' ? (
                 <WalletButton />
               ) : (
                 <Button size="sm" text="Open App" href="/" />
               )}
             </StyledAccountButtonWrapper>
-            { location.pathname !== '/hometest' && (
+            { location.pathname !== '/' && (
               <>
                 <Spacer />
                 <StyledMenuButton onClick={handlePresentMobileMenu}>
