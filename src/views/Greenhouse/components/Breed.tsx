@@ -1,27 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
 import styled from "styled-components";
 
 import useBalances from "hooks/useBalances";
 import useGreenhouse from "hooks/useGreenhouse";
 import ApproveButtons from "./ApproveButtons";
-import useApproval from "hooks/useApproval";
-import BigNumber from "bignumber.js";
-import numeral from "numeral";
+import numeral from 'numeral';
 
 import {
   PoolIds,
   POOL_NAMES,
-  MIN_LP_AMOUNTS,
   MIN_LP_AMOUNTS_DISPLAY,
-  MIN_STRN_GEN_VALUE,
 } from "constants/poolValues";
 import Label from "components/Label";
 import { Spacer } from "react-neu";
-import useStrainNfts from "hooks/useStrainNfts";
-import { useWallet } from "use-wallet";
-
-import { getAddresses } from "constants/tokenAddresses";
 
 const Breed: React.FC = () => {
   const {
@@ -46,78 +38,8 @@ const Breed: React.FC = () => {
   const poolId = PoolIds.STRN_ETH;
   const walletBalance = strnEthLpBalance;
 
-  const [generateModalIsOpen, setGenerateModalIsOpen] = useState(false);
-  const [canGenerate, setCanGenerate] = useState(false);
-
-  const { setConfirmTxModalIsOpen, isCreating, onCreateNft } = useStrainNfts();
-
-  const { status } = useWallet();
-
   const poolName = useMemo(() => POOL_NAMES[Number(poolId)], [poolId]);
-  const minAmountLpTokens = useMemo(() => MIN_LP_AMOUNTS[Number(poolId)], [
-    poolId,
-  ]);
 
-  const getLpTokenAddress = () => {
-    if (poolId === PoolIds.STRN_ETH) return getAddresses().strnLPTokenAddress;
-    return getAddresses().strnXiotLPTokenAddress;
-  };
-
-  const {
-    isApproved,
-    isApproving,
-    onApprove,
-  } = useApproval(
-    getLpTokenAddress(),
-    getAddresses().strainNFTCrafterAddress,
-    () => setConfirmTxModalIsOpen(false)
-  );
-
-  const {
-    isApproved: isApprovedStrn,
-    isApproving: isApprovingStrn,
-    onApprove: onApproveStrn,
-  } = useApproval(
-    getAddresses().strnTokenAddress,
-    getAddresses().strainNFTCrafterAddress,
-    () => setConfirmTxModalIsOpen(false)
-  );
-
-  const handleApprove = useCallback(() => {
-    setConfirmTxModalIsOpen(true);
-    onApprove();
-  }, [onApprove, setConfirmTxModalIsOpen]);
-
-  const handleApproveStrn = useCallback(() => {
-    setConfirmTxModalIsOpen(true);
-    onApproveStrn();
-  }, [onApprove, setConfirmTxModalIsOpen]);
-  const handleGenerateClick = useCallback(() => {
-    setGenerateModalIsOpen(true);
-  }, [setGenerateModalIsOpen]);
-
-  const handleOnGenerate = (amount: string, name: string) => {
-    onCreateNft(poolId, amount, name);
-    handleDismissGenerateModal();
-  };
-
-  const handleDismissGenerateModal = useCallback(() => {
-    setGenerateModalIsOpen(false);
-  }, [setGenerateModalIsOpen]);
-
-  useEffect(() => {
-    const hasEnoughStrn = strnTokenBalance
-      ? strnTokenBalance?.gte(MIN_STRN_GEN_VALUE)
-      : false;
-    if (!minAmountLpTokens || !walletBalance || !hasEnoughStrn) {
-      setCanGenerate(false);
-    } else if (
-      walletBalance &&
-      new BigNumber(walletBalance).gte(new BigNumber(minAmountLpTokens))
-    ) {
-      setCanGenerate(true);
-    }
-  }, [walletBalance, poolId, strnTokenBalance]);
 
   const formattedLPBalance = useMemo(() => {
     if (walletBalance) {
@@ -157,7 +79,6 @@ const Breed: React.FC = () => {
           </ApproveContainer>
           <InputContainer>
             <MidContainerTitle>
-              {" "}
               <DivContainer>
                 {poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue>
               </DivContainer>
@@ -259,29 +180,29 @@ const ApproveButtonContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const ApproveButton = styled.a`
-  display: block;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  border-radius: 0.375rem;
-  background-color: #00ac69;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  text-align: center;
-  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  color: #121013;
-  cursor: pointer;
+// const ApproveButton = styled.a`
+//   display: block;
+//   text-transform: uppercase;
+//   font-weight: 700;
+//   font-size: 0.875rem;
+//   line-height: 1.25rem;
+//   border-radius: 0.375rem;
+//   background-color: #00ac69;
+//   padding-top: 0.75rem;
+//   padding-bottom: 0.75rem;
+//   padding-left: 1.5rem;
+//   padding-right: 1.5rem;
+//   text-align: center;
+//   --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+//   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+//     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+//   color: #121013;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: white;
-  }
-`;
+//   &:hover {
+//     background-color: white;
+//   }
+// `;
 
 const InputContainer = styled.div`
   display: flex;
@@ -289,7 +210,7 @@ const InputContainer = styled.div`
   margin-bottom: 1.25rem;
 
   @media (min-width: 980px) {
-    margin-bottom: 3rem;
+    margin-bottom: 1.2rem;
   }
 `;
 

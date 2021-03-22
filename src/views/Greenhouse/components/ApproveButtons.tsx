@@ -66,6 +66,26 @@ const GenerateNftButton = ({
     getAddresses().strainNFTCrafterAddress,
     () => setConfirmTxModalIsOpen(false)
   );
+  
+  const {
+    isApproved: isApprovedStrnLP,
+    isApproving: isApprovingStrnLP,
+    onApprove: onApproveStrnLP,
+  } = useApproval(
+    getAddresses().strnLPTokenAddress,
+    getAddresses().strainNFTCrafterAddress,
+    () => setConfirmTxModalIsOpen(false)
+  );
+
+  const {
+    isApproved: isApprovedStxp,
+    isApproving: isApprovingStxp,
+    onApprove: onApproveStxp,
+  } = useApproval(
+    getAddresses().stxpTokenAddress,
+    getAddresses().strainNFTCrafterAddress,
+    () => setConfirmTxModalIsOpen(false)
+  );
 
   const handleApprove = useCallback(() => {
     setConfirmTxModalIsOpen(true);
