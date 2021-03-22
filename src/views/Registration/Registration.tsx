@@ -15,7 +15,7 @@ const Registration: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader icon={"👏"} title="Registration" subtitle="It's time to register to vote for onchain and Snapshot proposals." />
+      <PageHeader icon={"👏"} title="Registration" subtitle="Register to vote!" />
       <Spacer size="md" />
       
       <Container>
