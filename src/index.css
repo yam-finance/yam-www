@@ -161,3 +161,15 @@ button, input {
   border-radius: 150px !important;
   border: 2px solid !important;
 }
+
+.ui.pagination.menu .item {
+  min-width: 3em;
+  text-align: center;
+  color: white;
+}
+
+.ui.pagination.menu .active.item {
+  min-width: 3em;
+  text-align: center;
+  color: white;
+}
