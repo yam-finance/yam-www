@@ -76,7 +76,7 @@ const useTreasury = () => {
 
   const totalYUsdValue = useMemo(() => {
     const yamYUsdValue = yamTwap && yamBalance ? yamTwap * yamBalance : 0;
-    return yUsdBalance ? yUsdBalance + yamYUsdValue : yamYUsdValue;
+    return (yUsdBalance ? yUsdBalance + yamYUsdValue : yamYUsdValue) + 718900;
   }, [yamBalance, yamTwap, yUsdBalance]);
 
   const getAssetsHistory = async () => {
@@ -143,6 +143,10 @@ const useTreasury = () => {
         },
         11680240: {
           value: 1.19 * 1896995,
+          tx: ''
+        },
+        12018999: {
+          value: 1.28 * 718900,
           tx: ''
         },
         latest: yusdPrice * (totalYUsdValue),
