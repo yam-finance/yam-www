@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
+import StyledNoticeIcon from "components/StyledNoticeIcon";
 
 const ResumedLPsNotice: React.FC = () => (
   <>
@@ -31,13 +32,6 @@ const StyledNoticeContentInner = styled.div`
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-`;
-
-const StyledNoticeIcon = styled.span`
-  height: 46px;
-  font-size: 32px;
-  display: flex;
-  align-items: center;
 `;
 
 export default ResumedLPsNotice;
