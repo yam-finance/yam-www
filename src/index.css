@@ -165,11 +165,17 @@ button, input {
 .ui.pagination.menu .item {
   min-width: 3em;
   text-align: center;
-  color: white;
+  color: var(--pagination-text-color);
+}
+
+.ui.pagination.menu .item:hover {
+  min-width: 3em;
+  text-align: center;
+  color: var(--pagination-text-color);
 }
 
 .ui.pagination.menu .active.item {
   min-width: 3em;
   text-align: center;
-  color: white;
+  color: var(--pagination-text-color);
 }
