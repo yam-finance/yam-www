@@ -145,6 +145,10 @@ const useTreasury = () => {
           value: 1.19 * 1896995,
           tx: ''
         },
+        12018999: {
+          value: 1.28 * 718900,
+          tx: ''
+        },
         latest: yusdPrice * (totalYUsdValue),
         color: "#8150E6"
       },
