@@ -61,7 +61,7 @@ const Start: React.FC = () => {
         />
         <Container size="lg">
           <Box row justifyContent="center">
-            <Button text="Open App" href="/" />
+            <Button text="Open App" to="/dashboard" />
             <Spacer />
             <Button text="Join the Community" href="https://discord.com/invite/TgFpmDj" variant="secondary" />
           </Box>
