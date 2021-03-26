@@ -51,6 +51,9 @@ const App: React.FC = () => {
           <Route exact path="/dashboard">
             <Dashboard />
           </Route>
+          <Route exact path="/treasury">
+            <Dashboard />
+          </Route>
           <Route exact path="/governance">
             <Governance />
           </Route>
