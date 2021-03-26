@@ -177,6 +177,6 @@ button, input {
 .ui.pagination.menu .active.item {
   min-width: 3em;
   text-align: center;
-  color: var(--pagination-text-color);
+  color: #ec105a;
   background-color: var(--pagination-background-color);
 }
