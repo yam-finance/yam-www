@@ -27,6 +27,7 @@ import Delegate from "views/Delegate";
 import Claim from "views/Claim";
 import Start from "views/Start";
 import Registration from "views/Registration";
+import Projects from "views/Projects";
 
 
 const App: React.FC = () => {
@@ -74,6 +75,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/register">
             <Registration />
+          </Route>
+          <Route exact path="/projects">
+            <Projects />
           </Route>
         </Switch>
       </Providers>
