@@ -34,7 +34,7 @@ const Governance: React.FC = () => {
   const [astronaut, setAstronaut] = useState("👨‍🚀");
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const [activePage, setActivePage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(5);
   const [activeProposals, setActiveProposals] = useState<any>([]);
 
   const updateAstronaut = useCallback(() => {
@@ -123,7 +123,7 @@ const Governance: React.FC = () => {
                             lastItem={null}
                             prevItem={{ content: <Icon name='caret left' />, icon: true }}
                             nextItem={{ content: <Icon name='caret right' />, icon: true }}
-                            totalPages={Math.ceil(proposals.length / 10)}
+                            totalPages={Math.ceil(proposals.length / pageLimit)}
                             style={{ 
                               background: 'transparent',
                               fontFamily: 'Nunito',
