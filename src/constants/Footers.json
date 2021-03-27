@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Addresses",
+    "url": "/addresses",
+    "router": true,
+    "homeDisplay": false
+  },
+  {
+    "name": "Github",
+    "url": "https://github.com/yam-finance/yam-www",
+    "router": false,
+    "homeDisplay": true
+  },
+  {
+    "name": "Twitter",
+    "url": "https://twitter.com/YamFinance",
+    "router": false,
+    "homeDisplay": true
+  },
+  {
+    "name": "Discord",
+    "url": "https://discord.gg/nKKhBbk",
+    "router": false,
+    "homeDisplay": true
+  },
+  {
+    "name": "Proposals",
+    "url": "https://snapshot.page/#/yam",
+    "router": false,
+    "homeDisplay": true
+  },
+  {
+    "name": "Medium",
+    "url": "https://medium.com/yam-finance",
+    "router": false,
+    "homeDisplay": false
+  },
+  {
+    "name": "Forum",
+    "url": "https://forum.yam.finance",
+    "router": false,
+    "homeDisplay": true
+  },
+  {
+    "name": "FAQ",
+    "url": "https://docs.yam.finance/",
+    "router": false,
+    "homeDisplay": false
+  }
+]

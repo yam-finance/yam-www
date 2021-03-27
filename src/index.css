@@ -161,3 +161,22 @@ button, input {
   border-radius: 150px !important;
   border: 2px solid !important;
 }
+
+.ui.pagination.menu .item {
+  min-width: 3em;
+  text-align: center;
+  color: var(--pagination-text-color);
+}
+
+.ui.pagination.menu .item:hover {
+  min-width: 3em;
+  text-align: center;
+  color: var(--pagination-text-color);
+}
+
+.ui.pagination.menu .active.item {
+  min-width: 3em;
+  text-align: center;
+  color: #ec105a;
+  background-color: var(--pagination-background-color);
+}

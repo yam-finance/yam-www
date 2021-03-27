@@ -1,23 +1,20 @@
 import React from "react";
-import { Notice, NoticeContent, Box, Spacer, Button } from "react-neu";
-import RegistrationButton from 'components/RegistrationButton';
+import { Notice, NoticeContent, Box, Spacer } from "react-neu";
 import styled from "styled-components";
 import StyledNoticeIcon from "components/StyledNoticeIcon";
 
 import useGovernance from 'hooks/useGovernance';
 
-const RegisterVoteNotice: React.FC = () => {
+const RegisterNotice: React.FC = () => {
   const { isRegistered } = useGovernance();
 
   return (
     <Notice isHidden={isRegistered}>
-      <StyledNoticeIcon role='img'>{isRegistered ? "✔️" : "🗣️"}</StyledNoticeIcon>
+      <StyledNoticeIcon>{isRegistered ? "✔️" : "🗣️"}</StyledNoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span>{isRegistered ? `You've successfuly registered to vote!` : `It's time to register to vote for onchain and Snapshot proposals.`}</span>
-          <Box flex={1} />
+          <span style={{ width: '100%', textAlign: 'center', fontSize: 20 }}>{isRegistered ? `You've successfuly registered!` : `It's time to register to vote for onchain and Snapshot proposals.`}</span>
           <Spacer size="sm" />
-          {!isRegistered && <RegistrationButton size='sm'/>}
         </StyledNoticeContentInner>
       </NoticeContent>
     </Notice>
@@ -33,4 +30,4 @@ const StyledNoticeContentInner = styled.div`
   }
 `;
 
-export default RegisterVoteNotice;
+export default RegisterNotice;

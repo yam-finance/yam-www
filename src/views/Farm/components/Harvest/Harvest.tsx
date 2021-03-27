@@ -45,6 +45,7 @@ const Harvest: React.FC = () => {
   return (
     <>
       <Card>
+        <Spacer size="md" />
         <CardIcon>🍠</CardIcon>
         <CardContent>
           <Box alignItems="center" column>
