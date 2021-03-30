@@ -96,6 +96,17 @@ const GenerateNftButton = ({
     setConfirmTxModalIsOpen(true);
     onApproveStrn();
   }, [onApprove, setConfirmTxModalIsOpen]);
+
+  const handleApproveStrnLP = useCallback(() => {
+    setConfirmTxModalIsOpen(true);
+    onApproveStrnLP();
+  }, [onApprove, setConfirmTxModalIsOpen]);
+
+  const handleApproveStxp = useCallback(() => {
+    setConfirmTxModalIsOpen(true);
+    onApproveStxp();
+  }, [onApprove, setConfirmTxModalIsOpen]);
+
   const handleGenerateClick = useCallback(() => {
     setGenerateModalIsOpen(true);
   }, [setGenerateModalIsOpen]);
@@ -189,23 +200,23 @@ const GenerateNftButton = ({
     if (!isApproved || !isApprovedStrn) {
       // disable generation
       return (
-        <StyledButtonRow>
-          <StyledPrimaryButton
-            onClick={handleApprove}
-            disabled={isApproved}
-            full
-            size={"sm"}
-            text={
-              isApproving
-                ? "Approving ..."
-                : !isApproved
-                ? "Approve Generating"
-                : "Approved"
-            }
-            variant={
-              isApproving || status !== "connected" ? "secondary" : "default"
-            }
-          />
+        // <StyledButtonRow>
+        //   <StyledPrimaryButton
+        //     onClick={handleApprove}
+        //     disabled={isApproved}
+        //     full
+        //     size={"sm"}
+        //     text={
+        //       isApproving
+        //         ? "Approving ..."
+        //         : !isApproved
+        //         ? "Approve Generating"
+        //         : "Approved"
+        //     }
+        //     variant={
+        //       isApproving || status !== "connected" ? "secondary" : "default"
+        //     }
+        //   />
           <StyledPrimaryButton
             onClick={handleApproveStrn}
             disabled={isApprovedStrn}
@@ -215,7 +226,7 @@ const GenerateNftButton = ({
               isApprovingStrn
                 ? "Approving ..."
                 : !isApprovedStrn
-                ? "Approve STRN Fee"
+                ? "Approve STRN"
                 : "Approved"
             }
             variant={
@@ -224,8 +235,54 @@ const GenerateNftButton = ({
                 : "default"
             }
           />
-        </StyledButtonRow>
+        // </StyledButtonRow>
       );
+    }
+
+    if (!isApproved || !isApprovedStrnLP) {
+      return (
+        <StyledPrimaryButton
+            onClick={handleApproveStrnLP}
+            disabled={isApprovedStrnLP}
+            full
+            size={"sm"}
+            text={
+              isApprovingStrnLP
+                ? "Approving ..."
+                : !isApprovedStrnLP
+                ? "Approve STRN LP"
+                : "Approved"
+            }
+            variant={
+              isApprovingStrnLP || status !== "connected"
+                ? "secondary"
+                : "default"
+            }
+          />
+      )
+    }
+
+    if (!isApproved || !isApprovedStxp) {
+      return (
+        <StyledPrimaryButton
+            onClick={handleApproveStxp}
+            disabled={isApprovedStxp}
+            full
+            size={"sm"}
+            text={
+              isApprovingStxp
+                ? "Approving ..."
+                : !isApprovedStxp
+                ? "Approve STXP"
+                : "Approved"
+            }
+            variant={
+              isApprovingStxp || status !== "connected"
+                ? "secondary"
+                : "default"
+            }
+          />
+      )
     }
 
     if (isApproved && isApprovedStrn) {

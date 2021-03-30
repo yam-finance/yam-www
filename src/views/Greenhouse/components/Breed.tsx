@@ -27,9 +27,9 @@ const Breed: React.FC = () => {
     // isBreeding,
     // onBreeding,
     setBurnAmount,
-    // setStxpAmount,
+    setStxpAmount,
     burnAmount,
-    // stxpAmount,
+    stxpAmount,
     lpTokenAmount,
     setLpTokenAmount,
     // getBreedingFee,
@@ -50,14 +50,6 @@ const Breed: React.FC = () => {
       return "--";
     }
   }, [walletBalance, poolId]);
-
-  if (lpTokenAmount > String(0)) {
-    console.log(`lpTokenAmount: ${lpTokenAmount}`);
-  }
-
-  if (burnAmount > String(0)) {
-    console.log(`burnAmount: ${burnAmount}`);
-  }
 
   return (
     <DivContainer>
@@ -99,7 +91,7 @@ const Breed: React.FC = () => {
           </InputContainer>
           <ApproveContainer>
             <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
-            <BurnSTXPSubtitle>Increase chance of rarity</BurnSTXPSubtitle>
+            <Subtitle>Increase chance of rarity</Subtitle>
             <ApproveButtonContainer>
               <ApproveButtons
                 poolId={PoolIds.STRN_ETH}
@@ -112,11 +104,22 @@ const Breed: React.FC = () => {
             <DivContainer>
               <InputForm
                 onChange={(e) => {
-                  setBurnAmount(e.target.value);
+                  setStxpAmount(e.target.value);
                 }}
               />
             </DivContainer>
             <FeeLabel>420 STRN Fee</FeeLabel>
+          </InputContainer>
+          <InputContainer>
+            <MidContainerTitle>Boost STXP (Optional)</MidContainerTitle>
+            <Subtitle>Increase farming rate with STXP</Subtitle>
+            <DivContainer>
+              <InputForm
+                onChange={(e) => {
+                  console.log(`${e.target.value} STXP Will Get Locked!`);
+                }}
+              />
+            </DivContainer>
           </InputContainer>
           <DivContainer>
             <BreedButtonContainer>
@@ -170,9 +173,10 @@ const MidContainerTitle = styled.div`
   font-weight: 700;
 `;
 
-const BurnSTXPSubtitle = styled.div`
+const Subtitle = styled.div`
   line-height: 1rem;
   font-weight: 300;
+  padding-bottom: 3px;
 `;
 
 const ApproveButtonContainer = styled.div`
