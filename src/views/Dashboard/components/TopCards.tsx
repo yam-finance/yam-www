@@ -2,6 +2,8 @@ import React from "react";
 
 import { Box, Card, CardContent, Spacer } from "react-neu";
 
+import CountUp from 'react-countup';
+
 import FancyValue from "components/FancyValue";
 
 import Split from "components/Split";
@@ -65,6 +67,14 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
               tooltip={col[0][0].tooltip}
               isNum={true}
             />
+            {/* <CountUp
+              start={0}
+              end={yamObject?.currentPrice}
+              formattingFn={(val) => val ? `${val} USDC` : "--"}
+              decimals={0}
+              duration={1.75}
+              className="top-card-value"
+            /> */}
           </CardContent>
         </Card>
       </Box>

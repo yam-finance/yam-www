@@ -2,6 +2,8 @@ import React, { useEffect, useMemo } from "react";
 
 import { Box, Button, Card, CardContent, Container, Separator, Spacer, useTheme } from "react-neu";
 
+import CountUp from 'react-countup';
+
 import numeral from "numeral";
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
@@ -40,13 +42,29 @@ const Farm: React.FC = () => {
         {/* <PausedLPsNotice /> */}
         <Card>
           <CardContent>
-            <FancyValue
+            {/* <FancyValue
               wrap
               value={tvl ? `TVL $${numeral(tvl).format("000,000,000")}` : "Loading TVL..."}
               valueSize="54px"
               valueColor={colors.primary.main}
               valueBold="800"
               label={apr ? `APR ${numeral(apr).format("0.00a")}%` : "Loading APR..."}
+            /> */}
+            <CountUp
+              start={0}
+              end={tvl ? tvl : 0}
+              formattingFn={(val) => val ? `TVL $${numeral(val).format("000,000,000")}` : "Loading TVL..."}
+              decimals={0}
+              duration={1.75}
+              className="farm-tvl"
+            />
+            <CountUp
+              start={0}
+              end={apr ? apr : 0}
+              formattingFn={(val) => val ? `APR ${numeral(val).format("0.00a")}%` : "Loading APR..."}
+              decimals={2}
+              duration={1.75}
+              className="farm-apr"
             />
           </CardContent>
         </Card>
