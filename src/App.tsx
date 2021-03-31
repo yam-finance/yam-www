@@ -98,7 +98,7 @@ const Providers: React.FC = ({ children }) => {
       <UseWalletProvider
         chainId={1}
         connectors={{
-          walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
+          walletconnect: { rpcUrl: "https://fee7372b6e224441b747bf1fde15b2bd.eth.rpc.rivet.cloud/" },
         }}
       >
         <YamProvider>
