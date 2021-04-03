@@ -322,7 +322,7 @@ const useDahsboard = () => {
       },
       {
         icon: indexCoopValues?.image.large,
-        name: "Index Coop LP",
+        name: "DPI/ETH LP",
         index: "INDEXLP",
         quantity: indexCoopLPRewards,
         price: indexPrice,
