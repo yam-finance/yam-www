@@ -12,5 +12,9 @@ export const contributors: any = {
   "0x9098eab0a361d29ea5c4b5d9d1f50694ac0e9e78": { id: 21, amount: 15000 },
   "0xf5f1287f7b71381ffb5caf3b61fa0375112531bc": { id: 22, amount: 12000 },
   "0xdadc6f71986643d9e9cb368f08eb6f1333f6d8f9": { id: 23, amount: 10000 },
+  "0xeEFA7451c03d52ce909A93654664c46cf81DdD21": { id: 31, amount: 667 },
+  "0x43fD74401B4BF04095590a5308B6A5e3Db44b9e3": { id: 32, amount: 1600 },
+  "0x0A1382a504f41BcA6fF1D44b7BDbA06c5Aa3Ca65": { id: 33, amount: 2400 },
+  "0xC45d45b54045074Ed12d1Fe127f714f8aCE46f8c": { id: 34, amount: 1333 },
+  "0x3fbB737b5eba3089CB87B2734061518E9FAbd1c9": { id: 35, amount: 2084 },
 };
-

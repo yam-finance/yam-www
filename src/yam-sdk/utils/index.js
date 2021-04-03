@@ -987,6 +987,7 @@ export const getContributorVestingData = async (yam, contributor) => {
       totalAmount,
       amountPaidOut,
     };
+    console.log("contributor", contributor);
     console.debug("result", result);
     return result;
   } catch (e) {
