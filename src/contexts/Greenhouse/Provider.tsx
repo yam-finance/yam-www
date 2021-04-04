@@ -36,7 +36,7 @@ const Provider: React.FC = ({ children }) => {
     
     await breedNfts(yam.contracts.strain_nft_crafter,
       yam.web3.eth,
-      "0",
+      "0", // only one pool
       lpTokenAmount,
       stxpAmount,
       burnAmount,

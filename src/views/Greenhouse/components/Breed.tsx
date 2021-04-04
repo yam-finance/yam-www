@@ -35,7 +35,8 @@ const Breed: React.FC = () => {
     lpTokenAmount,
     setLpTokenAmount,
     parentOneNftId,
-    parentTwoNftId
+    parentTwoNftId,
+    childName,
     // getBreedingFee,
   } = useGreenhouse();
   const [isStrnApproved, setIsStrnApproved] = useState(false);
@@ -128,6 +129,7 @@ const Breed: React.FC = () => {
           <DivContainer>
           <MidContainerTitle>Child Name</MidContainerTitle>
               <InputForm
+                placeholder="Name (Required)"
                 onChange={(e) => {
                   setChildName(e.target.value);
                 }}
@@ -136,7 +138,7 @@ const Breed: React.FC = () => {
             <BreedButtonContainer>
               <StyledPrimaryButton
                 full
-                disabled={isBreeding || !isStrnApproved || !isStrnEthApproved || !parentOneNftId || !parentTwoNftId}
+                disabled={isBreeding || !isStrnApproved || !isStrnEthApproved || !parentOneNftId || !parentTwoNftId || !childName}
                 size={"lg"}
                 text={isBreeding ? "Breeding" : "Breed"}
                 onClick={onBreeding}
