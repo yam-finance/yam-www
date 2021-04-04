@@ -474,6 +474,10 @@ export const getNftEarned = async (yam, crafter, account, nftid) => {
   return yam.toBigN(await crafter.methods.earned(account, nftid).call());
 };
 
+export const getCanBreed = async (crafter, nftId1, nftId2) => {
+  return await crafter.methods.canBreed(nftId1, nftId2).call();
+};
+
 export const getStaked = async (yam, pool, account) => {
   return yam.toBigN(await pool.methods.balanceOf(account).call());
 };

@@ -15,4 +15,5 @@ export interface ContextValues {
   lpTokenAmount: string,            // amount of LP tokens to give child nft
   getBreedingFee: () => string,     // get STRN fee after parents have been selected
   strainCrafterAddress: string,     // crafter contract address used for approvals
+  parentsCanBreed: boolean,         // indicates the chosen parents can breed
 }

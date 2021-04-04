@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import BigNumber from 'bignumber.js'
 import Context from './Context'
 
 import useYam from 'hooks/useYam'
-import { breedNfts } from 'yam-sdk/utils'
+import { breedNfts, getCanBreed } from 'yam-sdk/utils'
 import useStrainNfts from 'hooks/useStrainNfts'
 import {
   getAddresses
@@ -23,6 +23,7 @@ const Provider: React.FC = ({ children }) => {
   const [childName, setChildName] = useState('')
   const [lpTokenAmount, setLpTokenAmount] = useState(MIN_LP_AMOUNTS_DISPLAY[Number(PoolIds.STRN_ETH)]);
   const { strainNftCollection } = useStrainNfts();
+  const [canBreed, setCanBreed] = useState(false); 
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -33,7 +34,7 @@ const Provider: React.FC = ({ children }) => {
     setIsBreeding(true)
     console.log('parentOneNftId', parentOneNftId, 'parentTwoNftId', parentTwoNftId)
     if (parentOneNftId === '' || parentTwoNftId === '') return setIsBreeding(false);
-    
+
     await breedNfts(yam.contracts.strain_nft_crafter,
       yam.web3.eth,
       "0", // only one pool
@@ -70,7 +71,16 @@ const Provider: React.FC = ({ children }) => {
     const feeTwo = parentTwo.breedFee;
     const totalFeeBN = new BigNumber(feeOne).plus(feeTwo);
     return String(totalFeeBN.div(new BigNumber(10).pow(18)))
-  }
+  };
+
+  useEffect(() => handleCanBreed(parentOneNftId, parentTwoNftId), [parentOneNftId, parentTwoNftId])
+
+  const handleCanBreed = (parentOneNftId: string, parentTwoNftId: string) => {
+    if (parentOneNftId === '' || parentTwoNftId === '') return setCanBreed(false);
+    // need to get contract call worked out
+    setCanBreed(true);
+    //getCanBreed(yam.contracts.strain_nft_crafter, parentOneNftId, parentTwoNftId).then(result => setCanBreed(result));
+  };
 
   return (
     <Context.Provider value={{
@@ -89,6 +99,7 @@ const Provider: React.FC = ({ children }) => {
       lpTokenAmount,
       setLpTokenAmount,
       getBreedingFee: handleCalculateBreedFee,
+      parentsCanBreed: canBreed,
       strainCrafterAddress: addresses.strainNFTCrafterAddress
     }}>
       {children}

@@ -37,6 +37,7 @@ const Breed: React.FC = () => {
     parentOneNftId,
     parentTwoNftId,
     childName,
+    parentsCanBreed,
     // getBreedingFee,
   } = useGreenhouse();
   const [isStrnApproved, setIsStrnApproved] = useState(false);
@@ -96,9 +97,9 @@ const Breed: React.FC = () => {
             </DivContainer>
           </InputContainer>
           <ApproveContainer>
-          <ApproveButtonContainer>
-            <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
-            <Subtitle>Increase chance of rarity</Subtitle>
+            <ApproveButtonContainer>
+              <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
+              <Subtitle>Increase chance of rarity</Subtitle>
               <ApproveButton
                 tokenAddress={getAddresses().stxpTokenAddress}
                 spenderAddress={getAddresses().strainNFTCrafterAddress}
@@ -126,8 +127,8 @@ const Breed: React.FC = () => {
             </DivContainer>
           </InputContainer>
           <DivContainer>
-          <DivContainer>
-          <MidContainerTitle>Child Name</MidContainerTitle>
+            <DivContainer>
+              <MidContainerTitle>Child Name</MidContainerTitle>
               <InputForm
                 placeholder="Name (Required)"
                 onChange={(e) => {
@@ -138,7 +139,7 @@ const Breed: React.FC = () => {
             <BreedButtonContainer>
               <StyledPrimaryButton
                 full
-                disabled={isBreeding || !isStrnApproved || !isStrnEthApproved || !parentOneNftId || !parentTwoNftId || !childName}
+                disabled={!parentsCanBreed || isBreeding || !isStrnApproved || !isStrnEthApproved || !parentOneNftId || !parentTwoNftId || !childName}
                 size={"lg"}
                 text={isBreeding ? "Breeding" : "Breed"}
                 onClick={onBreeding}
