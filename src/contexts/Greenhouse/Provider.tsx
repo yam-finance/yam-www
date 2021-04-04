@@ -10,6 +10,7 @@ import useStrainNfts from 'hooks/useStrainNfts'
 import {
   getAddresses
 } from 'constants/tokenAddresses'
+import { MIN_LP_AMOUNTS_DISPLAY, PoolIds } from 'constants/poolValues'
 
 const addresses = getAddresses()
 
@@ -20,7 +21,7 @@ const Provider: React.FC = ({ children }) => {
   const [burnAmount, setBurnAmount] = useState('0')
   const [stxpAmount, setStxpAmount] = useState('0')
   const [childName, setChildName] = useState('')
-  const [lpTokenAmount, setLpTokenAmount] = useState('0');
+  const [lpTokenAmount, setLpTokenAmount] = useState(MIN_LP_AMOUNTS_DISPLAY[Number(PoolIds.STRN_ETH)]);
   const { strainNftCollection } = useStrainNfts();
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
@@ -30,8 +31,9 @@ const Provider: React.FC = ({ children }) => {
   const handleBreeding = useCallback(async () => {
     if (!yam) return
     setIsBreeding(true)
-    if (parentOneNftId === '' || parentTwoNftId === '') return;
-    // TODO not sure if we are going to use multiple pools
+    console.log('parentOneNftId', parentOneNftId, 'parentTwoNftId', parentTwoNftId)
+    if (parentOneNftId === '' || parentTwoNftId === '') return setIsBreeding(false);
+    
     await breedNfts(yam.contracts.strain_nft_crafter,
       yam.web3.eth,
       "0",
@@ -52,6 +54,10 @@ const Provider: React.FC = ({ children }) => {
     account,
     setIsBreeding,
     yam,
+    parentOneNftId,
+    parentTwoNftId,
+    childName,
+    lpTokenAmount
   ])
 
   const handleCalculateBreedFee = () => {

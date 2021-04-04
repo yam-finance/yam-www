@@ -1,19 +1,20 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 import styled from "styled-components";
 
 import useBalances from "hooks/useBalances";
 import useGreenhouse from "hooks/useGreenhouse";
-import ApproveButtons from "./ApproveButtons";
+
 import numeral from 'numeral';
 
 import {
   PoolIds,
-  POOL_NAMES,
   MIN_LP_AMOUNTS_DISPLAY,
 } from "constants/poolValues";
 import Label from "components/Label";
-import { Spacer } from "react-neu";
+import ApproveButton from "./ApproveButton";
+import { getAddresses } from "constants/tokenAddresses";
+import StyledPrimaryButton from "views/Common/StyledButton";
 
 const Breed: React.FC = () => {
   const {
@@ -24,32 +25,32 @@ const Breed: React.FC = () => {
   } = useBalances();
 
   const {
-    // isBreeding,
-    // onBreeding,
+    setChildName,
+    isBreeding,
+    onBreeding,
     setBurnAmount,
     setStxpAmount,
     burnAmount,
     stxpAmount,
     lpTokenAmount,
     setLpTokenAmount,
+    parentOneNftId,
+    parentTwoNftId
     // getBreedingFee,
   } = useGreenhouse();
+  const [isStrnApproved, setIsStrnApproved] = useState(false);
+  const [isStrnEthApproved, setIsStrnEthApproved] = useState(false);
+  const [isStxpApproved, setIsStxpApproved] = useState(false);
 
-  const poolId = PoolIds.STRN_ETH;
   const walletBalance = strnEthLpBalance;
-
-  const poolName = useMemo(() => POOL_NAMES[Number(poolId)], [poolId]);
-
 
   const formattedLPBalance = useMemo(() => {
     if (walletBalance) {
-      return poolId === PoolIds.STRN_ETH
-        ? numeral(walletBalance).format("0.00a")
-        : walletBalance.toFixed(8);
+      return numeral(walletBalance).format("0.00a")
     } else {
       return "--";
     }
-  }, [walletBalance, poolId]);
+  }, [walletBalance]);
 
   return (
     <DivContainer>
@@ -57,32 +58,36 @@ const Breed: React.FC = () => {
         <BetweenCardsInnerContainer>
           <ApproveContainer>
             <ApproveButtonContainer>
-              <ApproveButtons
-                poolId={PoolIds.STRN_ETH}
-                walletBalance={strnEthLpBalance}
+              <ApproveButton
+                tokenAddress={getAddresses().strnTokenAddress}
+                spenderAddress={getAddresses().strainNFTCrafterAddress}
+                name={'STRN'}
+                callback={setIsStrnApproved}
               />
             </ApproveButtonContainer>
             <ApproveButtonContainer>
-              <ApproveButtons
-                poolId={PoolIds.STRN_ETH}
-                walletBalance={strnEthLpPoolBalance}
+              <ApproveButton
+                tokenAddress={getAddresses().strnLPTokenAddress}
+                spenderAddress={getAddresses().strainNFTCrafterAddress}
+                name={'STRN/ETH'}
+                callback={setIsStrnEthApproved}
               />
             </ApproveButtonContainer>
           </ApproveContainer>
           <InputContainer>
             <MidContainerTitle>
               <DivContainer>
-                {poolName} LP: <StyledValue>{formattedLPBalance}</StyledValue>
+                STRN/ETH LP: <StyledValue>{formattedLPBalance}</StyledValue>
               </DivContainer>
               <Label
                 text={`Min: ${String(
-                  MIN_LP_AMOUNTS_DISPLAY[Number(poolId)]
-                )} ${poolName} LP`}
+                  MIN_LP_AMOUNTS_DISPLAY[Number(PoolIds.STRN_ETH)]
+                )} STRN/ETH LP`}
               />
-              <Spacer size="sm" />
             </MidContainerTitle>
             <DivContainer>
               <InputForm
+                value={lpTokenAmount}
                 onChange={(e) => {
                   setLpTokenAmount(e.target.value);
                 }}
@@ -90,17 +95,27 @@ const Breed: React.FC = () => {
             </DivContainer>
           </InputContainer>
           <ApproveContainer>
+          <ApproveButtonContainer>
             <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
             <Subtitle>Increase chance of rarity</Subtitle>
-            <ApproveButtonContainer>
-              <ApproveButtons
-                poolId={PoolIds.STRN_ETH}
-                walletBalance={stxpTokenBalance}
+              <ApproveButton
+                tokenAddress={getAddresses().stxpTokenAddress}
+                spenderAddress={getAddresses().strainNFTCrafterAddress}
+                name={'STXP'}
+                callback={setIsStxpApproved}
               />
             </ApproveButtonContainer>
+            <DivContainer>
+              <InputForm
+                onChange={(e) => {
+                  setBurnAmount(e.target.value);
+                }}
+              />
+            </DivContainer>
           </ApproveContainer>
           <InputContainer>
-            <MidContainerTitle>STXP amount</MidContainerTitle>
+            <MidContainerTitle>STXP Booster (Optional)</MidContainerTitle>
+            <Subtitle>Increase childs yield</Subtitle>
             <DivContainer>
               <InputForm
                 onChange={(e) => {
@@ -108,22 +123,25 @@ const Breed: React.FC = () => {
                 }}
               />
             </DivContainer>
-            <FeeLabel>420 STRN Fee</FeeLabel>
           </InputContainer>
-          <InputContainer>
-            <MidContainerTitle>Boost STXP (Optional)</MidContainerTitle>
-            <Subtitle>Increase farming rate with STXP</Subtitle>
-            <DivContainer>
+          <DivContainer>
+          <DivContainer>
+          <MidContainerTitle>Child Name</MidContainerTitle>
               <InputForm
                 onChange={(e) => {
-                  console.log(`${e.target.value} STXP Will Get Locked!`);
+                  setChildName(e.target.value);
                 }}
               />
             </DivContainer>
-          </InputContainer>
-          <DivContainer>
             <BreedButtonContainer>
-              <BreedButton>Breed</BreedButton>
+              <StyledPrimaryButton
+                full
+                disabled={isBreeding || !isStrnApproved || !isStrnEthApproved || !parentOneNftId || !parentTwoNftId}
+                size={"lg"}
+                text={isBreeding ? "Breeding" : "Breed"}
+                onClick={onBreeding}
+              />
+              <FeeLabel>420 STRN Breed Fee</FeeLabel>
             </BreedButtonContainer>
           </DivContainer>
         </BetweenCardsInnerContainer>
