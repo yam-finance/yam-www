@@ -5,12 +5,9 @@ import styled from "styled-components";
 import useBalances from "hooks/useBalances";
 import useGreenhouse from "hooks/useGreenhouse";
 
-import numeral from 'numeral';
+import numeral from "numeral";
 
-import {
-  PoolIds,
-  MIN_LP_AMOUNTS_DISPLAY,
-} from "constants/poolValues";
+import { PoolIds, MIN_LP_AMOUNTS_DISPLAY } from "constants/poolValues";
 import Label from "components/Label";
 import ApproveButton from "./ApproveButton";
 import { getAddresses } from "constants/tokenAddresses";
@@ -48,199 +45,125 @@ const Breed: React.FC = () => {
 
   const formattedLPBalance = useMemo(() => {
     if (walletBalance) {
-      return numeral(walletBalance).format("0.00a")
+      return numeral(walletBalance).format("0.00a");
     } else {
       return "--";
     }
   }, [walletBalance]);
 
   return (
-    <DivContainer>
-      <BetweenCardsOuterContainer>
-        <BetweenCardsInnerContainer>
-          <ApproveContainer>
-            <ApproveButtonContainer>
-              <ApproveButton
-                tokenAddress={getAddresses().strnTokenAddress}
-                spenderAddress={getAddresses().strainNFTCrafterAddress}
-                name={'STRN'}
-                callback={setIsStrnApproved}
-              />
-            </ApproveButtonContainer>
-            <ApproveButtonContainer>
-              <ApproveButton
-                tokenAddress={getAddresses().strnLPTokenAddress}
-                spenderAddress={getAddresses().strainNFTCrafterAddress}
-                name={'STRN/ETH'}
-                callback={setIsStrnEthApproved}
-              />
-            </ApproveButtonContainer>
-          </ApproveContainer>
-          <InputContainer>
-            <MidContainerTitle>
-              <DivContainer>
+    <>
+      <BreedContainer>
+        <BreedInputsContainer>
+          <DivContainer>
+            <ApproveButton
+              tokenAddress={getAddresses().stxpTokenAddress}
+              spenderAddress={getAddresses().strainNFTCrafterAddress}
+              name={"STXP"}
+              callback={setIsStxpApproved}
+            />
+            <InputTitle>Burn STXP (Optional)</InputTitle>
+            <InputForm
+              onChange={(e) => {
+                setBurnAmount(e.target.value);
+              }}
+            />
+            <InputDescription>Rarity Boost</InputDescription>
+          </DivContainer>
+          <DivContainer>
+            <ApproveButton
+              tokenAddress={getAddresses().strnTokenAddress}
+              spenderAddress={getAddresses().strainNFTCrafterAddress}
+              name={"STRN"}
+              callback={setIsStrnApproved}
+            />
+            <InputTitle>
+              <DivWrap>
                 STRN/ETH LP: <StyledValue>{formattedLPBalance}</StyledValue>
-              </DivContainer>
+              </DivWrap>
+            </InputTitle>
+            <InputForm
+              value={lpTokenAmount}
+              onChange={(e) => {
+                setLpTokenAmount(e.target.value);
+              }}
+            />
+            <ApproveButton
+              tokenAddress={getAddresses().strnLPTokenAddress}
+              spenderAddress={getAddresses().strainNFTCrafterAddress}
+              name={"STRN/ETH"}
+              callback={setIsStrnEthApproved}
+            />
+            <InputDescription>
               <Label
                 text={`Min: ${String(
                   MIN_LP_AMOUNTS_DISPLAY[Number(PoolIds.STRN_ETH)]
                 )} STRN/ETH LP`}
               />
-            </MidContainerTitle>
-            <DivContainer>
-              <InputForm
-                value={lpTokenAmount}
-                onChange={(e) => {
-                  setLpTokenAmount(e.target.value);
-                }}
-              />
-            </DivContainer>
-          </InputContainer>
-          <ApproveContainer>
-            <ApproveButtonContainer>
-              <MidContainerTitle>Burn STXP (Optional)</MidContainerTitle>
-              <Subtitle>Increase chance of rarity</Subtitle>
-              <ApproveButton
-                tokenAddress={getAddresses().stxpTokenAddress}
-                spenderAddress={getAddresses().strainNFTCrafterAddress}
-                name={'STXP'}
-                callback={setIsStxpApproved}
-              />
-            </ApproveButtonContainer>
-            <DivContainer>
-              <InputForm
-                onChange={(e) => {
-                  setBurnAmount(e.target.value);
-                }}
-              />
-            </DivContainer>
-          </ApproveContainer>
-          <InputContainer>
-            <MidContainerTitle>STXP Booster (Optional)</MidContainerTitle>
-            <Subtitle>Increase childs yield</Subtitle>
-            <DivContainer>
-              <InputForm
-                onChange={(e) => {
-                  setStxpAmount(e.target.value);
-                }}
-              />
-            </DivContainer>
-          </InputContainer>
-          <DivContainer>
-            <DivContainer>
-              <MidContainerTitle>Child Name</MidContainerTitle>
-              <InputForm
-                placeholder="Name (Required)"
-                onChange={(e) => {
-                  setChildName(e.target.value);
-                }}
-              />
-            </DivContainer>
-            <BreedButtonContainer>
-              <StyledPrimaryButton
-                full
-                disabled={!parentsCanBreed || isBreeding || !isStrnApproved || !isStrnEthApproved || !parentOneNftId || !parentTwoNftId || !childName}
-                size={"lg"}
-                text={isBreeding ? "Breeding" : "Breed"}
-                onClick={onBreeding}
-              />
-              <FeeLabel>420 STRN Breed Fee</FeeLabel>
-            </BreedButtonContainer>
+            </InputDescription>
+            <InputDescription>LP Buzz</InputDescription>
           </DivContainer>
-        </BetweenCardsInnerContainer>
-      </BetweenCardsOuterContainer>
-    </DivContainer>
+          <DivContainer>
+            <InputTitle>STXP Booster (Optional)</InputTitle>
+            <InputForm
+              onChange={(e) => {
+                setStxpAmount(e.target.value);
+              }}
+            />
+            <InputDescription>Increase childs yield</InputDescription>
+          </DivContainer>
+          <DivContainer>
+            <InputTitle>Child Name</InputTitle>
+            <InputForm
+              onChange={(e) => {
+                setChildName(e.target.value);
+              }}
+            />
+            <InputDescriptionRequired>Required</InputDescriptionRequired>
+          </DivContainer>
+        </BreedInputsContainer>
+        <BreedButtonContainer>
+          <InnerBreedWrapper>
+            <StyledPrimaryButton
+              full
+              disabled={
+                !parentsCanBreed ||
+                isBreeding ||
+                !isStrnApproved ||
+                !isStrnEthApproved ||
+                !parentOneNftId ||
+                !parentTwoNftId ||
+                !childName
+              }
+              size={"lg"}
+              text={isBreeding ? "Breeding" : "Breed"}
+              onClick={onBreeding}
+            />
+          </InnerBreedWrapper>
+          <FeeLabel>420 STRN Breed Fee</FeeLabel>
+        </BreedButtonContainer>
+      </BreedContainer>
+    </>
   );
 };
 
-const BetweenCardsOuterContainer = styled.div`
-  align-self: flex-end;
-  padding: 14px 55px;
-  @media (min-width: 980px) {
-    margin-bottom: 2.5rem;
-  }
+const DivWrap = styled.div``;
 
-  @media (max-width: 1040px) {
-    padding: 30px;
-  }
-`;
-
-const DivContainer = styled.div``;
-
-const StyledValue = styled.span`
-  font-size: 18px;
-  font-weight: 600;
-`;
-
-const BetweenCardsInnerContainer = styled.div`
+const BreedContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const ApproveContainer = styled.div`
+const BreedInputsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
-
-  @media (min-width: 980px) {
-    margin-top: 0;
-  }
-`;
-
-const MidContainerTitle = styled.div`
-  line-height: 1rem;
-  padding-bottom: 0.25rem;
-  font-weight: 700;
-`;
-
-const Subtitle = styled.div`
-  line-height: 1rem;
-  font-weight: 300;
-  padding-bottom: 3px;
-`;
-
-const ApproveButtonContainer = styled.div`
-  width: 100%;
-  margin-top: 1rem;
-`;
-
-// const ApproveButton = styled.a`
-//   display: block;
-//   text-transform: uppercase;
-//   font-weight: 700;
-//   font-size: 0.875rem;
-//   line-height: 1.25rem;
-//   border-radius: 0.375rem;
-//   background-color: #00ac69;
-//   padding-top: 0.75rem;
-//   padding-bottom: 0.75rem;
-//   padding-left: 1.5rem;
-//   padding-right: 1.5rem;
-//   text-align: center;
-//   --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-//   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-//     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-//   color: #121013;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: white;
-//   }
-// `;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.25rem;
-
-  @media (min-width: 980px) {
-    margin-bottom: 1.2rem;
-  }
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0 40px;
+  justify-content: center;
 `;
 
 const InputForm = styled.input`
-  /* width: 100%; */
+  width: 220px;
   border-radius: 0.25rem;
   background-color: rgba(6, 15, 30, 1);
   color: rgba(119, 252, 109, 1);
@@ -255,47 +178,59 @@ const InputForm = styled.input`
   margin-bottom: 0.5rem;
 `;
 
-const FeeLabel = styled.div`
-  text-align: right;
-  color: rgba(229, 229, 229, 1);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  padding-right: 0.25rem;
+const InputTitle = styled.div`
+  line-height: 1rem;
+  padding-top: 12px;
+  padding-bottom: 0.25rem;
+  padding-left: 8px;
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const InputDescription = styled.div`
+  line-height: 1rem;
+  padding-top: 0.25rem;
+  font-size: 16px;
+  color: #03f190;
+  font-weight: 500;
+  text-align: center;
+`;
+
+const InputDescriptionRequired = styled.div`
+  line-height: 1rem;
+  padding-top: 0.25rem;
+  font-size: 16px;
+  color: #ce1212;
+  font-weight: 500;
+  text-align: center;
+`;
+
+const StyledValue = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+const DivContainer = styled.div`
+  padding: 12px 24px;
+`;
+
+const InnerBreedWrapper = styled.div`
+  width: 250px;
 `;
 
 const BreedButtonContainer = styled.div`
-  visibility: hidden;
-  width: 100%;
-
-  @media (min-width: 980px) {
-    visibility: visible;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
 `;
 
-const BreedButton = styled.a`
-  text-transform: uppercase;
-  font-weight: 700;
-  border-radius: 0.5rem;
-  background-color: #00ac69;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  text-align: center;
-  --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
-    0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  color: #121013;
-  cursor: pointer;
-
-  &:hover {
-    background-color: white;
-  }
-
-  @media (min-width: 980px) {
-    display: block;
-  }
+const FeeLabel = styled.div`
+  color: rgba(229, 229, 229, 1);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  padding-top: 0.6rem;
 `;
 
 export default Breed;

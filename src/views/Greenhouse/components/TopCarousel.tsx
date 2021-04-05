@@ -7,16 +7,16 @@ import arrowDown from "../../../assets/arrowDown.png";
 import useStrainNfts from "hooks/useStrainNfts";
 import CarouselNFT from "./CarouselNFT";
 
-const TopLeftCarousel: React.FC = () => {
+const TopCarousel: React.FC = () => {
   const { strainNftCollection } = useStrainNfts();
 
   return (
     <>
-      {/* {strainNftCollection.length < 0 ? (
+      {strainNftCollection.length > 0 ? (
         <CarouselDiv>
-          <StyledText>Select The First Big NFT</StyledText>
+          <StyledText>Select Strains</StyledText>
         </CarouselDiv>
-      ) : null} */}
+      ) : null}
       <CarouselOuterContainer>
         <CarouselInnerContainer>
           <CarouselControlIconsWrap>
@@ -61,12 +61,12 @@ const NoStrainsText = styled.div`
 `;
 
 const StyledText = styled.div`
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   line-height: 1.75rem;
   font-weight: 800;
   line-height: 1.5rem;
   text-align: center;
-  padding-bottom: 1.3rem;
+  padding-bottom: 1rem;
 `;
 
 const CarouselOuterContainer = styled.div`
@@ -82,6 +82,7 @@ const CarouselInnerContainer = styled.div`
 
 const CarouselControlIconsWrap = styled.div`
   width: 1rem;
+  padding-bottom: 25px;
 `;
 
 const CarouselControlPrevIcon = styled.img`
@@ -95,7 +96,7 @@ const CarouselControlNextIcon = styled.img`
 const CarouselStrainsWrap = styled.div`
   display: flex;
   justify-content: center;
-  width: 260px;
+  width: 360px;
   margin-left: 0.6rem;
   margin-right: 0.6rem;
   padding-bottom: 1.4rem;
@@ -124,13 +125,8 @@ const CarouselDiv = styled.div`
 
 const CarouselArrowDownOuterWrap = styled.div`
   display: flex;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-
-  @media (min-width: 980px) {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
+  padding-top: 1.3rem;
+  padding-bottom: 1.3rem;
 `;
 
 const CarouselArrowDownInnerWrap = styled.div`
@@ -141,4 +137,4 @@ const CarouselArrowDownInnerWrap = styled.div`
 
 const CarouselArrowDownIcon = styled.img``;
 
-export default TopLeftCarousel;
+export default TopCarousel;
