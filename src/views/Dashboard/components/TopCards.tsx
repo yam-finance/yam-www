@@ -22,6 +22,9 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
         value: yamObject?.currentPrice ? `${yamObject?.currentPrice} USDC` : "--",
         hint: yamObject?.change24 ? yamObject?.change24 : "-",
         tooltip: "24h Change",
+        prefix: 'USDC',
+        suffix: '',
+       
       },
     ],
     [
@@ -31,6 +34,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
         value: yamObject?.maxSupply ? yamObject?.maxSupply : "--",
         hint: "",
         tooltip: "",
+        prefix: '',
+        suffix: '',
       },
     ],
     [
@@ -40,6 +45,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
         value: yamObject?.marketCap ? `$${yamObject?.marketCap}` : "--",
         hint: "",
         tooltip: "",
+        prefix: '',
+        suffix: '$',
       },
     ],
     [
@@ -49,6 +56,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
         value: yamObject?.treasuryValue ? yamObject?.treasuryValue : "--",
         hint: "",
         tooltip: "",
+        prefix: '',
+        suffix: '~$',
       },
     ],
   ];
@@ -66,6 +75,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
               hint={col[0][0].hint}
               tooltip={col[0][0].tooltip}
               isNum={true}
+              prefix={col[0][0].prefix}
+              suffix={col[0][0].suffix}
             />
             {/* <CountUp
               start={0}
@@ -88,6 +99,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
               value={col[1][0].value}
               hint={col[1][0].hint}
               tooltip={col[1][0].tooltip}
+              prefix={col[1][0].prefix}
+              suffix={col[1][0].suffix}
             />
           </CardContent>
         </Card>
@@ -103,6 +116,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
               value={col[2][0].value}
               hint={col[2][0].hint}
               tooltip={col[2][0].tooltip}
+              prefix={col[2][0].prefix}
+              suffix={col[2][0].suffix}
             />
           </CardContent>
         </Card>
@@ -117,6 +132,8 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
               value={col[3][0].value}
               hint={col[3][0].hint}
               tooltip={col[3][0].tooltip}
+              prefix={col[3][0].prefix}
+              suffix={col[3][0].suffix}
             />
           </CardContent>
         </Card>

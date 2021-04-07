@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 import { Box, Button, Card, CardContent, Container, Separator, Spacer, useTheme } from "react-neu";
 
-import CountUp from 'react-countup';
+import CountUp, { useCountUp } from 'react-countup';
 
 import numeral from "numeral";
 import Page from "components/Page";
@@ -22,7 +22,30 @@ const Farm: React.FC = () => {
   const { status } = useWallet();
 
   const { tvl, apr, isRedeeming, onRedeemYAMETH } = useFarming();
-
+  const { countUp , start, update } = useCountUp({
+    start: 0,
+    end: tvl ? tvl: 0,
+    formattingFn: (val) => val ? `TVL $${numeral(val).format("000,000,000")}` : "Loading TVL...",
+    decimals: 0,
+    duration: 1.75
+  });
+  const aprCountUp= useCountUp({
+    start: 0,
+    end: apr ? apr: 0,
+    formattingFn: (val) => val ? `APR ${numeral(val).format("0.00a")}%` : "Loading APR...",
+    decimals: 2,
+    duration: 1.75
+  });
+  useEffect(() => {
+    console.log(tvl);
+    update(tvl);
+  }, [tvl]);
+  useEffect(() => {
+    console.log(apr);
+    aprCountUp.update(apr);
+  }, [apr]);
+ 
+  
   const RedeemButton = useMemo(() => {
     if (status !== "connected") {
       return <Button disabled text="Harvest &amp; Unstake YAM/ETH" variant="secondary" />;
@@ -50,22 +73,16 @@ const Farm: React.FC = () => {
               valueBold="800"
               label={apr ? `APR ${numeral(apr).format("0.00a")}%` : "Loading APR..."}
             /> */}
-            <CountUp
+            {/* <CountUp
               start={0}
               end={tvl ? tvl : 0}
               formattingFn={(val) => val ? `TVL $${numeral(val).format("000,000,000")}` : "Loading TVL..."}
               decimals={0}
               duration={1.75}
               className="farm-tvl"
-            />
-            <CountUp
-              start={0}
-              end={apr ? apr : 0}
-              formattingFn={(val) => val ? `APR ${numeral(val).format("0.00a")}%` : "Loading APR..."}
-              decimals={2}
-              duration={1.75}
-              className="farm-apr"
-            />
+            /> */}
+            <div className="farm-tvl">{countUp}</div>
+            <div className = "farm-apr">{aprCountUp.countUp}</div>
           </CardContent>
         </Card>
         <Spacer />
