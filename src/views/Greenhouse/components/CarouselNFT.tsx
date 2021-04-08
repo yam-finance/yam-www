@@ -17,7 +17,11 @@ import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
 import useGreenhouse from "hooks/useGreenhouse";
 
-const StyledNft = ({ nft }: { nft: NftInstance }) => {
+interface CarouselProps {
+  activeParent: any;
+}
+
+const StyledNft = ({ nft, changeParent }: { nft: NftInstance, changeParent: Boolean }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
   const [updatedNft, setUpdatedNft] = useState<NftInstance>();
 
@@ -36,7 +40,7 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
           setIsNftLoading(false);
         });
     }
-  }, [nft?.nftId, updatedNft]);
+  }, [nft, onRetrieve, updatedNft]);
 
   const getName = () => {
     if (!nft) return "-";
@@ -58,28 +62,71 @@ const StyledNft = ({ nft }: { nft: NftInstance }) => {
     setParentOneNftId,
     parentTwoNftId,
     setParentTwoNftId,
-    // childName,
-    // setChildName,
   } = useGreenhouse();
+
+  const NFTCarousel = useMemo(() => {
+    if (parentOneNftId === nft.nftId) {
+      return (
+        <CarouselNFTWrap>
+          <img src={updatedNft?.attribs?.image} height="70px" />
+          <ParentText>Parent 1</ParentText>
+        </CarouselNFTWrap>
+      );
+    } else if (parentTwoNftId === nft.nftId) {
+      return (
+        <CarouselNFTWrap>
+          <img src={updatedNft?.attribs?.image} height="70px" />
+          <ParentText>Parent 2</ParentText>
+        </CarouselNFTWrap>
+      );
+    } else {
+      return (
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <img
+          src={updatedNft?.attribs?.image}
+          height="70px"
+          onClick={() => {
+            if (!parentOneNftId) {
+              setParentOneNftId(nft.nftId);
+            } else if (parentOneNftId && !parentTwoNftId) {
+              setParentTwoNftId(nft.nftId);
+            } else if (changeParent === false) {
+              setParentOneNftId(nft.nftId);
+            } else if (changeParent === true) {
+              setParentTwoNftId(nft.nftId);
+            }
+          }}
+        />
+      );
+    }
+  }, [
+    nft.nftId,
+    parentOneNftId,
+    parentTwoNftId,
+    setParentOneNftId,
+    setParentTwoNftId,
+    updatedNft,
+  ]);
 
   return (
     <>
       <Spacer size="sm" />
-      <img
-        src={updatedNft?.attribs?.image}
-        height="75px"
-        onClick={() => {
-          if (!parentOneNftId) {
-            setParentOneNftId(nft.nftId);
-          } else if (!parentTwoNftId) {
-            setParentTwoNftId(nft.nftId);
-          }
-        }}
-      />
 
-      <Spacer size="sm" />
+      {NFTCarousel}
     </>
   );
 };
+
+const CarouselNFTWrap = styled.div`
+  background-color: #183d69;
+  border-radius: 12px;
+`;
+
+const ParentText = styled.span`
+  font-size: 12px;
+  padding-left: 12px;
+  color: #03f190;
+  font-weight: 500;
+`;
 
 export default StyledNft;

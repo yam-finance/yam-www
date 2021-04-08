@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 
 import styled from "styled-components";
 import arrowLeft from "../../../assets/arrowLeft.png";
@@ -7,14 +7,75 @@ import arrowDown from "../../../assets/arrowDown.png";
 import useStrainNfts from "hooks/useStrainNfts";
 import CarouselNFT from "./CarouselNFT";
 
+import changeParentIcon from "../../../assets/changeParent.png";
+import useGreenhouse from "hooks/useGreenhouse";
+
 const TopCarousel: React.FC = () => {
+  const [changeParent, setChangeParent] = useState<Boolean>(false);
+
   const { strainNftCollection } = useStrainNfts();
+
+  const { parentOneNftId, parentTwoNftId } = useGreenhouse();
+
+  const ChangeParentOne = useMemo(() => {
+    if (changeParent === false) {
+      return (
+        <ChangeParentContainer>
+          <ChangeParentIcons
+            src={changeParentIcon}
+            alt="changeParentIcon"
+            onClick={() => {
+              setChangeParent(false);
+            }}
+          />
+        </ChangeParentContainer>
+      );
+    } else {
+      return (
+        <ChangeParentIcons
+          src={changeParentIcon}
+          alt="changeParentIcon"
+          onClick={() => {
+            setChangeParent(false);
+          }}
+        />
+      );
+    }
+  }, [changeParent]);
+
+  const ChangeParentTwo = useMemo(() => {
+    if (changeParent === true) {
+      return (
+        <ChangeParentContainer>
+          <ChangeParentIcons
+            src={changeParentIcon}
+            alt="changeParentIcon"
+            onClick={() => {
+              setChangeParent(true);
+            }}
+          />
+        </ChangeParentContainer>
+      );
+    } else {
+      return (
+        <ChangeParentIcons
+          src={changeParentIcon}
+          alt="changeParentIcon"
+          onClick={() => {
+            setChangeParent(true);
+          }}
+        />
+      );
+    }
+  }, [changeParent]);
 
   return (
     <>
       {strainNftCollection.length > 0 ? (
         <CarouselDiv>
+            {parentOneNftId && parentTwoNftId ? ChangeParentOne : null}
           <StyledText>Select Strains</StyledText>
+            {parentOneNftId && parentTwoNftId ? ChangeParentTwo : null}
         </CarouselDiv>
       ) : null}
       <CarouselOuterContainer>
@@ -28,7 +89,11 @@ const TopCarousel: React.FC = () => {
                 <NoStrainsText>Generate NFT's First</NoStrainsText>
               ) : (
                 strainNftCollection.map((nft) => (
-                  <CarouselNFT key={nft.nftId} nft={nft} />
+                  <CarouselNFT
+                    key={nft.nftId}
+                    nft={nft}
+                    changeParent={changeParent}
+                  />
                 ))
               )}
             </CarouselNftContainer>
@@ -66,7 +131,7 @@ const StyledText = styled.div`
   font-weight: 800;
   line-height: 1.5rem;
   text-align: center;
-  padding-bottom: 1rem;
+  padding: 0 16px 1rem 16px;
 `;
 
 const CarouselOuterContainer = styled.div`
@@ -136,5 +201,16 @@ const CarouselArrowDownInnerWrap = styled.div`
 `;
 
 const CarouselArrowDownIcon = styled.img``;
+
+const ChangeParentIcons = styled.img`
+  height: 30px;
+  cursor: pointer;
+`;
+
+const ChangeParentContainer = styled.div`
+  background-color: #183d69;
+  border-radius: 16px;
+  padding: 3px;
+`;
 
 export default TopCarousel;

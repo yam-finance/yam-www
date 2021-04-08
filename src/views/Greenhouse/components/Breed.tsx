@@ -40,6 +40,8 @@ const Breed: React.FC = () => {
   const [isStrnApproved, setIsStrnApproved] = useState(false);
   const [isStrnEthApproved, setIsStrnEthApproved] = useState(false);
   const [isStxpApproved, setIsStxpApproved] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const walletBalance = strnEthLpBalance;
 
@@ -54,6 +56,7 @@ const Breed: React.FC = () => {
   return (
     <>
       <BreedContainer>
+      {hasError ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
         <BreedInputsContainer>
           <DivContainer>
             <ApproveButton
@@ -148,6 +151,14 @@ const Breed: React.FC = () => {
 };
 
 const DivWrap = styled.div``;
+
+const ErrorMessage = styled.h4`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ce1212;
+  font-weight: 500;
+`;
 
 const BreedContainer = styled.div`
   display: flex;

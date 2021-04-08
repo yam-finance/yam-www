@@ -19,7 +19,7 @@ const Dispensary: React.FC = () => {
 
   return (
     <Page>
-        <DispensaryContainer>
+        {/* <DispensaryContainer>
           {strainNftCollection.length <= 0 ?
                   <>
                   <img style={{paddingBottom: "30px"}} src={blankStrainNFT} alt="Blank Strain NFT" height={DEFAULT_NFT_SIZE} />
@@ -31,7 +31,7 @@ const Dispensary: React.FC = () => {
             .map((nft) => (
                   <StyledNft key={nft.nftId} nft={nft} isDispensary={true} />
             ))}
-        </DispensaryContainer>
+        </DispensaryContainer> */}
     </Page>
   )
 }
