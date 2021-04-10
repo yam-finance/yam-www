@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import styled from "styled-components";
 
@@ -12,11 +12,14 @@ import Label from "components/Label";
 import ApproveButton from "./ApproveButton";
 import { getAddresses } from "constants/tokenAddresses";
 import StyledPrimaryButton from "views/Common/StyledButton";
+import BigNumber from "bignumber.js";
+import { useWallet } from "use-wallet";
+import { bnToDec } from "utils";
 
-const Breed: React.FC = () => {
+const Breed = () => {
+  const { status } = useWallet();
   const {
     strnEthLpBalance,
-    strnEthLpPoolBalance,
     stxpTokenBalance,
     strnTokenBalance,
   } = useBalances();
@@ -40,23 +43,30 @@ const Breed: React.FC = () => {
   const [isStrnApproved, setIsStrnApproved] = useState(false);
   const [isStrnEthApproved, setIsStrnEthApproved] = useState(false);
   const [isStxpApproved, setIsStxpApproved] = useState(false);
-  const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const walletBalance = strnEthLpBalance;
-
   const formattedLPBalance = useMemo(() => {
-    if (walletBalance) {
-      return numeral(walletBalance).format("0.00a");
+    if (strnEthLpBalance) {
+      return numeral(strnEthLpBalance).format("0.00a");
     } else {
       return "--";
     }
-  }, [walletBalance]);
+  }, [strnEthLpBalance]);
+
+  useEffect(() => {
+    if (status === "connected") {
+      const bal = numeral(strnEthLpBalance).format('0.00a')
+      if (new BigNumber(bal || "0").lt(new BigNumber(MIN_LP_AMOUNTS_DISPLAY[Number(PoolIds.STRN_ETH)]))){
+        return setErrorMessage("Insufficient LP tokens")
+      }
+      setErrorMessage("")
+    }
+  }, [status, strnEthLpBalance, setErrorMessage])
 
   return (
     <>
       <BreedContainer>
-      {hasError ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <BreedInputsContainer>
           <DivContainer>
             <ApproveButton
@@ -136,7 +146,8 @@ const Breed: React.FC = () => {
                 !isStrnEthApproved ||
                 !parentOneNftId ||
                 !parentTwoNftId ||
-                !childName
+                !childName || 
+                Boolean(errorMessage)
               }
               size={"lg"}
               text={isBreeding ? "Breeding" : "Breed"}
