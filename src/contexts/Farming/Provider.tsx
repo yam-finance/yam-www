@@ -184,7 +184,7 @@ const Provider: React.FC = ({ children }) => {
 
   useEffect(() => {
     fetchTVL();
-    let refreshInterval = setInterval(fetchTVL, 100000);
+    let refreshInterval = setInterval(fetchTVL, 1000);
     return () => clearInterval(refreshInterval);
   }, [fetchTVL]);
 

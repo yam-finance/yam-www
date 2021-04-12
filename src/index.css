@@ -180,3 +180,24 @@ button, input {
   color: #ec105a;
   background-color: var(--pagination-background-color);
 }
+
+.farm-tvl {
+  color: hsl(338deg 100% 41% / 100%);
+    font-size: 54px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 54px;
+}
+
+.farm-apr {
+  color: hsl(338deg 7% 52% / 100%);
+  text-align: center;
+}
+
+.top-card-value {
+  color: hsl(338deg 95% 4% / 100%);
+  font-size: 24px;
+  font-weight: 700;
+  text-align: left;
+  line-height: normal;
+}

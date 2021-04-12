@@ -1,7 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useTheme } from "react-neu";
-
+import numeral from "numeral";
+import { useCountUp } from 'react-countup';
+import { useEffect, useState } from "react";
 interface BarProgressProps {
   value?: number;
   invert?: boolean;
@@ -13,12 +15,24 @@ const Bar: React.FC<BarProgressProps> = ({ value, invert, type }) => {
     value = 100 - (value || 0);
   }
   const { darkMode } = useTheme();
+  const valueCountUp= useCountUp({
+    start: 0,
+    end: value ? value: 0,
+    formattingFn: (val) => val ? ` ${numeral(val).format("0")}` : "Loading ...",
+    decimals: 0,
+    duration: 1.3
+  });
+  const [progressValue, setProgressValue] = useState(0);
+  useEffect(() => {
+   valueCountUp.update(value);
+   setProgressValue(value? value: 0);
+  },[value] );
 
   return (
     <>
       <StyledBar className="progressbar" darkMode={darkMode}>
-        <StyledBarInner className={`${type === "buffer" ? "buffer" : ""}`} style={{ width: `${value}%` }} />
-        <StyledBarProgressText darkMode={darkMode}>{value}%</StyledBarProgressText>
+        <StyledBarInner className={`${type === "buffer" ? "buffer" : ""}`} style={{ width: `${progressValue}%` }} />
+        <StyledBarProgressText darkMode={darkMode}>{valueCountUp.countUp}%</StyledBarProgressText>
       </StyledBar>
     </>
   );
@@ -45,7 +59,9 @@ const StyledBarInner = styled.div`
   background: ${(props) => props.theme.colors.primary.main};
   border-radius: 15px;
   height: 100%;
-  transition: width 0.8s ease-in;
+ 
+  transition: 1s ease;
+  transition-delay: 0.3s;
 `;
 
 const StyledBarProgressText = styled.div<StyledBarProgressTextProps>`
