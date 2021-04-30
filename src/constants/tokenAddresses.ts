@@ -6,7 +6,7 @@ export const yycrvUniLp = "0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC";
 export const migrator = "0x72cfed9293cbfb2bfc7515c413048c697c6c811c";
 
 // harcode chainId for wallet provider lib
-export const chainId = 4;
+export const chainId = 1;
 export const base_image_url = "https://nft-image-service.herokuapp.com/";
 //export const infura_key = 'https://rinkeby.infura.io/v3/1b38871d05fa4d3298a3096c6e863c97';
 //export const infura_key =
@@ -43,11 +43,11 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/STXPIncentivizer.json
     singleStrnPool: "0x69dc085C3C51F5ef74C737E817DD2A271e772B17",
 
-    strainNFTAddress: "0x78357271b76161aEB280D387D0da357aBB8824d4",
+    strainNFTAddress: "0x3DF366063189a7F6c872A81128787E51E22927A4",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFT.json
-    strainNFTCrafterAddress: "0x7b8B851D4e26D46f68bF3F2C67a220398B7DB234",
+    strainNFTCrafterAddress: "0x52B1C5838881E17c12Fc84163bcD7a77DdE582B5",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
-    strainNFTGeneticsAdderss: "...",
+    strainNFTGeneticsAdderss: "0xd7579f0aB4d15FBF0B519E172936B228FBC9a942",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTGenetics.json
   },
   4: {
