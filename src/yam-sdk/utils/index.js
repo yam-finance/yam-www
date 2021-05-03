@@ -999,7 +999,7 @@ export const claimContributorVestedTokens = async (yam, account, contributor) =>
   console.log("account, accountId", account, contributor)
   return yam.contracts.VestingPool.methods.payout(contributor.id).send({
     from: account,
-    gas: 120000
+    gas: 200000
   });
 };
 
