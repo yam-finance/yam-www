@@ -1099,8 +1099,6 @@ export const getYam30D = async () => {
 };
 
 export const getYamHousePrice = async () => {
-  // const data = await requestHttp("https://api.tokensets.com/v2/funds/yamhouse");
-  // // const data = await axios.get("https://api.tokensets.com/v2/funds/yamhouse");
-  // return data.fund.price_usd;
-  return 1.20;
+  const data = await requestHttp("https://api.tokensets.com/public/v2/portfolios/yamhouse");
+  return data.portfolio.price_usd;
 }
