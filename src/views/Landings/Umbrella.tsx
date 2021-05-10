@@ -7,6 +7,7 @@ import Split from "components/Split";
 import Bar from "components/Bar";
 import DesignFlow from "assets/yampp.png";
 import styled from "styled-components";
+import CountUp, { useCountUp } from 'react-countup';
 
 const Umbrella_Protocol_Lite_Paper = require("assets/documents/Umbrella_Protocol_Lite_Paper.pdf");
 const Umbrella_Protocol_Lite_Paper_CN = require("assets/documents/Umbrella_Protocol_Lite_Paper_CN.pdf");
