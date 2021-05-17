@@ -17,10 +17,8 @@ const YCP: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader icon={"🤫"} title={"Coming Soon!"} titleSize={80} titleWeight={"900"} subtitle={"Yam Protocol Protection"} />
-      <Container size="sm">
-        <Bar type={"buffer"} value={progress}></Bar>
-      </Container>
+      <PageHeader icon={"⛪"} title={"DAO House"} titleSize={80} titleWeight={"900"} titleColor={"green"} subtitle={"Treasury Management Solution"} />
+     
       <Container>
         <Spacer />
         <h2>DAO House - Treasury Management Solution</h2>
