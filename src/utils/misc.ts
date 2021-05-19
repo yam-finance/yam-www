@@ -6,7 +6,7 @@ export const contributors: any = {
   "0xc3edcbe0f93a6258c3933e86ffaa3bcf12f8d695": { id: 15, amount: 30000 },
   "0xbdac5657edd13f47c3dd924eaa36cf1ec49672cc": { id: 16, amount: 30000 },
   "0x01e0c7b70e0e05a06c7cc8deeb97fa03d6a77c9c": { id: 17, amount: 25000 },
-  "0xf5f1287f7b71381ffb5caf3b61fa0375112531bc": { id: 22, amount: 15000 },
+  "0xf5f1287f7b71381ffb5caf3b61fa0375112531bc": { id: 45, amount: 15000 },
   "0xdadc6f71986643d9e9cb368f08eb6f1333f6d8f9": { id: 23, amount: 10000 },
   "0xcc506b3c2967022094c3b00276617883167bf32b": { id: 18, amount: 5000 },
   "0xeEFA7451c03d52ce909A93654664c46cf81DdD21": { id: 31, amount: 667 },
