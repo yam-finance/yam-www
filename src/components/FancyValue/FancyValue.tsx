@@ -21,7 +21,7 @@ interface FancyValueProps {
   suffix?: string;
 }
 
-const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip, isNum, prefix, suffix }) => {
+const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip, isNum, prefix="", suffix="" }) => {
   const { darkMode, colors } = useTheme();
   let labelColor: string;
   let borderColor: string;
