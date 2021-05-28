@@ -183,7 +183,8 @@ export const getStaked = async (yam, pool, account) => {
 
 export const getCurrentPrice = async (yam) => {
   // FORBROCK: get current YAM price
-  return new BigNumber(await getPriceByContract(yamv3)).multipliedBy(new BigNumber(10).pow(18))
+  // return new BigNumber(await yam.contracts.eth_rebaser.methods.getCurrentTWAP().call());
+  return new BigNumber(await getPriceByContract(yamv3)).multipliedBy(new BigNumber(10).pow(18));
 };
 export async function getContractInfo(address) {
   const data = await requestHttp(`https://api.coingecko.com/api/v3/coins/ethereum/contract/${address}`);
@@ -1112,4 +1113,3 @@ export const getYamHousePrice = async () => {
   const data = await requestHttp("https://api.tokensets.com/public/v2/portfolios/yamhouse");
   return data.portfolio.price_usd;
 }
-
