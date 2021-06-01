@@ -13,7 +13,9 @@ import {
   ContractIndexStaking,
   ContractIncentivizer
 } from "constants/tokenAddresses";
-
+import {
+  yamv3
+} from "constants/tokenAddresses";
 import axios from "axios";
 
 BigNumber.config({
@@ -181,8 +183,17 @@ export const getStaked = async (yam, pool, account) => {
 
 export const getCurrentPrice = async (yam) => {
   // FORBROCK: get current YAM price
-  return new BigNumber(await yam.contracts.eth_rebaser.methods.getCurrentTWAP().call());
+  // return new BigNumber(await yam.contracts.eth_rebaser.methods.getCurrentTWAP().call());
+  return new BigNumber(await getPriceByContract(yamv3)).multipliedBy(new BigNumber(10).pow(18));
 };
+export async function getContractInfo(address) {
+  const data = await requestHttp(`https://api.coingecko.com/api/v3/coins/ethereum/contract/${address}`);
+  return data;
+};
+export async function getPriceByContract(address, toCurrency) {
+  const result = await getContractInfo(address);
+  return result && result.market_data && result.market_data.current_price[toCurrency || "usd"];
+}
 
 export const getTargetPrice = async (yam) => {
   return yam.toBigN(1).toFixed(2);
@@ -987,6 +998,7 @@ export const getContributorVestingData = async (yam, contributor) => {
       totalAmount,
       amountPaidOut,
     };
+    console.log("contributor", contributor);
     console.debug("result", result);
     return result;
   } catch (e) {
@@ -998,7 +1010,7 @@ export const claimContributorVestedTokens = async (yam, account, contributor) =>
   console.log("account, accountId", account, contributor)
   return yam.contracts.VestingPool.methods.payout(contributor.id).send({
     from: account,
-    gas: 120000
+    gas: 200000
   });
 };
 
@@ -1098,8 +1110,6 @@ export const getYam30D = async () => {
 };
 
 export const getYamHousePrice = async () => {
-  // const data = await requestHttp("https://api.tokensets.com/v2/funds/yamhouse");
-  // // const data = await axios.get("https://api.tokensets.com/v2/funds/yamhouse");
-  // return data.fund.price_usd;
-  return 1.20;
+  const data = await requestHttp("https://api.tokensets.com/public/v2/portfolios/yamhouse");
+  return data.portfolio.price_usd;
 }

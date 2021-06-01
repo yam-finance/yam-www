@@ -1,19 +1,34 @@
 import React from "react";
 
 import styled from "styled-components";
-
+import  { useCountUp } from 'react-countup';
+import numeral from "numeral";
+import { useEffect } from "react";
 interface ValueProps {
   value: string;
   valueSize?: string;
   valueColor?: string;
   valuePosition?: string;
   valueBold?: string;
+  prefix?: string;
+  suffix?: string;
+ 
 }
 
-const Value: React.FC<ValueProps> = ({ value, valueSize, valueColor, valuePosition, valueBold }) => {
+const Value: React.FC<ValueProps> = ({ value, valueSize, valueColor, valuePosition, valueBold, prefix, suffix }) => {
+  const valueCountUp= useCountUp({
+    start: 0,
+    end: numeral(value).value() ? numeral(value).value(): 0,
+    formattingFn: (val) => val ? `${suffix} ${numeral(val).format("0.00a")} ${prefix}` : "--",
+    decimals: 2,
+    duration: 1.75
+  });
+  useEffect(() => {
+    valueCountUp.update(numeral(value).value());
+   },[value] );
   return (
     <StyledValue valueSize={valueSize} valueColor={valueColor} valuePosition={valuePosition} valueBold={valueBold}>
-      {value}
+      {valueCountUp.countUp}
     </StyledValue>
   );
 };

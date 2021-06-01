@@ -20,9 +20,11 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           <StyledRouterLink target="/umbrella" label="Umbrella" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledLink href="https://degenerative.finance/" label="Degenerative" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
-        <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
+          <StyledRouterLink target="/register" label="Register" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledRouterLink target="/delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        </StyledRouterLink>
         <StyledRouterLink target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} >
-          <StyledRouterLink target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="/claim" label="Claim" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledLink href="https://docs.yam.finance/" label="FAQ" mobileMenu={mobileMenu} onDismiss={onDismiss} />
@@ -48,7 +50,8 @@ const StyledNav = styled.div`
     flex-direction: column;
     position: fixed;
     background: rgb(243, 237, 239);
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 50px;
     width: 60%;
     top: 0;
     right: 0;

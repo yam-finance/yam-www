@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 
 import numeral from "numeral";
-import { Box, Button, Card, CardActions, CardContent, CardIcon } from "react-neu";
+import { Box, Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
 
 import Label from "components/Label";
 import Value from "components/Value";
@@ -31,6 +31,7 @@ const ClaimCard: React.FC = () => {
 
   return (
     <Card>
+      <Spacer size="md" />
       <CardIcon>🦋 + 🎁</CardIcon>
       <CardContent>
         <Box alignItems="center" column>

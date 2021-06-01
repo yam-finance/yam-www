@@ -1,9 +1,10 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button } from "react-neu";
+import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button, useTheme } from "react-neu";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
 import Split from "components/Split";
+import { Icon, Pagination } from 'semantic-ui-react';
 
 import RegisterVoteNotice from "../Home/components/RegisterVoteNotice";
 import RegistrationButton from 'components/RegistrationButton';
@@ -22,15 +23,19 @@ import { ProposalEntry, StyledProposalContentInner } from "./components/Proposal
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
 const Governance: React.FC = () => {
-  const { account } = useWallet();
+  const { account } = useWallet();  
   const {
     proposals,
     onVote,
     onRegister,
   } = useGovernance();
+  const { darkMode } = useTheme();
 
   const [astronaut, setAstronaut] = useState("👨‍🚀");
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
+  const [activePage, setActivePage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(5);
+  const [activeProposals, setActiveProposals] = useState<any>([]);
 
   const updateAstronaut = useCallback(() => {
     const newAstro = ASTRONAUTS[Math.floor(Math.random() * ASTRONAUTS.length)];
@@ -42,6 +47,16 @@ const Governance: React.FC = () => {
     return () => clearInterval(refresh);
   }, [updateAstronaut]);
 
+  useEffect(() => {
+    if (proposals) {
+      const activeProposals = [];
+      for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > proposals.length ? proposals.length : pageLimit * activePage); i ++) {
+        activeProposals.push(proposals[i]);
+      }
+      setActiveProposals(activeProposals);
+    }
+  }, [proposals, activePage, pageLimit]);
+
 
   // TODO Move these to their own component
   const handleDismissUnlockModal = useCallback(() => {
@@ -51,6 +66,10 @@ const Governance: React.FC = () => {
   const handleUnlockWalletClick = useCallback(() => {
     setUnlockModalIsOpen(true);
   }, [setUnlockModalIsOpen]);
+
+  const handlePageChange = (event:any, data:any) => {
+    setActivePage(data.activePage);
+  };
 
   return (
     <Page>
@@ -86,15 +105,40 @@ const Governance: React.FC = () => {
                       </StyledProposalContentInner>
                     </Box>
                     <Spacer size="sm" />
-                    {proposals && (
+                    {activeProposals && (
                       <Surface>
-                        {proposals.map((prop, i) => {
+                        {activeProposals.map((prop:any, i:any) => {
                           if (i === 0) {
                             return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
                           } else {
                             return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
                           }
                         })}
+                        <Box row alignItems="center" justifyContent="center">
+                          <Pagination 
+                            defaultActivePage={activePage} 
+                            boundaryRange={0}
+                            siblingRange={1}
+                            firstItem={null}
+                            lastItem={null}
+                            prevItem={{ content: <Icon name='caret left' />, icon: true }}
+                            nextItem={{ content: <Icon name='caret right' />, icon: true }}
+                            totalPages={Math.ceil(proposals.length / pageLimit)}
+                            style={{ 
+                              background: 'transparent',
+                              fontFamily: 'Nunito',
+                              fontSize: 16,
+                              fontWeight: 700,
+                              borderRadius: 28,
+                              border: 0,
+                              boxShadow: darkMode ? '-8px 8px 16px 0 hsl(339deg 20% 5%), 8px -8px 16px 0px hsl(0deg 0% 100% / 8%)' : '0px 0px 1px 1px hsl(338deg 95% 4% / 15%), inset -1px 1px 0px hsl(0deg 0% 100%)',
+                              boxSizing: 'border-box',
+                              height: 48,
+                            }}
+                            onPageChange={(event, data) => handlePageChange(event, data)}
+                          />
+                        </Box>
+                        <Spacer size="sm" />
                       </Surface>
                     )}
                   </>
