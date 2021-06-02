@@ -13,7 +13,7 @@ const PricesProvider: React.FC = ({ children }) => {
   const fetchCurrentPrice = useCallback(async () => {
     if (!yam) return;
     const price = await getCurrentPrice(yam);
-    setYamTwap(bnToDec(price));
+    setYamTwap(price);
   }, [setYamTwap, yam]);
 
   useEffect(() => {

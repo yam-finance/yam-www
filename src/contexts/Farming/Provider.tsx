@@ -176,7 +176,7 @@ const Provider: React.FC = ({ children }) => {
     if (!yam) return;
     const BoU = 5000;
     const factor = bnToDec(await getScalingFactor(yam));
-    const price = bnToDec(await getCurrentPrice(yam));
+    const price = await getCurrentPrice(yam);
     const tvl = await getTVL(yam);
     const calc = ((((BoU * factor * price) / 7) * 365.5) / tvl) * 100;
     setAPR(calc);

@@ -184,7 +184,7 @@ export const getStaked = async (yam, pool, account) => {
 export const getCurrentPrice = async (yam) => {
   // FORBROCK: get current YAM price
   // return new BigNumber(await yam.contracts.eth_rebaser.methods.getCurrentTWAP().call());
-  return new BigNumber(await getPriceByContract(yamv3)).multipliedBy(new BigNumber(10).pow(18));
+  return  await getPriceByContract(yamv3);
 };
 export async function getContractInfo(address) {
   const data = await requestHttp(`https://api.coingecko.com/api/v3/coins/ethereum/contract/${address}`);
@@ -208,7 +208,7 @@ export const getProjectedRebase = async (yam) => {
 
 export const getProjectedRebasePercent = async (yam) => {
   let BASE = new BigNumber(10).pow(18);
-  let twap = (await getCurrentPrice(yam)).dividedBy(BASE);
+  let twap = await getCurrentPrice(yam);
   if (twap.isGreaterThanOrEqualTo(0.95) && twap.isLessThanOrEqualTo(1.05)) return 0;
   let target_price = await getTargetPrice(yam);
   let rebase_lag = await getRebaseLag(yam);
@@ -912,7 +912,7 @@ export const treasuryEvents = async (yam) => {
 
 export const getTVL = async (yam) => {
   const BASE = new BigNumber(10).pow(18);
-  const yamPrice = bnToDec(await getCurrentPrice(yam));
+  const yamPrice = await getCurrentPrice(yam);
   const wethPrice = await getWETHPrice();
   const totalIncentivizerValue = (await yam.contracts.masterchef.methods.userInfo(44, ContractIncentivizer).call()).amount;
   const totalSLPSupply = await yam.contracts.slp.methods.totalSupply().call();
