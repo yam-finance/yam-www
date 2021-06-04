@@ -987,6 +987,7 @@ export const getContributorVestingData = async (yam, contributor) => {
       totalAmount,
       amountPaidOut,
     };
+    console.log("contributor", contributor);
     console.debug("result", result);
     return result;
   } catch (e) {
@@ -998,7 +999,7 @@ export const claimContributorVestedTokens = async (yam, account, contributor) =>
   console.log("account, accountId", account, contributor)
   return yam.contracts.VestingPool.methods.payout(contributor.id).send({
     from: account,
-    gas: 120000
+    gas: 200000
   });
 };
 
@@ -1098,8 +1099,7 @@ export const getYam30D = async () => {
 };
 
 export const getYamHousePrice = async () => {
-  // const data = await requestHttp("https://api.tokensets.com/v2/funds/yamhouse");
-  // // const data = await axios.get("https://api.tokensets.com/v2/funds/yamhouse");
-  // return data.fund.price_usd;
-  return 1.20;
+  const data = await requestHttp("https://api.tokensets.com/public/v2/portfolios/yamhouse");
+  return data.portfolio.price_usd;
 }
+

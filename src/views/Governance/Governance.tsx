@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button } from "react-neu";
+import { Container, Spacer, Card, CardTitle, CardContent, Separator, Surface, Button, useTheme } from "react-neu";
 
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
@@ -23,17 +23,18 @@ import { ProposalEntry, StyledProposalContentInner } from "./components/Proposal
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
 const Governance: React.FC = () => {
-  const { account } = useWallet();
+  const { account } = useWallet();  
   const {
     proposals,
     onVote,
     onRegister,
   } = useGovernance();
+  const { darkMode } = useTheme();
 
   const [astronaut, setAstronaut] = useState("👨‍🚀");
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const [activePage, setActivePage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(5);
   const [activeProposals, setActiveProposals] = useState<any>([]);
 
   const updateAstronaut = useCallback(() => {
@@ -122,7 +123,7 @@ const Governance: React.FC = () => {
                             lastItem={null}
                             prevItem={{ content: <Icon name='caret left' />, icon: true }}
                             nextItem={{ content: <Icon name='caret right' />, icon: true }}
-                            totalPages={Math.ceil(proposals.length / 10)}
+                            totalPages={Math.ceil(proposals.length / pageLimit)}
                             style={{ 
                               background: 'transparent',
                               fontFamily: 'Nunito',
@@ -130,7 +131,7 @@ const Governance: React.FC = () => {
                               fontWeight: 700,
                               borderRadius: 28,
                               border: 0,
-                              boxShadow: '0px 0px 1px 1px hsl(338deg 95% 4% / 15%), inset -1px 1px 0px hsl(0deg 0% 100%)',
+                              boxShadow: darkMode ? '-8px 8px 16px 0 hsl(339deg 20% 5%), 8px -8px 16px 0px hsl(0deg 0% 100% / 8%)' : '0px 0px 1px 1px hsl(338deg 95% 4% / 15%), inset -1px 1px 0px hsl(0deg 0% 100%)',
                               boxSizing: 'border-box',
                               height: 48,
                             }}

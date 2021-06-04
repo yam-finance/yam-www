@@ -1,10 +1,11 @@
 import BigNumber from "bignumber.js";
 import useFarming from "hooks/useFarming";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
 import { bnToDec } from "utils";
+import StyledNoticeIcon from "components/StyledNoticeIcon";
 
 const HarvestLPsNoticeYAMYUSD: React.FC = () => {
   const [stakedBalanceYUSDLP, setStakedBalanceYUSDLP] = useState<number>(0);
@@ -36,7 +37,7 @@ const HarvestLPsNoticeYAMYUSD: React.FC = () => {
       return (
         <>
           <Notice>
-            <NoticeIcon>❗</NoticeIcon>
+            <StyledNoticeIcon role='img'>❗</StyledNoticeIcon>
             <NoticeContent>
               <StyledNoticeContentInner>
                 <span>

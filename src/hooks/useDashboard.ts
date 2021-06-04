@@ -322,7 +322,7 @@ const useDahsboard = () => {
       },
       {
         icon: indexCoopValues?.image.large,
-        name: "Index Coop LP",
+        name: "DPI/ETH LP",
         index: "INDEXLP",
         quantity: indexCoopLPRewards,
         price: indexPrice,
@@ -356,6 +356,7 @@ const useDahsboard = () => {
     assets.forEach((asset:any) => {
       treasuryAssets += asset.value;
     });
+    
     setYamObject({
       currentPrice: numeral(yamValues?.market_data.current_price.usd).format("0.00a"),
       maxSupply: numeral(yamValues?.market_data.max_supply).format("0.00a"),

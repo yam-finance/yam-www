@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
+import StyledNoticeIcon from "components/StyledNoticeIcon";
 
 const VestingNotice: React.FC = () => (
   <Notice>
-    <NoticeIcon>⚠️</NoticeIcon>
+    <StyledNoticeIcon role="img">⚠️</StyledNoticeIcon>
     <NoticeContent>
       <StyledNoticeContentInner>
         <span>Migrated tokens are subject to a vesting schedule before they are claimable.</span>

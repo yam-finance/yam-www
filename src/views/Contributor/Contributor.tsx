@@ -7,7 +7,7 @@ import PageHeader from "components/PageHeader";
 import Split from "components/Split";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
-import { contributors } from "utils/misc";
+import { contributors as contributorsObj } from "utils/misc";
 import { getContributorVestingData, claimContributorVestedTokens, getYam30D } from "yam-sdk/utils";
 import { useCallback } from "react";
 
@@ -20,6 +20,7 @@ const Contributor: React.FC = () => {
   const [totalClaimed, setTotalClaimed] = useState<number>();
   const [theBehalf, setTheBehalf] = useState<string>("");
   const [last30D, setLast30D] = useState<string>("0");
+  const contributors = Object.fromEntries(Object.entries(contributorsObj).map(([k, v]) => [k.toLowerCase(), v]));
 
   const fetchOnce = useCallback(async () => {
     if (!yam) return;
@@ -60,7 +61,6 @@ const Contributor: React.FC = () => {
 
   useEffect(() => {
     fetchOnce();
-    console.log("contributor", contributor);
   }, [theBehalf, setTheBehalf]);
 
   const handleClaimVested = useCallback(async () => {

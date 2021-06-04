@@ -1,12 +1,13 @@
 import React from "react";
 
-import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
+import StyledNoticeIcon from "components/StyledNoticeIcon";
 
 const VestingNotice: React.FC = () => {
   return (
     <Notice>
-      <NoticeIcon>🎁</NoticeIcon>
+      <StyledNoticeIcon>🎁</StyledNoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
           <span>You have unclaimed vested YAM tokens.</span>

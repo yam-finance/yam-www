@@ -1,11 +1,12 @@
 import React from "react";
-import { Box, Button, Notice, NoticeContent, NoticeIcon, Spacer } from "react-neu";
+import { Box, Button, Notice, NoticeContent, Spacer } from "react-neu";
 import styled from "styled-components";
+import StyledNoticeIcon from "components/StyledNoticeIcon";
 
 const PausedLPsNotice: React.FC = () => (
   <>
     <Notice>
-      <NoticeIcon>💧</NoticeIcon>
+      <StyledNoticeIcon>💧</StyledNoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
           <span>LP rewards are paused for now, remove your liquidity.</span>

@@ -17,9 +17,11 @@ interface FancyValueProps {
   hint?: string;
   tooltip?: string;
   isNum?: boolean;
+  prefix?: string;
+  suffix?: string;
 }
 
-const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip, isNum }) => {
+const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, valueColor, valueBold, wrap, hint, tooltip, isNum, prefix, suffix }) => {
   const { darkMode, colors } = useTheme();
   let labelColor: string;
   let borderColor: string;
@@ -95,7 +97,8 @@ const FancyValue: React.FC<FancyValueProps> = ({ icon, label, value, valueSize, 
         <Box alignItems="center" row>
           {IconDisplay}
           <Box flex={1}>
-            <Value value={value} valuePosition={!icon ? "center" : "left"} valueSize={valueSize} valueColor={valueColor} valueBold={valueBold} />
+            
+            <Value value={value} valuePosition={!icon ? "center" : "left"} valueSize={valueSize} valueColor={valueColor} valueBold={valueBold} prefix={prefix} suffix={suffix}  />
             {FancyLabelDisplay}
           </Box>
         </Box>
