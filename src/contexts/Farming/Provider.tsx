@@ -176,7 +176,7 @@ const Provider: React.FC = ({ children }) => {
     if (!yam) return;
     const BoU = 5000;
     const factor = bnToDec(await getScalingFactor(yam));
-    const price = bnToDec(await getCurrentPrice(yam));
+    const price = await getCurrentPrice(yam);
     const tvl = await getTVL(yam);
     const calc = ((((BoU * factor * price) / 7) * 365.5) / tvl) * 100;
     setAPR(calc);
@@ -184,13 +184,13 @@ const Provider: React.FC = ({ children }) => {
 
   useEffect(() => {
     fetchTVL();
-    let refreshInterval = setInterval(fetchTVL, 1000);
+    let refreshInterval = setInterval(fetchTVL, 5000);
     return () => clearInterval(refreshInterval);
   }, [fetchTVL]);
 
   useEffect(() => {
     fetchAPR();
-    let refreshInterval = setInterval(fetchAPR, 1000000);
+    let refreshInterval = setInterval(fetchAPR, 5000);
     return () => clearInterval(refreshInterval);
   }, [fetchAPR]);
 
