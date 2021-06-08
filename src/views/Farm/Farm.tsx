@@ -37,11 +37,11 @@ const Farm: React.FC = () => {
     duration: 1.75
   });
   useEffect(() => {
-    console.log(tvl);
+    console.log("tvl = ",tvl);
     update(tvl);
   }, [tvl]);
   useEffect(() => {
-    console.log(apr);
+    console.log("apr = ",apr);
     aprCountUp.update(apr);
   }, [apr]);
  
