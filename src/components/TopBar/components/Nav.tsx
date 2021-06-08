@@ -16,7 +16,7 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
       )}
       <StyledNav>
         <StyledRouterLink target="/dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-        <StyledRouterLink target="/umbrella" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
+        <StyledRouterLink target="/projects" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
           <StyledRouterLink target="/umbrella" label="Umbrella" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledLink href="https://degenerative.finance/" label="Degenerative" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
