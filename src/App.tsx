@@ -22,6 +22,7 @@ import Dashboard from "views/Dashboard";
 import Governance from "views/Governance";
 import Addresses from "views/Addresses";
 import Umbrella from "views/Landings/Umbrella";
+import Daohouse from "views/Landings/Daohouse";
 import Contributor from "views/Contributor";
 import Delegate from "views/Delegate";
 import Claim from "views/Claim";
@@ -64,6 +65,10 @@ const App: React.FC = () => {
           <Route exact path="/umbrella">
             <Umbrella />
           </Route>
+          <Route exact path="/daohouse">
+            <Daohouse />
+          </Route>
+
           <Route exact path="/contributor">
             <Contributor />
           </Route>
