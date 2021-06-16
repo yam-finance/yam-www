@@ -15,7 +15,7 @@ interface ValueProps {
  
 }
 
-const Value: React.FC<ValueProps> = ({ value, valueSize, valueColor, valuePosition, valueBold, prefix, suffix }) => {
+const Value: React.FC<ValueProps> = ({ value, valueSize, valueColor, valuePosition, valueBold, prefix="", suffix="" }) => {
   const valueCountUp= useCountUp({
     start: 0,
     end: numeral(value).value() ? numeral(value).value(): 0,
