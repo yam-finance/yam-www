@@ -22,11 +22,13 @@ import Dashboard from "views/Dashboard";
 import Governance from "views/Governance";
 import Addresses from "views/Addresses";
 import Umbrella from "views/Landings/Umbrella";
+import Daohouse from "views/Landings/Daohouse";
 import Contributor from "views/Contributor";
 import Delegate from "views/Delegate";
 import Claim from "views/Claim";
 import Start from "views/Start";
 import Registration from "views/Registration";
+import Projects from "views/Projects";
 
 
 const App: React.FC = () => {
@@ -63,6 +65,10 @@ const App: React.FC = () => {
           <Route exact path="/umbrella">
             <Umbrella />
           </Route>
+          <Route exact path="/daohouse">
+            <Daohouse />
+          </Route>
+
           <Route exact path="/contributor">
             <Contributor />
           </Route>
@@ -77,6 +83,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/register">
             <Registration />
+          </Route>
+          <Route exact path="/projects">
+            <Projects />
           </Route>
         </Switch>
       </Providers>
@@ -98,7 +107,9 @@ const Providers: React.FC = ({ children }) => {
       <UseWalletProvider
         chainId={1}
         connectors={{
-          walletconnect: { rpcUrl: "https://fee7372b6e224441b747bf1fde15b2bd.eth.rpc.rivet.cloud/" },
+          walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
+          fortmatic: { apiKey: "pk_live_2B1E18021320B71B" },
+          portis: { dAppId: "df008898-2b38-429d-a42a-119623c8e480" }
         }}
       >
         <YamProvider>
