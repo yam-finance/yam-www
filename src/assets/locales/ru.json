@@ -1,6 +1,6 @@
 {
-  "hello": "Здравствуйте",
-  "bye": "Пока",
-  "asset-detail-expiry": "это синтетика, срок действия которой истекает примерно",
-  "test": "Это тестовая переменная: {{testVariable}}"
+  "hello": "Hi",
+  "bye": "Aurevoir",
+  "asset-detail-expiry": "is a synthetic that will expire at",
+  "test": "Il s'agit d'une variable de test: {{testVariable}}"
 }
