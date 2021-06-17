@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { UseWalletProvider } from "use-wallet";
+import { useTranslation } from 'react-i18next';
 
 import TopBar from "components/TopBar";
 
@@ -32,6 +33,11 @@ import Projects from "views/Projects";
 
 
 const App: React.FC = () => {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    document.dir = i18n.dir();
+  }, [i18n, i18n.language]);
 
   return (
     <Router>
