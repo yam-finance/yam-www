@@ -1,0 +1,6 @@
+{
+  "hello": "Hello",
+  "bye": "Bye",
+  "asset-detail-expiry": "is a synthetic that will expire at",
+  "test": "This is a test variable: {{testVariable}}"
+}
