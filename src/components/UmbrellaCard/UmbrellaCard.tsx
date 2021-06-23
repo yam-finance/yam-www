@@ -13,8 +13,8 @@ const UmbrellaCard: React.FC = () => {
       <CardIcon>🌂</CardIcon>
       <CardContent>
         <Box alignItems="center" column>
-          <ValueText value="Umbrella" />
-          <Label text="Umbrella has the potential to become a critical lego block for the DeFi ecosystem." labelPosition="center"/>
+          <ValueText value="Yam Protection" />
+          <Label text="Yam Protection has the potential to become a critical lego block for the DeFi ecosystem." labelPosition="center"/>
         </Box>
       </CardContent>
       <CardActions>
