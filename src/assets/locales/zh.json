@@ -1,0 +1,7 @@
+{
+  "hello": "你好",
+  "bye": "傲华",
+  "asset-detail-expiry": "是一种合成物，将在",
+  "testString": "This is a test string",
+  "test": "这是一个测试变量: {{testVariable}}"
+}

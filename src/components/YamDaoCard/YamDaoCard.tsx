@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
 
 import Label from "components/Label";
-import Value from "components/Value";
+import ValueText from "components/ValueText";
 
 const YamDaoCard: React.FC = () => {
 
@@ -13,8 +13,8 @@ const YamDaoCard: React.FC = () => {
       <CardIcon>🏡</CardIcon>
       <CardContent>
         <Box alignItems="center" column>
-          <Value value="Yam Dao House" />
-          <Label text="DAO House" />
+          <ValueText value="Yam Treasuries" />
+          <Label text="Yam Treasuries is an actively managed portfolio that is governed by the Yam DAO" labelPosition="center"/>
         </Box>
       </CardContent>
       <CardActions>
