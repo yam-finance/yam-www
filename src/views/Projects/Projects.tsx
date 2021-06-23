@@ -15,8 +15,8 @@ const Projects: React.FC = () => {
       <Container size="lg">
         <Spacer />
         <Split>
-          <UmbrellaCard />
           <DegenerativeCard />
+          <UmbrellaCard />
           <YamDaoCard />
         </Split>
       </Container>
