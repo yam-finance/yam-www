@@ -24,10 +24,7 @@ const DarkModeSwitch: React.FC = () => {
   return (
     <Switch>
       <SwitchButton active={!darkMode} onClick={onToggleDarkMode} round>
-        <Emoji emoji="🌞" />
-      </SwitchButton>
-      <SwitchButton active={darkMode} onClick={onToggleDarkMode} round>
-        <Emoji emoji="🌚" />
+        <Emoji emoji={darkMode?"🌚":"🌞"} />
       </SwitchButton>
     </Switch>
   );
