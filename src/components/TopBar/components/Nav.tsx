@@ -18,7 +18,7 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
         <StyledRouterLink target="/dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         <StyledRouterLink target="/projects" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
           <StyledRouterLink target="/umbrella" label="Umbrella" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-          <StyledLink href="https://degenerative.finance/" label="Degenerative" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledLink href="http://synths.yam.xyz" label="Yam Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="/daohouse" label="DAO House" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
