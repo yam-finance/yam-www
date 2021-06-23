@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
 
 import Label from "components/Label";
-import Value from "components/Value";
+import ValueText from "components/ValueText";
 
 const UmbrellaCard: React.FC = () => {
 
@@ -13,8 +13,8 @@ const UmbrellaCard: React.FC = () => {
       <CardIcon>🌂</CardIcon>
       <CardContent>
         <Box alignItems="center" column>
-          <Value value="Umbrella" />
-          <Label text="Yam Protocol Protection" />
+          <ValueText value="Umbrella" />
+          <Label text="Umbrella has the potential to become a critical lego block for the DeFi ecosystem." labelPosition="center"/>
         </Box>
       </CardContent>
       <CardActions>
