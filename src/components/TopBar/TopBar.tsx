@@ -10,7 +10,7 @@ import MenuIcon from "components/icons/Menu";
 import DarkModeSwitch from "../DarkModeSwitch";
 import Nav from "./components/Nav";
 import WalletButton from "./components/WalletButton";
-
+import LanguageSwitcher from "../../components/LangSwitcher";
 interface TopBarProps {
 }
 
@@ -47,6 +47,8 @@ const TopBar: React.FC<TopBarProps> = () => {
           )}
           <StyledLeftMenuBalancesWrapper>
             <StyledAccountButtonWrapper>
+              <LanguageSwitcher/>
+              <Spacer />
               <StyledTopBarDarkModeSwitch>
                 <DarkModeSwitch />
               </StyledTopBarDarkModeSwitch>
