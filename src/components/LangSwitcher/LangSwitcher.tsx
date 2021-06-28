@@ -8,7 +8,7 @@ import enFlag from "assets/flags/en-flag.png";
 import ruFlag from "assets/flags/ru-flag.png";
 import zhFlag from "assets/flags/ch-flag.png";
 import frFlag from "assets/flags/fr-flag.png";
-
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 
 const locales = [
@@ -47,10 +47,8 @@ function LanguageSwitch() {
   const locale = i18n.language;
   const node = useRef<HTMLDivElement>(null);
   const [showModal, setModalShow] = useState(false); 
-  const languageOptions = [
-    { key: "English", text: "English", value: "EN" },
-    { key: "Spanish", text: "Spanish", value: "ES" }
- ];
+  const toggle = () => {setModalShow(false)};
+ useOnClickOutside(node, showModal ?  toggle: undefined)
   return (
     <StyledMenu ref={node} >
       <div 
