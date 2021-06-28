@@ -9,7 +9,7 @@ import ruFlag from "assets/flags/ru-flag.png";
 import zhFlag from "assets/flags/ch-flag.png";
 import frFlag from "assets/flags/fr-flag.png";
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-
+import { Emoji, Switch, SwitchButton, useTheme } from "react-neu";
 
 const locales = [
     'en', 
@@ -54,11 +54,13 @@ function LanguageSwitch() {
       <div 
         className="flag-current cursor-pointer flex items-center justify-center border-2 rounded border-dark-850 hover:border-dark-700 h-[40px] w-[40px]" 
       >
-        <StyledButton>
+        <Switch>
+        <SwitchButton>
         <button className="flag-current-button" onClick={() => setModalShow(true)}>
           <img className="flag-current-image" src={LANGUAGES[locale].flag} alt={LANGUAGES[locale].language} width={22} height={22} />
         </button>
-        </StyledButton>
+        </SwitchButton>
+        </Switch>
         
       </div>
       {showModal && (

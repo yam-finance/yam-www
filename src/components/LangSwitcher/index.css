@@ -30,13 +30,15 @@ min-width: 10rem;
     background-color: transparent;
     margin: 0px;
     padding: 0.15rem 0.5rem;
-    border: 2px solid rgb(23, 21, 34);
+    border: none;
     border-radius: 22px;
     font-size: 1.25rem;
     height: 40px;
+    cursor: pointer;
 }
 .flag-current-image {
     display: block;
+    cursor: pointer;
 }
 .flag-list-image {
     display: inline;
@@ -44,6 +46,7 @@ min-width: 10rem;
     width: 20px;
     height: 20px;
     vertical-align: middle;
+   
 }
 .flag-list-span {
     -webkit-box-align: center;
@@ -51,6 +54,7 @@ min-width: 10rem;
     flex: 1 1 0%;
     padding: 0.5rem;
     font-weight: 500;
+    cursor: pointer;
   
 }
 .flag-list-span:hover {
