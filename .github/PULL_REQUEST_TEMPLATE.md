@@ -6,7 +6,7 @@
 
 ### Checks:
 * [ ] Have you followed the guidelines in our Contributing document?
-* [ ] Have you checked to ensure there aren't other open [Pull Requests](../../../pulls) for the same update/change?
+* [ ] Have you checked to ensure there aren't other open [Pull Requests](../../pulls) for the same update/change?
 
 <!-- You can erase any parts of the below if it's not not applicable to your PR -->
 
