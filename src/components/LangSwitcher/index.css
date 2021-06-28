@@ -27,7 +27,7 @@ min-width: 10rem;
 .flag-current-button {
     position: relative;
     width: 100%;
-    background-color: transparent;
+    
     margin: 0px;
     padding: 0.15rem 0.5rem;
     border: none;

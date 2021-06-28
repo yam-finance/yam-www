@@ -56,9 +56,9 @@ function LanguageSwitch() {
       >
         <Switch>
         <SwitchButton>
-        <button className="flag-current-button" onClick={() => setModalShow(true)}>
-          <img className="flag-current-image" src={LANGUAGES[locale].flag} alt={LANGUAGES[locale].language} width={22} height={22} />
-        </button>
+          <button className="flag-current-button" onClick={() => setModalShow(true)}>
+            <img className="flag-current-image" src={LANGUAGES[locale].flag} alt={LANGUAGES[locale].language} width={22} height={22} />
+          </button>
         </SwitchButton>
         </Switch>
         
