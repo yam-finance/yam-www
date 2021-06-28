@@ -1,8 +1,6 @@
 ### Description of changes proposed in this pull request:
 - 
 - 
-- 
-- 
 
 ### Checks:
 * [ ] Have you followed the guidelines in our Contributing document?
