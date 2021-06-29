@@ -45,24 +45,25 @@ const LANGUAGES: {
 function LanguageSwitch() {
   const { i18n } = useTranslation();
   const locale = i18n.language;
+  const { darkMode, onToggleDarkMode } = useTheme();
   const node = useRef<HTMLDivElement>(null);
   const [showModal, setModalShow] = useState(false); 
   const toggle = () => {setModalShow(false)};
  useOnClickOutside(node, showModal ?  toggle: undefined)
   return (
     <StyledMenu ref={node} >
-      <div 
+        <div  onClick={() => setModalShow(true)}
         className="flag-current cursor-pointer flex items-center justify-center border-2 rounded border-dark-850 hover:border-dark-700 h-[40px] w-[40px]" 
       >
-        <Switch>
-        <SwitchButton>
-          <button className="flag-current-button" onClick={() => setModalShow(true)}>
-            <img className="flag-current-image" src={LANGUAGES[locale].flag} alt={LANGUAGES[locale].language} width={22} height={22} />
-          </button>
-        </SwitchButton>
-        </Switch>
-        
-      </div>
+          <Switch>
+          <SwitchButton active={!darkMode} onClick={() => setModalShow(true)} round >
+           
+              <img className="flag-current-image" src={LANGUAGES[locale].flag} alt={LANGUAGES[locale].language} width={22} height={22} />
+           
+          </SwitchButton>
+          </Switch>
+        </div>
+      
       {showModal && (
         <StyledDiv className="flag-panel min-w-[10rem] max-h-[232px] md:max-h-[unset] absolute flex flex-col z-50 bg-dark-850 shadow-sm rounded md:top-[3rem] right-0 md:overflow-hidden overflow-scroll top-[-15.5rem]">
           {locales.map((key) => {
