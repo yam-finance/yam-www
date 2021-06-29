@@ -47,9 +47,10 @@ const TopBar: React.FC<TopBarProps> = () => {
           )}
           <StyledLeftMenuBalancesWrapper>
             <StyledAccountButtonWrapper>
+              {/*
              <StyledLangSwitch>
                 <LanguageSwitcher/>
-              </StyledLangSwitch>
+              </StyledLangSwitch>*/}
               <Spacer />
               <StyledTopBarDarkModeSwitch>
                 <DarkModeSwitch />
