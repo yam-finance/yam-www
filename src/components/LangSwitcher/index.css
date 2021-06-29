@@ -1,0 +1,62 @@
+.flag-panel {
+
+
+
+box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+border-radius: 10px;
+padding: 0.5rem;
+display: flex;
+flex-direction: column;
+font-size: 1rem;
+position: absolute;
+top: 3rem;
+right: 0rem;
+z-index: 100;
+min-width: 10rem;
+}
+.flag-current {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    border: none;
+    text-align: left;
+}
+.flag-current-button {
+    position: relative;
+    width: 100%;
+    
+    margin: 0px;
+    padding: 0.15rem 0.5rem;
+    border: none;
+    border-radius: 22px;
+    font-size: 1.25rem;
+    height: 40px;
+    cursor: pointer;
+}
+.flag-current-image {
+    display: block;
+    cursor: pointer;
+}
+.flag-list-image {
+    display: inline;
+    margin-right: 0.625rem;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+   
+}
+.flag-list-span {
+    -webkit-box-align: center;
+    align-items: center;
+    flex: 1 1 0%;
+    padding: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+  
+}
+.flag-list-span:hover {
+   font-weight: bold;
+}
