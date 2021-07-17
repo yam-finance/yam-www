@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, INDEX, UMA as UMAAddress } from "constants/tokenAddresses";
+import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, INDEX, UMA as UMAAddress, ContractTimelock } from "constants/tokenAddresses";
 
 import usePrices from "hooks/usePrices";
 import useTokenBalance from "hooks/useTokenBalance";
@@ -38,7 +38,8 @@ const useTreasury = () => {
   const [rewardsSushi, setRewardsSushi] = useState<number>(0);
 
   // revamp
-  const totalBalanceIndexCoop = useTokenBalance(treasuryAddress, INDEX) || 0;
+  //const totalBalanceIndexCoop = useTokenBalance(treasuryAddress, INDEX) || 0;
+  const totalBalanceIndexCoop = useTokenBalance(ContractTimelock, INDEX) || 0;
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const fetchValues = useCallback(async () => {
     if (!yam) {
