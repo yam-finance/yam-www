@@ -70,7 +70,7 @@ const Contributor: React.FC = () => {
 
   const ClaimButton = useMemo(() => {
     if (!availableClaim || availableClaim === 0) {
-      return <Button text="No Claim" variant="tertiary" disabled />;
+      return <Button text="Nothing to claim" variant="tertiary" disabled />;
     } else {
       return <Button text="Claim" variant="default" onClick={handleClaimVested} />;
     }
@@ -83,7 +83,7 @@ const Contributor: React.FC = () => {
         <Split>
           <Box column>
             <h2 className="center">{numeral(availableClaim).format("0,0.00a")} of {numeral(availableClaimOver).format("0,0.00a")} YAM Available to Claim</h2>
-            <h3 className="center">{numeral(totalClaimed).format("0,0.00a")} YAM Claimed Overtime</h3>
+            <h4 className="center">{numeral(totalClaimed).format("0,0.00a")} YAM Claimed Overtime</h4>
             <AvgStyle className="center gray"><b>${last30D}/YAM</b> 30d Avg.</AvgStyle>
             <br />
           </Box>
