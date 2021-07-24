@@ -8,6 +8,7 @@ import { validateAddress } from 'utils';
 
 import useGovernance from "hooks/useGovernance";
 import useFarming from "hooks/useFarming";
+import { delegate } from 'yam-sdk/utils';
 
 export const DelegateForm: React.FC = () => {
   const [delegatee, setDelegatee] = useState('');
@@ -37,7 +38,7 @@ export const DelegateForm: React.FC = () => {
   return (
     <Card>
       <CardTitle text="Delegate Vote " />
-      <Label text={delegatedAddress} labelPosition="center" />
+      <Label text={isDelegated?'Delegating '+delegatedAddress:'No Delegating'} labelPosition="center" />
       <CardContent>
         <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
           <Input onChange={onChange} placeholder="Delegate to..."></Input>
