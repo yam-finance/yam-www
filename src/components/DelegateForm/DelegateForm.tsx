@@ -14,6 +14,7 @@ export const DelegateForm: React.FC = () => {
 
   const {
     isDelegated,
+    delegatedAddress,
     onDelegateStaked,
     onDelegateUnstaked,
     onRemoveDelegation,
@@ -36,7 +37,7 @@ export const DelegateForm: React.FC = () => {
   return (
     <Card>
       <CardTitle text="Delegate Vote " />
-      <Label text={delegatee} labelPosition="center" />
+      <Label text={delegatedAddress} labelPosition="center" />
       <CardContent>
         <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
           <Input onChange={onChange} placeholder="Delegate to..."></Input>

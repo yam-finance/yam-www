@@ -27,6 +27,7 @@ const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
   const [isDelegated, setIsDelegated] = useState(false);
+  const [delegatedAddress, setDelegatedAddress] = useState('');
   const [proposals, setProposals] = useState<Proposal[]>();
   const [votingPowers, setVotingPowers] = useState<ProposalVotingPower[]>();
   const [currentPower, setCurrentPower] = useState<number>();
@@ -104,6 +105,7 @@ const Provider: React.FC = ({ children }) => {
 
   const verifyDelegation = async () => {
     const delegatedAccount = await delegatedTo(yam, account);
+    setDelegatedAddress(delegatedAccount);
     setIsDelegated(delegatedAccount !== emptyDelegation && delegatedAccount !== account);
   };
 
@@ -162,6 +164,7 @@ const Provider: React.FC = ({ children }) => {
         isRegistered,
         isRegistering,
         isVoting,
+        delegatedAddress,
         isDelegated,
         onRegister: handleRegisterClick,
         onUnregister: handleUnregisterClick,
