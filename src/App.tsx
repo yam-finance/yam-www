@@ -1,7 +1,6 @@
 import React, { useMemo, useEffect } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
-// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Router, Route, Switch } from "react-router";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { UseWalletProvider } from "use-wallet";
 import { useTranslation } from 'react-i18next';
 
@@ -31,7 +30,6 @@ import Claim from "views/Claim";
 import Start from "views/Start";
 import Registration from "views/Registration";
 import Projects from "views/Projects";
-import { createBrowserHistory } from "history";
 
 
 const App: React.FC = () => {
@@ -41,10 +39,8 @@ const App: React.FC = () => {
     document.dir = i18n.dir();
   }, [i18n, i18n.language]);
 
-  const history = createBrowserHistory();
-
   return (
-    <Router history={history}>
+    <Router>
       <Providers>
         <TopBar />
         <Switch>
