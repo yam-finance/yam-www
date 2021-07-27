@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router";
 import { UseWalletProvider } from "use-wallet";
 import { useTranslation } from 'react-i18next';
 
@@ -40,8 +41,10 @@ const App: React.FC = () => {
     document.dir = i18n.dir();
   }, [i18n, i18n.language]);
 
+  const history = createBrowserHistory();
+
   return (
-    <Router basename="./">
+    <Router history={history}>
       <Providers>
         <TopBar />
         <Switch>
