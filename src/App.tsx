@@ -30,6 +30,7 @@ import Claim from "views/Claim";
 import Start from "views/Start";
 import Registration from "views/Registration";
 import Projects from "views/Projects";
+import { createBrowserHistory } from "history";
 
 
 const App: React.FC = () => {
@@ -40,7 +41,7 @@ const App: React.FC = () => {
   }, [i18n, i18n.language]);
 
   return (
-    <Router>
+    <Router basename="./">
       <Providers>
         <TopBar />
         <Switch>

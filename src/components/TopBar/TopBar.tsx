@@ -50,8 +50,8 @@ const TopBar: React.FC<TopBarProps> = () => {
               {/*
              <StyledLangSwitch>
                 <LanguageSwitcher/>
-              </StyledLangSwitch>*/}
-              <Spacer />
+              </StyledLangSwitch>
+              <Spacer />*/}
               <StyledTopBarDarkModeSwitch>
                 <DarkModeSwitch />
               </StyledTopBarDarkModeSwitch>
@@ -119,12 +119,12 @@ const StyledAccountButtonWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  width: 280px;
   @media (max-width: 400px) {
     justify-content: center;
     width: auto;
   }
 `;
+// width: 280px;
 
 const StyledMenuButton = styled.button`
   background: none;
