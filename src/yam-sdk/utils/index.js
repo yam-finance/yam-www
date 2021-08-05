@@ -354,7 +354,7 @@ export const delegatedTo = async(yam, account) => {
 export const vote = async (yam, proposal, side, account, onTxHash) => {
   return yam.contracts.gov4.methods.castVote(proposal, side).send({
     from: account,
-    gas: 300000
+    gas: 450000
   }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
