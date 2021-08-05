@@ -30,6 +30,7 @@ export interface ContextValues {
   isRegistered?: boolean;
   isRegistering?: boolean;
   isVoting?: boolean;
+  delegatedAddress?: string;
   isDelegated: boolean;
   onVote: (proposal: number, side: boolean) => void;
   onRegister: () => void;
