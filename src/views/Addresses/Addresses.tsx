@@ -28,7 +28,7 @@ const Addresses: React.FC = () => {
     <Page>
       <PageHeader icon={"🎖️"} title={"Addresses"} subtitle={"Official Addresses"} />
       <Container size="sm">
-        <h2>Yam Addresses &amp; Assets</h2>
+        <h2>Yam Address</h2>
         <AddressButton
           name="YAM"
           address={yamv3.toLowerCase()}
@@ -36,7 +36,6 @@ const Addresses: React.FC = () => {
           unitext="Buy at Sushiswap"
           unilink="https://exchange.sushiswapclassic.org/#/?inputCurrency="
         />
-        <AddressButton name="DPI" address={DPI.toLowerCase()} uniswap={true} />
 
         <h3>Yam Contracts Addresses</h3>
         <AddressButton name="Reserves" address={ContractReserves.toLowerCase()} uniswap={false} />
@@ -52,6 +51,7 @@ const Addresses: React.FC = () => {
         <AddressButton name="Monthly Allowance" address={ContractMonthlyAllowance.toLowerCase()} uniswap={false} />
 
         <h3>Other Addresses</h3>
+        <AddressButton name="DPI" address={DPI.toLowerCase()} uniswap={false} />
         <AddressButton name="yUSD" address={yUsd.toLowerCase()} uniswap={false} />
 
         <h3>Obsolete Addresses</h3>
