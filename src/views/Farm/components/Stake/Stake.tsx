@@ -103,8 +103,8 @@ const Stake: React.FC = () => {
   }, [handleUnstakeClick, isApproving, onApprove, status]);
 
   const formattedStakedBalance = useCallback(async () => {
-    if (stakedBalanceYAMETH && bnToDec(stakedBalanceYAMETH) > 0) {
-      setStakeBalance(Number(getFullDisplayBalance(stakedBalanceYAMETH)));
+    if (stakedBalanceYAMETH && stakedBalanceYAMETH.toNumber() > 0) {
+      setStakeBalance(Number(getFullDisplayBalance(stakedBalanceYAMETH || new BigNumber(0))));
     } else {
       setStakeBalance(0);
     }
@@ -135,7 +135,7 @@ const Stake: React.FC = () => {
         <CardIcon>🌱</CardIcon>
         <CardContent>
           <Box alignItems="center" column>
-            <Value value={stakeBalance > 0 ? stakeBalance.toString() : "--"} />
+            <Value value={stakeBalance > 0 ? stakeBalance.toString() : "--"} decimals={7} />
             <Label text="Staked YAM/ETH LP Tokens" />
           </Box>
         </CardContent>
