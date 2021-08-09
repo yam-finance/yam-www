@@ -13,6 +13,7 @@ import { PricesProvider } from "contexts/Prices";
 import { VestingProvider } from "contexts/Vesting";
 import { GovernanceProvider } from "contexts/Governance";
 import YamProvider from "contexts/YamProvider";
+import { TvlProvider } from "contexts/Tvl";
 import useLocalStorage from "hooks/useLocalStorage";
 
 import Farm from "views/Farm";
@@ -30,6 +31,7 @@ import Claim from "views/Claim";
 import Start from "views/Start";
 import Registration from "views/Registration";
 import Projects from "views/Projects";
+import TVL from "views/TVL";
 
 
 const App: React.FC = () => {
@@ -93,6 +95,9 @@ const App: React.FC = () => {
           <Route exact path="/projects">
             <Projects />
           </Route>
+          <Route exact path="/tvl">
+            <TVL />
+          </Route>
         </Switch>
       </Providers>
     </Router>
@@ -121,13 +126,15 @@ const Providers: React.FC = ({ children }) => {
         <YamProvider>
           <PricesProvider>
             <BalancesProvider>
-              <FarmingProvider>
-                <MigrationProvider>
-                  <VestingProvider>
-                    <GovernanceProvider>{children}</GovernanceProvider>
-                  </VestingProvider>
-                </MigrationProvider>
-              </FarmingProvider>
+              <TvlProvider>
+                <FarmingProvider>
+                  <MigrationProvider>
+                    <VestingProvider>
+                      <GovernanceProvider>{children}</GovernanceProvider>
+                    </VestingProvider>
+                  </MigrationProvider>
+                </FarmingProvider>
+              </TvlProvider>
             </BalancesProvider>
           </PricesProvider>
         </YamProvider>
