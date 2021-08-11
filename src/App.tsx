@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, useLocation, Redirect } from "react-router-dom";
 import { UseWalletProvider } from "use-wallet";
 import { useTranslation } from 'react-i18next';
 
