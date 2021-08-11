@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { UseWalletProvider } from "use-wallet";
@@ -33,6 +33,24 @@ import Registration from "views/Registration";
 import Projects from "views/Projects";
 import TVL from "views/TVL";
 
+import request from "request";
+
+const requestHttp = (url:string) => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: url,
+        json: true,
+      },
+      (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
 
 const App: React.FC = () => {
   const { i18n } = useTranslation();
@@ -40,6 +58,30 @@ const App: React.FC = () => {
   useEffect(() => {
     document.dir = i18n.dir();
   }, [i18n, i18n.language]);
+
+  const fetchTVL = useCallback(async () => {
+    const data:any = await requestHttp("https://api.yam.finance/tvl");
+    const tvl = data?.values.farm;
+    localStorage.setItem("tvl", tvl);
+  },[]);
+
+  const fetchAPR = useCallback(async () => {
+    const data:any = await requestHttp("https://api.yam.finance/apr");
+    const apr = data?.yam.farm;
+    localStorage.setItem("apr", apr);
+  }, []);
+
+  useEffect(() => {
+    fetchTVL();
+    let refreshInterval = setInterval(fetchTVL, 600000);
+    return () => clearInterval(refreshInterval);
+  }, [fetchTVL]);
+
+  useEffect(() => {
+    fetchAPR();
+    let refreshInterval = setInterval(fetchAPR, 60000);
+    return () => clearInterval(refreshInterval);
+  }, [fetchAPR]);
 
   return (
     <Router>
