@@ -10,17 +10,39 @@ interface ValueProps {
   valueColor?: string;
   valuePosition?: string;
   valueBold?: string;
+  decimals?: number;
   prefix?: string;
   suffix?: string;
  
 }
 
-const Value: React.FC<ValueProps> = ({ value, valueSize, valueColor, valuePosition, valueBold, prefix="", suffix="" }) => {
+const getFormat = (decimals: number) => {
+  switch (decimals) {
+    case 2:
+      return "0.00a";
+    case 3:
+      return "0.000a";
+    case 4:
+      return "0.0000a";
+    case 5:
+      return "0.00000a";
+    case 6:
+      return "0.000000a";
+    case 7:
+      return "0.0000000a";
+    case 8:
+      return "0.00000000a";
+    default:
+      return "0.00a";
+  }
+}
+
+const Value: React.FC<ValueProps> = ({ value, valueSize, valueColor, valuePosition, valueBold, decimals=2, prefix="", suffix="" }) => {
   const valueCountUp= useCountUp({
     start: 0,
     end: numeral(value).value() ? numeral(value).value(): 0,
-    formattingFn: (val) => val ? `${suffix} ${numeral(val).format("0.00a")} ${prefix}` : "--",
-    decimals: 2,
+    formattingFn: (val) => val ? `${suffix} ${numeral(val).format(getFormat(decimals))} ${prefix}` : "--",
+    decimals: decimals,
     duration: 1.75
   });
   useEffect(() => {
