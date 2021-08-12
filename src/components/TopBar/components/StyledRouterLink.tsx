@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useRouteMatch } from "react-router-dom";
 
 interface StyleRouterLinkProps {
   target?: string;
@@ -15,6 +15,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
   const [isShow, setIsShow] = useState(false);
   const [isActive, setIsActive] = useState('inactive');
   const location = useLocation();
+  const match = useRouteMatch();
 
   useEffect(() => {
     if (children) {
@@ -55,7 +56,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
         style={mobileMenu ? {cursor: "pointer", width: "100%", textAlign: "left", display: "flex", flexDirection: "column"}
                           : {cursor: "pointer", width: "100%", textAlign: "left"}}
       >
-        <StyledLink subactive={isActive} exact activeClassName="active" style={style} to={target || ''}>
+        <StyledLink subactive={isActive} exact activeClassName="active" style={style} to={match.url + target || ''}>
           {label}
           { mobileMenu && (
             <StyledSpan>{isShow === true ? '➖' : '➕'}</StyledSpan>

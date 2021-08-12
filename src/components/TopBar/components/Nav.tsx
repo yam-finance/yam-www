@@ -15,19 +15,19 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
         <StyledBackdrop onClick={onDismiss} />
       )}
       <StyledNav>
-        <StyledRouterLink target="/dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-        <StyledRouterLink target="/projects" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
+        <StyledRouterLink target="dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="projects" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
           <StyledLink href="http://synths.yam.xyz" label="Yam Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-          <StyledRouterLink target="/umbrella" label="Yam Protection" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-          <StyledRouterLink target="/daohouse" label="Yam Treasuries" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledRouterLink target="umbrella" label="Yam Protection" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledRouterLink target="daohouse" label="Yam Treasuries" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledLink href="http://synths.yam.xyz" label="Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-        <StyledRouterLink target="/governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
-          <StyledRouterLink target="/register" label="Register" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-          <StyledRouterLink target="/delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
+          <StyledRouterLink target="register" label="Register" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledRouterLink target="delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
-        <StyledRouterLink target="/farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} >
-          <StyledRouterLink target="/claim" label="Claim" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledRouterLink target="farm" label="Farm" mobileMenu={mobileMenu} onDismiss={onDismiss} >
+          <StyledRouterLink target="claim" label="Claim" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledLink href="https://docs.yam.finance/" label="FAQ" mobileMenu={mobileMenu} onDismiss={onDismiss} />
       </StyledNav>
