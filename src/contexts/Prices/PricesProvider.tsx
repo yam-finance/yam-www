@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import useYam from "hooks/useYam";
-import { bnToDec } from "utils";
 import { getCurrentPrice } from "yam-sdk/utils";
 
 import PricesContext from "./PricesContext";
@@ -12,7 +11,7 @@ const PricesProvider: React.FC = ({ children }) => {
 
   const fetchCurrentPrice = useCallback(async () => {
     if (!yam) return;
-    const price = await getCurrentPrice(yam);
+    const price = await getCurrentPrice();
     setYamTwap(price);
   }, [setYamTwap, yam]);
 

@@ -14,7 +14,7 @@ const Stats: React.FC = () => {
   const yam = useYam();
   const fetchStats = useCallback(async () => {
     if (!yam) return;
-    const price = await getCurrentPrice(yam);
+    const price = await getCurrentPrice();
     const factor = await getScalingFactor(yam);
     setCurrentPrice(numeral(bnToDec(price)).format("0.00a"));
     setScalingFactor(numeral(bnToDec(factor)).format("0.00a"));

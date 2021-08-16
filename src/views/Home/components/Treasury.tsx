@@ -7,7 +7,7 @@ import FancyValue from "components/FancyValue";
 import Split from "components/Split";
 
 import useTreasury from "hooks/useTreasury";
-import { getDPIPrice, getWETHPrice, getYUSDPrice, getUMAPrice, getYamHousePrice } from "yam-sdk/utils";
+import { getYamHousePrice, getPriceByName } from "yam-sdk/utils";
 import { useWallet } from "use-wallet";
 
 const Treasury: React.FC = () => {
@@ -20,10 +20,10 @@ const Treasury: React.FC = () => {
   const { totalYUsdValue, totalDPIValue, totalWETHValue, totalIndexLPValue, totalIndexCoop, totalSushi, totalYamHouseValue, totalUMAValue, yamBalance, yUsdBalance } = useTreasury();
 
   const fetchOnce = useCallback(async () => {
-    const yusdPrice = await getYUSDPrice();
-    const dpiPrice = await getDPIPrice();
-    const wethPrice = await getWETHPrice();
-    const umaPrice = await getUMAPrice() || 0;
+    const yusdPrice = await getPriceByName('yvault-lp-ycurve');
+    const dpiPrice = await getPriceByName('defipulse-index');
+    const wethPrice = await getPriceByName('weth');
+    const umaPrice = await getPriceByName("uma") || 0;
     const yamHousePrice = await getYamHousePrice() || 0;
     setYUSDPrice(yusdPrice);
     setDPIPrice(dpiPrice);

@@ -5,23 +5,19 @@ import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, IN
 import usePrices from "hooks/usePrices";
 import useTokenBalance from "hooks/useTokenBalance";
 import { 
-  getDPIPrice,
-  getIndexCoopLP,
   getIndexCoopLPRewards,
-  getINDEXCOOPPrice,
-  getSUSHIPrice,
   getSushiRewards,
-  getWETHPrice,
-  getYUSDPrice,
-  getUMAPrice,
   getYamHousePrice,
-  getYam
+  getPriceByName,
+  getTreasuryAsset
 } from "yam-sdk/utils";
 import useYam from "./useYam";
 
 const treasuryAddress = "0x97990b693835da58a281636296d2bf02787dea17";
 
 const useTreasury = () => {
+ // const treasuryAsset = getTreasuryAsset();
+ // console.log("TreasuryAsset=",treasuryAsset);
   const { yamTwap } = usePrices();
   const yam = useYam();
   const yamBalance = useTokenBalance(treasuryAddress, yamV3Address);
@@ -46,10 +42,10 @@ const useTreasury = () => {
       return;
     }
 
-    const sushiPrice = await getSUSHIPrice() || 0;
-    const wethPrice = await getWETHPrice() || 0;
-    const dpiPrice = await getDPIPrice() || 0;
-    const indexCoopPrice = await getINDEXCOOPPrice() || 0;
+    const sushiPrice = await getPriceByName('sushi') || 0;
+    const wethPrice = await getPriceByName('weth') || 0;
+    const dpiPrice = await getPriceByName('defipulse-index') || 0;
+    const indexCoopPrice = await getPriceByName('index-cooperative') || 0;
     const rewardsIndexCoop = await getIndexCoopLPRewards(yam) || 0;
 
     const totalBalanceValueIndexCoop = totalBalanceIndexCoop * indexCoopPrice;
@@ -81,13 +77,13 @@ const useTreasury = () => {
   }, [yamBalance, yamTwap, yUsdBalance]);
 
   const getAssetsHistory = async () => {
-    const sushiPrice = await getSUSHIPrice() || 0;
-    const wethPrice = await getWETHPrice() || 0;
-    const dpiPrice = await getDPIPrice() || 0;
-    const indexCoopPrice = await getINDEXCOOPPrice() || 0;
+    const sushiPrice = await getPriceByName('sushi') || 0;
+    const wethPrice = await getPriceByName('weth') || 0;
+    const dpiPrice = await getPriceByName('defipulse-index') || 0;
+    const indexCoopPrice = await getPriceByName('index-cooperative') || 0;
     const rewardsIndexCoop = await getIndexCoopLPRewards(yam) || 0;
-    const yusdPrice = await getYUSDPrice() || 0;
-    const umaPrice = await getUMAPrice() || 0;
+    const yusdPrice = await getPriceByName('yvault-lp-ycurve') || 0;
+    const umaPrice = await getPriceByName("uma") || 0;
     const rewardsSushi = (await getSushiRewards(yam)) || 0;
     const yamHousePrice = await getYamHousePrice() || 0;
 
