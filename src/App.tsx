@@ -1,6 +1,6 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import { createTheme, ThemeProvider } from "react-neu";
-import { BrowserRouter as Router, Route, Switch, useLocation, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, useLocation, Redirect, HashRouter } from "react-router-dom";
 import { UseWalletProvider } from "use-wallet";
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,7 @@ import { PricesProvider } from "contexts/Prices";
 import { VestingProvider } from "contexts/Vesting";
 import { GovernanceProvider } from "contexts/Governance";
 import YamProvider from "contexts/YamProvider";
+import { TvlProvider } from "contexts/Tvl";
 import useLocalStorage from "hooks/useLocalStorage";
 
 import Farm from "views/Farm";
@@ -30,7 +31,26 @@ import Claim from "views/Claim";
 import Start from "views/Start";
 import Registration from "views/Registration";
 import Projects from "views/Projects";
+import TVL from "views/TVL";
 
+import request from "request";
+
+const requestHttp = (url:string) => {
+  return new Promise((resolve, reject) => {
+    request({
+        url: url,
+        json: true,
+      },
+      (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      }
+    );
+  });
+};
 
 const App: React.FC = () => {
   const { i18n } = useTranslation();
@@ -39,8 +59,10 @@ const App: React.FC = () => {
     document.dir = i18n.dir();
   }, [i18n, i18n.language]);
 
+
+
   return (
-    <Router>
+    <HashRouter>
       <Providers>
         <TopBar />
         <Switch>
@@ -93,9 +115,12 @@ const App: React.FC = () => {
           <Route exact path="/projects">
             <Projects />
           </Route>
+          <Route exact path="/tvl">
+            <TVL />
+          </Route>
         </Switch>
       </Providers>
-    </Router>
+    </HashRouter>
   );
 };
 
@@ -121,13 +146,15 @@ const Providers: React.FC = ({ children }) => {
         <YamProvider>
           <PricesProvider>
             <BalancesProvider>
-              <FarmingProvider>
-                <MigrationProvider>
-                  <VestingProvider>
-                    <GovernanceProvider>{children}</GovernanceProvider>
-                  </VestingProvider>
-                </MigrationProvider>
-              </FarmingProvider>
+              <TvlProvider>
+                <FarmingProvider>
+                  <MigrationProvider>
+                    <VestingProvider>
+                      <GovernanceProvider>{children}</GovernanceProvider>
+                    </VestingProvider>
+                  </MigrationProvider>
+                </FarmingProvider>
+              </TvlProvider>
             </BalancesProvider>
           </PricesProvider>
         </YamProvider>
