@@ -34,16 +34,11 @@ const Provider: React.FC = ({ children }) => {
   const fetchTVL = useCallback(async () => {
     if (!yam) return;
     const data:any = await requestHttp("https://api.yam.finance/tvl");
-    const tvl = data?.values?.farm;
+    const tvl = data?.total;
     setTVL(tvl);
   }, [setTVL, yam]);
 
-  const fetchAPR = useCallback(async () => {
-    if (!yam) return;
-    const data:any = await requestHttp("https://api.yam.finance/apr");
-    const apr = data?.yam.farm;
-    setAPR(apr);
-  }, [setAPR, yam]);
+  
 
   useEffect(() => {
     fetchTVL();
@@ -51,17 +46,12 @@ const Provider: React.FC = ({ children }) => {
     return () => clearInterval(refreshInterval);
   }, [fetchTVL]);
 
-  useEffect(() => {
-    fetchAPR();
-    let refreshInterval = setInterval(fetchAPR, 5000);
-    return () => clearInterval(refreshInterval);
-  }, [fetchAPR]);
 
   return (
     <Context.Provider
       value={{
         tvl,
-        apr,
+        
       }}
     >
       {children}

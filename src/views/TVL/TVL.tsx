@@ -14,7 +14,7 @@ import useTvl from "hooks/useTvl";
 
 const TVL: React.FC = () => {
   const { account } = useWallet();
-  const {tvl, apr} = useTvl();
+  const {tvl} = useTvl();
  
   const { countUp , start, update } = useCountUp({
     start: 0,
@@ -23,19 +23,10 @@ const TVL: React.FC = () => {
     decimals: 0,
     duration: 1.75
   });
-  const aprCountUp= useCountUp({
-    start: 0,
-    end: apr ? apr: 0,
-    formattingFn: (val) => val ? `APR ${numeral(val).format("0.00a")}%` : "Loading APR...",
-    decimals: 2,
-    duration: 1.75
-  });
   useEffect(() => {
     update(tvl);
   }, [tvl]);
-  useEffect(() => {
-    aprCountUp.update(apr);
-  }, [apr]);
+ 
 
 
 
@@ -48,7 +39,6 @@ const TVL: React.FC = () => {
         <Card>
           <CardContent>
             <div className="farm-tvl">{countUp}</div>
-            <div className = "farm-apr">{aprCountUp.countUp}</div>
           </CardContent>
         </Card>
         <Spacer size="sm" />
