@@ -34,7 +34,7 @@ const Provider: React.FC = ({ children }) => {
   const fetchTVL = useCallback(async () => {
     if (!yam) return;
     const data:any = await requestHttp("https://api.yam.finance/tvl");
-    const tvl = data?.values.farm;
+    const tvl = data?.values?.farm;
     setTVL(tvl);
   }, [setTVL, yam]);
 

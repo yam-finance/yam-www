@@ -10,11 +10,12 @@ import PageHeader from "components/PageHeader";
 import styled from "styled-components";
 import { useWallet } from "use-wallet";
 
+import useTvl from "hooks/useTvl";
+
 const TVL: React.FC = () => {
   const { account } = useWallet();
-
-  const [tvl, setTvl] = useState(0);
-  const [apr, setApr] = useState(0)
+  const {tvl, apr} = useTvl();
+ 
   const { countUp , start, update } = useCountUp({
     start: 0,
     end: tvl ? tvl: 0,
@@ -36,16 +37,7 @@ const TVL: React.FC = () => {
     aprCountUp.update(apr);
   }, [apr]);
 
-  const fetchValue = useCallback(async () => {
-    setTvl(parseInt(localStorage.getItem("tvl") || "0"));
-    setApr(parseInt(localStorage.getItem("apr") || "0"));
-  }, []);
 
-  useEffect(() => {
-    fetchValue();
-    let refreshInterval = setInterval(fetchValue, 5000);
-    return () => clearInterval(refreshInterval);
-  }, [fetchValue]);
 
   return (
     <Page>
