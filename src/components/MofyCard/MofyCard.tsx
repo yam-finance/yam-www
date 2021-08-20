@@ -11,8 +11,10 @@ const MofyCard: React.FC = () => {
 
   return (
     <Card>
+      <StyledCard>
       <Spacer />
-      <StyledDiv><StyledImg src = {MofyIcon}></StyledImg></StyledDiv>
+      {/*<StyledDiv><StyledImg src = {MofyIcon}></StyledImg></StyledDiv>*/}
+      <CardIcon>🖼</CardIcon>
       <CardContent>
         <Box alignItems="center" column>
           <ValueText value="Mofy" />
@@ -22,6 +24,7 @@ const MofyCard: React.FC = () => {
       <CardActions>
       <Button full href="https://nft.yam.xyz/" text="View" variant="secondary" />
       </CardActions>
+      </StyledCard>
     </Card>
   );
 };
@@ -30,5 +33,8 @@ const StyledDiv = styled.div`
 `;
 const StyledImg = styled.img`
  width:60px;
+`;
+const StyledCard = styled.div`
+ height:320px;
 `;
 export default MofyCard;
