@@ -20,6 +20,7 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           <StyledLink href="http://synths.yam.xyz" label="Yam Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="umbrella" label="Yam Protection" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="daohouse" label="Yam Treasuries" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledLink href="https://nft.yam.xyz/" label="MOFY" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
         <StyledLink href="http://synths.yam.xyz" label="Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         <StyledRouterLink target="governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >

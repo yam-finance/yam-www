@@ -7,6 +7,7 @@ import Split from "components/Split";
 import UmbrellaCard from "components/UmbrellaCard";
 import DegenerativeCard from "components/DegenerativeCard"
 import YamDaoCard from "components/YamDaoCard"
+import MofyCard from "components/MofyCard"
 
 const Projects: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const Projects: React.FC = () => {
           <DegenerativeCard />
           <UmbrellaCard />
           <YamDaoCard />
+          <MofyCard />
         </Split>
       </Container>
     </Page>
