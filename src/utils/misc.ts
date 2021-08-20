@@ -17,5 +17,5 @@ export const contributors: any = {
   "0x392027fDc620d397cA27F0c1C3dCB592F27A4dc3": { id: 61, amount: (6378 * 3) },
   "0x386568164bdC5B105a66D8Ae83785D4758939eE6": { id: 62, amount: (2551 * 3) },
   "0x1b5C706296888a9C52f0c6dcF0579b638bA7EF2a": { id: 63, amount: (5102 * 3) },
-  "0x9098eab0a361d29ea5c4b5d9d1f50694ac0e9e78": { id: 44, amount: 4782 },
+  "0x9098eab0a361d29ea5c4b5d9d1f50694ac0e9e78": { id: 65, amount: 4782 },
 };
