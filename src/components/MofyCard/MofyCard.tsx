@@ -16,7 +16,7 @@ const MofyCard: React.FC = () => {
       {/*<StyledDiv><StyledImg src = {MofyIcon}></StyledImg></StyledDiv>*/}
       <CardIcon>🖼</CardIcon>
       <CardContent>
-        <Box alignItems="center" column>
+        <Box alignItems="center" column minHeight={120}>
           <ValueText value="Mofy" />
           <Label text="The Museum of Fine Yams is the premier destination for digital art and innovative ideas." labelPosition="center"/>
         </Box>
