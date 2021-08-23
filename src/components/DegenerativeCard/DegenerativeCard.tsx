@@ -12,8 +12,8 @@ const DegenerativeCard: React.FC = () => {
       <StyledCard>
         <Spacer />
         <CardIcon>🧟</CardIcon>
-        <CardContent>
-          <Box alignItems="center" column>
+        <CardContent >
+          <Box alignItems="center" column minHeight={120} >
             <ValueText value="Yam Synths" />
             <Label text="Yam Synths is your portal to the powerful world of synthetic derivatives" labelPosition="center" />
           </Box>

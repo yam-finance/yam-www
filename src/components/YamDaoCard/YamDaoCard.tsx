@@ -13,7 +13,7 @@ const YamDaoCard: React.FC = () => {
         <Spacer />
         <CardIcon>🏡</CardIcon>
         <CardContent>
-          <Box alignItems="center" column>
+          <Box alignItems="center" column minHeight={120}>
             <ValueText value="Yam Treasuries" />
             <Label text="Yam Treasuries is an actively managed portfolio that is governed by the Yam DAO" labelPosition="center"/>
           </Box>
