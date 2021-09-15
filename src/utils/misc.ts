@@ -8,7 +8,7 @@ export const contributors: any = {
   "0x01e0c7b70e0e05a06c7cc8deeb97fa03d6a77c9c": { id: 17, amount: 25000 },
   "0xdadc6f71986643d9e9cb368f08eb6f1333f6d8f9": { id: 23, amount: 10000 },
   "0xcc506b3c2967022094c3b00276617883167bf32b": { id: 18, amount: 5000 },
-  "0x3fdced6b5c1f176b543e5e0b841cb7224596c33c": { id: 37, amount: 4500 },
+  "0x3fdced6b5c1f176b543e5e0b841cb7224596c33c": { id: 67, amount: 1500 * 3) },
   "0xFcB4f3a1710FefA583e7b003F3165f2E142bC725": { id: 56, amount: ((5102/2.5) * 3) },
   "0x31920DF2b31B5f7ecf65BDb2c497DE31d299d472": { id: 57, amount: ((5102/2.5) * 3) },
   "0x43fD74401B4BF04095590a5308B6A5e3Db44b9e3": { id: 58, amount: ((4082/2.5) * 3) },
