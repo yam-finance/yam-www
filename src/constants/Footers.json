@@ -6,7 +6,7 @@
     "homeDisplay": false
   },
   {
-    "name": "Github",
+    "name": "GitHub",
     "url": "https://github.com/yam-finance/yam-www",
     "router": false,
     "homeDisplay": true

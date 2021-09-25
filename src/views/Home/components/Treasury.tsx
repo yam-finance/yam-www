@@ -65,7 +65,7 @@ const Treasury: React.FC = () => {
       <CardActions>
         <Box row justifyContent="center">
           <Button
-            href="https://exchange.sushiswapclassic.org/#/?inputCurrency=0x0aacfbec6a24756c20d41914f2caba817c0d8521"
+            href="https://app.sushi.com/swap?outputCurrency=0x0AaCfbeC6a24756c20D41914F2caba817C0d8521"
             text="Buy Yam"
             variant="secondary"
           />

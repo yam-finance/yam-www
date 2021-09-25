@@ -34,7 +34,7 @@ const Addresses: React.FC = () => {
           address={yamv3.toLowerCase()}
           uniswap={true}
           unitext="Buy at Sushiswap"
-          unilink="https://exchange.sushiswapclassic.org/#/?inputCurrency="
+          unilink="https://app.sushi.com/swap?outputCurrency="
         />
 
         <h3>Yam Contracts Addresses</h3>
