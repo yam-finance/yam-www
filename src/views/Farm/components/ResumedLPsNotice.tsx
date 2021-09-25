@@ -15,7 +15,7 @@ const ResumedLPsNotice: React.FC = () => (
           <Button
             size="sm"
             text="Add Liquidity"
-            href="https://exchange.sushiswapclassic.org/#/add/0x0aacfbec6a24756c20d41914f2caba817c0d8521/ETH"
+            href="https://app.sushi.com/add/ETH/0x0AaCfbeC6a24756c20D41914F2caba817C0d8521"
             variant="secondary"
           />
         </StyledNoticeContentInner>
