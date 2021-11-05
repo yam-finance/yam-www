@@ -18,6 +18,6 @@ export const contributors: any = {
   "0x386568164bdC5B105a66D8Ae83785D4758939eE6": { id: 71, amount: ((1667/2.5) * 6) },
   "0x1b5C706296888a9C52f0c6dcF0579b638bA7EF2a": { id: 63, amount: ((5102/2.5) * 3) },
   "0x88c868B1024ECAefDc648eb152e91C57DeA984d0": { id: 69, amount: ((3125/2.5) * 6) },
-  "0xce1559448e21981911fAC70D4eC0C02cA1EFF39C": { id: 69, amount: ((12800/2.5) * 6) },
-  "0x1Ba2A537A771AA4EaC2f18427716557e4E744864": { id: 69, amount: ((2133/2.5) * 6) },
+  "0xce1559448e21981911fAC70D4eC0C02cA1EFF39C": { id: 74, amount: ((12800/2.5) * 6) },
+  "0x1Ba2A537A771AA4EaC2f18427716557e4E744864": { id: 75, amount: ((2133/2.5) * 6) },
 };
