@@ -107,6 +107,7 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
               address={userAccount}
               size={20}
               style={{ marginRight: 8 }}
+              generatedAvatarType="jazzicon"
             />
             <div>{ensName || shorten(userAccount)}</div>
           </Button>
