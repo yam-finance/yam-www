@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { Button } from "react-neu";
+import { Button, Spacer } from "react-neu";
 import { useWallet } from "use-wallet";
 
 import UnlockWalletModal from "components/UnlockWalletModal";
@@ -106,9 +106,9 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
             <Davatar
               address={userAccount}
               size={20}
-              style={{ marginRight: 8 }}
               generatedAvatarType="jazzicon"
             />
+            <Spacer size="sm" />
             <div>{ensName || shorten(userAccount)}</div>
           </Button>
         )}
