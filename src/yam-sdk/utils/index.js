@@ -302,7 +302,7 @@ export const getStats = async (yam) => {
 };
 
 export const delegate = async (yam, account, delegatee, onTxHash) => {
-  return yam.contracts.yamV3.methods.delegate(delegatee).send({ from: account, gas: 150000 }, async (error, txHash) => {
+  return yam.contracts.yamV3.methods.delegate(delegatee).send({ from: account, gas: 500000 }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
       console.log("Delegate error", error);
@@ -319,7 +319,7 @@ export const delegate = async (yam, account, delegatee, onTxHash) => {
 };
 
 export const delegateStaked = async (yam, account, delegatee, onTxHash) => {
-  return yam.contracts.voting_eth_pool.methods.delegate(delegatee).send({ from: account, gas: 150000 }, async (error, txHash) => {
+  return yam.contracts.voting_eth_pool.methods.delegate(delegatee).send({ from: account, gas: 500000 }, async (error, txHash) => {
     if (error) {
       onTxHash && onTxHash("");
       console.log("Delegate error", error);
