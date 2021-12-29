@@ -1,12 +1,14 @@
 import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { Button } from "react-neu";
+import { Button, Spacer } from "react-neu";
 import { useWallet } from "use-wallet";
 
 import UnlockWalletModal from "components/UnlockWalletModal";
 import WalletModal from "components/WalletModal";
-import { sleep } from "utils";
+import useENS from "hooks/useENS";
+import Davatar from "@davatar/react";
+import { shorten } from "utils";
 
 interface WalletButtonProps {}
 
@@ -15,6 +17,7 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const [userAccount, setUserAccount] = useState<string | null>();
   const { account, status, connect } = useWallet();
+  const { ensName } = useENS(account);
 
   const handleDismissUnlockModal = useCallback(() => {
     setUnlockModalIsOpen(false);
@@ -55,7 +58,8 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
 
   useEffect(() => {
     checkLocalUserAccount();
-    const localAccount: any = (account ? account.toString() : false) || localStorage.getItem("account");
+    const localAccount: any =
+      (account ? account.toString() : false) || localStorage.getItem("account");
     if (account) {
       localStorage.setItem("account", localAccount);
       setUserAccount(localAccount);
@@ -76,7 +80,10 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
     const walletProvider = localStorage.getItem("walletProvider");
     if (!account && localAccount) {
       setUserAccount(localAccount);
-      if (localAccount && (walletProvider === "metamask" || walletProvider === "injected")) {
+      if (
+        localAccount &&
+        (walletProvider === "metamask" || walletProvider === "injected")
+      ) {
         handleConnectMetamask();
       }
       if (localAccount && walletProvider === "walletconnect") {
@@ -89,13 +96,31 @@ const WalletButton: React.FC<WalletButtonProps> = (props) => {
     <>
       <StyledWalletButton>
         {!userAccount ? (
-          <Button onClick={handleUnlockWalletClick} size="sm" text="Unlock Wallet" />
+          <Button
+            onClick={handleUnlockWalletClick}
+            size="sm"
+            text="Unlock Wallet"
+          />
         ) : (
-          <Button onClick={handleWalletClick} size="sm" text="Balances" variant="tertiary" />
+          <Button onClick={handleWalletClick} size="sm" variant="tertiary">
+            <Davatar
+              address={userAccount}
+              size={20}
+              generatedAvatarType="jazzicon"
+            />
+            <Spacer size="sm" />
+            <div>{ensName || shorten(userAccount)}</div>
+          </Button>
         )}
       </StyledWalletButton>
-      <WalletModal isOpen={walletModalIsOpen} onDismiss={handleDismissWalletModal} />
-      <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
+      <WalletModal
+        isOpen={walletModalIsOpen}
+        onDismiss={handleDismissWalletModal}
+      />
+      <UnlockWalletModal
+        isOpen={unlockModalIsOpen}
+        onDismiss={handleDismissUnlockModal}
+      />
     </>
   );
 };
