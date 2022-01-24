@@ -1,0 +1,54 @@
+name: Bug Report
+description: Create a bug report to help us improve
+title: "Bug "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: bug-info
+    attributes:
+      label: What is the bug?
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what you saw!
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+  - type: textarea
+    id: logs-output
+    attributes:
+      label: Logs Output
+      description: Please paste any relevant logs output.
+      render: shell
+  - type: dropdown
+    id: desktop-mobile
+    attributes:
+      label: Are you on desktop or mobile?
+      options:
+        - Desktop
+        - Mobile
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you using?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this bug report issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
