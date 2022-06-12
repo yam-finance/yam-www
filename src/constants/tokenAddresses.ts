@@ -19,7 +19,6 @@ export const ContractTimelock = "0x8b4f1616751117C38a0f84F9A146cca191ea3EC5";
 export const ContractIncentivizer = "0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0";
 export const ContractReserves = "0x97990b693835da58a281636296d2bf02787dea17";
 export const ContractMigrator = "0x72CFEd9293cbFB2bfC7515c413048c697C6c811C";
-export const migrator = "0x72cfed9293cbfb2bfc7515c413048c697c6c811c"; //duplicate
 export const ContractMonthlyAllowance = "0x03A882495Bc616D3a1508211312765904Fb062d1";
 export const ContractIndexStaking = "0x205Cc7463267861002b27021C7108Bc230603d0F";
 
