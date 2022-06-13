@@ -57,7 +57,7 @@ const Start: React.FC = () => {
         <StartPageHeader
           icon={`${astronaut}❤️🍠`}
           subtitle="Fair launch, open participation, and inclusive community."
-          title="Fair finance, by the people, for the people."
+          title="Fair funding, by the people, for the people."
         />
         <Container size="lg">
           <Box row justifyContent="center">
