@@ -30,7 +30,7 @@ const Addresses: React.FC = () => {
       <Container size="md">
         <h2>Yam Token Address</h2>
         <AddressButton
-          name="YAM (v3)"
+          name="YAM"
           address={yamv3.toLowerCase()}
           uniswap={true}
           unitext="Buy at Sushiswap"
