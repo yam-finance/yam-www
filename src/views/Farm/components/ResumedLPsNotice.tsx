@@ -9,7 +9,7 @@ const ResumedLPsNotice: React.FC = () => (
       <StyledNoticeIcon role="img">💧</StyledNoticeIcon>
       <NoticeContent>
         <StyledNoticeContentInner>
-          <span>Deposit YAM and ETH in the Sushiswap LP pool and then return here to stake!</span>
+          <span>Deposit YAM-ETH in Sushiswap LP and come back here to stake!</span>
           <Box flex={1} />
           <Spacer size="sm" />
           <Button
