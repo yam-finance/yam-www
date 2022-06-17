@@ -27,7 +27,7 @@ const Addresses: React.FC = () => {
   return (
     <Page>
       <PageHeader icon={"🎖️"} title={"Addresses"} subtitle={"Official Addresses"} />
-      <Container size="md">
+      <Container size="sm">
         <h2>Yam Token Address</h2>
         <AddressButton
           name="YAM"
