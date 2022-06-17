@@ -40,11 +40,22 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
   }, [darkMode, uniswap]);
 
   const DisplayAddress = useMemo(() => {
+    if (uniswap) {
+      return (
+        <>
+          <span className="address combine">
+            <AddressStart>{address}</AddressStart>
+            <AddressEnd>{address}</AddressEnd>
+          </span>
+        </>
+      );
+    } else {
       return (
         <>
           <span className="address">{address}</span>
         </>
       );
+    }
   }, [darkMode, uniswap]);
 
   return (
@@ -131,7 +142,7 @@ const StyledButton = styled.div<StyledButtonProps>`
   white-space: nowrap;
   line-height: 50px;
   min-width: 48px;
-  width: fill-available;
+  width: ${(props) => (!props.uniswap ? "-webkit-fill-available" : null)};
 `;
 
 const StyledUniswapButton = styled(StyledButton)`
