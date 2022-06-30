@@ -17,12 +17,12 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
       <StyledNav>
         <StyledRouterLink target="dashboard" label="Dashboard" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         <StyledRouterLink target="projects" label="Projects" mobileMenu={mobileMenu} onDismiss={onDismiss}>
-          <StyledLink href="http://synths.yam.xyz" label="Yam Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledLink href="http://synths.yam.finance" label="Yam Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="umbrella" label="Yam Protection" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="daohouse" label="Yam Treasuries" mobileMenu={mobileMenu} onDismiss={onDismiss} />
-          <StyledLink href="https://nft.yam.xyz/" label="MOFY" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+          <StyledLink href="https://cryptovoxels.com/play?coords=S@678W,600S" label="MOFY" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         </StyledRouterLink>
-        <StyledLink href="http://synths.yam.xyz" label="Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
+        <StyledLink href="http://synths.yam.finance" label="Synths" mobileMenu={mobileMenu} onDismiss={onDismiss} />
         <StyledRouterLink target="governance" label="Govern" mobileMenu={mobileMenu} onDismiss={onDismiss} >
           <StyledRouterLink target="register" label="Register" mobileMenu={mobileMenu} onDismiss={onDismiss} />
           <StyledRouterLink target="delegate" label="Delegate" mobileMenu={mobileMenu} onDismiss={onDismiss} />
