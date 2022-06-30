@@ -3,7 +3,7 @@ import styled from "styled-components";
 import copy from "assets/copy.svg";
 import confirm from "assets/copy_confirm.svg";
 import { Box, Container, Spacer, useTheme } from "react-neu";
-import ReactTooltip from "react-tooltip"
+import ReactTooltip from "react-tooltip";
 
 interface AddressButtonProps {
   name?: string;
@@ -93,10 +93,12 @@ const AddressButton: React.FC<AddressButtonProps> = ({
         <ReactTooltip
           id="copyTip"
           type="dark"
+          className="tooltip"
+          textColor={darkMode ? "#d1004d" : "#d1004d"}
+          backgroundColor={darkMode ? "##403232" : "#f3edef"}
           arrowColor="transparent"
           place="top"
           effect="solid"
-          backgroundColor="grey"
         >
           Copy Address
         </ReactTooltip>
@@ -146,7 +148,7 @@ const StyledButton = styled.a<StyledButtonProps>`
       ? "-1px 1px 1px 1px hsl(339deg 20% 5% / 100%), 1px -1px 1px 1px hsl(339deg 20% 5% / 7.5%)"
       : "-1px 1px 1px 1px hsl(339deg 20% 5% / 25%), 1px -1px 1px 1px hsl(339deg 20% 5% / 7.5%);"};
   align-items: center;
-  border: 3;
+  border: 0;
   border-radius: 28px;
   box-sizing: border-box;
   color: hsl(339deg 89% 49% / 100%);
@@ -168,13 +170,7 @@ const StyledButton = styled.a<StyledButtonProps>`
   white-space: nowrap;
   line-height: 50px;
   min-width: 48px;
-  width: fill-available;
-  &:hover {
-    background: ${(props) =>
-      props.darkMode
-        ? "radial-gradient(circle at top,hsl(339deg 17% 5% / 20%),hsl(339deg 20% 2% / 20%))"
-        : "radial-gradient(circle at top,hsl(360deg 0% 85% / 100%),hsl(360deg 0% 80% / 100%))"};
-  }
+width: ${(props) => (!props.uniswap ? "fill-available" : null)};
 `;
 
 const StyledUniswapButton = styled(StyledButton)`
@@ -189,6 +185,8 @@ const StyledUniswapButton = styled(StyledButton)`
   padding-left: 10px;
   padding-right: 10px;
   justify-content: center;
+  &:hover {
+    color: #ffffff;
 `;
 
 const StyledName = styled.span<StyledSpanProps>`
