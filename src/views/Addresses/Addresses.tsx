@@ -98,8 +98,12 @@ const Addresses: React.FC = () => {
           uniswap={false}
         />
 
-        <h3>Other Addresses</h3>
-        <AddressButton name="DPI" address={DPI.toLowerCase()} uniswap={false} />
+        <h3>Other Token Addresses</h3>
+        <AddressButton 
+          name="DPI" 
+          address={DPI.toLowerCase()} 
+          uniswap={false} 
+        />
         <AddressButton
           name="yUSD"
           address={yUsd.toLowerCase()}
