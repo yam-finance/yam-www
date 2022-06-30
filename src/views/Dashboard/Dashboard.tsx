@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader icon="📊" subtitle="Overview of the YAM ecosystem" title="YAM Dashboard" />
+      <PageHeader icon="📈" subtitle="Overview of the YAM ecosystem" title="YAM Dashboard" />
       {/* <p>{t("hello")}</p> */}
       <Container size="lg">
         <TopCards yamObject={yamObject} />
