@@ -18,7 +18,7 @@
     "homeDisplay": true
   },
   {
-    "name": "Proposals",
+    "name": "Snapshot",
     "url": "https://snapshot.page/#/yam",
     "router": false,
     "homeDisplay": true
