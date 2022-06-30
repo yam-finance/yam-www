@@ -56,7 +56,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
         style={mobileMenu ? {cursor: "pointer", width: "100%", textAlign: "left", display: "flex", flexDirection: "column"}
                           : {cursor: "pointer", width: "100%", textAlign: "left"}}
       >
-        <StyledLink subactive={isActive} exact activeClassName="active" style={style} to={location}>
+        <StyledLink subactive={isActive} exact activeClassName="inactive" style={style} to={location}>
           {label}
           { mobileMenu && (
             <StyledSpan>{isShow === true ? '➖' : '➕'}</StyledSpan>
@@ -71,7 +71,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
     )
   } else {
     return (
-      <StyledLink exact activeClassName="inactive" to={target || ''} style={style} onClick={onDismiss}>{label}</StyledLink>
+      <StyledLink exact activeClassName="active" to={target || ''} style={style} onClick={onDismiss}>{label}</StyledLink>
     ) 
   }
 }
@@ -88,7 +88,7 @@ const StyledLink = styled(NavLink)<StyledLinkProps>`
   &:hover {
     color: ${(props) => (props.subactive === 'active' ? props.theme.colors.primary.main : props.theme.colors.grey[600])};
   }
-  &.inactive {
+  &.active {
     color: ${(props) => props.theme.colors.primary.main};
   }
   @media (max-width: 770px) {
