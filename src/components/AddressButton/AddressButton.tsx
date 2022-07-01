@@ -95,7 +95,7 @@ const AddressButton: React.FC<AddressButtonProps> = ({
           type="dark"
           className="tooltip"
           textColor={darkMode ? "#d1004d" : "#d1004d"}
-          backgroundColor={darkMode ? "##403232" : "#f3edef"}
+          backgroundColor={darkMode ? "#24181c" : "#f3edef"}
           arrowColor="transparent"
           place="top"
           effect="solid"
@@ -142,8 +142,8 @@ const StyledButton = styled.a<StyledButtonProps>`
   background: transparent;
   box-shadow: ${(props) =>
     props.darkMode
-    ? "rgb(15 10 12) 0px 0px 1px 1px, rgb(255 255 255 / 8%) -1px 1px 0px inset"
-    : "rgb(20 1 8 / 15%) 0px 0px 1px 1px, rgb(255 255 255) -1px 1px 0px inset"};
+      ? "rgb(15 10 12) 0px 0px 1px 1px, rgb(255 255 255 / 8%) -1px 1px 0px inset"
+      : "rgb(20 1 8 / 15%) 0px 0px 1px 1px, rgb(255 255 255) -1px 1px 0px inset"};
   align-items: center;
   border: 0;
   border-radius: 28px;
@@ -168,6 +168,9 @@ const StyledButton = styled.a<StyledButtonProps>`
   line-height: 50px;
   min-width: 48px;
   width: ${(props) => (!props.uniswap ? "fill-available" : null)};
+  &:hover {
+    color: #d1004d;
+  }
 `;
 
 const StyledUniswapButton = styled(StyledButton)`
@@ -184,6 +187,7 @@ const StyledUniswapButton = styled(StyledButton)`
   justify-content: center;
   &:hover {
     color: #ffffff;
+  }
 `;
 
 const StyledName = styled.span<StyledSpanProps>`
@@ -221,7 +225,9 @@ const StyledAddress = styled.div<StyledAddressProps>`
   cursor: pointer;
   font-weight: 300;
   color: ${(props) =>
-    (props.color ? props.color : "white")};
+    props.darkMode
+      ? props.theme.colors.primary
+      : props.theme.colors.primary};
   overflow: ${(props) => (props.overflow === "true" ? "initial" : "hidden")};
   text-decoration: none;
   text-overflow: ellipsis;
@@ -245,7 +251,7 @@ const StyledCopy = styled.span<StyledCopyProps>`
   -webkit-mask-size: 12px;
   background-color: ${(props) =>
     props.darkMode
-      ? props.theme.colors.primary.main
+      ? props.theme.colors.grey[500]
       : props.theme.colors.grey[500]};
   width: ${(props) => (!props.uniswap ? "32" : "50")}px;
   margin: 20px 0px 16px 20px;
