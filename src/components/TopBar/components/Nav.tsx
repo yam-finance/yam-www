@@ -44,7 +44,7 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
         >
           <StyledRouterLink
             target="Addresses"
-            label="Contract Addresses"
+            label="Addresses"
             mobileMenu={mobileMenu}
             onDismiss={onDismiss}
           />
