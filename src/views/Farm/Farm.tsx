@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
 
 import { Box, Button, Card, CardContent, Container, Separator, Spacer, useTheme } from "react-neu";
 
 import CountUp, { useCountUp } from 'react-countup';
-
+import { Icon, Pagination } from 'semantic-ui-react';
 import numeral from "numeral";
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
@@ -17,7 +17,34 @@ import HarvestLPsNoticeYAMYUSD from "./components/HarvestLPsNoticeYAMYUSD";
 import { useWallet } from "use-wallet";
 import FancyValue from "components/FancyValue";
 
+const FARMERS = [
+  '👨‍🌾',
+  '👨🏼‍🌾',
+  '🧑🏽‍🌾',
+  '👨🏻‍🌾',
+  '👨🏿‍🌾',
+  '👩‍🌾',
+  '🧑‍🌾',
+  '👩🏽‍🌾',
+  '👩🏻‍🌾',
+  '🧑🏾‍🌾‍',
+  '👩🏿‍🌾'
+]
+
 const Farm: React.FC = () => {
+
+  const [farmer, setFarmer] = useState('👨‍🌾')
+
+  const updateFarmer = useCallback(() => {
+    const newFarmer = FARMERS[Math.floor(Math.random()*FARMERS.length)]
+    setFarmer(newFarmer)
+  }, [setFarmer])
+
+  useEffect(() => {
+    const refresh = setInterval(updateFarmer, 1000)
+    return () => clearInterval(refresh)
+  }, [updateFarmer])
+
   const { colors } = useTheme();
   const { status } = useWallet();
 
@@ -53,12 +80,13 @@ const Farm: React.FC = () => {
     if (!isRedeeming) {
       return <Button onClick={onRedeemYAMETH} text="Harvest &amp; Unstake YAM/ETH" variant="secondary" />;
     }
+    {/* This code needs to be updated to revert to original state if the transaction is cancelled in metamask */}
     return <Button disabled text="Redeeming..." variant="secondary" />;
   }, [isRedeeming, onRedeemYAMETH]);
 
   return (
     <Page>
-      <PageHeader icon="🌾🍠" subtitle="Stake YAM/ETH Sushiswap LP tokens and grow YAMs" title="Farm" />
+      <PageHeader icon={`${farmer}`} subtitle="Stake YAM/ETH Sushiswap LP tokens and grow YAMs" title="Farm" />
       <Container>
         <HarvestLPsNoticeYAMYUSD />
         <ResumedLPsNotice />

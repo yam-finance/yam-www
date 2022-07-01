@@ -19,7 +19,7 @@ const DegenerativeCard: React.FC = () => {
           </Box>
         </CardContent>
         <CardActions>
-          <Button full href="http://synths.yam.xyz" text="View" variant="secondary" />
+          <Button full href="https://synths.yam.finance/" text="Visit" variant="secondary" />
         </CardActions>
         </StyledCard>
     </Card>

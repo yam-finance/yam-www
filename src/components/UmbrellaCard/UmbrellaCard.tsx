@@ -19,7 +19,7 @@ const UmbrellaCard: React.FC = () => {
           </Box>
         </CardContent>
         <CardActions>
-          <Button full to="/umbrella" text="View" variant="secondary" />
+          <Button full to="/umbrella" text="Info" variant="secondary" />
         </CardActions>
       </StyledCard>
     </Card>

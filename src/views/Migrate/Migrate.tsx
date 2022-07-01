@@ -15,8 +15,10 @@ const Migrate: React.FC = () => {
     <Page>
       <PageHeader icon="🦋" subtitle="Everything you need to migrate V2 tokens to V3" title="Migrate to V3" />
       <Container>
-        <EndingMigrationNotice />
+        {/** 
+        * <EndingMigrationNotice/> 
         <Spacer />
+        */}
         <VestingNotice />
         <Spacer />
         <Split>
