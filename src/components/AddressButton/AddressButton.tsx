@@ -139,14 +139,11 @@ interface StyledCopyProps {
 }
 
 const StyledButton = styled.a<StyledButtonProps>`
-  background: ${(props) =>
-    props.darkMode
-      ? "radial-gradient(circle at top,hsl(339deg 17% 15% / 20%),hsl(339deg 20% 10% / 20%))"
-      : "radial-gradient(circle at top,hsl(360deg 0% 100% / 100%),hsl(360deg 0% 95% / 100%))"};
+  background: transparent;
   box-shadow: ${(props) =>
     props.darkMode
-      ? "-1px 1px 1px 1px hsl(339deg 20% 5% / 100%), 1px -1px 1px 1px hsl(339deg 20% 5% / 7.5%)"
-      : "-1px 1px 1px 1px hsl(339deg 20% 5% / 25%), 1px -1px 1px 1px hsl(339deg 20% 5% / 7.5%);"};
+    ? "rgb(15 10 12) 0px 0px 1px 1px, rgb(255 255 255 / 8%) -1px 1px 0px inset"
+    : "rgb(20 1 8 / 15%) 0px 0px 1px 1px, rgb(255 255 255) -1px 1px 0px inset"};
   align-items: center;
   border: 0;
   border-radius: 28px;
@@ -170,7 +167,7 @@ const StyledButton = styled.a<StyledButtonProps>`
   white-space: nowrap;
   line-height: 50px;
   min-width: 48px;
-width: ${(props) => (!props.uniswap ? "fill-available" : null)};
+  width: ${(props) => (!props.uniswap ? "fill-available" : null)};
 `;
 
 const StyledUniswapButton = styled(StyledButton)`
@@ -222,8 +219,9 @@ const StyledLink = styled.a<StyledLinkProps>`
 
 const StyledAddress = styled.div<StyledAddressProps>`
   cursor: pointer;
-  font-weight: 700;
-  color: ${(props) => (props.color ? props.color : "white")};
+  font-weight: 300;
+  color: ${(props) =>
+    (props.color ? props.color : "white")};
   overflow: ${(props) => (props.overflow === "true" ? "initial" : "hidden")};
   text-decoration: none;
   text-overflow: ellipsis;
