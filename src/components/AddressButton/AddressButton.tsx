@@ -175,12 +175,15 @@ const StyledButton = styled.a<StyledButtonProps>`
 
 const StyledUniswapButton = styled(StyledButton)`
   color: #ffffff;
+  box-shadow: ${(props) =>
+    props.darkMode
+      ? "rgb(15 10 12) 0px 0px 1px 1px"
+      : "rgb(20 1 8 / 15%) 0px 0px 1px 1px"};
   background: radial-gradient(
-      174.47% 188.91% at 1.84% 10%,
-      rgb(255, 0, 122) 0%,
-      rgb(6 44 97) 80%
-    ),
-    rgb(237, 238, 242);
+    174.47% 188.91% at 1.84% 10%,
+    rgb(255, 0, 122) 0%,
+    rgb(6 44 97) 80%
+  );
   min-width: 152px;
   padding-left: 10px;
   padding-right: 10px;
