@@ -39,14 +39,7 @@ const AddressButton: React.FC<AddressButtonProps> = ({
             color="white"
             overflow="true"
           >
-            <StyledUniswapButton
-              darkMode={darkMode}
-              href={
-                unilink
-                  ? unilink + address
-                  : "https://uniswap.exchange/swap?inputCurrency=" + address
-              }
-            >
+            <StyledUniswapButton darkMode={darkMode}>
               <StyledSpan>
                 <span>{unitext ? unitext : "Buy at Uniswap"}</span>
               </StyledSpan>
@@ -115,6 +108,10 @@ interface StyledButtonProps {
   uniswap?: boolean;
 }
 
+interface StyledUniswapButtonProps {
+  darkMode?: boolean;
+}
+
 interface StyledSpanProps {
   darkMode?: boolean;
   uniswap?: boolean;
@@ -173,17 +170,30 @@ const StyledButton = styled.a<StyledButtonProps>`
   }
 `;
 
-const StyledUniswapButton = styled(StyledButton)`
+const StyledUniswapButton = styled.div<StyledUniswapButtonProps>`
   color: #ffffff;
   box-shadow: ${(props) =>
     props.darkMode
-      ? "rgb(15 10 12) 0px 0px 1px 1px"
-      : "rgb(20 1 8 / 15%) 0px 0px 1px 1px"};
+      ? "-4px 4px 8px 0 hsl(339deg 20% 5%), 4px -4px 8px 0px hsl(0deg 0% 100% / 8%)"
+      : "-4px 4px 8px 0 hsl(338deg 95% 4% / 15%), 4px -4px 8px 0px hsl(0deg 0% 100%)"};
   background: radial-gradient(
     174.47% 188.91% at 1.84% 10%,
     rgb(255, 0, 122) 0%,
     rgb(6 44 97) 80%
   );
+  align-items: center;
+  border: 0;
+  border-radius: 28px;
+  box-sizing: border-box;
+  display: flex;
+  font-size: 16px;
+  font-weight: 700;
+  height: 48px;
+  -webkit-box-pack: center;
+  margin: 0;
+  outline: none;
+  white-space: nowrap;
+  line-height: 50px;
   min-width: 152px;
   padding-left: 10px;
   padding-right: 10px;
@@ -213,7 +223,8 @@ const StyledLink = styled.a<StyledLinkProps>`
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: 0px 5px;
+  margin: 0px 0px 0px 0px;
+  flex: auto;
   &:hover {
     color: ${(props) =>
       !props.darkMode
@@ -221,6 +232,8 @@ const StyledLink = styled.a<StyledLinkProps>`
           ? props.theme.colors.grey[400]
           : "white"
         : "white"};
+
+        
   }
 `;
 

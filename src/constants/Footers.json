@@ -6,6 +6,12 @@
     "homeDisplay": true
   },
   {
+    "name": "Snapshot",
+    "url": "https://snapshot.page/#/yam",
+    "router": false,
+    "homeDisplay": true
+  },
+  {
     "name": "Twitter",
     "url": "https://twitter.com/YamFinance",
     "router": false,
@@ -14,12 +20,6 @@
   {
     "name": "Discord",
     "url": "https://discord.gg/nKKhBbk",
-    "router": false,
-    "homeDisplay": true
-  },
-  {
-    "name": "Snapshot",
-    "url": "https://snapshot.page/#/yam",
     "router": false,
     "homeDisplay": true
   },
