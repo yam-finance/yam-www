@@ -57,7 +57,7 @@ const Start: React.FC = () => {
         <StartPageHeader
           icon={`${astronaut}❤️🍠`}
           subtitle="Fair launch, open participation, and inclusive community."
-          title="Fair finance by the people, for the people."
+          title="Fair finance, by the people, for the people."
         />
         <Container size="lg">
           <Box row justifyContent="center">
@@ -68,10 +68,10 @@ const Start: React.FC = () => {
         </Container>
       </StyledHero>
       <Container size="lg">
-        <Spacer size="lg" />
+        {/*<Spacer size="md" />
         <Separator />
         <Spacer size="lg" />
-        <StyledSectionIcon>⚖️</StyledSectionIcon>
+        <StyledSectionIcon>⚖️</StyledSectionIcon>*/}
         <Spacer size="lg" />
         <StyledSectionTitle>Fair finance for everyone.</StyledSectionTitle>
         <StyledSectionDescription>Yam is owned and controlled by our community of Yam token holders.</StyledSectionDescription>

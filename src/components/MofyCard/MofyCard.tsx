@@ -22,7 +22,7 @@ const MofyCard: React.FC = () => {
         </Box>
       </CardContent>
       <CardActions>
-      <Button full href="https://cryptovoxels.com/play?coords=S@678W,600S" text="View" variant="secondary" />
+        <Button full href="https://www.cryptovoxels.com/play?coords=S@678W,600S" text="View" variant="secondary" />
       </CardActions>
       </StyledCard>
     </Card>

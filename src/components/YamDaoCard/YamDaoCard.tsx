@@ -19,7 +19,7 @@ const YamDaoCard: React.FC = () => {
           </Box>
         </CardContent>
         <CardActions>
-          <Button full href="https://tokensets.com/portfolio/yamhouse" text="View" variant="secondary" />
+          <Button full to="/daohouse" text="Info" variant="secondary" />
         </CardActions>
       </StyledCard>
     </Card>

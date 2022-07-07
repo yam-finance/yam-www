@@ -13,10 +13,12 @@ import EndingMigrationNotice from "./components/EndingMigrationNotice";
 const Migrate: React.FC = () => {
   return (
     <Page>
-      <PageHeader icon="🦋" subtitle="This is the last time you'll need to migrate!" title="Migrate to V3" />
+      <PageHeader icon="🦋" subtitle="Everything you need to migrate V2 tokens to V3" title="Migrate to V3" />
       <Container>
-        <EndingMigrationNotice />
+        {/** 
+        * <EndingMigrationNotice/> 
         <Spacer />
+        */}
         <VestingNotice />
         <Spacer />
         <Split>

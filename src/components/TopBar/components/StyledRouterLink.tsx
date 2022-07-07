@@ -48,7 +48,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
             setIsShow(false)
           }
         }}
-        onClick={() => { 
+                onClick={() => { 
           if (mobileMenu) {
             setIsShow(!isShow);
           }
@@ -56,7 +56,7 @@ const StyleRouterLink: React.FC<StyleRouterLinkProps> = ({target, label, style, 
         style={mobileMenu ? {cursor: "pointer", width: "100%", textAlign: "left", display: "flex", flexDirection: "column"}
                           : {cursor: "pointer", width: "100%", textAlign: "left"}}
       >
-        <StyledLink subactive={isActive} exact activeClassName="active" style={style} to={match.url + target || ''}>
+        <StyledLink subactive={isActive} exact activeClassName="inactive" style={style} to={location}>
           {label}
           { mobileMenu && (
             <StyledSpan>{isShow === true ? '➖' : '➕'}</StyledSpan>
