@@ -26,8 +26,12 @@ import AddressButton from "components/AddressButton";
 const Addresses: React.FC = () => {
   return (
     <Page>
-      <PageHeader icon={"🎖️"} title={"Addresses"} subtitle={"Official Addresses"} />
-      <Container size="sm">
+      <PageHeader
+        icon={"🗃️"}
+        title={"Addresses"}
+        subtitle={"Official Addresses"}
+      />
+      <Container size="md">
         <h2>Yam Token Address</h2>
         <AddressButton
           name="YAM"
@@ -37,26 +41,86 @@ const Addresses: React.FC = () => {
           unilink="https://app.sushi.com/swap?outputCurrency="
         />
 
-        <h3>Yam Contract Addresses</h3>
-        <AddressButton name="Governor" address={ContractGovernor.toLowerCase()} uniswap={false} />
-        <AddressButton name="Timelock" address={ContractTimelock.toLowerCase()} uniswap={false} />
-        <AddressButton name="Treasury" address={ContractReserves.toLowerCase()} uniswap={false} />
-        <AddressButton name="DPI/ETH Staking" address={ContractIndexStaking.toLowerCase()} uniswap={false} />
-        <AddressButton name="Incentivizer" address={ContractIncentivizer.toLowerCase()} uniswap={false} />
-        <AddressButton name="v3 Migrator" address={ContractMigrator.toLowerCase()} uniswap={false} />
-        <AddressButton name="Monthly Allowance" address={ContractMonthlyAllowance.toLowerCase()} uniswap={false} />
-
-        <h3>Deprecated Contract Addresses</h3>
-        <AddressButton name="YAMv1" address={yam.toLowerCase()} uniswap={false} />
-        <AddressButton name="YAMv2" address={yamv2.toLowerCase()} uniswap={false} />
-        <AddressButton name="Rebaser" address={ContractRebaser.toLowerCase()} uniswap={false} />
-        <AddressButton name="Vesting Pool" address={ContractVestingPool.toLowerCase()} uniswap={false} />
-        <AddressButton name="Contributor Governor" address={ContractContributorGovernor.toLowerCase()} uniswap={false} />
-        <AddressButton name="Contribtor Timelock" address={ContractContribtorTimelock.toLowerCase()} uniswap={false} />
+        <h3>Yam Contracts Addresses</h3>
+        <AddressButton
+          name="Reserves"
+          address={ContractReserves.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Governor"
+          address={ContractGovernor.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Timelock"
+          address={ContractTimelock.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Rebaser"
+          address={ContractRebaser.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Incentivizer"
+          address={ContractIncentivizer.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Migrator"
+          address={ContractMigrator.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Contributor Governor"
+          address={ContractContributorGovernor.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Contribtor Timelock"
+          address={ContractContribtorTimelock.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Index Staking"
+          address={ContractIndexStaking.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Vesting Pool"
+          address={ContractVestingPool.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="Monthly Allowance"
+          address={ContractMonthlyAllowance.toLowerCase()}
+          uniswap={false}
+        />
 
         <h3>Other Token Addresses</h3>
-        <AddressButton name="DPI" address={DPI.toLowerCase()} uniswap={false} />
-        <AddressButton name="yUSD" address={yUsd.toLowerCase()} uniswap={false} />
+        <AddressButton 
+          name="DPI" 
+          address={DPI.toLowerCase()} 
+          uniswap={false} 
+        />
+        <AddressButton
+          name="yUSD"
+          address={yUsd.toLowerCase()}
+          uniswap={false}
+        />
+
+        <h3>Obsolete Addresses</h3>
+        <AddressButton
+          name="YAMv1"
+          address={yam.toLowerCase()}
+          uniswap={false}
+        />
+        <AddressButton
+          name="YAMv2"
+          address={yamv2.toLowerCase()}
+          uniswap={false}
+        />
       </Container>
     </Page>
   );

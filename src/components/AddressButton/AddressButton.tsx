@@ -3,6 +3,7 @@ import styled from "styled-components";
 import copy from "assets/copy.svg";
 import confirm from "assets/copy_confirm.svg";
 import { Box, Container, Spacer, useTheme } from "react-neu";
+import ReactTooltip from "react-tooltip";
 
 interface AddressButtonProps {
   name?: string;
@@ -13,22 +14,39 @@ interface AddressButtonProps {
   to?: string;
 }
 
-const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswap, unitext, unilink }) => {
+const AddressButton: React.FC<AddressButtonProps> = ({
+  name,
+  address,
+  to,
+  uniswap,
+  unitext,
+  unilink,
+}) => {
   const { darkMode } = useTheme();
 
   const DisplayUniswap = useMemo(() => {
     if (uniswap) {
       return (
         <>
-          <Spacer />
           <StyledLink
             darkMode={darkMode}
-            href={unilink ? unilink + address : "https://uniswap.exchange/swap?inputCurrency=" + address}
+            href={
+              unilink
+                ? unilink + address
+                : "https://uniswap.exchange/swap?inputCurrency=" + address
+            }
             target="_blank"
             color="white"
             overflow="true"
           >
-            <StyledUniswapButton darkMode={darkMode}>
+            <StyledUniswapButton
+              darkMode={darkMode}
+              href={
+                unilink
+                  ? unilink + address
+                  : "https://uniswap.exchange/swap?inputCurrency=" + address
+              }
+            >
               <StyledSpan>
                 <span>{unitext ? unitext : "Buy at Uniswap"}</span>
               </StyledSpan>
@@ -40,44 +58,50 @@ const AddressButton: React.FC<AddressButtonProps> = ({ name, address, to, uniswa
   }, [darkMode, uniswap]);
 
   const DisplayAddress = useMemo(() => {
-    if (uniswap) {
-      return (
-        <>
-          <span className="address combine">
-            <AddressStart>{address}</AddressStart>
-            <AddressEnd>{address}</AddressEnd>
-          </span>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <span className="address">{address}</span>
-        </>
-      );
-    }
+    return (
+      <>
+        <span className="address">{address}</span>
+      </>
+    );
   }, [darkMode, uniswap]);
 
   return (
     <>
       <Box row>
-        <StyledButton darkMode={darkMode} uniswap={uniswap}>
-          <StyledSpan>
-            <StyledName darkMode={darkMode} uniswap={uniswap}>
-              {name ? name + " " : ""}
-            </StyledName>
-            <StyledLink darkMode={darkMode} color="hsl(339deg 89% 49% / 100%)" href={"https://etherscan.io/address/" + address} target="_blank">
-              {DisplayAddress}
-            </StyledLink>
-            <StyledCopy
-              darkMode={darkMode}
-              uniswap={uniswap}
-              onClick={() => {
-                navigator.clipboard.writeText(address ? address : "");
-              }}
-            ></StyledCopy>
-          </StyledSpan>
+        <StyledButton
+          darkMode={darkMode}
+          uniswap={uniswap}
+          href={"https://etherscan.io/address/" + address}
+          target="_blank"
+        >
+          <StyledName darkMode={darkMode} uniswap={uniswap}>
+            {name ? name + " " : ""}
+          </StyledName>
+          <StyledAddress darkMode={darkMode} color="hsl(339deg 89% 49% / 100%)">
+            {DisplayAddress}
+          </StyledAddress>
         </StyledButton>
+        <StyledCopy
+          darkMode={darkMode}
+          uniswap={uniswap}
+          data-tip
+          data-for="copyTip"
+          onClick={() => {
+            navigator.clipboard.writeText(address ? address : "");
+          }}
+        ></StyledCopy>
+        <ReactTooltip
+          id="copyTip"
+          type="dark"
+          className="tooltip"
+          textColor={darkMode ? "#d1004d" : "#d1004d"}
+          backgroundColor={darkMode ? "#24181c" : "#f3edef"}
+          arrowColor="transparent"
+          place="top"
+          effect="solid"
+        >
+          Copy Address
+        </ReactTooltip>
         {DisplayUniswap}
       </Box>
       <Spacer />
@@ -94,9 +118,16 @@ interface StyledButtonProps {
 interface StyledSpanProps {
   darkMode?: boolean;
   uniswap?: boolean;
+  align?: string;
 }
 
 interface StyledLinkProps {
+  darkMode?: boolean;
+  color?: string;
+  overflow?: string;
+}
+
+interface StyledAddressProps {
   darkMode?: boolean;
   color?: string;
   overflow?: string;
@@ -107,18 +138,12 @@ interface StyledCopyProps {
   uniswap?: boolean;
 }
 
-const StyledButton = styled.div<StyledButtonProps>`
-  background: ${(props) =>
-    props.darkMode
-      ? "radial-gradient(circle at top,hsl(339deg 17% 15% / 100%),hsl(339deg 20% 10% / 100%))"
-      : "radial-gradient(circle at top,hsl(338deg 20% 96% / 100%),hsl(338deg 20% 94% / 100%))"};
+const StyledButton = styled.a<StyledButtonProps>`
+  background: transparent;
   box-shadow: ${(props) =>
     props.darkMode
-      ? "-8px 8px 16px 0 hsl(339deg 20% 5% / 100%), 8px -8px 16px 0px hsl(339deg 100% 100% / 7.5%)"
-      : "-8px 8px 16px 0 hsl(338deg 95% 4% / 15%), 8px -8px 16px 0px hsl(338deg 100% 100% / 100%);"};
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+      ? "rgb(15 10 12) 0px 0px 1px 1px, rgb(255 255 255 / 8%) -1px 1px 0px inset"
+      : "rgb(20 1 8 / 15%) 0px 0px 1px 1px, rgb(255 255 255) -1px 1px 0px inset"};
   align-items: center;
   border: 0;
   border-radius: 28px;
@@ -132,31 +157,49 @@ const StyledButton = styled.div<StyledButtonProps>`
   font-weight: 700;
   height: 48px;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: space-between;
   margin: 0;
   outline: none;
-  padding-left: 24px;
+  padding-left: 0px;
   padding-right: 24px;
   white-space: nowrap;
   line-height: 50px;
   min-width: 48px;
-  width: ${(props) => (!props.uniswap ? "-webkit-fill-available" : null)};
+  width: ${(props) => (!props.uniswap ? "fill-available" : null)};
+  &:hover {
+    color: #d1004d;
+  }
 `;
 
 const StyledUniswapButton = styled(StyledButton)`
-  border-radius: 9px;
   color: #ffffff;
-  background: radial-gradient(174.47% 188.91% at 1.84% 10%, rgb(255, 0, 122) 0%, rgb(6 44 97) 80%), rgb(237, 238, 242);
+  box-shadow: ${(props) =>
+    props.darkMode
+      ? "rgb(15 10 12) 0px 0px 1px 1px"
+      : "rgb(20 1 8 / 15%) 0px 0px 1px 1px"};
+  background: radial-gradient(
+    174.47% 188.91% at 1.84% 10%,
+    rgb(255, 0, 122) 0%,
+    rgb(6 44 97) 80%
+  );
   min-width: 152px;
   padding-left: 10px;
   padding-right: 10px;
+  justify-content: center;
+  &:hover {
+    color: #ffffff;
+  }
 `;
 
 const StyledName = styled.span<StyledSpanProps>`
-  color: ${(props) => (props.darkMode ? props.theme.colors.grey[100] : props.theme.colors.grey[400])};
-  margin: 0px 5px 0px 0px;
+  text-align: left;
+  color: ${(props) =>
+    props.darkMode
+      ? props.theme.colors.grey[100]
+      : props.theme.colors.grey[700]};
+  margin: 0px 5px 0px 30px;
   min-width: ${(props) => (!props.uniswap ? "85" : "45")}px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -172,8 +215,27 @@ const StyledLink = styled.a<StyledLinkProps>`
   white-space: nowrap;
   margin: 0px 5px;
   &:hover {
-    color: ${(props) => (!props.darkMode ? (props.color ? props.theme.colors.grey[400] : "white") : "white")};
+    color: ${(props) =>
+      !props.darkMode
+        ? props.color
+          ? props.theme.colors.grey[400]
+          : "white"
+        : "white"};
   }
+`;
+
+const StyledAddress = styled.div<StyledAddressProps>`
+  cursor: pointer;
+  font-weight: 300;
+  color: ${(props) =>
+    props.darkMode
+      ? props.theme.colors.primary
+      : props.theme.colors.primary};
+  overflow: ${(props) => (props.overflow === "true" ? "initial" : "hidden")};
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0px 5px;
 `;
 
 const StyledSpan = styled.span`
@@ -181,6 +243,7 @@ const StyledSpan = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  justify-content: right;
 `;
 
 const StyledCopy = styled.span<StyledCopyProps>`
@@ -189,9 +252,12 @@ const StyledCopy = styled.span<StyledCopyProps>`
   -webkit-mask-image: url(${copy});
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 12px;
-  background-color: ${(props) => (props.darkMode ? props.theme.colors.primary.main : props.theme.colors.grey[500])};
+  background-color: ${(props) =>
+    props.darkMode
+      ? props.theme.colors.grey[500]
+      : props.theme.colors.grey[500]};
   width: ${(props) => (!props.uniswap ? "32" : "50")}px;
-  margin: 20px 0px 16px 5px;
+  margin: 20px 0px 16px 20px;
   &:hover {
     opacity: 0.6;
   }
