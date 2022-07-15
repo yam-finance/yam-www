@@ -622,7 +622,6 @@ export const getProposals = async (yam) => {
       }
     }
     let proposal = await yam.contracts.gov4.methods.proposals(id).call();
-    console.log(proposal)
     let fv = new BigNumber(proposal["forVotes"]).div(BASE24);
     let av = new BigNumber(proposal["againstVotes"]).div(BASE24);
 
@@ -1004,6 +1003,16 @@ export const getContributorVestingData = async (yam, contributor) => {
   } catch (e) {
     // console.log(e);
   }
+};
+
+export async function getTreasury(address) {
+  let data;
+  try {
+    data = await requestHttp("https://api.yam.finance/treasury");
+  } catch (error) {
+    data = { assets: {}, total: 0 };
+  }
+  return data;
 };
 
 export const claimContributorVestedTokens = async (yam, account, contributor) => {

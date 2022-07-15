@@ -22,7 +22,7 @@ export const AssetEntry: React.FC<ProposalProps> = ({ prop }) => {
             </Box>
           </StyledTokenNameMain>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-          <StyledField gridArea={"symbol"}>{prop.index}</StyledField>
+          <StyledField gridArea={"symbol"}>{prop.symbol}</StyledField>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
           <StyledField gridArea={"quantity"}>{numeral(prop.quantity).format("0,0.00")}</StyledField>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />

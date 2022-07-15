@@ -104,6 +104,7 @@ const Provider: React.FC = ({ children }) => {
   );
 
   const verifyDelegation = async () => {
+    if (!account || !yam) return;
     const delegatedAccount = await delegatedTo(yam, account);
     setDelegatedAddress(delegatedAccount);
     setIsDelegated(delegatedAccount !== emptyDelegation && delegatedAccount !== account);
