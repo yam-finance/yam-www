@@ -42,7 +42,7 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
       {
         icon: "🌎",
         label: "Marketcap",
-        value: yamObject?.marketCap ? `$${yamObject?.marketCap}` : "--",
+        value: yamObject?.marketCap ? yamObject?.marketCap : "--",
         hint: "",
         tooltip: "",
         prefix: '',
@@ -57,7 +57,7 @@ const TopCards: React.FC<TopCardProps> = ({yamObject}) => {
         hint: "",
         tooltip: "",
         prefix: '',
-        suffix: '~$',
+        suffix: '$',
       },
     ],
   ];

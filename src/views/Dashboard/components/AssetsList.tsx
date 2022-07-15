@@ -4,7 +4,6 @@ import moment from "moment";
 import numeral from "numeral";
 
 import { Card, CardContent, Spacer, CardTitle, Separator, Button } from "react-neu";
-
 import { AssetEntry, StyledAssetContentInner } from "./Asset";
 
 import SeparatorGrid from "components/SeparatorWithCSS";
@@ -47,9 +46,8 @@ const useSortableData = (items:any, config = null) => {
 }
 
 const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
-
   const [csvData, setCSVData] = useState<any>([]);
-  const [treasuryAssets, setTreasuryAssets] = useState<any>(0);
+  const [treasuryBalance, setTreasuryBalance] = useState<any>(0);
   const assets = assetsData?.sort((a:any,b:any):number => {
     if (a.value > b.value) return -1;
     if (a.value < b.value) return 1;
@@ -59,24 +57,24 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
 
   useEffect(() => {
     const csvData = [];
-    csvData.push([moment().format("dddd , Do MMMM YYYY")]);
-    csvData.push(["Token Name", "Symbol", "Quantity", "Token Price($)", "Change(24h)","Value in USD($)"]);
-    let treasuryAssets = 0;
+    csvData.push([moment().format("dddd, Do MMMM YYYY")]);
+    csvData.push(["Token Name", "Symbol", "Quantity", "Token Price in $", "Change 24h", "Value in $"]);
+    let treasuryBalance = 0;
     if (assets) {
       assets.forEach((asset:any) => {
         csvData.push([
           asset.name, 
-          asset.index, 
+          asset.symbol, 
           numeral(asset.quantity).format("0,0.00"),
           "$" + numeral(asset.price).format("0,0.00"),
           numeral(asset.change).format("0.00a") + "%",
           "$" + numeral(asset.value).format("0,0.00")
         ]);
-        treasuryAssets += asset.value;
+        treasuryBalance += asset.value;
       });
     }
-    csvData.push(["Total Assets", "$" + numeral(treasuryAssets).format("0,0.00")]);
-    setTreasuryAssets(treasuryAssets);
+    csvData.push(["Total Assets", "$" + numeral(treasuryBalance).format("0,0.00")]);
+    setTreasuryBalance(treasuryBalance);
     setCSVData(csvData);
   }, [assets]);
 
@@ -86,12 +84,12 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
       <Card>
         <StyledBox row alignItems="center" justifyContent="space-between" marginLeft={5} marginRight={5}>
           <StyledTotalLabel>
-            {"Total: $" + numeral(treasuryAssets).format("0,0.00")}
+            {"Total: $" + numeral(treasuryBalance).format("0,0.00")}
           </StyledTotalLabel>
           <Box justifyContent="center" width="100%">
             <CardTitle text="💰 Treasury Assets" />
           </Box>
-          <CSVLink data={csvData} filename={"Assets" + moment().format("DD-MM-YYYY") +".csv"} onClick={() => {
+          <CSVLink data={csvData} filename={"Assets-" + moment().format("DD-MM-YYYY") +".csv"} onClick={() => {
             if (!assets) {
               return false;
             }
@@ -108,7 +106,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
               <StyledAssetContentInner>
                 <StyledTokenNameMain onClick={() => requestSort('name')}>Token Name</StyledTokenNameMain>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                <StyledField gridArea={"symbol"} onClick={() => requestSort('index')}>Symbol</StyledField>
+                <StyledField gridArea={"symbol"} onClick={() => requestSort('symbol')}>Symbol</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
                 <StyledField gridArea={"quantity"} onClick={() => requestSort('quantity')}>Quantity</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
