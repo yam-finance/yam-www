@@ -17,7 +17,7 @@ const YCP: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader icon={"⛪"} title={"DAO House"} titleSize={80} titleWeight={"900"}  subtitle={"Treasury Management Solution"} />
+      <PageHeader icon={"⛪"} title={"DAO House"} titleSize={80} titleWeight={"900"}  subtitle={"Treasury Management Solution."} />
      
       <Container>
         <Spacer />

@@ -4,10 +4,8 @@ import { Container, Spacer } from "react-neu";
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
 import Split from "components/Split";
-import UmbrellaCard from "components/UmbrellaCard";
-import DegenerativeCard from "components/DegenerativeCard"
-import YamDaoCard from "components/YamDaoCard"
-import MofyCard from "components/MofyCard"
+import YamTreasuriesCard from "components/YamTreasuriesCard";
+import YamReOrgCard from "components/YamReOrgCard";
 
 const WORKERS = [
   '👷',
@@ -40,13 +38,14 @@ const Projects: React.FC = () => {
   return (
     <Page>
       <PageHeader icon={`${worker}`} subtitle="Take a look at what we are working on." title="Projects" />
-      <Container size="lg">
+      <Container size="md">
         <Spacer />
         <Split>
-          <DegenerativeCard />
-          <UmbrellaCard />
-          <YamDaoCard />
-          <MofyCard />
+          <YamReOrgCard />
+          <YamTreasuriesCard />
+          {/* <DegenerativeCard /> */}
+          {/* <UmbrellaCard /> */}
+          {/* <MofyCard /> */}
         </Split>
       </Container>
     </Page>

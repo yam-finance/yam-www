@@ -15,7 +15,7 @@ import UnlockWalletModal from "components/UnlockWalletModal";
 
 const Dashboard: React.FC = () => {
   const { account } = useWallet();
-  const { assetsData, seriesReserves, yamObject, assetsColors } = useDashboard();
+  const { assetsData, yamObject, assetsColors } = useDashboard();
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader icon="📈" subtitle="Overview of the YAM ecosystem" title="YAM Dashboard" />
+      <PageHeader icon="📈" subtitle="Overview of the YAM ecosystem." title="YAM Dashboard" />
       <Container size="lg">
         <TopCards yamObject={yamObject} />
         {/* <Charts seriesReserves={seriesReserves} assetsColors={assetsColors} /> */}

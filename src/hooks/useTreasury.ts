@@ -5,41 +5,16 @@ import { yUsd as yUsdAddress, yamv3 as yamV3Address, DPI as DPIAddress, WETH, IN
 import usePrices from "hooks/usePrices";
 import useTokenBalance from "hooks/useTokenBalance";
 import { 
-  getDPIPrice,
-  getIndexCoopLP,
-  getIndexCoopLPRewards,
-  getINDEXCOOPPrice,
-  getSUSHIPrice,
-  getSushiRewards,
-  getWETHPrice,
-  getYUSDPrice,
-  getUMAPrice,
-  getYamHousePrice,
-  getYam,
   getTreasury
 } from "yam-sdk/utils";
 import useYam from "./useYam";
 
-const treasuryAddress = "0x97990b693835da58a281636296d2bf02787dea17";
-
 const useTreasury = () => {
   const { yamTwap } = usePrices();
   const yam = useYam();
-  const yamBalance = useTokenBalance(treasuryAddress, yamV3Address);
-  const yUsdBalance = useTokenBalance(treasuryAddress, yUsdAddress);
-  const totalDPIValue = useTokenBalance(treasuryAddress, DPIAddress);
-  const totalWETHTokenBalance = useTokenBalance(treasuryAddress, WETH);
-  const totalWETHValue = (totalWETHTokenBalance || 0) + 283;
-  const totalUMAValue = useTokenBalance(treasuryAddress, UMAAddress);
-  const totalYamHouseValue = 810000;
-  const [totalIndexLPValue, setTotalIndexLPValue] = useState<number>(0);
-  const [rewardsIndexCoop, setRewardsIndexCoop] = useState<number>(0);
-  const [totalBalanceValueIndexCoop, setTotalBalanceValueIndexCoop] = useState<number>(0);
-  const [totalLpRewardsValueIndexCoop, setTotalLpRewardsValueIndexCoop] = useState<number>(0);
-  const [rewardsSushi, setRewardsSushi] = useState<number>(0);
   const [treasuryValue, setTreasuryValue] = useState<any>(0);
 
-  const fetchValuesFirst = useCallback(async () => {
+  const fetchValues = useCallback(async () => {
     const getTreasuryValue = await getTreasury();
     setTreasuryValue(getTreasuryValue);
   }, [treasuryValue, setTreasuryValue]);
@@ -74,19 +49,16 @@ const useTreasury = () => {
   // }, [yam, totalBalanceIndexCoop, setRewardsIndexCoop, setRewardsSushi]);
 
   useEffect(() => {
-    fetchValuesFirst();
-    // fetchValues();
-    // let refreshInterval = setInterval(() => fetchValues(), 100000);
-    // return () => clearInterval(refreshInterval);
-  }, [yam, setRewardsIndexCoop, setRewardsSushi]);
+    fetchValues();
+  }, [yam]);
 
-  const totalIndexCoop = totalBalanceValueIndexCoop + totalLpRewardsValueIndexCoop;
-  const totalSushi = rewardsSushi;
+  // const totalIndexCoop = totalBalanceValueIndexCoop + totalLpRewardsValueIndexCoop;
+  // const totalSushi = rewardsSushi;
 
-  const totalYUsdValue = useMemo(() => {
-    const yamYUsdValue = yamTwap && yamBalance ? yamTwap * yamBalance : 0;
-    return (yUsdBalance ? yUsdBalance + yamYUsdValue : yamYUsdValue) + 718900;
-  }, [yamBalance, yamTwap, yUsdBalance]);
+  // const totalYUsdValue = useMemo(() => {
+  //   const yamYUsdValue = yamTwap && yamBalance ? yamTwap * yamBalance : 0;
+  //   return (yUsdBalance ? yUsdBalance + yamYUsdValue : yamYUsdValue) + 718900;
+  // }, [yamBalance, yamTwap, yUsdBalance]);
 
   // const getAssetsHistory = async () => {
   //   const sushiPrice = await getSUSHIPrice() || 0;
@@ -246,20 +218,20 @@ const useTreasury = () => {
   // };
 
   return {
-    totalYUsdValue,
-    totalDPIValue,
-    totalWETHValue,
-    totalIndexLPValue,
-    totalUMAValue,
-    totalYamHouseValue,
-    yamBalance,
-    yUsdBalance,
+    // totalYUsdValue,
+    // totalDPIValue,
+    // totalWETHValue,
+    // totalIndexLPValue,
+    // totalUMAValue,
+    // totalYamHouseValue,
+    // yamBalance,
+    // yUsdBalance,
 
     // revamp
-    totalBalanceValueIndexCoop,
-    totalLpRewardsValueIndexCoop,
-    totalIndexCoop,
-    totalSushi,
+    // totalBalanceValueIndexCoop,
+    // totalLpRewardsValueIndexCoop,
+    // totalIndexCoop,
+    // totalSushi,
 
     // assets data
     treasuryValue
