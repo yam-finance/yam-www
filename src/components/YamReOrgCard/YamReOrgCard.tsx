@@ -14,7 +14,7 @@ const YamReOrgCard: React.FC = () => {
         <CardContent>
           <Box alignItems="center" column minHeight={125} maxHeight={125}>
             <ValueText value="Yam ReOrg" />
-            <Label text="Yam ReOrg is to facilitate decision making, consensus building and bringing value to the Yam DAO and the token holders." labelPosition="center" />
+            <Label text="Yam's Re-Org is designed to attract talented builders while giving token holders full control." labelPosition="center" />
           </Box>
         </CardContent>
         <CardActions>
