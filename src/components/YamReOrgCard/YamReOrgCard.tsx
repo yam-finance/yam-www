@@ -13,7 +13,7 @@ const YamReOrgCard: React.FC = () => {
         <CardIcon>🍠</CardIcon>
         <CardContent>
           <Box alignItems="center" column minHeight={125} maxHeight={125}>
-            <ValueText value="Yam ReOrg" />
+            <ValueText value="Yam Re-Org" />
             <Label text="Yam's Re-Org is designed to attract talented builders while giving token holders full control." labelPosition="center" />
           </Box>
         </CardContent>
