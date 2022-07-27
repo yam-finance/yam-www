@@ -42,7 +42,7 @@ const Start: React.FC = () => {
   const [astronaut, setAstronaut] = useState('👨‍🚀')
 
   const updateAstronaut = useCallback(() => {
-    const newAstro = ASTRONAUTS[Math.floor(Math.random()*ASTRONAUTS.length)]
+    const newAstro = ASTRONAUTS[Math.floor(Math.random() * ASTRONAUTS.length)]
     setAstronaut(newAstro)
   }, [setAstronaut])
 
@@ -79,15 +79,54 @@ const Start: React.FC = () => {
         <StartSplit>
           <Card>
             <Spacer size="md" />
-            <CardIcon>💸</CardIcon>
+            <CardIcon>🗣️</CardIcon>
             <CardContent>
-              <StyledCardName>Growing treasury</StyledCardName>
-              <Spacer size="sm" />
-              <StyledCardDescription>The YAM treasury is vibrant and growing fast.</StyledCardDescription>
+              <Box alignItems="center" column minHeight={125} maxHeight={125}>
+                <StyledCardName>Decentralized governance</StyledCardName>
+                <Spacer size="sm" />
+                <StyledCardDescription>YAM holders decide YAM's future via on-chain voting.</StyledCardDescription>
+              </Box>
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
-                <Button text="View treasury" variant="secondary" to="/dashboard" />
+                <Button full text="Go vote" variant="secondary" to="/governance" />
+              </Box>
+            </CardActions>
+          </Card>
+          <Card>
+            <Spacer size="md" />
+            <CardIcon>🍠</CardIcon>
+            <CardContent>
+              <Box alignItems="center" column minHeight={125} maxHeight={125}>
+                <StyledCardName>Yam Grants</StyledCardName>
+                <Spacer size="sm" />
+                <StyledCardDescription>Yam Grants are here to support projects that will bring value back to yam.</StyledCardDescription>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <Box row justifyContent="center">
+                <Button
+                  full
+                  text="More info"
+                  href="https://yam.super.site/"
+                  variant="secondary"
+                />
+              </Box>
+            </CardActions>
+          </Card>
+          <Card>
+            <Spacer size="md" />
+            <CardIcon>💸</CardIcon>
+            <CardContent>
+              <Box alignItems="center" column minHeight={125} maxHeight={125}>
+                <StyledCardName>Growing treasury</StyledCardName>
+                <Spacer size="sm" />
+                <StyledCardDescription>The YAM treasury is vibrant and growing.</StyledCardDescription>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <Box row justifyContent="center">
+                <Button full text="View treasury" variant="secondary" to="/dashboard" />
               </Box>
             </CardActions>
           </Card>
@@ -95,27 +134,15 @@ const Start: React.FC = () => {
             <Spacer size="md" />
             <CardIcon>👨‍🌾</CardIcon>
             <CardContent>
-              <StyledCardName>Yield farming</StyledCardName>
-              <Spacer size="sm" />
-              <StyledCardDescription>Earn YAMs while helping YAM grow too.</StyledCardDescription>
-            </CardContent>
-            <CardActions>
-              <Box row justifyContent="center">
-                <Button text="Start farming" variant="secondary" to="/farm" />
+              <Box alignItems="center" column minHeight={125} maxHeight={125}>
+                <StyledCardName>Yield farming</StyledCardName>
+                <Spacer size="sm" />
+                <StyledCardDescription>Earn YAMs while helping YAM grow too.</StyledCardDescription>
               </Box>
-            </CardActions>
-          </Card>
-          <Card>
-            <Spacer size="md" />
-            <CardIcon>🗣️</CardIcon>
-            <CardContent>
-              <StyledCardName>Decentralized governance</StyledCardName>
-              <Spacer size="sm" />
-              <StyledCardDescription>YAM holders decide YAM's future via on-chain voting.</StyledCardDescription>
             </CardContent>
             <CardActions>
               <Box row justifyContent="center">
-                <Button text="Go vote" variant="secondary" to="/governance" />
+                <Button full text="Start farming" variant="secondary" to="/farm" />
               </Box>
             </CardActions>
           </Card>

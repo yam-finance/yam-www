@@ -1,25 +1,24 @@
-import React from "react";
-
 import { Box, Button, Card, CardActions, CardContent, CardIcon, Spacer } from "react-neu";
 
 import Label from "components/Label";
+import React from "react";
 import ValueText from "components/ValueText";
 import styled from "styled-components";
-const YamDaoCard: React.FC = () => {
 
+const ProjectCard: React.FC = () => {
   return (
     <Card>
       <StyledCard>
         <Spacer />
-        <CardIcon>🏡</CardIcon>
+        <CardIcon>🌂</CardIcon>
         <CardContent>
           <Box alignItems="center" column minHeight={120}>
-            <ValueText value="Yam Treasuries" />
-            <Label text="Yam Treasuries is an actively managed portfolio that is governed by the Yam DAO" labelPosition="center"/>
+            <ValueText value="Yam Protection" />
+            <Label text="Yam Protection has the potential to become a critical lego block for the DeFi ecosystem." labelPosition="center"/>
           </Box>
         </CardContent>
         <CardActions>
-          <Button full to="/daohouse" text="Info" variant="secondary" />
+          <Button full to="/umbrella" text="Info" variant="secondary" />
         </CardActions>
       </StyledCard>
     </Card>
@@ -28,4 +27,5 @@ const YamDaoCard: React.FC = () => {
 const StyledCard = styled.div`
  height:320px;
 `;
-export default YamDaoCard;
+
+export default ProjectCard;

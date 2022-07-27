@@ -55,6 +55,12 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
             onDismiss={onDismiss}
           />
           <StyledLink
+            href="https://yam.super.site/"
+            label="Yam ReOrg"
+            mobileMenu={mobileMenu}
+            onDismiss={onDismiss}
+          />
+          <StyledLink
             href="https://docs.yam.finance/"
             label="Docs"
             mobileMenu={mobileMenu}

@@ -76,7 +76,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
     csvData.push(["Total Assets", "$" + numeral(treasuryBalance).format("0,0.00")]);
     setTreasuryBalance(treasuryBalance);
     setCSVData(csvData);
-  }, [assets]);
+  }, [assets, assetsData]);
 
   return (
     <>
@@ -110,11 +110,11 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
                 <StyledField gridArea={"quantity"} onClick={() => requestSort('quantity')}>Quantity</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer3"} />
-                <StyledField gridArea={"price"} onClick={() => requestSort('price')}>Token Price($)</StyledField>
+                <StyledField gridArea={"price"} onClick={() => requestSort('price')}>Token Price in $</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer4"} />
-                <StyledField gridArea={"change"} onClick={() => requestSort('change')}>Change(24h)</StyledField>
+                <StyledField gridArea={"change"} onClick={() => requestSort('change')}>Change 24h</StyledField>
                 <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer5"} />
-                <StyledField gridArea={"value"} onClick={() => requestSort('value')}>Value in USD($)</StyledField>
+                <StyledField gridArea={"value"} onClick={() => requestSort('value')}>Value in $</StyledField>
               </StyledAssetContentInner>
             </Box>
             <Spacer size="sm" />

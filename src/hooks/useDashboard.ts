@@ -8,64 +8,25 @@ import { useTheme } from "react-neu";
 import { SeriesInterface, TimeSeries } from "types/Charts";
 
 import {
-  treasuryEvents,
-  getCurrentBlock,
-  getIndexCoopLPRewards,
-  getSushiRewards,
-  getValue,
   getYam,
-  getYamHousePrice
 } from "yam-sdk/utils";
 import numeral from "numeral";
 
 const useDahsboard = () => {
   const yam = useYam();
-  const [treasuryValues, setTreasuryValues] = useState<any>();
-  const [seriesReserves, setSeriesReserves] = useState<SeriesInterface[]>();
+  const { status } = useWallet();
+  const { darkMode } = useTheme();
+  const { treasuryValue } = useTreasury();
   const [assetsData, setAssetsData] = useState<Object[]>();
   const [assetsColors, setAssetsColors] = useState<any>();
   const [yamObject, setYamObject] = useState<Object>();
 
-  const { darkMode, colors } = useTheme();
-  // const { totalYUsdValue, totalWETHValue, totalDPIValue, totalUMAValue, totalBalanceIndexCoop, totalYamHouseValue, treasuryValue, getAssetsHistory } = useTreasury();
-  const { treasuryValue } = useTreasury();
-
-  const { status } = useWallet();
-  const defaultRange = 14;
-
-  function hasKey<O>(obj: O, key: keyof any): key is keyof O {
-    return key in obj
-  }
-
-  const fetchTreasury = useCallback(async () => {
+  const fetchReserves = useCallback(async (from) => {
     if (!yam) {
       return;
     }
-    const { reservesAdded, yamsSold, yamsFromReserves, yamsToReserves, blockNumbers, blockTimes } = await treasuryEvents(yam);
-    setTreasuryValues({
-      reservesAdded,
-      yamsSold,
-      yamsFromReserves,
-      yamsToReserves,
-      blockNumbers,
-      blockTimes,
-    });
-  }, [yam, setTreasuryValues]);
 
-  useEffect(() => {
-    if (status !== "connected" || !yam || !treasuryValues) {
-      return;
-    }
-    fetchReserves();
-  }, [darkMode, status, yam, treasuryValues]);
-
-  const fetchReserves = useCallback(async () => {
-    if (!yam || !treasuryValues) {
-      return;
-    }
-    // if (!totalYUsdValue || !totalWETHValue || !totalDPIValue) {
-    //   return;
-    // }
+    const yamValues = await getYam();
 
     // const assetsHistory = await getAssetsHistory();
     // const currentBlock = (await getCurrentBlock(yam)).number;
@@ -76,7 +37,6 @@ const useDahsboard = () => {
     // const yusdValues = await getValue("yvault-lp-ycurve");
     // const sushiValues = await getValue("sushi");
     // const indexCoopValues = await getValue("index-cooperative");
-    const yamValues = await getYam();
 
     // const wethPrice = wethValues.market_data.current_price.usd;
     // const yusdPrice = yusdValues.market_data.current_price.usd;
@@ -313,7 +273,6 @@ const useDahsboard = () => {
       assets.push(updatedAsset);
     }
 
-    // setSeriesReserves(series);
     setAssetsData(assets);
     setAssetsColors(assetsColors);
     setYamObject({
@@ -323,17 +282,18 @@ const useDahsboard = () => {
       treasuryValue: numeral(treasuryValue.total).format("0.00a"),
       change24: numeral(yamValues?.market_data.price_change_percentage_24h_in_currency.usd).format("0.00a") + "%"
     });
-  }, [darkMode, status, yam, treasuryValues]);
+  }, [darkMode, status, yam, treasuryValue]);
 
   useEffect(() => {
-    fetchTreasury();
-    let refreshInterval = setInterval(() => fetchTreasury(), 300000);
+    fetchReserves(2);
+    let refreshInterval = setInterval(() => {
+      fetchReserves(3);
+    }, 60000);
     return () => clearInterval(refreshInterval);
-  }, [fetchTreasury]);
+  }, [treasuryValue]);
 
   return {
     assetsData,
-    seriesReserves,
     yamObject,
     assetsColors
   };
