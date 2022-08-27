@@ -60,6 +60,12 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
             mobileMenu={mobileMenu}
             onDismiss={onDismiss}
           />
+          <StyledRouterLink
+            target="values"
+            label="Values"
+            mobileMenu={mobileMenu}
+            onDismiss={onDismiss}
+          />
           <StyledLink
             href="https://docs.yam.finance/"
             label="Docs"
