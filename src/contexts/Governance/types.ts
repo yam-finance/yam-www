@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 export interface Proposal {
   gov?: string;
   description?: string;
@@ -30,12 +28,15 @@ export interface ContextValues {
   isRegistered?: boolean;
   isRegistering?: boolean;
   isVoting?: boolean;
-  delegatedAddress?: string;
-  isDelegated: boolean;
+  isDelegatedToken: boolean;
+  isDelegatedLP: boolean;
+  delegatedAddressToken?: string;
+  delegatedAddressLP?: string;
   onVote: (proposal: number, side: boolean) => void;
   onRegister: () => void;
   onUnregister: () => void;
-  onDelegateStaked: (delegatee: string) => void;
-  onDelegateUnstaked: (delegatee: string) => void;
-  onRemoveDelegation: () => void;
+  onDelegateToken: (delegatee: string) => void;
+  onDelegateLP: (delegatee: string) => void;
+  onRemoveTokenDelegation: () => void;
+  onRemoveLPDelegation: () => void;
 }

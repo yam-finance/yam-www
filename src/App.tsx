@@ -35,12 +35,12 @@ import TVL from "views/TVL";
 
 import request from "request";
 
-const requestHttp = (url:string) => {
+const requestHttp = (url: string) => {
   return new Promise((resolve, reject) => {
     request({
-        url: url,
-        json: true,
-      },
+      url: url,
+      json: true,
+    },
       (error, response, body) => {
         if (error) {
           reject(error);
@@ -59,8 +59,6 @@ const App: React.FC = () => {
     document.dir = i18n.dir();
   }, [i18n, i18n.language]);
 
-
-
   return (
     <HashRouter>
       <Providers>
@@ -74,6 +72,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/faq">
             <FAQ />
+          </Route>
+          <Route exact path="/delegate">
+            <Delegate />
           </Route>
           <Route exact path="/migrate">
             <Migrate />
@@ -96,15 +97,11 @@ const App: React.FC = () => {
           <Route exact path="/daohouse">
             <Daohouse />
           </Route>
-
           <Route exact path="/contributor">
             <Contributor />
           </Route>
           <Route exact path="/contributors">
             <Contributor />
-          </Route>
-          <Route exact path="/delegate">
-            <Delegate />
           </Route>
           <Route exact path="/claim">
             <Claim />

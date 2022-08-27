@@ -11,7 +11,6 @@ import RegistrationButton from 'components/RegistrationButton';
 import SeparatorGrid from "components/SeparatorWithCSS";
 import Box from "components/BoxWithDisplay";
 import styled from "styled-components";
-import DelegateForm from "components/DelegateForm";
 import YamLoader from "components/YamLoader";
 import UnlockWalletModal from "components/UnlockWalletModal";
 
@@ -79,13 +78,13 @@ const Governance: React.FC = () => {
         <RegisterVoteNotice />
         <Spacer size="md" />
         <Split>
-          <Spacer />
           <Button full text="Forum" href="https://forum.yam.finance" variant="tertiary" />
           <Spacer />
-          <Button full text="Off-chain Voting" href="https://snapshot.page/#/yam" variant="tertiary" />
+          <Button full text="Snapshot" href="https://snapshot.page/#/yam" variant="tertiary" />
+          <Spacer />
+          <Button full text="Delegate" to="/delegate" variant="tertiary" />
           <Spacer />
           <RegistrationButton />
-          <Spacer />
         </Split>
         <Spacer size="md" />
         {account
@@ -157,7 +156,8 @@ const Governance: React.FC = () => {
           )
         }
         <Spacer size="md" />
-        {account && <DelegateForm />}
+        {/* to move */}
+        {/* {account && <DelegateForm />} */}
       </Container>
     </Page>
   );
