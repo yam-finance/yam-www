@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-
-import BigNumber from "bignumber.js";
 import { useWallet } from "use-wallet";
-
+import { Proposal, ProposalVotingPower } from "./types";
+import Context from "./Context";
 import useYam from "hooks/useYam";
 import {
   getProposals,
@@ -14,20 +13,17 @@ import {
   delegatedTo,
 } from "yam-sdk/utils";
 
-import Context from "./Context";
-
-import { Proposal, ProposalVotingPower } from "./types";
-
 const emptyDelegation = '0x0000000000000000000000000000000000000000';
 
 const Provider: React.FC = ({ children }) => {
   const { account } = useWallet();
   const yam = useYam();
-
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
-  const [isDelegated, setIsDelegated] = useState(false);
-  const [delegatedAddress, setDelegatedAddress] = useState('');
+  const [delegatedAddressToken, setDelegatedAddressToken] = useState('');
+  const [delegatedAddressLP, setDelegatedAddressLP] = useState('');
+  const [isDelegatedToken, setIsDelegatedToken] = useState(false);
+  const [isDelegatedLP, setIsDelegatedLP] = useState(false);
   const [proposals, setProposals] = useState<Proposal[]>();
   const [votingPowers, setVotingPowers] = useState<ProposalVotingPower[]>();
   const [currentPower, setCurrentPower] = useState<number>();
@@ -75,28 +71,28 @@ const Provider: React.FC = ({ children }) => {
     [account, setConfirmTxModalIsOpen, setIsVoting, yam]
   );
 
-  const delegateTo = useCallback(
+  const delegateToken = useCallback(
     async (delegatee: string | null, callback?: (txHash?: string) => any) => {
       if (!account || !yam) return;
       try {
         await delegate(yam, account, delegatee, callback)
         verifyDelegation();
       }
-      catch(err) {
+      catch (err) {
         console.error(err.message);
       }
     },
     [account, yam]
   );
 
-  const delegateStakedTo = useCallback(
+  const delegateLP = useCallback(
     async (delegatee: string | null, callback?: (txHash?: string) => any) => {
       if (!account || !yam) return;
       try {
         await delegateStaked(yam, account, delegatee, callback)
         verifyDelegation();
       }
-      catch(err) {
+      catch (err) {
         console.error(err.message);
       }
     },
@@ -105,14 +101,18 @@ const Provider: React.FC = ({ children }) => {
 
   const verifyDelegation = async () => {
     if (!account || !yam) return;
-    const delegatedAccount = await delegatedTo(yam, account);
-    setDelegatedAddress(delegatedAccount);
-    setIsDelegated(delegatedAccount !== emptyDelegation && delegatedAccount !== account);
+    const delegatedAccounts = await delegatedTo(yam, account);
+    const delegatedAccountToken = delegatedAccounts.token;
+    const delegatedAccountLP = delegatedAccounts.lp;
+    setDelegatedAddressToken(delegatedAccountToken);
+    setDelegatedAddressLP(delegatedAccountLP);
+    setIsDelegatedToken(delegatedAccountToken !== emptyDelegation);
+    setIsDelegatedLP(delegatedAccountLP !== emptyDelegation);
   };
 
   const fetchIsRegistered = useCallback(async () => {
     if (!account || !yam) return;
-    setIsRegistered((await delegatedTo(yam, account)) === account);
+    setIsRegistered(((await delegatedTo(yam, account)).token.toString()) === account);
   }, [account, setIsRegistered, yam]);
 
   useEffect(() => {
@@ -120,24 +120,23 @@ const Provider: React.FC = ({ children }) => {
   }, [account, fetchIsRegistered, yam]);
 
   const handleRegisterClick = async () => {
-    await delegateTo(account, () => setIsRegistering(true));
+    await delegateToken(account, () => setIsRegistering(true));
     setIsRegistering(false)
   };
 
   const handleUnregisterClick = async () => {
-    await delegateTo(emptyDelegation, () => setIsRegistering(true));
+    await delegateToken(emptyDelegation, () => setIsRegistering(true));
     setIsRegistering(false)
   };
 
-  const handleDelegateUnstaked = async (delegatee: string) => await delegateTo(delegatee, () => null)
-
-  const handleDelegateStaked = async (delegatee: string) => await delegateStakedTo(delegatee, () => null)
-  
-  const handleRemoveDelegation = async () => await delegateTo(account, () => null);
+  const handleDelegateToken = async (delegatee: string) => await delegateToken(delegatee, () => null)
+  const handleDelegateLP = async (delegatee: string) => await delegateLP(delegatee, () => null)
+  const handleRemoveDelegationToken = async () => await delegateToken(emptyDelegation, () => null);
+  const handleRemoveDelegationLP = async () => await delegateLP(emptyDelegation, () => null);
 
   useEffect(
     () => {
-      if(yam) verifyDelegation();
+      if (yam) verifyDelegation();
     },
     [account, yam]
   );
@@ -165,14 +164,17 @@ const Provider: React.FC = ({ children }) => {
         isRegistered,
         isRegistering,
         isVoting,
-        delegatedAddress,
-        isDelegated,
+        delegatedAddressToken,
+        delegatedAddressLP,
+        isDelegatedToken,
+        isDelegatedLP,
         onRegister: handleRegisterClick,
         onUnregister: handleUnregisterClick,
         onVote: handleVote,
-        onDelegateStaked: handleDelegateStaked,
-        onDelegateUnstaked: handleDelegateUnstaked,
-        onRemoveDelegation: handleRemoveDelegation,
+        onDelegateToken: handleDelegateToken,
+        onDelegateLP: handleDelegateLP,
+        onRemoveTokenDelegation: handleRemoveDelegationToken,
+        onRemoveLPDelegation: handleRemoveDelegationLP,
       }}
     >
       {children}

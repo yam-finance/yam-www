@@ -43,13 +43,19 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           onDismiss={onDismiss}
         >
           <StyledRouterLink
-            target="Addresses"
+            target="delegate"
+            label="Delegate"
+            mobileMenu={mobileMenu}
+            onDismiss={onDismiss}
+          />
+          <StyledRouterLink
+            target="addresses"
             label="Addresses"
             mobileMenu={mobileMenu}
             onDismiss={onDismiss}
           />
           <StyledRouterLink
-            target="Migrate"
+            target="migrate"
             label="Migrate to V3"
             mobileMenu={mobileMenu}
             onDismiss={onDismiss}

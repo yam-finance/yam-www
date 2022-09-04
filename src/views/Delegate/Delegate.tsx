@@ -1,12 +1,12 @@
-import React, {  useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Container, Spacer, Button } from "react-neu";
+import { useWallet } from "use-wallet";
 import Page from 'components/Page';
 import PageHeader from "components/PageHeader";
-import DelegateForm from "components/DelegateForm";
 import Box from 'components/BoxWithDisplay';
 import UnlockWalletModal from "components/UnlockWalletModal";
-import { useWallet } from "use-wallet";
-
+import DelegateToken from 'components/DelegateToken';
+import DelegateLP from 'components/DelegateLP';
 
 const Delegate = () => {
   const { account } = useWallet();
@@ -23,10 +23,15 @@ const Delegate = () => {
   return (
     <Page>
       <Container>
-        <PageHeader icon="📜" title="Delegate" />
-        <Spacer size="md" />
+        <PageHeader icon="📜" title="Delegate" subtitle="Delegate and join in on governance voting!" />
         {account
-          ? <DelegateForm />
+          ? (
+            <>
+              <DelegateToken />
+              <Spacer size="md" />
+              <DelegateLP />
+            </>
+          )
           : (
             <>
               <Box row justifyContent="center">
