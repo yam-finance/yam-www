@@ -34,6 +34,7 @@ import Projects from "views/Projects";
 import TVL from "views/TVL";
 
 import request from "request";
+import TokenValues from "views/TokenValues";
 
 const requestHttp = (url: string) => {
   return new Promise((resolve, reject) => {
@@ -111,6 +112,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/projects">
             <Projects />
+          </Route>
+          <Route exact path="/values">
+            <TokenValues />
           </Route>
           <Route exact path="/tvl">
             <TVL />

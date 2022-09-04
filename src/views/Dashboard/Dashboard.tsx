@@ -38,7 +38,7 @@ const Dashboard: React.FC = () => {
           : (
             <>
               <Box row justifyContent="center">
-                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display charts" variant="secondary" />
+                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display dashboard" variant="secondary" />
               </Box>
               <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
             </>

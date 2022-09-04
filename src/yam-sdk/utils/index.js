@@ -1035,6 +1035,11 @@ const requestHttp = (url) => {
   });
 };
 
+export const getYamValue = async (from, to) => {
+  const data = await requestHttp("https://api.yam.finance/price-avg/" + from + "/" + to);
+  return data;
+};
+
 export const getWETHPrice = async () => {
   const data = await requestHttp("https://api.coingecko.com/api/v3/coins/weth");
   return data.market_data.current_price.usd;

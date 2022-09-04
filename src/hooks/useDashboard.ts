@@ -19,7 +19,7 @@ const useDahsboard = () => {
   const { treasuryValue } = useTreasury();
   const [assetsData, setAssetsData] = useState<Object[]>();
   const [assetsColors, setAssetsColors] = useState<any>();
-  const [yamObject, setYamObject] = useState<Object>();
+  const [yamObject, setYamObject] = useState<any>();
 
   const fetchReserves = useCallback(async (from) => {
     if (!yam) {
