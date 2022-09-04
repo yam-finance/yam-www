@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import Web3 from "web3";
 import { provider, TransactionReceipt } from "web3-core";
-import { AbiItem, isAddress } from "web3-utils";
+import { AbiItem, isAddress, toChecksumAddress } from "web3-utils";
 
 import ERC20ABI from "constants/abi/ERC20.json";
 
@@ -145,4 +145,10 @@ export const getTimestampDate = (obj: { ts: number; ap?: boolean }) => {
   );
 };
 
-export const validateAddress = (address: string) => isAddress(address);
+export const validateAddress = (address: string) => {
+  if (address == "") return;
+  const checksumAddress = toChecksumAddress(address);
+  return isAddress(checksumAddress);
+};
+
+export const checksumAddress = (address: string) => toChecksumAddress(address);

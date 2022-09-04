@@ -337,18 +337,13 @@ export const delegateStaked = async (yam, account, delegatee, onTxHash) => {
 
 export const delegatedTo = async(yam, account) => {
   const emptyDelegation = '0x0000000000000000000000000000000000000000';
-  const [unstaked, staked] = await Promise.allSettled([
+  const [token, lp] = await Promise.allSettled([
     yam.contracts.yamV3.methods.delegates(account).call(),
     yam.contracts.voting_eth_pool.methods.delegates(account).call()
   ]);
-
-  if(unstaked.value !== emptyDelegation) {
-    return unstaked.value
-  } else if(staked.value !== emptyDelegation) {
-    return staked.value
-  } else {
-    return emptyDelegation;
-  }
+  const tokenDelegation = token.value || emptyDelegation;
+  const lpDelegation = lp.value || emptyDelegation;
+  return { token: tokenDelegation, lp: lpDelegation };
 }
 
 export const vote = async (yam, proposal, side, account, onTxHash) => {
@@ -1038,6 +1033,11 @@ const requestHttp = (url) => {
       }
     );
   });
+};
+
+export const getYamValue = async (from, to) => {
+  const data = await requestHttp("https://api.yam.finance/price-avg/" + from + "/" + to);
+  return data;
 };
 
 export const getWETHPrice = async () => {
