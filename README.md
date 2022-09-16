@@ -1,6 +1,6 @@
 # Yam.finance 🍠
 
-> The YAM core website application.
+> The Yam core website application.
 
 # What is YAM?
 
