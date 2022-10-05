@@ -1,8 +1,7 @@
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
-import Yam from "yam-sdk-files/dist";
-// import Yam from "yam-sdk";
+import Yam from "yam-sdk";
 
 const useSDK = () => {
   const { ethereum } = useWallet();
