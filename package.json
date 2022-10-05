@@ -62,7 +62,8 @@
     "semantic-ui-react": "^2.0.1",
     "styled-components": "^5.2.0",
     "use-wallet": "^0.13.6",
-    "web3": "1.2.11"
+    "web3": "1.2.11",
+    "yam-sdk": "^0.0.14-alpha"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",

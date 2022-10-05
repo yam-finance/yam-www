@@ -227,13 +227,11 @@ const StyledLink = styled.a<StyledLinkProps>`
   flex: auto;
   &:hover {
     color: ${(props) =>
-      !props.darkMode
-        ? props.color
-          ? props.theme.colors.grey[400]
-          : "white"
-        : "white"};
-
-        
+    !props.darkMode
+      ? props.color
+        ? props.theme.colors.grey[400]
+        : "white"
+      : "white"};
   }
 `;
 

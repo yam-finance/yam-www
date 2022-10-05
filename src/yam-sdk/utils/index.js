@@ -1010,6 +1010,18 @@ export async function getTreasury(address) {
   return data;
 };
 
+export const getProposalVotes = async (yam, proposalId) => {
+  let BASE24 = new BigNumber(10).pow(24);
+  const proposal = await yam.contracts.gov4.methods.proposals(proposalId).call();
+  const forVotes = new BigNumber(proposal["forVotes"]).div(BASE24).toNumber();
+  const againstVotes = new BigNumber(proposal["againstVotes"]).div(BASE24).toNumber();
+  return {forVotes, againstVotes};
+};
+
+export const getProposalState = async (yam, proposalId) => {
+  return stateMap[await yam.contracts.gov4.methods.state(proposalId).call()];
+};
+
 export const claimContributorVestedTokens = async (yam, account, contributor) => {
   console.log("account, accountId", account, contributor)
   return yam.contracts.VestingPool.methods.payout(contributor.id).send({

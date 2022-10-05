@@ -11,6 +11,7 @@ import useGovernance from "hooks/useGovernance";
 import styled from "styled-components";
 import { Proposal, ProposalVotingPower } from "../../../contexts/Governance/types";
 import VoteModal from "./VoteModal";
+import useYam from "hooks/useYam";
 
 interface ProposalProps {
   prop: Proposal;
@@ -20,11 +21,30 @@ interface ProposalProps {
 
 export const ProposalEntry: React.FC<ProposalProps> = ({ prop, onVote, onRegister }) => {
   const { isRegistered, isRegistering, isVoting, votingPowers, currentPower } = useGovernance();
+  const [proposalData, setProposalData] = useState({});
+
+  const yam = useYam();
 
   const [voteModalIsOpen, setVoteModalIsOpen] = useState(false);
 
+  // const getProposalData = useCallback(async () => {
+  //   if (yam) {
+  //     const proposalVotes = await getProposalVotes(yam, prop.id);
+  //     setProposalData(proposalVotes);
+  //   }
+  // }, []);
+
   const handleDismissVoteModal = useCallback(() => {
     setVoteModalIsOpen(false);
+  }, [setVoteModalIsOpen]);
+
+  const handleOnRegister = useCallback(() => {
+    onRegister();
+  }, [onRegister]);
+
+  const handleVoteClick = useCallback(() => {
+    setVoteModalIsOpen(true);
+    // getProposalData();
   }, [setVoteModalIsOpen]);
 
   const handleOnVote = useCallback(
@@ -34,22 +54,14 @@ export const ProposalEntry: React.FC<ProposalProps> = ({ prop, onVote, onRegiste
     [onVote]
   );
 
-  const handleOnRegister = useCallback(() => {
-    onRegister();
-  }, [onRegister]);
-
-  const handleVoteClick = useCallback(() => {
-    setVoteModalIsOpen(true);
-  }, [setVoteModalIsOpen]);
-
   return (
     <Fragment>
       <Box display="grid" alignItems="center" padding={4} row>
         <StyledProposalContentInner>
-          <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause").substring(0, 200) + (prop.description.length >= 200 ? "..." : "") : ""}</StyledDescription>
+          <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause").substring(0, 120) + (prop.description.length >= 200 ? "..." : "") : ""}</StyledDescription>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-          <StyledState>{prop.state}</StyledState>
-          <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+          {/* <StyledState>{prop.state}</StyledState> */}
+          {/* <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} /> */}
           <StyledButton>
             {(prop.state !== "Active" && <Button size="sm" onClick={handleVoteClick} text="View" variant="tertiary" />) ||
               (prop.state === "Active" && <Button size="sm" text="Vote" onClick={handleVoteClick} />)}
@@ -97,8 +109,8 @@ export const StyledState = styled.span`
 export const StyledProposalContentInner = styled.div`
   align-items: center;
   display: grid;
-  grid-template-columns: 70fr 5px 12fr 5px 18fr;
-  grid-template-areas: "desc spacer1 state spacer2 vote";
+  grid-template-columns: 80fr 5px 18fr;
+  grid-template-areas: "desc spacer1 vote";
   grid-template-rows: 100fr;
   @media (max-width: 768px) {
     flex-flow: column nowrap;
