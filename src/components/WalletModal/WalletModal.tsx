@@ -7,14 +7,12 @@ import FancyValue from "components/FancyValue";
 import Split from "components/Split";
 import useBalances from "hooks/useBalances";
 import useVesting from "hooks/useVesting";
-import useSDK from "hooks/useSDK";
 import AddressButton from "components/AddressButton";
 import styled from "styled-components";
 
 const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
   const [walletModalIsOpen, setWalletModalIsOpen] = useState(false);
   const { account, reset } = useWallet();
-  const { yamBalance } = useSDK();
 
   const { isClaiming, onClaim, vestedDelegatorRewardBalance, vestedMigratedBalance, vestedBalance } = useVesting();
 

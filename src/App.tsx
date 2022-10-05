@@ -35,6 +35,7 @@ import TVL from "views/TVL";
 
 import request from "request";
 import TokenValues from "views/TokenValues";
+import User from "views/User";
 
 const requestHttp = (url: string) => {
   return new Promise((resolve, reject) => {
@@ -118,6 +119,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/tvl">
             <TVL />
+          </Route>
+          <Route exact path="/user">
+            <User />
           </Route>
         </Switch>
       </Providers>

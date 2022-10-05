@@ -48,14 +48,6 @@ const Governance: React.FC = () => {
   }, [updateAstronaut]);
 
   useEffect(() => {
-    // if (proposals) {
-    //   const activeProposals: any = [];
-    //   for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > proposals.length ? proposals.length : pageLimit * activePage); i ++) {
-    //     activeProposals.push(proposals[i]);
-    //   }
-    //   setActiveProposals(activeProposals);
-    // }
-
     if (govProposals) {
       const activeProposals: any = [];
       for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > govProposals.length ? govProposals.length : pageLimit * activePage); i ++) {

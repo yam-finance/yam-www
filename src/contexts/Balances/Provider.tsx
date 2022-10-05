@@ -12,6 +12,7 @@ const Provider: React.FC = ({ children }) => {
   const [yamV3Balance, setYamV3Balance] = useState<any>();
   const [yycrvUniLpBalance, setYycrvUniLpBalance] = useState<BigNumber>();
   const [YAMETHLPBalance, setYAMETHLPBalance] = useState<BigNumber>();
+
   const { account, ethereum } = useWallet();
 
   const fetchBalances = useCallback(
