@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Yam_1 = __importDefault(require("./Yam"));
-exports.default = Yam_1.default;
+const Yam_1 = require("./Yam");
+exports.default = Yam_1.Yam;

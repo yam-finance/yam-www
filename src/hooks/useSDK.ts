@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
-import Yam from "yam-sdk-files/dist/Yam";
+import { Yam } from "yam-sdk-files/dist/Yam";
 // import Yam from "yam-sdk";
 
 const useSDK = () => {
@@ -16,7 +16,7 @@ const useSDK = () => {
   const [govProposals, setGovProposals] = useState<any>([]);
 
   const fetchSDK = useCallback(async () => {
-    if (ethereum) {
+    if (ethereum && Yam != undefined) {
       const provider = new ethers.providers.Web3Provider(ethereum);
       const yamSDK = await new Yam({
         provider: provider,

@@ -46,4 +46,3 @@ class Yam {
     }
 }
 exports.Yam = Yam;
-exports.default = Yam;

@@ -31,12 +31,13 @@ class YamGovernor {
     }
     /**
      * Get onchain proposals.
+     * Recent proposals starts from 11778137
      * @returns {object} All the onchain proposals of the governor.
      */
-    async getProposals() {
+    async getProposals(fromBlock) {
         let proposalsData = [];
         const latestBlock = await this.contract.provider.getBlockNumber();
-        const proposals = await this.contract.queryFilter("ProposalCreated", 11778137, latestBlock);
+        const proposals = await this.contract.queryFilter("ProposalCreated", fromBlock, latestBlock);
         for (let i = 0; i < proposals.length; i++) {
             let id = proposals[i]["args"]["id"];
             let targets = [];
@@ -76,7 +77,7 @@ class YamGovernor {
                     }
                 }
                 catch (error) {
-                    console.log("Error parsing", error);
+                    // console.log("Error parsing", error);
                 }
             }
             proposalsData.push({
@@ -94,6 +95,13 @@ class YamGovernor {
             });
         }
         return proposalsData;
+    }
+    /**
+     * Get most recent onchain proposals.
+     * @returns {object} The onchain proposals of the governor starting from block `11778137`.
+     */
+    async getRecentProposals() {
+        return await this.getProposals(11778137);
     }
     /**
      * Get onchain proposal votes.
