@@ -23,7 +23,7 @@ import useSDK from "hooks/useSDK";
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
 const Governance: React.FC = () => {
-  const { account } = useWallet();  
+  const { account } = useWallet();
   const {
     onVote,
     onRegister,
@@ -50,7 +50,7 @@ const Governance: React.FC = () => {
   useEffect(() => {
     if (govProposals) {
       const activeProposals: any = [];
-      for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > govProposals.length ? govProposals.length : pageLimit * activePage); i ++) {
+      for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > govProposals.length ? govProposals.length : pageLimit * activePage); i++) {
         activeProposals.push(govProposals[i]);
       }
       setActiveProposals(activeProposals);
@@ -66,7 +66,7 @@ const Governance: React.FC = () => {
     setUnlockModalIsOpen(true);
   }, [setUnlockModalIsOpen]);
 
-  const handlePageChange = (event:any, data:any) => {
+  const handlePageChange = (event: any, data: any) => {
     setActivePage(data.activePage);
   };
 
@@ -78,8 +78,6 @@ const Governance: React.FC = () => {
         <RegisterVoteNotice />
         <Spacer size="md" />
         <Split>
-          <Button full text="Forum" href="https://forum.yam.finance" variant="tertiary" />
-          <Spacer />
           <Button full text="Snapshot" href="https://snapshot.page/#/yam" variant="tertiary" />
           <Spacer />
           <Button full text="Delegate" to="/delegate" variant="tertiary" />
@@ -89,63 +87,63 @@ const Governance: React.FC = () => {
         <Spacer size="md" />
         {account
           ? <Card>
-              <CardTitle text="On-chain Proposals" />
-              <Spacer size="sm" />
-              <CardContent>
-                {govProposals ? (
-                  <>
-                    <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
-                      <StyledProposalContentInner>
-                        <StyledDescriptionMain>Description</StyledDescriptionMain>
-                        <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                        {/* <StyledStateMain>State</StyledStateMain> */}
-                        {/* <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} /> */}
-                        <StyledButtonMain>Action</StyledButtonMain>
-                      </StyledProposalContentInner>
-                    </Box>
-                    <Spacer size="sm" />
-                    {activeProposals && (
-                      <Surface>
-                        {activeProposals.map((prop:any, i:any) => {
-                          if (i === 0) {
-                            return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
-                          } else {
-                            return [<Separator key={"seperator" + i}/>, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
-                          }
-                        })}
-                        <Box row alignItems="center" justifyContent="center">
-                          <Pagination 
-                            defaultActivePage={activePage} 
-                            boundaryRange={0}
-                            siblingRange={1}
-                            firstItem={null}
-                            lastItem={null}
-                            prevItem={{ content: <Icon name='caret left' />, icon: true }}
-                            nextItem={{ content: <Icon name='caret right' />, icon: true }}
-                            totalPages={Math.ceil(govProposals.length / pageLimit)}
-                            style={{ 
-                              background: 'transparent',
-                              fontFamily: 'Nunito',
-                              fontSize: 16,
-                              fontWeight: 700,
-                              borderRadius: 28,
-                              border: 0,
-                              boxShadow: darkMode ? '-8px 8px 16px 0 hsl(339deg 20% 5%), 8px -8px 16px 0px hsl(0deg 0% 100% / 8%)' : '0px 0px 1px 1px hsl(338deg 95% 4% / 15%), inset -1px 1px 0px hsl(0deg 0% 100%)',
-                              boxSizing: 'border-box',
-                              height: 48,
-                            }}
-                            onPageChange={(event, data) => handlePageChange(event, data)}
-                          />
-                        </Box>
-                        <Spacer size="sm" />
-                      </Surface>
-                    )}
-                  </>
-                ) : (
-                  <YamLoader space={320}></YamLoader>
-                )}
-              </CardContent>
-            </Card>
+            <CardTitle text="On-chain Proposals" />
+            <Spacer size="sm" />
+            <CardContent>
+              {Object.keys(govProposals).length !== 0 ? (
+                <>
+                  <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
+                    <StyledProposalContentInner>
+                      <StyledDescriptionMain>Description</StyledDescriptionMain>
+                      <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
+                      {/* <StyledStateMain>State</StyledStateMain> */}
+                      {/* <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} /> */}
+                      <StyledButtonMain>Action</StyledButtonMain>
+                    </StyledProposalContentInner>
+                  </Box>
+                  <Spacer size="sm" />
+                  {activeProposals && (
+                    <Surface>
+                      {activeProposals.map((prop: any, i: any) => {
+                        if (i === 0) {
+                          return <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />;
+                        } else {
+                          return [<Separator key={"seperator" + i} />, <ProposalEntry key={prop.hash} prop={prop} onVote={onVote} onRegister={onRegister} />];
+                        }
+                      })}
+                      <Box row alignItems="center" justifyContent="center">
+                        <Pagination
+                          defaultActivePage={activePage}
+                          boundaryRange={0}
+                          siblingRange={1}
+                          firstItem={null}
+                          lastItem={null}
+                          prevItem={{ content: <Icon name='caret left' />, icon: true }}
+                          nextItem={{ content: <Icon name='caret right' />, icon: true }}
+                          totalPages={Math.ceil(govProposals.length / pageLimit)}
+                          style={{
+                            background: 'transparent',
+                            fontFamily: 'Nunito',
+                            fontSize: 16,
+                            fontWeight: 700,
+                            borderRadius: 28,
+                            border: 0,
+                            boxShadow: darkMode ? '-8px 8px 16px 0 hsl(339deg 20% 5%), 8px -8px 16px 0px hsl(0deg 0% 100% / 8%)' : '0px 0px 1px 1px hsl(338deg 95% 4% / 15%), inset -1px 1px 0px hsl(0deg 0% 100%)',
+                            boxSizing: 'border-box',
+                            height: 48,
+                          }}
+                          onPageChange={(event, data) => handlePageChange(event, data)}
+                        />
+                      </Box>
+                      <Spacer size="sm" />
+                    </Surface>
+                  )}
+                </>
+              ) : (
+                <YamLoader space={320}></YamLoader>
+              )}
+            </CardContent>
+          </Card>
           : (
             <>
               <Box row justifyContent="center">

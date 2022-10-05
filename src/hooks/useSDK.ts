@@ -28,8 +28,22 @@ const useSDK = () => {
 
       const userYamBalance = await yamContract.balance();
       const govProposals = await govContract.getProposals();
+      let govProposalsSorted = govProposals.sort((a, b) => {
+        if (a && b && a.end && b.end) {
+          if (a.end === b.end) {
+            return 0;
+          }
+          if (a.end < b.end) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          return 0;
+        }
+      });
       setYamBalance(userYamBalance);
-      setGovProposals(govProposals);
+      setGovProposals(govProposalsSorted);
     }
   }, [ethereum]);
 

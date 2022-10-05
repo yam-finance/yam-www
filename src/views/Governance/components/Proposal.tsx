@@ -58,7 +58,7 @@ export const ProposalEntry: React.FC<ProposalProps> = ({ prop, onVote, onRegiste
     <Fragment>
       <Box display="grid" alignItems="center" padding={4} row>
         <StyledProposalContentInner>
-          <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause").substring(0, 120) + (prop.description.length >= 200 ? "..." : "") : ""}</StyledDescription>
+          <StyledDescription>{prop.description ? prop.description.replace("Kill", "Pause").substring(0, 150) + (prop.description.length >= 150 ? "..." : "") : ""}</StyledDescription>
           <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
           {/* <StyledState>{prop.state}</StyledState> */}
           {/* <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} /> */}
