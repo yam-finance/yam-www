@@ -24,19 +24,6 @@ const WalletModal: React.FC<ModalProps> = ({ isOpen, onDismiss }) => {
     }
   }, []);
 
-
-  const ClaimButton = useMemo(() => {
-    const hasVestedYams = vestedBalance && vestedBalance.toNumber() > 0;
-    if (isClaiming) {
-      return <Button disabled full text="Claiming..." variant="secondary" />;
-    }
-    if (hasVestedYams) {
-      return <Button full onClick={onClaim} text="Claim YAMs" />;
-    }
-    return <Button disabled full text="Claim" variant="secondary" />;
-  }, [isClaiming, onClaim, vestedBalance]);
-
-
   const handleSignOut = useCallback(() => {
     localStorage.removeItem("account");
     localStorage.removeItem("walletProvider");

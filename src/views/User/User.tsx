@@ -10,9 +10,11 @@ import useVesting from "hooks/useVesting";
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
 import useSDK from "hooks/useSDK";
+import UnlockWalletModal from "components/UnlockWalletModal";
 
 const User: React.FC = () => {
-  const { reset } = useWallet();
+  const { account, reset } = useWallet();
+  const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
   const { yamV2Balance, yamV3Balance } = useBalances();
   const { yamBalance } = useSDK();
 
@@ -25,6 +27,16 @@ const User: React.FC = () => {
       return "--";
     }
   }, []);
+
+  // TODO Move these to their own component
+  const handleDismissUnlockModal = useCallback(() => {
+    setUnlockModalIsOpen(false);
+  }, [setUnlockModalIsOpen]);
+
+  const handleUnlockWalletClick = useCallback(() => {
+    setUnlockModalIsOpen(true);
+  }, [setUnlockModalIsOpen]);
+
 
   const ClaimButton = useMemo(() => {
     const hasVestedYams = vestedBalance && vestedBalance.toNumber() > 0;
@@ -43,45 +55,58 @@ const User: React.FC = () => {
       <Spacer size="md" />
 
       <Container>
-        <Split>
-          <Box row>
-            <FancyValue icon="🍠" label="YAM balance" value={getDisplayBalance(yamBalance)} />
-          </Box>
-          <Box row>
-            <FancyValue
-              icon={
-                <span role="img" style={{ opacity: 0.5 }}>
-                  🍠
-                </span>
-              }
-              label="YAMV2 balance"
-              value={getDisplayBalance(yamV2Balance)}
-            />
-          </Box>
-        </Split>
-        <Spacer />
-        <Separator />
-        <Spacer />
-        <Split>
-          <Box row>
-            <FancyValue icon="🎁" label="Vested YAM (Delegator)" value={getDisplayBalance(vestedDelegatorRewardBalance)} />
-          </Box>
-          <Box row>
-            <FancyValue icon="🦋" label="Vested YAM (Migrated)" value={getDisplayBalance(vestedMigratedBalance)} />
-          </Box>
-        </Split>
-        <Spacer />
 
-        <Box alignItems="center" row justifyContent="space-between">
-          <Box alignItems="center" row>
-            <Button text="Vote" to="/governance" variant="tertiary" />
+        {account
+          ? <>
+            <Split>
+              <Box row>
+                <FancyValue icon="🍠" label="YAM balance" value={getDisplayBalance(yamBalance)} />
+              </Box>
+              <Box row>
+                <FancyValue
+                  icon={
+                    <span role="img" style={{ opacity: 0.5 }}>
+                      🍠
+                    </span>
+                  }
+                  label="YAMV2 balance"
+                  value={getDisplayBalance(yamV2Balance)}
+                />
+              </Box>
+            </Split>
             <Spacer />
-            <Button text="Delegate" to="/delegate" variant="tertiary" />
-          </Box>
-          <Box alignItems="center" row justifyContent="space-between">
-            <Box>{ClaimButton}</Box>
-          </Box>
-        </Box>
+            <Separator />
+            <Spacer />
+            <Split>
+              <Box row>
+                <FancyValue icon="🎁" label="Vested YAM (Delegator)" value={getDisplayBalance(vestedDelegatorRewardBalance)} />
+              </Box>
+              <Box row>
+                <FancyValue icon="🦋" label="Vested YAM (Migrated)" value={getDisplayBalance(vestedMigratedBalance)} />
+              </Box>
+            </Split>
+            <Spacer />
+
+            <Box alignItems="center" row justifyContent="space-between">
+              <Box alignItems="center" row>
+                <Button text="Vote" to="/governance" variant="tertiary" />
+                <Spacer />
+                <Button text="Delegate" to="/delegate" variant="tertiary" />
+              </Box>
+              <Box alignItems="center" row justifyContent="space-between">
+                <Box>{ClaimButton}</Box>
+              </Box>
+            </Box>
+          </>
+          : (
+            <>
+              <Box row justifyContent="center">
+                <Button onClick={handleUnlockWalletClick} text="Unlock wallet to display proposals" variant="secondary" />
+              </Box>
+              <UnlockWalletModal isOpen={unlockModalIsOpen} onDismiss={handleDismissUnlockModal} />
+            </>
+          )
+        }
       </Container>
     </Page>
   );

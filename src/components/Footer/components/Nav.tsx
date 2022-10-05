@@ -27,7 +27,6 @@ const Nav: React.FC = () => {
           </div>
         ))}
       </>
-      {CheckContributor}
     </StyledNav>
   );
 };
