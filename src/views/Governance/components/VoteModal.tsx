@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Line } from "rc-progress";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
-import { Button, Modal, ModalActions, ModalContent, ModalProps, ModalTitle, Separator, Spacer, Card, CardContent } from "react-neu";
+import { Button, Modal, ModalActions, ModalContent, ModalProps, ModalTitle, Separator, Spacer, Card, CardContent, Box } from "react-neu";
 
 import styled from "styled-components";
 
@@ -13,14 +13,43 @@ import { useWallet } from "use-wallet";
 
 import { Proposal } from "../../../contexts/Governance/types";
 import Split from "components/Split";
+import { getProposalState, getProposalVotes } from "yam-sdk/utils";
+import useSDK from "hooks/useSDK";
 
 interface VoteModalProps extends ModalProps {
   prop: Proposal;
+  propData?: any;
   onVote: (proposal: number, side: boolean) => void;
 }
 
-const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }) => {
+const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss, onVote }) => {
   const { isRegistered, isRegistering, isVoting, votingPowers, currentPower, onRegister } = useGovernance();
+  const [proposalForVotes, setProposalForVotes] = useState(-1);
+  const [proposalAgainstVotes, setProposalAgainstVotes] = useState(-1);
+  const [proposalState, setProposalState] = useState("");
+  const { account } = useWallet();
+  const yam = useYam();
+  const { govContract } = useSDK();
+
+  const getProposalData = useCallback(async () => {
+    if (yam) {
+      const proposalVotes = await getProposalVotes(yam, prop.id);
+      const proposalState = await getProposalState(yam, prop.id);
+      console.log("proposalVotes", proposalVotes);
+      console.log("proposalState", proposalState);
+
+      setProposalForVotes(proposalVotes.forVotes);
+      setProposalAgainstVotes(proposalVotes.againstVotes);
+      setProposalState(proposalState);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      getProposalData();
+    }
+    console.log("isOpen", isOpen);
+  }, [isOpen]);
 
   const handleVoteClickTrue = useCallback(async () => {
     onVote(prop.id, true);
@@ -30,11 +59,8 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
     onVote(prop.id, false);
   }, [onVote]);
 
-  const { account } = useWallet();
-  const yam = useYam();
-
-  let percFor = (prop.forVotes / (prop.forVotes + prop.againstVotes)) * 100;
-  let percAgainst = (prop.againstVotes / (prop.forVotes + prop.againstVotes)) * 100;
+  let percFor = (proposalForVotes / (proposalForVotes + proposalAgainstVotes)) * 100;
+  let percAgainst = (proposalAgainstVotes / (proposalForVotes + proposalAgainstVotes)) * 100;
 
   let votePower;
   let voted;
@@ -54,23 +80,23 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
     <Modal isOpen={isOpen} onDismiss={onDismiss}>
       <ModalTitle text="Proposal Overview" />
       <ModalContent>
-        <CardContent>
-          {(voted && (
-            <StyledTitle>
-              Your vote:
-              <Spacer size="sm" />
-              <StyledSubtitle>
-                {side ? '"For"' : '"Against"'} with {numeral(votePower).format("0a")} votes.
-              </StyledSubtitle>
+        <Box row >
+          <Spacer size="md" />
+          <StyledTitle>State: {proposalState ? proposalState : "..."}.</StyledTitle>
+        </Box>
+        <Spacer size="sm" />
+        {(voted && (
+          <Box row >
+            <Spacer size="md" />
+            <StyledTitle> Your vote: {side ? '"For"' : '"Against"'} with {numeral(votePower).format("0a")} votes.
             </StyledTitle>
-          )) || (
-            <StyledTitle>
-              Your vote:
-              <Spacer size="sm" />
-              <StyledSubtitle>No vote</StyledSubtitle>
-            </StyledTitle>
+          </Box>
+        )) || (
+            <Box row >
+              <Spacer size="md" />
+              <StyledTitle>Your vote: No vote.</StyledTitle>
+            </Box>
           )}
-        </CardContent>
         <Spacer size="sm" />
         <Split>
           <CardContent>
@@ -84,12 +110,12 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, isOpen, onDismiss, onVote }
               <Separator />
               <Spacer size="sm" />
               <StyledLineHolder>
-                For: {numeral(prop.forVotes).format("0.a")}
+                For: {proposalForVotes >= 0 ? numeral(proposalForVotes).format("0.a") : "..."}
                 <Line percent={percFor} strokeWidth={1} strokeColor="#ec0e5c" />
               </StyledLineHolder>
               <Spacer size="sm" />
               <StyledLineHolder>
-                Against: {numeral(prop.againstVotes).format("0.a")}
+                Against: {proposalAgainstVotes >= 0 ? numeral(proposalAgainstVotes).format("0.a") : "..."}
                 <Line percent={percAgainst} strokeWidth={1} strokeColor="#ec0e5c" />
               </StyledLineHolder>
             </CardContent>

@@ -18,17 +18,18 @@ import useGovernance from "hooks/useGovernance";
 import { useWallet } from "use-wallet";
 
 import { ProposalEntry, StyledProposalContentInner } from "./components/Proposal";
+import useSDK from "hooks/useSDK";
 
 const ASTRONAUTS = ["👨‍🚀", "👨🏻‍🚀", "👨🏼‍🚀", "👨🏽‍🚀", "👨🏾‍🚀", "👩‍🚀", "👩🏻‍🚀", "👩🏼‍🚀", "👩🏽‍🚀", "👩🏾‍🚀‍", "👩🏿‍🚀"];
 
 const Governance: React.FC = () => {
   const { account } = useWallet();  
   const {
-    proposals,
     onVote,
     onRegister,
   } = useGovernance();
   const { darkMode } = useTheme();
+  const { govProposals } = useSDK();
 
   const [astronaut, setAstronaut] = useState("👨‍🚀");
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
@@ -47,15 +48,22 @@ const Governance: React.FC = () => {
   }, [updateAstronaut]);
 
   useEffect(() => {
-    if (proposals) {
-      const activeProposals = [];
-      for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > proposals.length ? proposals.length : pageLimit * activePage); i ++) {
-        activeProposals.push(proposals[i]);
+    // if (proposals) {
+    //   const activeProposals: any = [];
+    //   for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > proposals.length ? proposals.length : pageLimit * activePage); i ++) {
+    //     activeProposals.push(proposals[i]);
+    //   }
+    //   setActiveProposals(activeProposals);
+    // }
+
+    if (govProposals) {
+      const activeProposals: any = [];
+      for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > govProposals.length ? govProposals.length : pageLimit * activePage); i ++) {
+        activeProposals.push(govProposals[i]);
       }
       setActiveProposals(activeProposals);
     }
-  }, [proposals, activePage, pageLimit]);
-
+  }, [govProposals, activePage, pageLimit]);
 
   // TODO Move these to their own component
   const handleDismissUnlockModal = useCallback(() => {
@@ -92,14 +100,14 @@ const Governance: React.FC = () => {
               <CardTitle text="On-chain Proposals" />
               <Spacer size="sm" />
               <CardContent>
-                {proposals ? (
+                {govProposals ? (
                   <>
                     <Box display="grid" alignItems="center" paddingLeft={4} paddingRight={4} paddingBottom={1} row>
                       <StyledProposalContentInner>
                         <StyledDescriptionMain>Description</StyledDescriptionMain>
                         <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer1"} />
-                        <StyledStateMain>State</StyledStateMain>
-                        <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} />
+                        {/* <StyledStateMain>State</StyledStateMain> */}
+                        {/* <SeparatorGrid orientation={"vertical"} stretch={true} gridArea={"spacer2"} /> */}
                         <StyledButtonMain>Action</StyledButtonMain>
                       </StyledProposalContentInner>
                     </Box>
@@ -122,7 +130,7 @@ const Governance: React.FC = () => {
                             lastItem={null}
                             prevItem={{ content: <Icon name='caret left' />, icon: true }}
                             nextItem={{ content: <Icon name='caret right' />, icon: true }}
-                            totalPages={Math.ceil(proposals.length / pageLimit)}
+                            totalPages={Math.ceil(govProposals.length / pageLimit)}
                             style={{ 
                               background: 'transparent',
                               fontFamily: 'Nunito',
