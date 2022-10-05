@@ -14,7 +14,7 @@ const Provider: React.FC = ({ children }) => {
   const [yycrvUniLpBalance, setYycrvUniLpBalance] = useState<BigNumber>();
   const [YAMETHLPBalance, setYAMETHLPBalance] = useState<BigNumber>();
 
-  const { account, ethereum }: { account: string | null; ethereum: provider } = useWallet();
+  const { account, ethereum } = useWallet();
 
   const fetchBalances = useCallback(
     async (userAddress: string, provider: provider) => {

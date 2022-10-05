@@ -48,7 +48,7 @@ const Governance: React.FC = () => {
 
   useEffect(() => {
     if (proposals) {
-      const activeProposals = [];
+      const activeProposals:any = [];
       for (let i = pageLimit * (activePage - 1); i < (pageLimit * activePage > proposals.length ? proposals.length : pageLimit * activePage); i ++) {
         activeProposals.push(proposals[i]);
       }

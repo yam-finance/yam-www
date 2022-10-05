@@ -7,9 +7,9 @@ import FancyValue from "components/FancyValue";
 import Split from "components/Split";
 import useBalances from "hooks/useBalances";
 import useVesting from "hooks/useVesting";
-import useSDK from "hooks/useSDK";
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
+import useSDK from "hooks/useSDK";
 
 const User: React.FC = () => {
   const { reset } = useWallet();
