@@ -137,7 +137,6 @@ const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider darkModeEnabled={darkModeSetting} darkTheme={darkTheme} lightTheme={lightTheme}>
       <UseWalletProvider
-        chainId={1}
         connectors={{
           walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
           fortmatic: { apiKey: "pk_live_2B1E18021320B71B" },

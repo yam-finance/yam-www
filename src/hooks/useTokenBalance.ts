@@ -8,7 +8,7 @@ import { bnToDec, getBalance } from "utils";
 
 const useTokenBalance = (accountAddress?: string, tokenAddress?: string, decimals = 18) => {
   const [balance, setBalance] = useState<number>();
-  const { ethereum }: { ethereum: provider } = useWallet();
+  const { ethereum } = useWallet();
 
   const fetchBalance = useCallback(async () => {
     if (!accountAddress || !ethereum || !tokenAddress) {

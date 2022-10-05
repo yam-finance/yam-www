@@ -56,7 +56,7 @@ const AssetsList: React.FC<AssetsListProps> = ({assetsData}) => {
   const { items, requestSort, sortConfig } = useSortableData(assets);
 
   useEffect(() => {
-    const csvData = [];
+    const csvData: any = [];
     csvData.push([moment().format("dddd, Do MMMM YYYY")]);
     csvData.push(["Token Name", "Symbol", "Quantity", "Token Price in $", "Change 24h", "Value in $"]);
     let treasuryBalance = 0;
