@@ -7,10 +7,10 @@ exports.YamToken = void 0;
 const ethers_1 = require("ethers");
 const utils_1 = __importDefault(require("../../utils/utils"));
 class YamToken {
-    constructor(abi, signer) {
-        this.abi = abi;
+    constructor(abis, signer) {
+        this.abis = abis;
         this.signer = signer;
-        this.contract = new ethers_1.ethers.Contract(this.abi.address, this.abi.abi, this.signer);
+        this.contract = new ethers_1.ethers.Contract(this.abis.token.address, this.abis.token.abi, this.signer);
     }
     // Read functions
     /**

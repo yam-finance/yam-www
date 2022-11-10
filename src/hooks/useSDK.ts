@@ -1,3 +1,4 @@
+import { ProposalVotingPower } from "contexts/Governance/types";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
@@ -9,6 +10,7 @@ const useSDK = () => {
   // Contracts
   const [yamContract, setYamContract] = useState<any>();
   const [govContract, setGovContract] = useState<any>();
+  const [redeemerContract, setRedeemerContract] = useState<any>();
 
   // Functions
   const [yamBalance, setYamBalance] = useState<any>();
@@ -22,13 +24,14 @@ const useSDK = () => {
       });
       const yamContract = await yamSDK.contracts.token;
       const govContract = await yamSDK.contracts.governor;
+      const redeemerContract = await yamSDK.contracts.redeemer;
       setYamSDK(yamSDK);
       setYamContract(yamContract);
       setGovContract(govContract);
-
+      setRedeemerContract(redeemerContract);
       const userYamBalance = await yamContract.balance();
-      const govProposals = await govContract.getProposals();
-      let govProposalsSorted = govProposals.sort((a, b) => {
+      const govProposals = await govContract.getRecentProposals();
+      let govProposalsSorted = govProposals.sort((a: any, b: any) => {
         if (a && b && a.end && b.end) {
           if (a.end === b.end) {
             return 0;
@@ -51,7 +54,14 @@ const useSDK = () => {
     fetchSDK();
   }, [ethereum]);
 
-  return { yamSDK, yamContract, govContract, yamBalance, govProposals };
+  return {
+    yamSDK,
+    yamContract,
+    govContract,
+    redeemerContract,
+    yamBalance,
+    govProposals,
+  };
 };
 
 export default useSDK;
