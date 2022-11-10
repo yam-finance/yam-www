@@ -51,7 +51,7 @@ const Provider: React.FC = ({ children }) => {
   }, [setProposals, yam]);
 
   const fetchVotingPowers = useCallback(async () => {
-    if(proposals){
+    if (proposals) {
       let votingPowers: ProposalVotingPower[] = await getVotingPowers(yam, proposals, account);
       setVotingPowers(votingPowers);
     }
@@ -148,11 +148,11 @@ const Provider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (yam) {
-      fetchProposals();
+      // fetchProposals();
       fetchVotingPowers();
       fetchCurrentPower();
     }
-  }, [fetchProposals, fetchCurrentPower, yam]);
+  }, [fetchVotingPowers, fetchCurrentPower, yam]);
 
   // useEffect(() => {
   //   if (yam) {

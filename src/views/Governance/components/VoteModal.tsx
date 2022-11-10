@@ -24,32 +24,36 @@ interface VoteModalProps extends ModalProps {
 }
 
 const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss, onVote }) => {
-  const { isRegistered, isRegistering, isVoting, votingPowers, currentPower, onRegister } = useGovernance();
+  const { isRegistered, isRegistering, isVoting, currentPower, onRegister } = useGovernance();
   const [proposalForVotes, setProposalForVotes] = useState(-1);
   const [proposalAgainstVotes, setProposalAgainstVotes] = useState(-1);
   const [proposalState, setProposalState] = useState("");
+  const [votePowerState, setVotePowerState] = useState<number>();
+  const [votedState, setVotedState] = useState<boolean>();
+  const [sideState, setSideState] = useState<boolean>();
   const { account } = useWallet();
   const yam = useYam();
-  const { govContract } = useSDK();
+  const { yamContract, govContract } = useSDK();
 
-  const getProposalData = useCallback(async () => {
+  const getProposalData = useCallback(async (governor: any) => {
     if (yam) {
       const proposalVotes = await getProposalVotes(yam, prop.id);
       const proposalState = await getProposalState(yam, prop.id);
-      console.log("proposalVotes", proposalVotes);
-      console.log("proposalState", proposalState);
-
       setProposalForVotes(proposalVotes.forVotes);
       setProposalAgainstVotes(proposalVotes.againstVotes);
       setProposalState(proposalState);
+
+      const votingPowers = await governor.getProposalVotingPower(prop.id);
+      setVotePowerState(votingPowers.power);
+      setVotedState(votingPowers.voted);
+      setSideState(votingPowers.side);
     }
   }, []);
 
   useEffect(() => {
     if (isOpen) {
-      getProposalData();
+      getProposalData(govContract);
     }
-    console.log("isOpen", isOpen);
   }, [isOpen]);
 
   const handleVoteClickTrue = useCallback(async () => {
@@ -63,67 +67,43 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
   let percFor = (proposalForVotes / (proposalForVotes + proposalAgainstVotes)) * 100;
   let percAgainst = (proposalAgainstVotes / (proposalForVotes + proposalAgainstVotes)) * 100;
 
-  let votePower;
-  let voted;
-  let side;
-  if (votingPowers) {
-    for (let i = 0; i < votingPowers.length; i++) {
-      if (prop.hash == votingPowers[i].hash) {
-        let votingPower = votingPowers[i];
-        votePower = votingPower.power;
-        voted = votingPower.voted;
-        side = votingPower.side;
-      }
-    }
-  }
-
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss}>
-      <ModalTitle text="Proposal Overview" />
+      <ModalTitle text={"Proposal Overview (" + prop.id + ")"} />
       {proposalState !== "" ? (
         <>
           <ModalContent>
-            <Box row >
-              <Spacer size="md" />
-              <StyledTitle>State: {proposalState ? proposalState : "..."}.</StyledTitle>
-            </Box>
-            <Spacer size="sm" />
-            {(voted && (
-              <Box row >
-                <Spacer size="md" />
-                <StyledTitle> Your vote: {side ? '"For"' : '"Against"'} with {numeral(votePower).format("0a")} votes.
-                </StyledTitle>
+            <Box column>
+              <Box row>
+                <Spacer size="sm" /><StyledTitle>State: {proposalState ? proposalState : "..."}.</StyledTitle>
               </Box>
-            )) || (
-                <Box row >
-                  <Spacer size="md" />
-                  <StyledTitle>Your vote: No vote.</StyledTitle>
+              <Spacer size="sm" />
+              {(votedState && (
+                <Box row>
+                  <Spacer size="sm" /><StyledTitle>Voted: {sideState ? 'For' : 'Against'}, {numeral(votePowerState).format("0a")} YAM.
+                  </StyledTitle>
                 </Box>
-              )}
-            <Spacer size="sm" />
-            <Split>
+              )) || (
+                  <Box row>
+                    <Spacer size="sm" /><StyledTitle>Voted: No vote.</StyledTitle>
+                  </Box>
+                )}
+              <Spacer size="md" />
+            </Box>
+            <Card>
               <CardContent>
-                <Button size="sm" href={"https://etherscan.io/tx/" + prop.hash} text="View On Etherscan" variant="tertiary" />
-                {prop.more && <Spacer size="sm" />}
-                {prop.more && <Button size="sm" href={prop.more} text="Read More & See Off-Chain Vote" variant="tertiary" />}
+                <StyledLineHolder>
+                  For votes: {proposalForVotes >= 0 ? numeral(proposalForVotes).format("0.a") : "..."}
+                  <Line percent={percFor} strokeWidth={1} trailWidth={1} trailColor="#c1c1c14f" strokeColor="#14d12b" />
+                </StyledLineHolder>
+                <Spacer size="sm" />
+                <StyledLineHolder>
+                  Against votes: {proposalAgainstVotes >= 0 ? numeral(proposalAgainstVotes).format("0.a") : "..."}
+                  <Line percent={percAgainst} strokeWidth={1} trailWidth={1} trailColor="#c1c1c14f" strokeColor="#d1142e" />
+                </StyledLineHolder>
               </CardContent>
-              <Card>
-                <CardContent>
-                  Votes
-                  <Separator />
-                  <Spacer size="sm" />
-                  <StyledLineHolder>
-                    For: {proposalForVotes >= 0 ? numeral(proposalForVotes).format("0.a") : "..."}
-                    <Line percent={percFor} strokeWidth={1} strokeColor="#ec0e5c" />
-                  </StyledLineHolder>
-                  <Spacer size="sm" />
-                  <StyledLineHolder>
-                    Against: {proposalAgainstVotes >= 0 ? numeral(proposalAgainstVotes).format("0.a") : "..."}
-                    <Line percent={percAgainst} strokeWidth={1} strokeColor="#ec0e5c" />
-                  </StyledLineHolder>
-                </CardContent>
-              </Card>
-            </Split>
+            </Card>
+
             <Spacer size="md" />
             <Card>
               <StyledParams>
@@ -153,7 +133,9 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
                   </StyledDescription>
                   <Spacer size="sm" />
                   <StyledInfo>
-                    <code> {prop.signatures.join(", ")}</code>
+                    {prop.signatures.map((signature, i) => {
+                      return <code key={"code" + i}>{JSON.stringify(signature)}, </code>;
+                    })}
                   </StyledInfo>
                   <Spacer size="sm" />
                   <Separator />
@@ -171,20 +153,25 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
               </StyledParams>
             </Card>
           </ModalContent>
-          <ModalActions>
+          <Box justifyContent="space-between" alignItems="center" row paddingHorizontal={4}>
             <Button onClick={onDismiss} text="Cancel" variant="tertiary" />
-            {(prop.state === "Active" && !voted && isRegistered && votePower && votePower > 0 && (
-              <>
-                <Button disabled={isVoting} onClick={handleVoteClickTrue} text="For" />
-                <Spacer size="md" />
-                <Button disabled={isVoting} onClick={handleVoteClickFalse} text="Against" />
-              </>
-            )) ||
-              (prop.state === "Active" && !voted && isRegistered && (
-                <span>Unable To Vote. You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
+            <Box row justifyContent="flex-end" alignItems="center">
+              <Button href={"https://etherscan.io/tx/" + prop.hash} text="Etherscan" variant="tertiary" />
+              {(prop.state === "Active" && !votedState && isRegistered && votePowerState && votePowerState > 0 && (
+                <>
+                  <Spacer size="md" />
+                  <Button onClick={handleVoteClickTrue} text="For" />
+                  <Spacer size="md" />
+                  <Button onClick={handleVoteClickFalse} text="Against" />
+                </>
               )) ||
-              (prop.state === "Pending" && !isRegistered && !voted && <Button disabled={isRegistering} onClick={onRegister} text="Register" />)}
-          </ModalActions>
+                (prop.state === "Active" && !votedState && isRegistered && (
+                  <span>Unable To Vote. You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
+                )) ||
+                (prop.state === "Pending" && !isRegistered && !votedState && <Button disabled={isRegistering} onClick={onRegister} text="Register" />)}
+            </Box>
+          </Box>
+          <Spacer />
         </>
       ) : (
         <YamLoader space={320}></YamLoader>
@@ -212,7 +199,7 @@ const StyledSubtitle = styled.span`
 `;
 
 const StyledLineHolder = styled.div`
-  width: 80%;
+  width: 100%;
   font-size: 14px;
   display: flex;
   flex-direction: column;
