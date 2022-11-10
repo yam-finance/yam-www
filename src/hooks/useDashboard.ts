@@ -42,6 +42,7 @@ const useDahsboard = () => {
       "xsushi": "https://assets.coingecko.com/coins/images/13725/small/xsushi.png",
       "yam": "https://assets.coingecko.com/coins/images/12530/small/YAM-icon.png",
       "yvusdc": "https://assets.coingecko.com/coins/images/12210/small/yUSD.png",
+      "yamslp": "https://assets.coingecko.com/coins/images/12530/small/YAM-icon.png",
     }
 
     const treasuryAssets:any = treasuryValue.assets || {};
