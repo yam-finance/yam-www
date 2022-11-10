@@ -10,6 +10,7 @@ const useSDK = () => {
   // Contracts
   const [yamContract, setYamContract] = useState<any>();
   const [govContract, setGovContract] = useState<any>();
+  const [redeemerContract, setRedeemerContract] = useState<any>();
 
   // Functions
   const [yamBalance, setYamBalance] = useState<any>();
@@ -23,10 +24,11 @@ const useSDK = () => {
       });
       const yamContract = await yamSDK.contracts.token;
       const govContract = await yamSDK.contracts.governor;
+      const redeemerContract = await yamSDK.contracts.redeemer;
       setYamSDK(yamSDK);
       setYamContract(yamContract);
       setGovContract(govContract);
-      
+      setRedeemerContract(redeemerContract);
       const userYamBalance = await yamContract.balance();
       const govProposals = await govContract.getRecentProposals();
       let govProposalsSorted = govProposals.sort((a: any, b: any) => {
@@ -56,6 +58,7 @@ const useSDK = () => {
     yamSDK,
     yamContract,
     govContract,
+    redeemerContract,
     yamBalance,
     govProposals,
   };

@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Yam = void 0;
 const Token_1 = require("./lib/contracts/Token");
 const Governor_1 = require("./lib/contracts/Governor");
+const Redeemer_1 = require("./lib/contracts/Redeemer");
 const yam_json_1 = __importDefault(require("./utils/abis/yam.json"));
 const governor_json_1 = __importDefault(require("./utils/abis/governor.json"));
 const timelock_json_1 = __importDefault(require("./utils/abis/timelock.json"));
 const incentivizer_json_1 = __importDefault(require("./utils/abis/incentivizer.json"));
 const migrator_json_1 = __importDefault(require("./utils/abis/migrator.json"));
+const redeemer_json_1 = __importDefault(require("./utils/abis/redeemer.json"));
 const tokens_1 = __importDefault(require("./utils/tokens"));
 class Yam {
     // config!: any;
@@ -31,10 +33,12 @@ class Yam {
             timelock: timelock_json_1.default,
             incentivizer: incentivizer_json_1.default,
             migrator: migrator_json_1.default,
+            redeemer: redeemer_json_1.default,
         };
         this.contracts = {
             token: new Token_1.YamToken(this.abis, this.signer),
             governor: new Governor_1.YamGovernor(this.abis, this.signer),
+            redeemer: new Redeemer_1.YamRedeemer(this.abis, this.signer),
         };
         this.loaded = Promise.all([]);
     }
