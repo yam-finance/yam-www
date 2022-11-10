@@ -135,7 +135,7 @@ const Governance: React.FC = () => {
                           onPageChange={(event, data) => handlePageChange(event, data)}
                         />
                       </Box>
-                      <Spacer size="sm" />
+                      <Spacer size="md" />
                     </Surface>
                   )}
                 </>

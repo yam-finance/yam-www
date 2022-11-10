@@ -1,3 +1,4 @@
+import { ProposalVotingPower } from "contexts/Governance/types";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
@@ -28,10 +29,9 @@ const useSDK = () => {
       setYamContract(yamContract);
       setGovContract(govContract);
       setRedeemerContract(redeemerContract);
-
       const userYamBalance = await yamContract.balance();
-      const govProposals = await govContract.getProposals();
-      let govProposalsSorted = govProposals.sort((a, b) => {
+      const govProposals = await govContract.getRecentProposals();
+      let govProposalsSorted = govProposals.sort((a: any, b: any) => {
         if (a && b && a.end && b.end) {
           if (a.end === b.end) {
             return 0;
