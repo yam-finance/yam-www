@@ -53,7 +53,7 @@ const Redemption: React.FC = () => {
                 {/* <Button onClick={donateClick} text="Donate" /> */}
               </Box>
               <Box alignItems="center" row justifyContent="space-between">
-                <Button onClick={redeemClick} text="Redeem" />
+                <Button disabled onClick={redeemClick} text="Redeem" />
               </Box>
             </Box>
           </>
