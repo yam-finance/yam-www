@@ -36,6 +36,7 @@ import TVL from "views/TVL";
 import request from "request";
 import TokenValues from "views/TokenValues";
 import User from "views/User";
+import Redemption from "views/Redemption";
 
 const requestHttp = (url: string) => {
   return new Promise((resolve, reject) => {
@@ -122,6 +123,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/user">
             <User />
+          </Route>
+          <Route exact path="/redemption">
+            <Redemption />
           </Route>
         </Switch>
       </Providers>
