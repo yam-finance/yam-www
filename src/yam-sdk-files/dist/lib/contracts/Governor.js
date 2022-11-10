@@ -6,13 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.YamGovernor = void 0;
 const ethers_1 = require("ethers");
 const utils_1 = __importDefault(require("../../utils/utils"));
+const Token_1 = require("./Token");
 const bn = ethers_1.ethers.BigNumber;
 const BASE24 = bn.from(10).pow(24);
 class YamGovernor {
-    constructor(abi, signer) {
-        this.abi = abi;
+    constructor(abis, signer) {
+        this.abis = abis;
         this.signer = signer;
-        this.contract = new ethers_1.ethers.Contract(this.abi.address, this.abi.abi, this.signer);
+        this.contract = new ethers_1.ethers.Contract(this.abis.governor.address, this.abis.governor.abi, this.signer);
+        this.yamToken = new Token_1.YamToken(this.abis, this.signer);
     }
     // Read functions
     /**
@@ -28,6 +30,25 @@ class YamGovernor {
      */
     async votingPeriod() {
         return await this.contract.votingPeriod();
+    }
+    /**
+     * Get onchain proposal.
+     * @returns {object} Onchain proposal.
+     */
+    async getProposal(proposalId) {
+        const proposal = await this.contract.proposals(proposalId);
+        const proposalData = {
+            id: proposal.id.toString(),
+            start: proposal["startBlock"].toString(),
+            end: proposal["endBlock"].toString(),
+            forVotes: proposal.forVotes.toString(),
+            againstVotes: proposal.againstVotes.toString(),
+            canceled: proposal.canceled,
+            executed: proposal.executed,
+            proposer: proposal.proposer.toString(),
+            eta: proposal.eta.toString(),
+        };
+        return proposalData;
     }
     /**
      * Get onchain proposals.
@@ -70,8 +91,8 @@ class YamGovernor {
                     if (abi_types[0] != "") {
                         let result = ethers_1.ethers.utils.defaultAbiCoder.decode(abi_types, proposals[i]["args"]["calldatas"][j]);
                         let fr = [];
-                        for (let k = 0; k < result.__length__; k++) {
-                            fr.push(result[k.toString()]);
+                        for (let k = 0; k < result.length; k++) {
+                            fr.push(result[k].toString());
                         }
                         inputs.push(fr);
                     }
@@ -129,6 +150,61 @@ class YamGovernor {
      */
     async getProposalStateNumber(proposalId) {
         return await this.contract.state(proposalId);
+    }
+    /**
+     * Get voting power of a proposal.
+     * @returns {object} The voting power of a proposal.
+     */
+    async getProposalVotingPower(proposalId) {
+        let powers;
+        const proposal = await this.getProposal(proposalId);
+        const account = this.signer.getAddress();
+        const receipt = await this.contract.getReceipt(proposal.id, account);
+        let power = bn.from(receipt[2]).div(BASE24).toNumber();
+        if (power == 0) {
+            // const priorVotesIncentivizer = await this.yamIncentivizer.getPriorVotes(
+            //   account,
+            //   proposal.start
+            // );
+            const priorVotesToken = await this.yamToken.getPriorVotes(account, proposal.start);
+            power = bn.from(priorVotesToken).div(BASE24).toNumber();
+        }
+        powers = {
+            id: proposal.id,
+            power: power,
+            voted: receipt[0],
+            side: receipt[1],
+        };
+        return powers;
+    }
+    /**
+     * Get voting power of all proposals.
+     * @returns {object} The voting power of each proposal.
+     */
+    async getProposalsVotingPower(proposals) {
+        const account = this.signer.getAddress();
+        let powers = [];
+        for (let i = 0; i < proposals.length; i++) {
+            const receipt = await this.contract.getReceipt(proposals[i].id, account);
+            let power = bn.from(receipt[2]).div(BASE24).toNumber();
+            if (power == 0) {
+                // const priorVotesIncentivizer = await this.yamIncentivizer.getPriorVotes(
+                //   account,
+                //   proposals[i].start
+                // );
+                const priorVotesToken = await this.yamToken.getPriorVotes(account, proposals[i].start);
+                power = bn.from(priorVotesToken).div(BASE24).toNumber();
+            }
+            const powerData = {
+                id: proposals[i].id,
+                hash: proposals[i].hash,
+                power: power,
+                voted: receipt[0],
+                side: receipt[1],
+            };
+            powers.push(powerData);
+        }
+        return powers;
     }
 }
 exports.YamGovernor = YamGovernor;

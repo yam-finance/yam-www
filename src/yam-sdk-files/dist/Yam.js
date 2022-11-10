@@ -33,8 +33,8 @@ class Yam {
             migrator: migrator_json_1.default,
         };
         this.contracts = {
-            token: new Token_1.YamToken(this.abis.token, this.signer),
-            governor: new Governor_1.YamGovernor(this.abis.governor, this.signer),
+            token: new Token_1.YamToken(this.abis, this.signer),
+            governor: new Governor_1.YamGovernor(this.abis, this.signer),
         };
         this.loaded = Promise.all([]);
     }
