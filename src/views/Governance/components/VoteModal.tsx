@@ -28,7 +28,7 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
   const [proposalForVotes, setProposalForVotes] = useState(-1);
   const [proposalAgainstVotes, setProposalAgainstVotes] = useState(-1);
   const [proposalState, setProposalState] = useState("");
-  const [votePowerState, setVotePowerState] = useState<number>();
+  const [votePowerState, setVotePowerState] = useState<number>(1);
   const [votedState, setVotedState] = useState<boolean>();
   const [sideState, setSideState] = useState<boolean>();
   const { account } = useWallet();
@@ -48,7 +48,7 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
       setVotedState(votingPowers.voted);
       setSideState(votingPowers.side);
     }
-  }, []);
+  }, [proposalState, votePowerState, votedState, sideState, proposalForVotes, proposalAgainstVotes]);
 
   useEffect(() => {
     if (isOpen) {
@@ -157,7 +157,7 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
             <Button onClick={onDismiss} text="Cancel" variant="tertiary" />
             <Box row justifyContent="flex-end" alignItems="center">
               <Button href={"https://etherscan.io/tx/" + prop.hash} text="Etherscan" variant="tertiary" />
-              {(prop.state === "Active" && !votedState && isRegistered && votePowerState && votePowerState > 0 && (
+              {(proposalState === "Active" && !votedState && isRegistered && votePowerState && votePowerState > 0 && (
                 <>
                   <Spacer size="md" />
                   <Button onClick={handleVoteClickTrue} text="For" />
@@ -165,10 +165,10 @@ const VoteModal: React.FC<VoteModalProps> = ({ prop, propData, isOpen, onDismiss
                   <Button onClick={handleVoteClickFalse} text="Against" />
                 </>
               )) ||
-                (prop.state === "Active" && !votedState && isRegistered && (
+                (proposalState === "Active" && !votedState && isRegistered && (
                   <span>Unable To Vote. You were either not delegating or did not have YAM in your wallet at the time of this proposal.</span>
                 )) ||
-                (prop.state === "Pending" && !isRegistered && !votedState && <Button disabled={isRegistering} onClick={onRegister} text="Register" />)}
+                (proposalState === "Pending" && !isRegistered && !votedState && <Button disabled={isRegistering} onClick={onRegister} text="Register" />)}
             </Box>
           </Box>
           <Spacer />

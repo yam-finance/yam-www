@@ -17640,10 +17640,10 @@ yallist@^4.0.0:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
-yam-sdk@^0.0.14-alpha:
-  version "0.0.14-alpha"
-  resolved "https://registry.yarnpkg.com/yam-sdk/-/yam-sdk-0.0.14-alpha.tgz#d7e9b94a60019032307fc7a0cdf865d830740566"
-  integrity sha512-bsCKvut66fK/MdVYmXzqa6YUoF0g6DmgNGV0cY38kWS1XvmPpHObA6y7vySQdqduxfCW0T+TCqY15k/Z+IE+NA==
+yam-sdk@^0.0.16-alpha:
+  version "0.0.16-alpha"
+  resolved "https://registry.yarnpkg.com/yam-sdk/-/yam-sdk-0.0.16-alpha.tgz#8b7faf6d715cf54702df79ebf93ba4bdd7664e0c"
+  integrity sha512-wAEQra4+6WI99WRcd/cKGFs146ay/0lP+GsOYsYnxze0pyajpHwRjY+K4OQktRLvRdQfnu1MgEMRlt66WR1Vmg==
 
 yaml@^1.10.0, yaml@^1.7.2:
   version "1.10.0"

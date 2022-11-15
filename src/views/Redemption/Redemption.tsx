@@ -1,7 +1,7 @@
 import React, { useCallback, useState, } from "react";
 import BigNumber from "bignumber.js";
 import { useWallet } from "use-wallet";
-import { Box, Button, Card, CardContent, Container, Spacer } from "react-neu";
+import { Box, Button, Card, CardContent, Container, ModalTitle, Spacer } from "react-neu";
 import Page from "components/Page";
 import PageHeader from "components/PageHeader";
 import useSDK from "hooks/useSDK";
@@ -37,7 +37,15 @@ const Redemption: React.FC = () => {
             <Card>
               <CardContent>
                 <Box alignItems="center" column minHeight={85}>
-                  <Value suffix="Your have" value={yamBalance} prefix="YAM." />
+                  {yamBalance
+                    ?
+                    (
+                      <Value suffix="Your have" value={yamBalance} prefix="YAM." />
+                    )
+                    : (
+                      <ModalTitle>Your have no YAM.</ModalTitle>
+                    )
+                  }
                   <Spacer size="sm" />
                   <Box alignItems="center" column maxWidth={550}>
                     <Label text={"After redeeming you will recieve shares from the treasury as tokens in exchange for your YAM. Your YAM will be burnt forever."} labelPosition="center" />
@@ -53,7 +61,7 @@ const Redemption: React.FC = () => {
                 {/* <Button onClick={donateClick} text="Donate" /> */}
               </Box>
               <Box alignItems="center" row justifyContent="space-between">
-                <Button disabled onClick={redeemClick} text="Redeem" />
+                <Button disabled={!yamBalance} onClick={redeemClick} text="Redeem" />
               </Box>
             </Box>
           </>
