@@ -47,10 +47,15 @@ const Provider: React.FC = ({ children }) => {
         return 0;
       }
     });
-    let votingPowers: ProposalVotingPower[] = await getVotingPowers(yam, props, account);
     setProposals(props);
-    setVotingPowers(votingPowers);
-  }, [setProposals, setVotingPowers, yam]);
+  }, [setProposals, yam]);
+
+  const fetchVotingPowers = useCallback(async () => {
+    if (proposals) {
+      let votingPowers: ProposalVotingPower[] = await getVotingPowers(yam, proposals, account);
+      setVotingPowers(votingPowers);
+    }
+  }, [setVotingPowers, yam]);
 
   const fetchCurrentPower = useCallback(async () => {
     if (!yam) return;
@@ -143,18 +148,19 @@ const Provider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (yam) {
-      fetchProposals();
+      // fetchProposals();
+      fetchVotingPowers();
       fetchCurrentPower();
     }
-  }, [fetchProposals, fetchCurrentPower, yam]);
+  }, [fetchVotingPowers, fetchCurrentPower, yam]);
 
-  useEffect(() => {
-    if (yam) {
-      fetchProposals();
-      let refreshInterval = setInterval(fetchProposals, 100000);
-      return () => clearInterval(refreshInterval);
-    }
-  }, [yam, fetchProposals]);
+  // useEffect(() => {
+  //   if (yam) {
+  //     fetchProposals();
+  //     let refreshInterval = setInterval(fetchProposals, 100000);
+  //     return () => clearInterval(refreshInterval);
+  //   }
+  // }, [yam, fetchProposals]);
 
   return (
     <Context.Provider

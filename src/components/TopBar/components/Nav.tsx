@@ -20,8 +20,8 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           onDismiss={onDismiss}
         />
         <StyledRouterLink
-          target="projects"
-          label="Projects"
+          target="redemption"
+          label="Redemption"
           mobileMenu={mobileMenu}
           onDismiss={onDismiss}
         />
@@ -32,8 +32,8 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           onDismiss={onDismiss}
         />
         <StyledRouterLink
-          target="farm"
-          label="Farm"
+          target="user"
+          label="User"
           mobileMenu={mobileMenu}
           onDismiss={onDismiss}
         />
@@ -42,6 +42,18 @@ const Nav: React.FC<NavProps> = ({ onDismiss, mobileMenu }) => {
           mobileMenu={mobileMenu}
           onDismiss={onDismiss}
         >
+          <StyledRouterLink
+            target="farm"
+            label="Farm"
+            mobileMenu={mobileMenu}
+            onDismiss={onDismiss}
+          />
+          <StyledRouterLink
+            target="projects"
+            label="Projects"
+            mobileMenu={mobileMenu}
+            onDismiss={onDismiss}
+          />
           <StyledRouterLink
             target="delegate"
             label="Delegate"

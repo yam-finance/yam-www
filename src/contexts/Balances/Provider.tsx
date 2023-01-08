@@ -5,16 +5,15 @@ import { provider } from "web3-core";
 
 import { yamv2 as yamV2Address, yamv3 as yamV3Address, yycrvUniLp as yyrcvUniLpAddress, YAMETHSLPAddress } from "constants/tokenAddresses";
 import { getBalance } from "utils";
-
 import Context from "./Context";
 
 const Provider: React.FC = ({ children }) => {
   const [yamV2Balance, setYamV2Balance] = useState<BigNumber>();
-  const [yamV3Balance, setYamV3Balance] = useState<BigNumber>();
+  const [yamV3Balance, setYamV3Balance] = useState<any>();
   const [yycrvUniLpBalance, setYycrvUniLpBalance] = useState<BigNumber>();
   const [YAMETHLPBalance, setYAMETHLPBalance] = useState<BigNumber>();
 
-  const { account, ethereum }: { account: string | null; ethereum: provider } = useWallet();
+  const { account, ethereum } = useWallet();
 
   const fetchBalances = useCallback(
     async (userAddress: string, provider: provider) => {
