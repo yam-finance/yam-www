@@ -11,6 +11,7 @@ class YamToken {
         this.abis = abis;
         this.signer = signer;
         this.contract = new ethers_1.ethers.Contract(this.abis.token.address, this.abis.token.abi, this.signer);
+        this.address = this.abis.token.address;
     }
     // Read functions
     /**
@@ -89,6 +90,16 @@ class YamToken {
      */
     async allowance(ownerAddress, spenderAddress) {
         return await this.contract.allowance(ownerAddress, spenderAddress);
+    }
+    // Write functions
+    /**
+     * Update allowance of an address.
+     * @param {string} spenderAddress - Spender wallet address.
+     * @param {string} amount - Amount to approve.
+     * @returns {number} The allowance.
+     */
+    async approve(spenderAddress, amount) {
+        return await this.contract.approve(spenderAddress, amount);
     }
 }
 exports.YamToken = YamToken;
