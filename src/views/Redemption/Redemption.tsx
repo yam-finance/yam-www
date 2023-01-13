@@ -28,10 +28,9 @@ const Redemption: React.FC = () => {
   
   const redeemClick = useCallback(async () => {
     const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
-    console.log("yamAmount", yamAmount);
     const redeem = await redeemerContract.redeem(account, yamAmount);
     console.log("redeem", redeem);
-  }, [yamBalance]);
+  }, [yamBalance, account, status]);
   
   const RedeemButton = useMemo(() => {
     if (!yamBalance) {
@@ -54,12 +53,17 @@ const Redemption: React.FC = () => {
   }, [yamBalance, isApproving, onApprove, status]);
 
   const YourYamBalance = useMemo(() => {
-    if (!yamBalance) {
-      return <ModalTitle>Your have no YAM.</ModalTitle>;
-    } else {
-      return <Value suffix="Your have" value={yamBalance} prefix="YAM." />
+    console.log("yamBalance", yamBalance);
+    if (typeof yamBalance === "undefined") {
+      return <b>Loading...</b>
     }
-  }, [yamBalance, account]);
+    if (yamBalance == 0) {
+      return <b>You have no YAM.</b>
+    }
+    if (yamBalance) {
+      return <Value suffix="You have" value={yamBalance} prefix="YAM." />
+    }
+  }, [yamBalance, account, status]);
 
   return (
     <Page>
@@ -70,7 +74,7 @@ const Redemption: React.FC = () => {
             <Card>
               <CardContent>
                 <Box alignItems="center" column minHeight={85}>
-                  {yamBalance ? YourYamBalance : ("Loading...")}
+                  {YourYamBalance}
                   <Spacer size="sm" />
                   <Box alignItems="center" column maxWidth={550}>
                     <Label text={"After redeeming you will recieve shares from the treasury as tokens in exchange for your YAM. Your YAM will be burnt forever."} labelPosition="center" />
