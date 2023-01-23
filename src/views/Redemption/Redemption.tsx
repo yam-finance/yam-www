@@ -17,6 +17,8 @@ const Redemption: React.FC = () => {
   const { account, status } = useWallet();
   const { yamContract, redeemerContract, yamBalance } = useSDK();
   const { isApproved, isApproving, onApprove } = useApproval(yamContract?.address, redeemerContract?.address);
+  const [amountWETH, setAmountWETH] = useState(0);
+  const [amountUSDC, setAmountUSDC] = useState(0);
 
   const handleDismissUnlockModal = useCallback(() => {
     setUnlockModalIsOpen(false);
@@ -29,7 +31,6 @@ const Redemption: React.FC = () => {
   const redeemClick = useCallback(async () => {
     const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
     const redeem = await redeemerContract.redeem(account, yamAmount);
-    console.log("redeem", redeem);
   }, [yamBalance, account, status]);
   
   const RedeemButton = useMemo(() => {
@@ -53,7 +54,6 @@ const Redemption: React.FC = () => {
   }, [yamBalance, isApproving, onApprove, status]);
 
   const YourYamBalance = useMemo(() => {
-    console.log("yamBalance", yamBalance);
     if (typeof yamBalance === "undefined") {
       return <b>Loading...</b>
     }
@@ -64,6 +64,20 @@ const Redemption: React.FC = () => {
       return <Value suffix="You have" value={yamBalance} prefix="YAM." />
     }
   }, [yamBalance, account, status]);
+  
+  const fetchRedeemBalances = useCallback(async () => {
+    if(redeemerContract && yamBalance){
+      const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
+      const getRedeemBalances = await redeemerContract?.previewRedeem(yamAmount);
+      setAmountWETH(getRedeemBalances.weth);
+      setAmountUSDC(getRedeemBalances.usdc);
+    }
+
+  }, [yamBalance, account]);
+
+  useEffect(() => {
+    fetchRedeemBalances();
+  }, [yamBalance, account]);
 
   return (
     <Page>
@@ -76,6 +90,7 @@ const Redemption: React.FC = () => {
                 <Box alignItems="center" column minHeight={85}>
                   {YourYamBalance}
                   <Spacer size="sm" />
+                  <div>Once redeemed you get <b>{amountWETH?amountWETH:0} WETH</b> and <b>{amountUSDC?amountUSDC:0} USDC</b>.</div>
                   <Box alignItems="center" column maxWidth={550}>
                     <Label text={"After redeeming you will recieve shares from the treasury as tokens in exchange for your YAM. Your YAM will be burnt forever."} labelPosition="center" />
                   </Box>
