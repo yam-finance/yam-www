@@ -2,7 +2,7 @@ import { ProposalVotingPower } from "contexts/Governance/types";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
-import Yam from "yam-sdk-files/dist";
+import { Yam } from "yam-sdk-dev";
 
 const useSDK = () => {
   const { ethereum } = useWallet();
@@ -26,7 +26,6 @@ const useSDK = () => {
       const yamContract = await yamSDK.contracts.token;
       const govContract = await yamSDK.contracts.governor;
       const redeemerContract = await yamSDK.contracts.redeemer;
-      console.log("setting yam contract and redeemer", yamContract, redeemerContract);
       setYamSDK(yamSDK);
       setYamContract(yamContract);
       setGovContract(govContract);
