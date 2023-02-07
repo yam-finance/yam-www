@@ -2,7 +2,7 @@ import { ProposalVotingPower } from "contexts/Governance/types";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
-import { Yam } from "yam-sdk-files/dist/Yam";
+import Yam from "yam-sdk-files/dist";
 
 const useSDK = () => {
   const { ethereum } = useWallet();
