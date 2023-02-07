@@ -16,6 +16,7 @@ const useApproval = (tokenAddress?: string, spenderAddress?: string, onTxHash?: 
 
   const handleApprove = useCallback(async () => {
     if (!ethereum || !account || !spenderAddress || !tokenAddress) {
+      console.log("here", ethereum, account, spenderAddress, tokenAddress)
       return;
     }
     try {
@@ -24,6 +25,7 @@ const useApproval = (tokenAddress?: string, spenderAddress?: string, onTxHash?: 
       setIsApproved(result);
       setIsApproving(false);
     } catch (e) {
+      console.log("error:", e)
       setIsApproving(false);
       return false;
     }

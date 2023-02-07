@@ -21,6 +21,7 @@ export const ContractReserves = "0x97990b693835da58a281636296d2bf02787dea17";
 export const ContractMigrator = "0x72CFEd9293cbFB2bfC7515c413048c697C6c811C";
 export const ContractMonthlyAllowance = "0x03A882495Bc616D3a1508211312765904Fb062d1";
 export const ContractIndexStaking = "0x205Cc7463267861002b27021C7108Bc230603d0F";
+export const ContractRedeemer = "0x54D9Ec9E1246F56A1ccbDE0B6fFd76Eb129fFCAA";
 
 //Deprecated
 export const ContractRebaser = "0xd93f403b432d39aa0f736c2021be6051d85a1d55"; //turned off
