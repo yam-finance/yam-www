@@ -27,11 +27,9 @@ const Redemption: React.FC = () => {
   const yamAddress = "0x0AaCfbeC6a24756c20D41914F2caba817C0d8521"
   const { isApproved, isApproving, onApprove } = useApproval(yamAddress, redeemerAddress, () => console.log("here"));
 
-//   const { account, status } = useWallet();
-//   const { yamContract, redeemerContract, yamBalance } = useSDK();
 //   const { isApproved, isApproving, onApprove } = useApproval(yamContract?.address, redeemerContract?.address);
-//   const [amountWETH, setAmountWETH] = useState(0);
-//   const [amountUSDC, setAmountUSDC] = useState(0);
+  const [amountWETH, setAmountWETH] = useState(0);
+  const [amountUSDC, setAmountUSDC] = useState(0);
 
 
   const handleDismissUnlockModal = useCallback(() => {
