@@ -14,6 +14,7 @@ const useSDK = () => {
 
   // Functions
   const [yamBalance, setYamBalance] = useState<any>();
+  const [yamBalanceOf, setYamBalanceOf] = useState<any>();
   const [govProposals, setGovProposals] = useState<any>([]);
 
   const fetchSDK = useCallback(async () => {
@@ -25,11 +26,14 @@ const useSDK = () => {
       const yamContract = await yamSDK.contracts.token;
       const govContract = await yamSDK.contracts.governor;
       const redeemerContract = await yamSDK.contracts.redeemer;
+      console.log("setting yam contract and redeemer", yamContract, redeemerContract);
       setYamSDK(yamSDK);
       setYamContract(yamContract);
       setGovContract(govContract);
       setRedeemerContract(redeemerContract);
       const userYamBalance = await yamContract.balance();
+      const userBalanceOfYam = await yamContract.balanceOf(yamContract.signer.getAddress());
+      console.log("userBalanceOfYam", userBalanceOfYam);
       const govProposals = await govContract.getRecentProposals();
       let govProposalsSorted = govProposals.sort((a: any, b: any) => {
         if (a && b && a.end && b.end) {
@@ -46,6 +50,7 @@ const useSDK = () => {
         }
       });
       setYamBalance(userYamBalance);
+      setYamBalanceOf(userBalanceOfYam);
       setGovProposals(govProposalsSorted);
     }
   }, [ethereum]);
@@ -60,6 +65,7 @@ const useSDK = () => {
     govContract,
     redeemerContract,
     yamBalance,
+    yamBalanceOf,
     govProposals,
   };
 };

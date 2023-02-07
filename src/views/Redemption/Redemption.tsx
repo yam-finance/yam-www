@@ -12,13 +12,27 @@ import useAllowance from "hooks/useAllowance";
 import useApproval from "hooks/useApproval";
 import { ethers } from "ethers";
 
+import Web3 from "web3";
+import { provider, TransactionReceipt } from "web3-core";
+import { AbiItem, isAddress, toChecksumAddress } from "web3-utils";
+import { waitTransaction } from "../../utils/index";
+
 const Redemption: React.FC = () => {
   const [unlockModalIsOpen, setUnlockModalIsOpen] = useState(false);
-  const { account, status } = useWallet();
-  const { yamContract, redeemerContract, yamBalance } = useSDK();
-  const { isApproved, isApproving, onApprove } = useApproval(yamContract?.address, redeemerContract?.address);
-  const [amountWETH, setAmountWETH] = useState(0);
-  const [amountUSDC, setAmountUSDC] = useState(0);
+  const [isRedeeming, setIsRedeeming] = useState(false);
+
+  const { account, ethereum, status } = useWallet();
+  const { yamContract, redeemerContract, yamBalanceOf, yamBalance } = useSDK();
+  const redeemerAddress = "0x54D9Ec9E1246F56A1ccbDE0B6fFd76Eb129fFCAA"
+  const yamAddress = "0x0AaCfbeC6a24756c20D41914F2caba817C0d8521"
+  const { isApproved, isApproving, onApprove } = useApproval(yamAddress, redeemerAddress, () => console.log("here"));
+
+//   const { account, status } = useWallet();
+//   const { yamContract, redeemerContract, yamBalance } = useSDK();
+//   const { isApproved, isApproving, onApprove } = useApproval(yamContract?.address, redeemerContract?.address);
+//   const [amountWETH, setAmountWETH] = useState(0);
+//   const [amountUSDC, setAmountUSDC] = useState(0);
+
 
   const handleDismissUnlockModal = useCallback(() => {
     setUnlockModalIsOpen(false);
@@ -27,11 +41,51 @@ const Redemption: React.FC = () => {
   const handleUnlockWalletClick = useCallback(() => {
     setUnlockModalIsOpen(true);
   }, [setUnlockModalIsOpen]);
-  
+
+//   const redeemClick = useCallback(async () => {
+//     const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
+//     const redeem = await redeemerContract.redeem(account, yamAmount);
+//   }, [yamBalance, account, status]);
+
   const redeemClick = useCallback(async () => {
-    const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
-    const redeem = await redeemerContract.redeem(account, yamAmount);
-  }, [yamBalance, account, status]);
+    const yamAmount = yamBalanceOf;
+    const web3 = new Web3(ethereum);
+    const redeemerContract2 = new web3.eth.Contract(
+      (redeemerContract.abis.redeemer.abi as unknown) as AbiItem,
+      redeemerAddress
+    );
+    try {
+      setIsRedeeming(true);
+      const redeem = await redeemerContract2.methods
+        .redeem(account, yamAmount)
+        .send(
+          { from: account },
+          async (error: any, txHash: string) => {
+            setIsRedeeming(false);
+            if (error) {
+              console.log("Some error occurred:", error);
+              return false;
+            }
+            const status = await waitTransaction(ethereum, txHash);
+            if (!status) {
+              console.log("Redeem transaction failed.");
+              return false;
+            }
+            return true;
+          }
+        );
+    } catch (e) {
+      console.log("error", e);
+      setIsRedeeming(false);
+      return false;
+    }
+  }, [setIsRedeeming, yamBalanceOf, account, status]);
+
+  const approveClick = useCallback(async () => {
+    console.log("approve");
+    console.log(yamAddress, redeemerAddress)
+    onApprove()
+  }, [onApprove]);
   
   const RedeemButton = useMemo(() => {
     if (!yamBalance) {
@@ -42,14 +96,19 @@ const Redemption: React.FC = () => {
         <Button
           disabled={isApproving}
           full
-          onClick={onApprove}
+          onClick={approveClick}
           text={!isApproving ? "Approve Redeemer" : "Approving Redeemer..."}
           variant={isApproving || status !== "connected" ? "secondary" : "default"}
         />
       );
     }
     if (isApproved) {
-      return <Button disabled={!yamBalance} onClick={redeemClick} text="Redeem" />;
+      return <Button
+        disabled={!yamBalance || isRedeeming }
+        onClick={redeemClick}
+        text={!isRedeeming ? "Redeem" : "Redeeming Yam..."}
+        variant={isRedeeming || status !== "connected" ? "secondary" : "default"}
+      />;
     }
   }, [yamBalance, isApproving, onApprove, status]);
 
@@ -64,7 +123,7 @@ const Redemption: React.FC = () => {
       return <Value suffix="You have" value={yamBalance} prefix="YAM." />
     }
   }, [yamBalance, account, status]);
-  
+
   const fetchRedeemBalances = useCallback(async () => {
     if(redeemerContract && yamBalance){
       const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
