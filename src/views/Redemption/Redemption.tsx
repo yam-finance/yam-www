@@ -11,6 +11,7 @@ import Value from "components/Value";
 import useAllowance from "hooks/useAllowance";
 import useApproval from "hooks/useApproval";
 import { ethers } from "ethers";
+
 import Web3 from "web3";
 import { provider, TransactionReceipt } from "web3-core";
 import { AbiItem, isAddress, toChecksumAddress } from "web3-utils";
@@ -26,6 +27,10 @@ const Redemption: React.FC = () => {
   const yamAddress = "0x0AaCfbeC6a24756c20D41914F2caba817C0d8521"
   const { isApproved, isApproving, onApprove } = useApproval(yamAddress, redeemerAddress, () => console.log("here"));
 
+//   const { isApproved, isApproving, onApprove } = useApproval(yamContract?.address, redeemerContract?.address);
+  const [amountWETH, setAmountWETH] = useState(0);
+  const [amountUSDC, setAmountUSDC] = useState(0);
+
 
   const handleDismissUnlockModal = useCallback(() => {
     setUnlockModalIsOpen(false);
@@ -34,6 +39,11 @@ const Redemption: React.FC = () => {
   const handleUnlockWalletClick = useCallback(() => {
     setUnlockModalIsOpen(true);
   }, [setUnlockModalIsOpen]);
+
+//   const redeemClick = useCallback(async () => {
+//     const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
+//     const redeem = await redeemerContract.redeem(account, yamAmount);
+//   }, [yamBalance, account, status]);
 
   const redeemClick = useCallback(async () => {
     const yamAmount = yamBalanceOf;
@@ -101,7 +111,6 @@ const Redemption: React.FC = () => {
   }, [yamBalance, isApproving, onApprove, status]);
 
   const YourYamBalance = useMemo(() => {
-    console.log("yamBalance", yamBalance);
     if (typeof yamBalance === "undefined") {
       return <b>Loading...</b>
     }
@@ -112,6 +121,20 @@ const Redemption: React.FC = () => {
       return <Value suffix="You have" value={yamBalance} prefix="YAM." />
     }
   }, [yamBalance, account, status]);
+
+  const fetchRedeemBalances = useCallback(async () => {
+    if(redeemerContract && yamBalance){
+      const yamAmount = new BigNumber(yamBalance).multipliedBy(new BigNumber(10).pow(18)).toString();
+      const getRedeemBalances = await redeemerContract?.previewRedeem(yamAmount);
+      setAmountWETH(getRedeemBalances.weth);
+      setAmountUSDC(getRedeemBalances.usdc);
+    }
+
+  }, [yamBalance, account]);
+
+  useEffect(() => {
+    fetchRedeemBalances();
+  }, [yamBalance, account]);
 
   return (
     <Page>
@@ -124,6 +147,7 @@ const Redemption: React.FC = () => {
                 <Box alignItems="center" column minHeight={85}>
                   {YourYamBalance}
                   <Spacer size="sm" />
+                  <div>Once redeemed you get <b>{amountWETH?amountWETH:0} WETH</b> and <b>{amountUSDC?amountUSDC:0} USDC</b>.</div>
                   <Box alignItems="center" column maxWidth={550}>
                     <Label text={"After redeeming you will recieve shares from the treasury as tokens in exchange for your YAM. Your YAM will be burnt forever."} labelPosition="center" />
                   </Box>

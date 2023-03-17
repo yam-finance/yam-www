@@ -39,6 +39,12 @@ class YamGovernor {
         const proposal = await this.contract.proposals(proposalId);
         const proposalData = {
             id: proposal.id.toString(),
+            // gov: "gov4",
+            // hash: proposals[i]["transactionHash"],
+            // description: proposals[i]["args"]["description"],
+            // targets: targets,
+            // signatures: sigs,
+            // inputs: inputs,
             start: proposal["startBlock"].toString(),
             end: proposal["endBlock"].toString(),
             forVotes: proposal.forVotes.toString(),

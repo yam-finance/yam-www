@@ -17640,6 +17640,11 @@ yallist@^4.0.0:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
+yam-sdk-dev@^0.0.18-alpha:
+  version "0.0.18-alpha"
+  resolved "https://registry.yarnpkg.com/yam-sdk-dev/-/yam-sdk-dev-0.0.18-alpha.tgz#b61a4c2474e592fc4386c1284e37f848da4ebd78"
+  integrity sha512-jB3671GHMbkgRM3fY6ES0p+ZQqwK7UIpemeN1cJC35rrfTVZeJJ/Jt28Qy7tNpjvxWwYTaWSpP1CJgRAENu64A==
+
 yam-sdk@^0.0.16-alpha:
   version "0.0.16-alpha"
   resolved "https://registry.yarnpkg.com/yam-sdk/-/yam-sdk-0.0.16-alpha.tgz#8b7faf6d715cf54702df79ebf93ba4bdd7664e0c"
