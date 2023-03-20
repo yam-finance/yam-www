@@ -138,7 +138,7 @@ const Redemption: React.FC = () => {
 
   return (
     <Page>
-      <PageHeader icon={"🍠"} title="Yam Redemption" subtitle="Redeem your YAM in exchange for treasury assets." />
+      <PageHeader icon={"🍠"} title="Yam Redemption" subtitle="Redemption ends Tuesday April 04 2023 at 19:36:59 GMT." />
       <Container>
         {account
           ? <>
